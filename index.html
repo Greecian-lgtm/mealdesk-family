@@ -274,6 +274,23 @@ textarea{resize:none;min-height:110px}
 .star{font-size:26px;cursor:pointer;transition:transform .15s;color:#ddd;line-height:1}
 .star.on{color:#f0a020}
 .star:active{transform:scale(1.25)}
+/* ── MEAL SWAP ──────────────────────────────────────────────────── */
+.meal-card{position:relative}
+.swap-btn{
+  position:absolute;top:8px;right:44px;background:var(--bg);border:1px solid var(--border);
+  border-radius:8px;padding:3px 8px;font-size:11px;font-weight:700;color:var(--sub);
+  cursor:pointer;transition:all .2s;white-space:nowrap;
+}
+.swap-btn:hover{background:var(--al);color:var(--a);border-color:var(--a)}
+.meal-alt-idx{font-size:10px;color:var(--sub);margin-top:2px}
+/* ── PANTRY ─────────────────────────────────────────────────────── */
+.pantry-tag{
+  display:inline-flex;align-items:center;gap:4px;background:var(--al);
+  border:1px solid var(--a)30;color:var(--a);border-radius:20px;
+  padding:4px 10px;font-size:12px;font-weight:600;
+}
+.pantry-tag button{background:none;border:none;color:var(--a);cursor:pointer;font-size:14px;line-height:1;padding:0;margin-left:2px;opacity:.7}
+.pantry-tag button:hover{opacity:1}
 
 /* ── 50-LB PROGRAM ──────────────────────────────────────────────── */
 .phase-road{display:flex;gap:6px;overflow-x:auto;padding:4px 0 12px;scrollbar-width:none;margin-bottom:2px}
@@ -322,10 +339,10 @@ textarea{resize:none;min-height:110px}
   <!-- Step 1: Name -->
   <div class="step on" id="s1">
     <div style="font-size:52px;margin-bottom:20px">🍽️</div>
-    <div class="prog"><div class="prog-dot cur"></div><div class="prog-dot"></div><div class="prog-dot"></div><div class="prog-dot"></div><div class="prog-dot"></div></div>
-    <div class="step-label">Step 1 of 5</div>
+    <div class="prog"><div class="prog-dot cur"></div><div class="prog-dot"></div><div class="prog-dot"></div><div class="prog-dot"></div></div>
+    <div class="step-label">Step 1 of 4</div>
     <h1 class="step-title">Welcome to<br>MealDesk Family</h1>
-    <p class="step-sub">Your personal meal planner, tailored to your diet and health goals. Takes 2 minutes to set up.</p>
+    <p class="step-sub">Your personal meal planner, tailored to your diet and health goals. Set up in under a minute.</p>
     <label for="sname" style="display:block;font-size:14px;font-weight:700;color:var(--sub);margin-bottom:8px">Your first name</label>
     <input type="text" id="sname" placeholder="e.g. Mom, Alex, Chris…" maxlength="24">
     <br><br>
@@ -335,8 +352,8 @@ textarea{resize:none;min-height:110px}
   <!-- Step 2: Emoji -->
   <div class="step" id="s2">
     <button class="back-btn" onclick="ps(2)">← Back</button>
-    <div class="prog"><div class="prog-dot done"></div><div class="prog-dot cur"></div><div class="prog-dot"></div><div class="prog-dot"></div><div class="prog-dot"></div></div>
-    <div class="step-label">Step 2 of 5</div>
+    <div class="prog"><div class="prog-dot done"></div><div class="prog-dot cur"></div><div class="prog-dot"></div><div class="prog-dot"></div></div>
+    <div class="step-label">Step 2 of 4</div>
     <h2 class="step-title">Pick your avatar</h2>
     <p class="step-sub">This shows on the family dashboard so everyone knows which plan is yours.</p>
     <div class="egrid" id="seg"></div>
@@ -346,42 +363,24 @@ textarea{resize:none;min-height:110px}
   <!-- Step 3: Diet -->
   <div class="step" id="s3">
     <button class="back-btn" onclick="ps(3)">← Back</button>
-    <div class="prog"><div class="prog-dot done"></div><div class="prog-dot done"></div><div class="prog-dot cur"></div><div class="prog-dot"></div><div class="prog-dot"></div></div>
-    <div class="step-label">Step 3 of 5</div>
+    <div class="prog"><div class="prog-dot done"></div><div class="prog-dot done"></div><div class="prog-dot cur"></div><div class="prog-dot"></div></div>
+    <div class="step-label">Step 3 of 4</div>
     <h2 class="step-title">Which diet fits you?</h2>
     <p class="step-sub">Shapes your daily meal plan and AI suggestions. You can change this anytime.</p>
     <div id="sdo"></div>
     <button class="btn btn-p" onclick="ns(3)">Continue →</button>
   </div>
 
-  <!-- Step 4: Health Goals -->
+  <!-- Step 4: Health Goals → Launch -->
   <div class="step" id="s4">
     <button class="back-btn" onclick="ps(4)">← Back</button>
-    <div class="prog"><div class="prog-dot done"></div><div class="prog-dot done"></div><div class="prog-dot done"></div><div class="prog-dot cur"></div><div class="prog-dot"></div></div>
-    <div class="step-label">Step 4 of 5</div>
+    <div class="prog"><div class="prog-dot done"></div><div class="prog-dot done"></div><div class="prog-dot done"></div><div class="prog-dot cur"></div></div>
+    <div class="step-label">Step 4 of 4</div>
     <h2 class="step-title">Any health goals?</h2>
-    <p class="step-sub">Select all that apply. Your meal suggestions will be tailored specifically to these conditions.</p>
+    <p class="step-sub">Select all that apply — your meals and plan will be tailored to these. All optional.</p>
     <div id="sgo"></div>
-    <button class="btn btn-p btn-mt" onclick="ns(4)">Continue →</button>
-  </div>
-
-  <!-- Step 5: API Key -->
-  <div class="step" id="s5">
-    <button class="back-btn" onclick="ps(5)">← Back</button>
-    <div class="prog"><div class="prog-dot done"></div><div class="prog-dot done"></div><div class="prog-dot done"></div><div class="prog-dot done"></div><div class="prog-dot cur"></div></div>
-    <div class="step-label">Step 5 of 5</div>
-    <h2 class="step-title">Connect to AI</h2>
-    <p class="step-sub">Enter your Anthropic API key to unlock personalized meal suggestions and your AI chef.</p>
-    <label style="display:block;font-size:14px;font-weight:700;color:var(--sub);margin-bottom:8px">Anthropic API Key</label>
-    <input type="password" id="skey" placeholder="sk-ant-api03-…" autocomplete="off" spellcheck="false">
-    <div class="api-note">
-      🔑 Your key is stored only on <strong>this device</strong> in localStorage — never sent anywhere except directly to Anthropic's API. Get your key at <a href="https://console.anthropic.com" target="_blank">console.anthropic.com</a>
-    </div>
-    <br>
-    <button class="btn btn-p" onclick="finish(true)">🚀 Let's Go!</button>
-    <div id="s5err" class="err" style="display:none"></div>
-    <p style="text-align:center;margin-top:20px;font-size:13px;color:var(--sub)">Don't have a key yet?</p>
-    <button class="btn btn-g btn-mt" onclick="finish(false)">Skip for now (add later in Profile)</button>
+    <button class="btn btn-p btn-mt" onclick="finish()" style="margin-top:24px">🚀 Let's Go!</button>
+    <p style="text-align:center;margin-top:14px;font-size:13px;color:var(--sub)">AI features can be enabled anytime in Profile → Connect AI</p>
   </div>
 
 </div><!-- end setup -->
@@ -425,9 +424,23 @@ textarea{resize:none;min-height:110px}
 
     <!-- ─ KITCHEN ─────────────────────────────────────────────── -->
     <div class="panel" id="pk">
-      <div class="sec-ttl">🥘 Kitchen Scan</div>
-      <div class="sec-sub">Tell me what you have and I'll create 3 personalised meal ideas — matched to your diet and health goals.</div>
+      <div class="sec-ttl">🥘 Kitchen</div>
+      <div class="sec-sub">Tag what's in your pantry, then scan for personalised meal ideas matched to your diet.</div>
 
+      <!-- Pantry -->
+      <div class="card" id="pantrycard">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+          <div style="font-size:11px;font-weight:700;color:var(--sub);text-transform:uppercase;letter-spacing:.8px">🏷️ My Pantry</div>
+          <button onclick="usePantry()" style="background:var(--al);color:var(--a);border:none;border-radius:8px;padding:5px 12px;font-size:12px;font-weight:700;cursor:pointer">Use in Scan ↓</button>
+        </div>
+        <div id="pantrytags" style="display:flex;flex-wrap:wrap;gap:6px;min-height:28px;margin-bottom:10px"></div>
+        <div style="display:flex;gap:8px">
+          <input type="text" id="pantryinput" placeholder="e.g. chicken, garlic, spinach…" maxlength="40" style="flex:1;font-size:14px;padding:10px 14px" onkeydown="if(event.key==='Enter'){addPantryItem();event.preventDefault()}">
+          <button onclick="addPantryItem()" style="background:var(--a);color:#fff;border:none;border-radius:12px;padding:0 16px;font-size:20px;cursor:pointer;flex-shrink:0">+</button>
+        </div>
+      </div>
+
+      <!-- Scan -->
       <div class="card">
         <label style="display:block;font-size:12px;font-weight:700;color:var(--sub);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px">What's in your kitchen?</label>
         <textarea id="kinput" maxlength="400" placeholder="e.g. chicken breast, spinach, garlic, olive oil, tomatoes, Greek yogurt, lemons…"></textarea>
@@ -492,8 +505,8 @@ textarea{resize:none;min-height:110px}
         <span class="flabel">Health Goals</span>
         <div id="pgo" style="margin-bottom:4px"></div>
 
-        <span class="flabel">Anthropic API Key</span>
-        <input type="password" id="pkey" placeholder="sk-ant-… (stored on this device only)" style="margin-bottom:6px" autocomplete="off" spellcheck="false">
+        <span class="flabel">Anthropic API Key <span style="font-weight:400;color:var(--sub)">(optional — enables AI Kitchen Scan)</span></span>
+        <input type="password" id="pkey" placeholder="sk-ant-… get yours at console.anthropic.com" style="margin-bottom:6px" autocomplete="off" spellcheck="false">
         <div style="font-size:12px;color:var(--sub);margin-bottom:16px">Your key stays on this device — only sent to Anthropic's servers.</div>
 
         <button class="btn btn-p" onclick="savePro()">Save Profile</button>
@@ -744,6 +757,10 @@ const lP=()=>{try{return JSON.parse(localStorage.getItem('mdf_p'))||null}catch{r
 const sP=(p)=>{try{localStorage.setItem('mdf_p',JSON.stringify(p))}catch{}};
 const lC=()=>{try{const d=new Date().toDateString(),a=JSON.parse(localStorage.getItem('mdf_c'))||{};return a[d]||{}}catch{return{}}};
 const sC=()=>{try{const d=new Date().toDateString(),a=JSON.parse(localStorage.getItem('mdf_c'))||{};a[d]=CK;const ks=Object.keys(a);if(ks.length>7)delete a[ks[0]];localStorage.setItem('mdf_c',JSON.stringify(a))}catch{}};
+const lSel=()=>{try{const d=new Date().toDateString(),a=JSON.parse(localStorage.getItem('mdf_sel'))||{};return a[d]||{}}catch{return{}}};
+const sSel=(sel)=>{try{const d=new Date().toDateString(),a=JSON.parse(localStorage.getItem('mdf_sel'))||{};a[d]=sel;const ks=Object.keys(a);if(ks.length>7)delete a[ks[0]];localStorage.setItem('mdf_sel',JSON.stringify(a))}catch{}};
+const lPantry=()=>{try{return JSON.parse(localStorage.getItem('mdf_pantry'))||[]}catch{return[]}};
+const sPantry=(p)=>{try{localStorage.setItem('mdf_pantry',JSON.stringify(p))}catch{}};
 
 // ── SETUP FLOW ────────────────────────────────────────────────────────────────
 function buildSetup(){
@@ -765,10 +782,9 @@ function ns(from){
 }
 function ps(from){document.getElementById('s'+from).classList.remove('on');document.getElementById('s'+(from-1)).classList.add('on')}
 
-function finish(withKey){
+function finish(){
   const nm=san(document.getElementById('sname').value,24)||'Member';
-  const key=withKey?san(document.getElementById('skey').value,220):'';
-  P={name:nm,emoji:sE,diet:sD,goals:sG,apiKey:key};
+  P={name:nm,emoji:sE,diet:sD,goals:sG,apiKey:''};
   sP(P);
   launch();
 }
@@ -811,7 +827,6 @@ function renderHeader(){
 function renderToday(){
   const d=DIETS[P.diet];
   const td=new Date();
-  const day=d.days[td.getDay()%4];
   const T=d.T;
   // Greeting
   const h=td.getHours();
@@ -851,9 +866,16 @@ function renderToday(){
   } else {
     if(wcard){wcard.innerHTML='';wcard.style.display='none';}
   }
-  // Consumed macros
+  // Consumed macros (use selected meals)
+  const selForMacros=lSel();
+  const defIdxM=new Date().getDay()%4;
   let cal=0,p=0,c=0,f=0;
-  SLOTS.forEach(s=>{if(CK[s.k]){const m=day[s.k];cal+=m.cal;p+=m.p;c+=m.c;f+=m.f}});
+  SLOTS.forEach(s=>{
+    if(CK[s.k]){
+      const idx=selForMacros[s.k]!==undefined?selForMacros[s.k]:defIdxM;
+      const m=d.days[idx][s.k];cal+=m.cal;p+=m.p;c+=m.c;f+=m.f;
+    }
+  });
   // Macro bars
   const bars=[
     {lb:'Calories',v:cal,mx:T.cal,col:'var(--a)',u:'kcal'},
@@ -865,16 +887,22 @@ function renderToday(){
     const pct=Math.min((m.v/(m.mx||1))*100,100);
     return`<div class="macro-row"><div class="macro-lbl">${m.lb}</div><div class="bar-bg"><div class="bar-fill" style="width:${pct}%;background:${m.col}"></div></div><div class="macro-val" style="color:${m.col}">${m.v}<span style="color:var(--sub);font-weight:400">/${m.mx}${m.u}</span></div></div>`;
   }).join('');
-  // Meal cards
+  // Meal cards with swap
+  const sel=lSel();
+  const defIdx=new Date().getDay()%4;
   document.getElementById('mcards').innerHTML=SLOTS.map(s=>{
-    const m=day[s.k];const done=CK[s.k]||false;
+    const idx=sel[s.k]!==undefined?sel[s.k]:defIdx;
+    const opts=d.days.map(day=>day[s.k]);
+    const m=opts[idx];const done=CK[s.k]||false;
     return`<div class="meal-card${done?' done':''}" onclick="tog('${s.k}')">
       <div class="mic">${s.ic}</div>
       <div class="minfo">
         <div class="mlbl">${s.lb}</div>
         <div class="mnm">${m.n}</div>
         <div class="mmac">${m.cal} kcal · ${m.p}g protein · ${m.c}g carbs · ${m.f}g fat</div>
+        <div class="meal-alt-idx">Option ${idx+1} of ${opts.length}</div>
       </div>
+      <button class="swap-btn" onclick="event.stopPropagation();swapMeal('${s.k}')">↻ Swap</button>
       <button class="chk-btn" onclick="event.stopPropagation();tog('${s.k}')">
         ${done?`<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20,6 9,17 4,12"/></svg>`:''}
       </button>
@@ -886,6 +914,59 @@ function renderToday(){
 
 function tog(k){CK[k]=!CK[k];sC();renderToday()}
 
+function swapMeal(slot){
+  const d=DIETS[P.diet];
+  const sel=lSel();
+  const defIdx=new Date().getDay()%4;
+  const cur=sel[slot]!==undefined?sel[slot]:defIdx;
+  sel[slot]=(cur+1)%4;
+  sSel(sel);
+  CK[slot]=false; // uncheck when swapping
+  sC();
+  renderToday();
+}
+
+// ── PANTRY ────────────────────────────────────────────────────────────────────
+function renderPantry(){
+  const items=lPantry();
+  const el=document.getElementById('pantrytags');
+  if(!el)return;
+  el.innerHTML=items.length
+    ?items.map((item,i)=>`<span class="pantry-tag">${san(item,30)}<button onclick="removePantryItem(${i})">×</button></span>`).join('')
+    :'<span style="font-size:13px;color:var(--sub)">No items yet — type below and press + or Enter</span>';
+}
+
+function addPantryItem(){
+  const inp=document.getElementById('pantryinput');
+  if(!inp)return;
+  const val=san(inp.value.trim(),30);
+  if(!val)return;
+  const items=lPantry();
+  if(!items.includes(val)&&items.length<40)items.push(val);
+  sPantry(items);
+  inp.value='';
+  renderPantry();
+}
+
+function removePantryItem(idx){
+  const items=lPantry();
+  items.splice(idx,1);
+  sPantry(items);
+  renderPantry();
+}
+
+function usePantry(){
+  const items=lPantry();
+  if(!items.length)return;
+  const inp=document.getElementById('kinput');
+  if(inp){
+    inp.value=items.join(', ');
+    const kcc=document.getElementById('kcc');
+    if(kcc)kcc.textContent=`${inp.value.length} / 400`;
+    inp.focus();
+  }
+}
+
 // ── KITCHEN ───────────────────────────────────────────────────────────────────
 function renderKitchenMeta(){
   const d=DIETS[P.diet];
@@ -895,9 +976,9 @@ function renderKitchenMeta(){
   const kb=document.getElementById('kbtn');
   if(nk)nk.style.display=(!P||!P.apiKey)?'block':'none';
   if(kb)kb.style.display=(!P||!P.apiKey)?'none':'block';
-  // Char counter
   const inp=document.getElementById('kinput');
   if(inp)inp.oninput=()=>{document.getElementById('kcc').textContent=`${inp.value.length} / 400`};
+  renderPantry();
 }
 
 async function doScan(){
@@ -1036,7 +1117,7 @@ function savePro(){
   const ok=document.getElementById('sok');ok.style.display='block';setTimeout(()=>ok.style.display='none',2200);
 }
 
-function doReset(){if(confirm('Reset your profile and start over? This clears all your data.')){['mdf_p','mdf_c','mdf_w','mdf_e','mdf_s'].forEach(k=>localStorage.removeItem(k));location.reload()}}
+function doReset(){if(confirm('Reset your profile and start over? This clears all your data.')){['mdf_p','mdf_c','mdf_w','mdf_e','mdf_s','mdf_sel','mdf_pantry'].forEach(k=>localStorage.removeItem(k));location.reload()}}
 
 // ── 50 LB PROGRAM ─────────────────────────────────────────────────────────────
 const PROGRAM=[
