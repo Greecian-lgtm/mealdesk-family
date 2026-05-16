@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#f7f3ec">
+<title>MealDesk — My Meals</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,400&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth}
+body{
+  font-family:'DM Sans',sans-serif;
+  background:#f7f3ec;
+  color:#2a1f14;
+  min-height:100vh;
+  max-width:520px;
+  margin:0 auto;
+  -webkit-font-smoothing:antialiased;
+  position:relative;
+}
+:root{
+  --a:#4a7c59;
+  --al:rgba(74,124,89,.12);
+  --bg:#f7f3ec;
+  --card:#ffffff;
+  --text:#2a1f14;
+  --sub:#8a7a6a;
+  --border:#e8e0d4;
+  --sh:0 2px 20px rgba(0,0,0,.09);
+}
+h1,h2,h3,h4{font-family:'Fraunces',serif;letter-spacing:-.3px}
+::-webkit-scrollbar{width:0}
+
+/* ── SETUP OVERLAY ─────────────────────────────────────────────── */
+#setup{
+  position:fixed;inset:0;background:#f7f3ec;z-index:9999;
+  overflow-y:auto;max-width:520px;margin:0 auto;
+}
+.step{display:none;padding:32px 24px 60px;min-height:100vh;animation:fadeUp .35s ease}
+.step.on{display:block}
+.back-btn{
+  background:none;border:none;cursor:pointer;
+  color:var(--sub);font-family:'DM Sans',sans-serif;
+  font-size:15px;display:flex;align-items:center;gap:6px;
+  padding:0;margin-bottom:28px;
+}
+.prog{display:flex;gap:6px;margin-bottom:32px}
+.prog-dot{
+  height:5px;border-radius:3px;background:var(--border);
+  transition:all .3s;flex:1;
+}
+.prog-dot.done{background:var(--a);opacity:.5}
+.prog-dot.cur{background:var(--a)}
+.step-label{font-size:11px;font-weight:700;color:var(--a);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px}
+.step-title{font-size:30px;color:var(--text);margin-bottom:8px;line-height:1.15}
+.step-sub{font-size:15px;color:var(--sub);margin-bottom:32px;line-height:1.6}
+
+/* ── INPUTS ─────────────────────────────────────────────────────── */
+input[type=text],input[type=password],textarea{
+  width:100%;padding:14px 16px;
+  background:#fff;border:1.5px solid var(--border);
+  border-radius:12px;font-family:'DM Sans',sans-serif;
+  font-size:16px;color:var(--text);outline:none;
+  transition:border-color .2s;
+}
+input[type=text]:focus,input[type=password]:focus,textarea:focus{border-color:var(--a)}
+textarea{resize:none;min-height:110px}
+
+/* ── BUTTONS ────────────────────────────────────────────────────── */
+.btn{
+  width:100%;padding:15px 24px;border:none;border-radius:14px;
+  font-family:'DM Sans',sans-serif;font-size:16px;font-weight:700;
+  cursor:pointer;transition:transform .1s,opacity .2s;
+}
+.btn:active{transform:scale(.98)}
+.btn-p{background:var(--a);color:#fff}
+.btn-p:disabled{opacity:.5;cursor:not-allowed}
+.btn-g{background:rgba(0,0,0,.06);color:var(--sub)}
+.btn-mt{margin-top:12px}
+
+/* ── EMOJI GRID ─────────────────────────────────────────────────── */
+.egrid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:28px}
+.ebtn{
+  font-size:26px;background:#fff;border:2px solid var(--border);
+  border-radius:12px;padding:8px;cursor:pointer;text-align:center;
+  transition:border-color .2s,transform .15s;
+}
+.ebtn.sel{border-color:var(--a);background:var(--al);transform:scale(1.07)}
+
+/* ── DIET OPTION ────────────────────────────────────────────────── */
+.diet-opt{
+  display:flex;align-items:center;gap:14px;padding:14px 16px;
+  background:#fff;border:2px solid var(--border);border-radius:14px;
+  cursor:pointer;margin-bottom:10px;transition:border-color .2s,background .2s;
+}
+.diet-opt.sel{border-color:var(--a);background:var(--al)}
+.diet-opt-icon{font-size:28px;flex-shrink:0}
+.diet-opt-name{font-weight:700;font-size:15px}
+.diet-opt-desc{font-size:13px;color:var(--sub);margin-top:2px}
+
+/* ── GOAL OPTION ────────────────────────────────────────────────── */
+.goal-opt{
+  display:flex;align-items:center;gap:12px;padding:13px 16px;
+  background:#fff;border:2px solid var(--border);border-radius:12px;
+  cursor:pointer;margin-bottom:10px;transition:border-color .2s;
+}
+.goal-opt.sel{border-color:var(--a)}
+.goal-ic{font-size:20px;flex-shrink:0}
+.goal-lbl{font-size:15px;font-weight:500;flex:1}
+.goal-chk{
+  width:24px;height:24px;border:2px solid var(--border);border-radius:6px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:14px;color:#fff;transition:all .2s;flex-shrink:0;
+}
+.goal-opt.sel .goal-chk{background:var(--a);border-color:var(--a)}
+
+/* ── API KEY INFO ───────────────────────────────────────────────── */
+.api-note{
+  background:#f0faf5;border:1px solid #b8e0ca;border-radius:10px;
+  padding:12px 14px;font-size:13px;color:#2a6a44;
+  line-height:1.55;margin-top:12px;
+}
+.api-note a{color:var(--a)}
+
+/* ── APP SHELL ──────────────────────────────────────────────────── */
+#app{display:none}
+#hdr{
+  background:#fff;border-bottom:1px solid var(--border);
+  padding:13px 20px 11px;position:sticky;top:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.logo{font-family:'Fraunces',serif;font-size:20px;color:var(--text)}
+.logo em{font-style:normal;color:var(--a)}
+.hdr-badge{
+  background:var(--al);color:var(--a);border-radius:20px;
+  padding:5px 12px;font-size:13px;font-weight:700;
+}
+#content{padding:16px 16px 100px}
+.panel{display:none}
+.panel.on{display:block;animation:fadeUp .25s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+/* ── BOTTOM NAV ─────────────────────────────────────────────────── */
+#nav{
+  position:fixed;bottom:0;left:50%;transform:translateX(-50%);
+  width:100%;max-width:520px;background:#fff;
+  border-top:1px solid var(--border);display:flex;
+  z-index:200;padding-bottom:env(safe-area-inset-bottom,0px);
+}
+.nb{
+  flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;
+  padding:10px 6px;background:none;border:none;cursor:pointer;
+  font-family:'DM Sans',sans-serif;font-size:11px;color:var(--sub);
+  font-weight:500;transition:color .2s;
+}
+.nb.on{color:var(--a)}
+.nb svg{width:22px;height:22px}
+
+/* ── CARDS ──────────────────────────────────────────────────────── */
+.card{background:#fff;border-radius:16px;padding:16px;box-shadow:var(--sh);margin-bottom:12px}
+.card-sm{background:#fff;border-radius:12px;padding:12px 14px;box-shadow:0 1px 10px rgba(0,0,0,.06);margin-bottom:10px}
+
+/* ── TODAY ──────────────────────────────────────────────────────── */
+.greeting{font-family:'Fraunces',serif;font-size:26px;color:var(--text);margin-bottom:2px}
+.greeting-sub{font-size:14px;color:var(--sub);margin-bottom:16px}
+.macro-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.macro-lbl{font-size:13px;color:var(--sub);width:58px;flex-shrink:0}
+.bar-bg{flex:1;height:8px;background:var(--border);border-radius:4px;overflow:hidden}
+.bar-fill{height:100%;border-radius:4px;transition:width .6s ease}
+.macro-val{font-size:13px;font-weight:700;color:var(--text);width:88px;text-align:right;flex-shrink:0}
+.meal-card{
+  background:#fff;border:1.5px solid var(--border);border-radius:14px;
+  padding:14px 14px 14px 16px;margin-bottom:10px;
+  display:flex;align-items:center;gap:12px;cursor:pointer;
+  transition:opacity .2s,border-color .2s;
+}
+.meal-card.done{opacity:.5}
+.meal-card.done .mnm{text-decoration:line-through}
+.mic{font-size:22px;flex-shrink:0}
+.minfo{flex:1;min-width:0}
+.mlbl{font-size:11px;color:var(--sub);font-weight:600;text-transform:uppercase;letter-spacing:.5px}
+.mnm{font-weight:700;font-size:15px;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mmac{font-size:12px;color:var(--sub);margin-top:3px}
+.chk-btn{
+  width:32px;height:32px;border-radius:50%;border:2px solid var(--border);
+  background:none;display:flex;align-items:center;justify-content:center;
+  cursor:pointer;flex-shrink:0;transition:all .2s;
+}
+.meal-card.done .chk-btn{background:var(--a);border-color:var(--a)}
+.pill{
+  display:inline-flex;align-items:center;gap:4px;
+  border-radius:20px;padding:4px 11px;font-size:12px;font-weight:600;
+}
+.sec-ttl{font-family:'Fraunces',serif;font-size:20px;color:var(--text);margin-bottom:4px}
+.sec-sub{font-size:14px;color:var(--sub);margin-bottom:14px;line-height:1.5}
+
+/* ── KITCHEN ────────────────────────────────────────────────────── */
+.sug-card{
+  background:#fff;border:1.5px solid var(--border);
+  border-radius:16px;padding:16px;margin-bottom:12px;
+  border-left:4px solid var(--a);
+}
+.sug-n{font-family:'Fraunces',serif;font-size:20px;color:var(--text);margin-bottom:4px}
+.sug-m{font-size:13px;color:var(--sub);margin-bottom:10px}
+.sug-steps{font-size:14px;color:#4a3a2a;line-height:1.65;margin-bottom:12px}
+.sug-chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}
+.mc{
+  background:var(--bg);border-radius:8px;padding:6px 10px;
+  font-size:13px;font-weight:700;color:var(--text);
+}
+.mc span{font-weight:400;color:var(--sub)}
+.sug-note{font-size:13px;color:var(--sub);font-style:italic;line-height:1.55}
+.dots{display:flex;justify-content:center;gap:8px;padding:32px 0}
+.dot{
+  width:9px;height:9px;background:var(--a);border-radius:50%;
+  animation:bop 1.2s infinite;
+}
+.dot:nth-child(2){animation-delay:.2s}
+.dot:nth-child(3){animation-delay:.4s}
+@keyframes bop{0%,60%,100%{transform:translateY(0);opacity:.35}30%{transform:translateY(-8px);opacity:1}}
+.no-key{
+  background:#fff9f0;border:1px solid #f0d8a0;border-radius:12px;
+  padding:14px 16px;font-size:14px;color:#8a6a20;line-height:1.55;
+}
+
+/* ── PROFILE ────────────────────────────────────────────────────── */
+.avatar-wrap{font-size:52px;cursor:pointer;line-height:1;user-select:none}
+.flabel{font-size:12px;font-weight:700;color:var(--sub);text-transform:uppercase;letter-spacing:.8px;margin-bottom:7px;margin-top:14px;display:block}
+.save-ok{text-align:center;color:var(--a);font-size:15px;font-weight:700;margin-top:10px;display:none}
+.diet-info-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;text-align:center;margin-top:14px}
+.dig-val{font-weight:800;font-size:17px;color:var(--text)}
+.dig-lbl{font-size:11px;color:var(--sub)}
+.reset-btn{
+  background:none;border:1.5px solid #f0c0c0;color:#c05050;
+  border-radius:10px;padding:11px 20px;font-family:'DM Sans',sans-serif;
+  font-size:14px;cursor:pointer;width:100%;
+}
+.char-c{font-size:12px;color:var(--sub)}
+.rate-msg{text-align:center;font-size:14px;color:var(--sub);margin-top:10px;display:none}
+.tip-card{background:#f4f9f5;border-left:3px solid var(--a);border-radius:10px;padding:13px 15px;font-size:14px;color:#2a4a34;line-height:1.6;margin-top:4px}
+.err{background:#fff5f5;border:1px solid #fccaca;border-radius:10px;padding:12px 14px;font-size:14px;color:#c04040;margin-top:10px}
+</style>
+</head>
+<body>
+
+<!-- ══ SETUP OVERLAY ══════════════════════════════════════════════════════════ -->
+<div id="setup">
+
+  <!-- Step 1: Name -->
+  <div class="step on" id="s1">
+    <div style="font-size:52px;margin-bottom:20px">🍽️</div>
+    <div class="prog"><div class="prog-dot cur"></div><div class="prog-dot"></div><div class="prog-dot"></div><div class="prog-dot"></div><div class="prog-dot"></div></div>
+    <div class="step-label">Step 1 of 5</div>
+    <h1 class="step-title">Welcome to<br>MealDesk Family</h1>
+    <p class="step-sub">Your personal meal planner, tailored to your diet and health goals. Takes 2 minutes to set up.</p>
+    <label for="sname" style="display:block;font-size:14px;font-weight:700;color:var(--sub);margin-bottom:8px">Your first name</label>
+    <input type="text" id="sname" placeholder="e.g. Mom, Alex, Chris…" maxlength="24">
+    <br><br>
+    <button class="btn btn-p" onclick="ns(1)">Continue →</button>
+  </div>
+
+  <!-- Step 2: Emoji -->
+  <div class="step" id="s2">
+    <button class="back-btn" onclick="ps(2)">← Back</button>
+    <div class="prog"><div class="prog-dot done"></div><div class="prog-dot cur"></div><div class="prog-dot"></div><div class="prog-dot"></div><div class="prog-dot"></div></div>
+    <div class="step-label">Step 2 of 5</div>
+    <h2 class="step-title">Pick your avatar</h2>
+    <p class="step-sub">This shows on the family dashboard so everyone knows which plan is yours.</p>
+    <div class="egrid" id="seg"></div>
+    <button class="btn btn-p" onclick="ns(2)">Continue →</button>
+  </div>
+
+  <!-- Step 3: Diet -->
+  <div class="step" id="s3">
+    <button class="back-btn" onclick="ps(3)">← Back</button>
+    <div class="prog"><div class="prog-dot done"></div><div class="prog-dot done"></div><div class="prog-dot cur"></div><div class="prog-dot"></div><div class="prog-dot"></div></div>
+    <div class="step-label">Step 3 of 5</div>
+    <h2 class="step-title">Which diet fits you?</h2>
+    <p class="step-sub">Shapes your daily meal plan and AI suggestions. You can change this anytime.</p>
+    <div id="sdo"></div>
+    <button class="btn btn-p" onclick="ns(3)">Continue →</button>
+  </div>
+
+  <!-- Step 4: Health Goals -->
+  <div class="step" id="s4">
+    <button class="back-btn" onclick="ps(4)">← Back</button>
+    <div class="prog"><div class="prog-dot done"></div><div class="prog-dot done"></div><div class="prog-dot done"></div><div class="prog-dot cur"></div><div class="prog-dot"></div></div>
+    <div class="step-label">Step 4 of 5</div>
+    <h2 class="step-title">Any health goals?</h2>
+    <p class="step-sub">Select all that apply. Your meal suggestions will be tailored specifically to these conditions.</p>
+    <div id="sgo"></div>
+    <button class="btn btn-p btn-mt" onclick="ns(4)">Continue →</button>
+  </div>
+
+  <!-- Step 5: API Key -->
+  <div class="step" id="s5">
+    <button class="back-btn" onclick="ps(5)">← Back</button>
+    <div class="prog"><div class="prog-dot done"></div><div class="prog-dot done"></div><div class="prog-dot done"></div><div class="prog-dot done"></div><div class="prog-dot cur"></div></div>
+    <div class="step-label">Step 5 of 5</div>
+    <h2 class="step-title">Connect to AI</h2>
+    <p class="step-sub">Enter your Anthropic API key to unlock personalized meal suggestions and your AI chef.</p>
+    <label style="display:block;font-size:14px;font-weight:700;color:var(--sub);margin-bottom:8px">Anthropic API Key</label>
+    <input type="password" id="skey" placeholder="sk-ant-api03-…" autocomplete="off" spellcheck="false">
+    <div class="api-note">
+      🔑 Your key is stored only on <strong>this device</strong> in localStorage — never sent anywhere except directly to Anthropic's API. Get your key at <a href="https://console.anthropic.com" target="_blank">console.anthropic.com</a>
+    </div>
+    <br>
+    <button class="btn btn-p" onclick="finish(true)">🚀 Let's Go!</button>
+    <div id="s5err" class="err" style="display:none"></div>
+    <p style="text-align:center;margin-top:20px;font-size:13px;color:var(--sub)">Don't have a key yet?</p>
+    <button class="btn btn-g btn-mt" onclick="finish(false)">Skip for now (add later in Profile)</button>
+  </div>
+
+</div><!-- end setup -->
+
+<!-- ══ MAIN APP ════════════════════════════════════════════════════════════════ -->
+<div id="app">
+
+  <!-- Header -->
+  <header id="hdr">
+    <div class="logo">Meal<em>Desk</em></div>
+    <div class="hdr-badge" id="hbadge">🫒 Med</div>
+  </header>
+
+  <!-- Tab Content -->
+  <div id="content">
+
+    <!-- ─ TODAY ─────────────────────────────────────────────────── -->
+    <div class="panel on" id="pt">
+      <div class="greeting" id="greet">🧑 Good morning!</div>
+      <div class="greeting-sub" id="gdate"></div>
+
+      <!-- Macro progress -->
+      <div class="card" id="mpcard">
+        <div style="font-size:11px;font-weight:700;color:var(--sub);text-transform:uppercase;letter-spacing:.8px;margin-bottom:14px">Today's Progress</div>
+        <div id="mbars"></div>
+      </div>
+
+      <!-- Condition chips -->
+      <div id="cchips" style="margin-bottom:14px"></div>
+
+      <!-- Section title -->
+      <div style="font-family:'Fraunces',serif;font-size:18px;color:var(--text);margin-bottom:10px">Today's Meals</div>
+      <div id="mcards"></div>
+
+      <!-- Health tip -->
+      <div id="htip"></div>
+    </div>
+
+    <!-- ─ KITCHEN ─────────────────────────────────────────────── -->
+    <div class="panel" id="pk">
+      <div class="sec-ttl">🥘 Kitchen Scan</div>
+      <div class="sec-sub">Tell me what you have and I'll create 3 personalised meal ideas — matched to your diet and health goals.</div>
+
+      <div class="card">
+        <label style="display:block;font-size:12px;font-weight:700;color:var(--sub);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px">What's in your kitchen?</label>
+        <textarea id="kinput" maxlength="400" placeholder="e.g. chicken breast, spinach, garlic, olive oil, tomatoes, Greek yogurt, lemons…"></textarea>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin:8px 0 14px">
+          <span class="char-c" id="kcc">0 / 400</span>
+          <span style="font-size:12px;color:var(--a);font-weight:700" id="kdb"></span>
+        </div>
+        <button class="btn btn-p" id="kbtn" onclick="doScan()">✨ Get Meal Suggestions</button>
+        <div class="rate-msg" id="krm">⏱ Please wait a few seconds before scanning again…</div>
+        <div class="no-key" id="nokey" style="display:none;margin-top:10px">
+          🔑 Add your Anthropic API key in <strong>Profile</strong> to enable AI meal suggestions.
+        </div>
+      </div>
+
+      <!-- Loading -->
+      <div id="ld" style="display:none">
+        <div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+        <p style="text-align:center;color:var(--sub);font-size:14px;margin-top:-16px">Crafting your personalised meals…</p>
+      </div>
+
+      <!-- Results -->
+      <div id="kres"></div>
+
+      <!-- AI Chat section -->
+      <div id="khat" style="margin-top:8px">
+        <div class="sec-ttl" style="font-size:18px;margin-bottom:4px">💬 Ask Your Chef</div>
+        <div class="sec-sub" style="margin-bottom:10px">Ask anything about your diet, meal swaps, or a health condition.</div>
+        <div id="chatbox" style="background:#fff;border-radius:14px;border:1.5px solid var(--border);min-height:140px;max-height:320px;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:10px;margin-bottom:10px">
+          <div style="text-align:center;color:var(--sub);font-size:14px;padding:24px 0" id="chat-empty">Ask me anything about your diet…</div>
+        </div>
+        <div style="display:flex;gap:8px">
+          <input type="text" id="chatinput" placeholder="e.g. What should I eat for gout?" maxlength="300" style="flex:1;font-size:15px" onkeydown="if(event.key==='Enter')doChat()">
+          <button onclick="doChat()" style="background:var(--a);border:none;color:#fff;border-radius:12px;padding:0 16px;cursor:pointer;font-size:20px;flex-shrink:0">↑</button>
+        </div>
+        <div class="rate-msg" id="crm">⏱ Give it a moment…</div>
+      </div>
+    </div>
+
+    <!-- ─ PROFILE ─────────────────────────────────────────────── -->
+    <div class="panel" id="pp">
+      <div class="sec-ttl" style="margin-top:4px">👤 My Profile</div>
+      <div class="sec-sub">Update your diet, health goals, and settings.</div>
+
+      <!-- Main profile card -->
+      <div class="card">
+        <div style="display:flex;align-items:center;gap:16px;margin-bottom:16px">
+          <div class="avatar-wrap" id="pavatar" onclick="toggleEP()">🧑</div>
+          <div style="flex:1">
+            <input type="text" id="pname" maxlength="24" style="font-size:18px;font-weight:700;border:none;background:transparent;padding:0;width:100%;outline:none" placeholder="Your name">
+            <div style="font-size:13px;color:var(--sub);margin-top:3px">Tap avatar to change</div>
+          </div>
+        </div>
+
+        <!-- Inline emoji picker (profile) -->
+        <div id="pep" style="display:none;margin-bottom:14px">
+          <div class="egrid" id="peg"></div>
+        </div>
+
+        <span class="flabel">Diet Plan</span>
+        <div id="pdo" style="margin-bottom:4px"></div>
+
+        <span class="flabel">Health Goals</span>
+        <div id="pgo" style="margin-bottom:4px"></div>
+
+        <span class="flabel">Anthropic API Key</span>
+        <input type="password" id="pkey" placeholder="sk-ant-… (stored on this device only)" style="margin-bottom:6px" autocomplete="off" spellcheck="false">
+        <div style="font-size:12px;color:var(--sub);margin-bottom:16px">Your key stays on this device — only sent to Anthropic's servers.</div>
+
+        <button class="btn btn-p" onclick="savePro()">Save Profile</button>
+        <div class="save-ok" id="sok">✓ Saved!</div>
+      </div>
+
+      <!-- Diet info -->
+      <div class="card" id="dinfo"></div>
+
+      <!-- Reset -->
+      <div style="padding:12px 0 20px;text-align:center">
+        <button class="reset-btn" onclick="doReset()">Reset & start over</button>
+      </div>
+    </div>
+
+  </div><!-- #content -->
+
+  <!-- Bottom Nav -->
+  <nav id="nav">
+    <button class="nb on" id="nt" onclick="sw('t')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/></svg>
+      Today
+    </button>
+    <button class="nb" id="nk" onclick="sw('k')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 002-2V2M7 2v20M21 15V2s-5 2-5 6v8"/><circle cx="21" cy="17" r="2"/><path d="M19 17H3"/></svg>
+      Kitchen
+    </button>
+    <button class="nb" id="np" onclick="sw('p')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      Profile
+    </button>
+  </nav>
+
+</div><!-- #app -->
+
+<script>
+// ── DATA ──────────────────────────────────────────────────────────────────────
+const EM=['🧑','👩','👨','👦','👧','🧓','👴','👵','🧒','🙋','💁','🧑‍🍳','👩‍🍳','🧑‍🌾'];
+
+const COND={
+  blood_pressure:{lb:'High Blood Pressure',em:'❤️',c:'#e05050',bg:'#fff5f5'},
+  insulin:       {lb:'Blood Sugar / Insulin',em:'💉',c:'#2ea860',bg:'#f2fdf6'},
+  gout:          {lb:'Gout / Uric Acid',em:'🦶',c:'#7c50cc',bg:'#f7f4ff'},
+  inflammation:  {lb:'Inflammation',em:'🔥',c:'#d48020',bg:'#fffbf0'},
+  cholesterol:   {lb:'Cholesterol / LDL',em:'💙',c:'#1880c0',bg:'#f0f8ff'},
+};
+
+const DIETS={
+  keto:{
+    n:'Ketogenic',s:'Keto',ic:'🥑',a:'#c87a10',
+    desc:'High-fat, very low-carb. Burns fat for fuel.',
+    tags:['< 25g carbs/day','70% fat','Moderate protein'],
+    goals:['insulin','inflammation'],
+    T:{cal:2000,p:150,c:25,f:155},
+    tip:'💡 <strong>Keto tip:</strong> If you feel fatigued, you likely need more electrolytes — especially sodium, potassium, and magnesium. Add salt to meals and eat more avocados.',
+    days:[
+      {breakfast:{n:'Bacon & Egg Cups',cal:320,p:24,c:2,f:26},lunch:{n:'BLT Lettuce Wraps',cal:380,p:28,c:8,f:28},dinner:{n:'Seared Salmon + Asparagus',cal:520,p:42,c:8,f:35},snack:{n:'Cheese Crisps + Almonds',cal:280,p:14,c:4,f:24}},
+      {breakfast:{n:'Avocado Scrambled Eggs',cal:380,p:22,c:4,f:32},lunch:{n:'Chicken Cauliflower Bowl',cal:420,p:38,c:12,f:24},dinner:{n:'Ribeye + Roasted Broccoli',cal:680,p:52,c:6,f:52},snack:{n:'Celery + Almond Butter',cal:200,p:6,c:8,f:18}},
+      {breakfast:{n:'Smoked Salmon & Cream Cheese',cal:340,p:28,c:2,f:26},lunch:{n:'Tuna-Stuffed Avocado',cal:360,p:32,c:6,f:24},dinner:{n:'Ground Beef Zucchini Boats',cal:540,p:42,c:10,f:38},snack:{n:'Hard-Boiled Eggs + Pickles',cal:160,p:12,c:2,f:10}},
+      {breakfast:{n:'Coconut Chia Pudding',cal:310,p:16,c:8,f:24},lunch:{n:'Keto Cobb Salad',cal:480,p:36,c:8,f:36},dinner:{n:'Pork Belly + Cauliflower Mash',cal:620,p:44,c:8,f:48},snack:{n:'Macadamia + Dark Chocolate',cal:320,p:4,c:10,f:30}},
+    ]
+  },
+  vegan:{
+    n:'Vegan',s:'Vegan',ic:'🌱',a:'#2d8a52',
+    desc:'Whole-food plant-based, zero animal products.',
+    tags:['Zero animal products','High fiber 40g+','Complex carbs'],
+    goals:['inflammation','cholesterol'],
+    T:{cal:1900,p:85,c:240,f:65},
+    tip:'💡 <strong>Vegan tip:</strong> Pair iron-rich foods (lentils, spinach) with Vitamin C (bell peppers, citrus) to significantly boost iron absorption — the body absorbs plant iron 3× better with Vitamin C.',
+    days:[
+      {breakfast:{n:'Overnight Oats + Chia + Blueberries',cal:380,p:14,c:58,f:12},lunch:{n:'Lentil & Spinach Soup',cal:340,p:20,c:52,f:6},dinner:{n:'Chickpea Tikka Masala + Rice',cal:520,p:22,c:78,f:14},snack:{n:'Apple + Almond Butter',cal:240,p:7,c:32,f:12}},
+      {breakfast:{n:'Smoothie Bowl + Blueberry Granola',cal:420,p:12,c:70,f:14},lunch:{n:'Black Bean Tacos (corn tortilla)',cal:380,p:18,c:62,f:8},dinner:{n:'Tofu Stir-Fry + Quinoa',cal:480,p:28,c:58,f:16},snack:{n:'Edamame + Rice Cakes',cal:200,p:10,c:30,f:4}},
+      {breakfast:{n:'Tofu Scramble + Whole Grain Toast',cal:360,p:22,c:40,f:14},lunch:{n:'Buddha Bowl + Tahini Dressing',cal:440,p:18,c:62,f:18},dinner:{n:'Red Lentil Dal + Whole Grain Naan',cal:500,p:24,c:72,f:12},snack:{n:'Hummus + Veggie Sticks',cal:180,p:8,c:24,f:8}},
+      {breakfast:{n:'Banana Protein Pancakes',cal:400,p:18,c:62,f:10},lunch:{n:'Pea & Mint Soup + Bread',cal:320,p:16,c:44,f:8},dinner:{n:'Mushroom Walnut Bolognese + Pasta',cal:520,p:20,c:82,f:14},snack:{n:'Mixed Nuts + Dried Mango',cal:260,p:7,c:32,f:14}},
+    ]
+  },
+  mediterranean:{
+    n:'Mediterranean',s:'Med',ic:'🫒',a:'#1a7aaa',
+    desc:'Heart-healthy eating inspired by the Greek coast.',
+    tags:['Heart-healthy','Olive oil base','Fish 2×/week'],
+    goals:['blood_pressure','inflammation','cholesterol'],
+    T:{cal:2100,p:120,c:260,f:80},
+    tip:'💡 <strong>Med tip:</strong> Use extra virgin olive oil as your primary fat — it contains oleocanthal, which inhibits inflammation the same way as ibuprofen (Nature, 2005). 2 tbsp = a low dose NSAID.',
+    days:[
+      {breakfast:{n:'Greek Yogurt + Honey + Walnuts',cal:340,p:20,c:38,f:14},lunch:{n:'Grilled Chicken Greek Salad + EVOO',cal:420,p:38,c:18,f:22},dinner:{n:'Baked Salmon + Roasted Veg + Quinoa',cal:580,p:44,c:52,f:22},snack:{n:'Hummus + Whole Grain Pita + Olives',cal:320,p:10,c:38,f:16}},
+      {breakfast:{n:'Oat Porridge + Berries + Honey',cal:320,p:12,c:58,f:6},lunch:{n:'Lentil Soup + Crusty Bread + EVOO',cal:400,p:22,c:62,f:10},dinner:{n:'Lamb Kebabs + Tzatziki + Tabbouleh',cal:560,p:42,c:38,f:26},snack:{n:'Almonds + Dried Figs',cal:280,p:8,c:32,f:16}},
+      {breakfast:{n:'Avocado Toast + Poached Egg + EVOO',cal:380,p:18,c:32,f:22},lunch:{n:'Tuna Niçoise Salad',cal:440,p:38,c:28,f:20},dinner:{n:'Shrimp Saganaki + Brown Rice',cal:500,p:36,c:48,f:16},snack:{n:'Fresh Fruit + Pistachios',cal:220,p:6,c:28,f:10}},
+      {breakfast:{n:'Shakshuka (tomato baked eggs)',cal:360,p:22,c:24,f:20},lunch:{n:'Falafel Wrap + Tahini',cal:460,p:18,c:58,f:20},dinner:{n:'Whole Branzino + Lemon Herb Veg',cal:540,p:46,c:22,f:28},snack:{n:'Labneh + Cucumber + Mint',cal:180,p:10,c:12,f:10}},
+    ]
+  },
+  paleo:{
+    n:'Paleo',s:'Paleo',ic:'🦴',a:'#b56a20',
+    desc:'Ancestral eating. Whole foods as nature intended.',
+    tags:['No grains or dairy','Grass-fed meats','No processed food'],
+    goals:['inflammation','insulin'],
+    T:{cal:2200,p:165,c:110,f:115},
+    tip:'💡 <strong>Paleo tip:</strong> Grass-fed beef has up to 5× more anti-inflammatory omega-3 fatty acids than grain-fed. Choose grass-fed when possible — it changes the fatty acid profile dramatically.',
+    days:[
+      {breakfast:{n:'Sweet Potato Hash + Eggs + Bacon',cal:480,p:28,c:36,f:24},lunch:{n:'Grilled Chicken Lettuce Wraps + Guac',cal:420,p:42,c:14,f:22},dinner:{n:'Grass-Fed Steak + Roasted Beets',cal:620,p:54,c:22,f:38},snack:{n:'Mixed Berries + Coconut Flakes',cal:180,p:3,c:28,f:10}},
+      {breakfast:{n:'Banana Almond Butter Smoothie',cal:380,p:14,c:44,f:18},lunch:{n:'Salmon Patties + Steamed Broccoli',cal:460,p:44,c:12,f:26},dinner:{n:'Pork Tenderloin + Roasted Root Veg',cal:560,p:50,c:32,f:24},snack:{n:'Walnuts + Dried Apricots',cal:220,p:6,c:24,f:14}},
+      {breakfast:{n:'Egg Frittata + Spinach + Mushrooms',cal:360,p:26,c:8,f:26},lunch:{n:'Turkey & Avocado Collard Wraps',cal:400,p:38,c:14,f:22},dinner:{n:'Baked Wild Salmon + Asparagus',cal:520,p:48,c:10,f:30},snack:{n:'Apple + Almond Butter',cal:240,p:6,c:30,f:14}},
+      {breakfast:{n:'Paleo Pancakes (almond + banana)',cal:360,p:16,c:42,f:16},lunch:{n:'Grilled Shrimp + Cauliflower Rice Bowl',cal:380,p:36,c:18,f:16},dinner:{n:'Lamb Chops + Roasted Garlic Brussels',cal:640,p:52,c:18,f:42},snack:{n:'Beef Jerky + Macadamia Nuts',cal:280,p:18,c:8,f:20}},
+    ]
+  },
+  diabetic:{
+    n:'Diabetic-Friendly',s:'Diabetic',ic:'💉',a:'#7a52b4',
+    desc:'Clinically designed for stable blood sugar and insulin sensitivity.',
+    tags:['Low glycemic index','< 45g carbs/meal','No added sugar'],
+    goals:['insulin','blood_pressure','cholesterol'],
+    T:{cal:1600,p:100,c:130,f:60},
+    tip:'💡 <strong>Diabetic tip:</strong> Ceylon cinnamon (not Cassia) reduces fasting glucose by 18–29% (Diabetes Care, 2003). Add ½ tsp to your oatmeal or yogurt daily for cumulative effect.',
+    days:[
+      {breakfast:{n:'Steel-Cut Oats + Cinnamon + Almonds',cal:320,p:14,c:42,f:12},lunch:{n:'Lentil & Kale Soup + Whole Grain Roll',cal:340,p:20,c:44,f:8},dinner:{n:'Baked Cod + Broccoli + Quinoa',cal:420,p:38,c:38,f:12},snack:{n:'Greek Yogurt (plain) + Blueberries',cal:180,p:14,c:22,f:4}},
+      {breakfast:{n:'Veggie Egg White Omelette',cal:240,p:22,c:12,f:8},lunch:{n:'Chickpea + Spinach Salad + ACV Dressing',cal:320,p:16,c:40,f:10},dinner:{n:'Turkey Meatballs + Zucchini Noodles',cal:380,p:38,c:28,f:14},snack:{n:'Apple + 1 tsp Almond Butter',cal:180,p:4,c:28,f:8}},
+      {breakfast:{n:'Chia Pudding + Tart Cherry + Walnuts',cal:300,p:12,c:34,f:14},lunch:{n:'Grilled Chicken + Mixed Greens + EVOO',cal:360,p:36,c:14,f:16},dinner:{n:'Salmon + Roasted Asparagus + Barley',cal:420,p:36,c:36,f:14},snack:{n:'Celery + Hummus',cal:140,p:6,c:16,f:6}},
+      {breakfast:{n:'Avocado + Poached Egg + Spinach',cal:320,p:16,c:14,f:22},lunch:{n:'Lentil + Tomato Tabbouleh',cal:320,p:16,c:44,f:8},dinner:{n:'Lean Beef + Cauliflower Mash + Green Beans',cal:380,p:36,c:24,f:14},snack:{n:'Kiwi + Low-fat Cottage Cheese',cal:160,p:14,c:18,f:2}},
+    ]
+  },
+  carnivore:{
+    n:'Carnivore',s:'Carnivore',ic:'🥩',a:'#b83030',
+    desc:'Animal-only elimination diet. Zero plant foods.',
+    tags:['Meat + eggs + dairy','Zero carbs','High protein'],
+    goals:['insulin','inflammation'],
+    T:{cal:2400,p:200,c:0,f:180},
+    tip:'💡 <strong>Carnivore tip:</strong> Organ meats — especially beef liver — are the most nutrient-dense food on earth. Just 2oz of liver weekly covers your B12, Vitamin A, and folate requirements completely.',
+    days:[
+      {breakfast:{n:'Ribeye + 4 Eggs (butter-fried)',cal:720,p:62,c:0,f:52},lunch:{n:'Ground Beef Patties + Bacon',cal:580,p:52,c:0,f:42},dinner:{n:'NY Strip + Bone Broth',cal:680,p:58,c:0,f:50},snack:{n:'Hard-Boiled Eggs (3) + Cheese',cal:280,p:24,c:0,f:20}},
+      {breakfast:{n:'Salmon + Scrambled Eggs (4) + Butter',cal:640,p:58,c:0,f:46},lunch:{n:'Pork Ribs + Pork Belly',cal:700,p:50,c:0,f:56},dinner:{n:'Lamb Chops + Tallow',cal:680,p:54,c:0,f:52},snack:{n:'Beef Jerky + Hard Cheese',cal:260,p:28,c:0,f:16}},
+      {breakfast:{n:'Brisket (leftover) + Eggs (3)',cal:600,p:58,c:0,f:42},lunch:{n:'Chicken Thighs (skin-on) + Liver',cal:520,p:54,c:0,f:32},dinner:{n:'T-Bone Steak + Bone Marrow',cal:780,p:60,c:0,f:60},snack:{n:'Sardines in Olive Oil',cal:200,p:22,c:0,f:12}},
+      {breakfast:{n:'Smoked Salmon + Cream Cheese + Eggs',cal:580,p:52,c:2,f:42},lunch:{n:'Chuck Roast (slow-cooked)',cal:640,p:60,c:0,f:44},dinner:{n:'Wagyu Beef + Duck Fat',cal:820,p:58,c:0,f:66},snack:{n:'Pork Rinds + Bone Broth',cal:220,p:24,c:0,f:12}},
+    ]
+  },
+};
+
+const SLOTS=[{k:'breakfast',lb:'Breakfast',ic:'🌅'},{k:'lunch',lb:'Lunch',ic:'☀️'},{k:'dinner',lb:'Dinner',ic:'🌙'},{k:'snack',lb:'Snack',ic:'🍎'}];
+
+// ── STATE ─────────────────────────────────────────────────────────────────────
+let P=null; // profile: {name,emoji,diet,goals,apiKey}
+let CK={};  // checked meals
+let lastT=0;
+let sE='🧑',sD='mediterranean',sG=[];
+let pE='🧑',pD='mediterranean',pG=[];
+let chatHistory=[];
+
+// ── SECURITY ──────────────────────────────────────────────────────────────────
+const san=(s,mx=400)=>String(s||'').replace(/<[^>]*>/g,'').replace(/javascript:/gi,'').replace(/data:/gi,'').replace(/on\w+\s*=/gi,'').replace(/eval\s*\(/gi,'').slice(0,mx).trim();
+const canAPI=()=>{const n=Date.now();if(n-lastT<4000)return false;lastT=n;return true};
+
+// ── STORAGE ───────────────────────────────────────────────────────────────────
+const lP=()=>{try{return JSON.parse(localStorage.getItem('mdf_p'))||null}catch{return null}};
+const sP=(p)=>{try{localStorage.setItem('mdf_p',JSON.stringify(p))}catch{}};
+const lC=()=>{try{const d=new Date().toDateString(),a=JSON.parse(localStorage.getItem('mdf_c'))||{};return a[d]||{}}catch{return{}}};
+const sC=()=>{try{const d=new Date().toDateString(),a=JSON.parse(localStorage.getItem('mdf_c'))||{};a[d]=CK;const ks=Object.keys(a);if(ks.length>7)delete a[ks[0]];localStorage.setItem('mdf_c',JSON.stringify(a))}catch{}};
+
+// ── SETUP FLOW ────────────────────────────────────────────────────────────────
+function buildSetup(){
+  // Emoji grid
+  const g=document.getElementById('seg');
+  EM.forEach((e,i)=>{const b=document.createElement('button');b.className='ebtn'+(i===0?' sel':'');b.textContent=e;b.onclick=()=>{document.querySelectorAll('#seg .ebtn').forEach(x=>x.classList.remove('sel'));b.classList.add('sel');sE=e};g.appendChild(b)});
+  // Diet options
+  const d=document.getElementById('sdo');
+  Object.entries(DIETS).forEach(([k,v])=>{const el=document.createElement('div');el.className='diet-opt'+(k==='mediterranean'?' sel':'');el.innerHTML=`<div class="diet-opt-icon">${v.ic}</div><div><div class="diet-opt-name">${v.n}</div><div class="diet-opt-desc">${v.desc}</div></div>`;el.onclick=()=>{document.querySelectorAll('#sdo .diet-opt').forEach(x=>x.classList.remove('sel'));el.classList.add('sel');sD=k};d.appendChild(el)});
+  // Goal options
+  const go=document.getElementById('sgo');
+  Object.entries(COND).forEach(([k,v])=>{const el=document.createElement('div');el.className='goal-opt';el.dataset.k=k;el.innerHTML=`<span class="goal-ic">${v.em}</span><span class="goal-lbl">${v.lb}</span><div class="goal-chk"></div>`;el.onclick=()=>{el.classList.toggle('sel');const i=sG.indexOf(k);i>=0?sG.splice(i,1):sG.push(k);el.querySelector('.goal-chk').textContent=el.classList.contains('sel')?'✓':''};go.appendChild(el)});
+}
+
+function ns(from){
+  if(from===1){const v=san(document.getElementById('sname').value,24);if(!v){document.getElementById('sname').style.borderColor='#e05050';return};document.getElementById('sname').style.borderColor=''}
+  document.getElementById('s'+from).classList.remove('on');
+  document.getElementById('s'+(from+1)).classList.add('on');
+}
+function ps(from){document.getElementById('s'+from).classList.remove('on');document.getElementById('s'+(from-1)).classList.add('on')}
+
+function finish(withKey){
+  const nm=san(document.getElementById('sname').value,24)||'Member';
+  const key=withKey?san(document.getElementById('skey').value,220):'';
+  P={name:nm,emoji:sE,diet:sD,goals:sG,apiKey:key};
+  sP(P);
+  launch();
+}
+
+function launch(){
+  document.getElementById('setup').style.display='none';
+  document.getElementById('app').style.display='block';
+  CK=lC();
+  applyTheme();
+  renderHeader();
+  renderToday();
+  buildProfileEditors();
+}
+
+// ── THEME ─────────────────────────────────────────────────────────────────────
+function applyTheme(){
+  const a=DIETS[P.diet].a;
+  document.documentElement.style.setProperty('--a',a);
+  const r=parseInt(a.slice(1,3),16),gg=parseInt(a.slice(3,5),16),b=parseInt(a.slice(5,7),16);
+  document.documentElement.style.setProperty('--al',`rgba(${r},${gg},${b},0.13)`);
+}
+
+// ── TAB SWITCH ────────────────────────────────────────────────────────────────
+function sw(t){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.nb').forEach(b=>b.classList.remove('on'));
+  document.getElementById('p'+t).classList.add('on');
+  document.getElementById('n'+t).classList.add('on');
+  if(t==='k'){renderKitchenMeta()}
+}
+
+// ── HEADER ────────────────────────────────────────────────────────────────────
+function renderHeader(){
+  const d=DIETS[P.diet];
+  document.getElementById('hbadge').textContent=`${d.ic} ${d.s}`;
+}
+
+// ── TODAY ─────────────────────────────────────────────────────────────────────
+function renderToday(){
+  const d=DIETS[P.diet];
+  const td=new Date();
+  const day=d.days[td.getDay()%4];
+  const T=d.T;
+  // Greeting
+  const h=td.getHours();
+  const gr=h<12?'Good morning':h<17?'Good afternoon':'Good evening';
+  document.getElementById('greet').textContent=`${P.emoji} ${gr}, ${P.name}!`;
+  document.getElementById('gdate').textContent=td.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'});
+  // Condition chips
+  const cc=document.getElementById('cchips');
+  if(P.goals&&P.goals.length){
+    cc.innerHTML='<div style="display:flex;flex-wrap:wrap;gap:6px">'+P.goals.map(g=>{const c=COND[g];return`<span class="pill" style="background:${c.bg};color:${c.c};border:1px solid ${c.c}30">${c.em} ${c.lb}</span>`}).join('')+'</div>';
+  }else{cc.innerHTML=''}
+  // Consumed macros
+  let cal=0,p=0,c=0,f=0;
+  SLOTS.forEach(s=>{if(CK[s.k]){const m=day[s.k];cal+=m.cal;p+=m.p;c+=m.c;f+=m.f}});
+  // Macro bars
+  const bars=[
+    {lb:'Calories',v:cal,mx:T.cal,col:'var(--a)',u:'kcal'},
+    {lb:'Protein', v:p,  mx:T.p,  col:'#2ea860',u:'g'},
+    {lb:'Carbs',   v:c,  mx:T.c,  col:'#1880c0',u:'g'},
+    {lb:'Fat',     v:f,  mx:T.f,  col:'#9c6cdc',u:'g'},
+  ];
+  document.getElementById('mbars').innerHTML=bars.map(m=>{
+    const pct=Math.min((m.v/(m.mx||1))*100,100);
+    return`<div class="macro-row"><div class="macro-lbl">${m.lb}</div><div class="bar-bg"><div class="bar-fill" style="width:${pct}%;background:${m.col}"></div></div><div class="macro-val" style="color:${m.col}">${m.v}<span style="color:var(--sub);font-weight:400">/${m.mx}${m.u}</span></div></div>`;
+  }).join('');
+  // Meal cards
+  document.getElementById('mcards').innerHTML=SLOTS.map(s=>{
+    const m=day[s.k];const done=CK[s.k]||false;
+    return`<div class="meal-card${done?' done':''}" onclick="tog('${s.k}')">
+      <div class="mic">${s.ic}</div>
+      <div class="minfo">
+        <div class="mlbl">${s.lb}</div>
+        <div class="mnm">${m.n}</div>
+        <div class="mmac">${m.cal} kcal · ${m.p}g protein · ${m.c}g carbs · ${m.f}g fat</div>
+      </div>
+      <button class="chk-btn" onclick="event.stopPropagation();tog('${s.k}')">
+        ${done?`<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20,6 9,17 4,12"/></svg>`:''}
+      </button>
+    </div>`;
+  }).join('');
+  // Health tip
+  document.getElementById('htip').innerHTML=`<div class="tip-card">${d.tip}</div>`;
+}
+
+function tog(k){CK[k]=!CK[k];sC();renderToday()}
+
+// ── KITCHEN ───────────────────────────────────────────────────────────────────
+function renderKitchenMeta(){
+  const d=DIETS[P.diet];
+  const el=document.getElementById('kdb');
+  if(el)el.textContent=`${d.ic} ${d.n} filter`;
+  const nk=document.getElementById('nokey');
+  const kb=document.getElementById('kbtn');
+  if(nk)nk.style.display=(!P||!P.apiKey)?'block':'none';
+  if(kb)kb.style.display=(!P||!P.apiKey)?'none':'block';
+  // Char counter
+  const inp=document.getElementById('kinput');
+  if(inp)inp.oninput=()=>{document.getElementById('kcc').textContent=`${inp.value.length} / 400`};
+}
+
+async function doScan(){
+  if(!P||!P.apiKey){document.getElementById('nokey').style.display='block';return}
+  const raw=san(document.getElementById('kinput').value,400);
+  if(!raw.trim())return;
+  if(!canAPI()){const r=document.getElementById('krm');r.style.display='block';setTimeout(()=>r.style.display='none',3500);return}
+  const d=DIETS[P.diet];
+  const gt=(P.goals||[]).map(g=>COND[g]?.lb).filter(Boolean).join(', ')||'general wellness';
+  document.getElementById('kbtn').disabled=true;
+  document.getElementById('ld').style.display='block';
+  document.getElementById('kres').innerHTML='';
+  try{
+    const res=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','x-api-key':P.apiKey,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+      body:JSON.stringify({
+        model:'claude-sonnet-4-20250514',
+        max_tokens:1400,
+        system:`You are a nutrition expert. Respond ONLY with a valid JSON array of exactly 3 meal objects. No markdown, no backticks, no preamble. Each object: {name, time, serves, steps, cal, protein, carbs, fat, benefits, note}. Steps: 3-5 clear sentences. Benefits: array of 1-3 short strings on health condition support. Note: one science-backed fact about a key ingredient. Diet: ${d.n} — rules: ${d.tags.join('; ')}. Goals: ${gt}. ALL meals must strictly follow ${d.n} diet rules.`,
+        messages:[{role:'user',content:`Ingredients I have: ${raw}. Create 3 complete meals using these ingredients. Follow the ${d.n} diet strictly and optimise for: ${gt}.`}]
+      })
+    });
+    const data=await res.json();
+    const txt=data.content?.[0]?.text||'';
+    let meals=[];
+    try{meals=JSON.parse(txt.replace(/```json?|```/g,'').trim())}
+    catch{document.getElementById('kres').innerHTML=`<div class="card"><p style="font-size:14px;line-height:1.7;white-space:pre-wrap">${san(txt,2000)}</p></div>`;document.getElementById('ld').style.display='none';document.getElementById('kbtn').disabled=false;return}
+    if(!Array.isArray(meals))meals=[meals];
+    document.getElementById('kres').innerHTML=meals.map((m,i)=>`
+      <div class="sug-card" style="animation:fadeUp .3s ease ${i*.1}s both">
+        <div style="font-size:11px;font-weight:700;color:var(--sub);text-transform:uppercase;letter-spacing:1px;margin-bottom:5px">Meal ${i+1}</div>
+        <div class="sug-n">${san(m.name||'',80)}</div>
+        <div class="sug-m">⏱ ${san(m.time||'',30)} &nbsp;·&nbsp; 🍽️ Serves ${m.serves||1}</div>
+        <div class="sug-steps">${san(m.steps||'',600)}</div>
+        <div class="sug-chips">
+          <div class="mc">${m.cal||0}<span> kcal</span></div>
+          <div class="mc" style="color:#2ea860">${m.protein||0}g<span> protein</span></div>
+          <div class="mc" style="color:#1880c0">${m.carbs||0}g<span> carbs</span></div>
+          <div class="mc" style="color:#9c6cdc">${m.fat||0}g<span> fat</span></div>
+        </div>
+        ${(m.benefits&&m.benefits.length)?`<div style="font-size:13px;color:#2a6a3a;margin-bottom:8px">✅ ${m.benefits.map(b=>san(b,70)).join(' · ')}</div>`:''}
+        ${m.note?`<div class="sug-note">💡 ${san(m.note,200)}</div>`:''}
+      </div>`).join('');
+  }catch{document.getElementById('kres').innerHTML=`<div class="card"><p style="color:#c04040;font-size:14px">⚠️ Connection error. Check your API key in Profile and try again.</p></div>`}
+  document.getElementById('ld').style.display='none';
+  document.getElementById('kbtn').disabled=false;
+}
+
+// AI CHAT
+async function doChat(){
+  if(!P||!P.apiKey){const b=document.getElementById('chatbox');b.querySelector('#chat-empty')&&b.querySelector('#chat-empty').remove();b.innerHTML+=`<div style="background:#fff9f0;border-radius:10px;padding:10px 12px;font-size:14px;color:#8a6a20">🔑 Add your API key in Profile to enable AI chat.</div>`;return}
+  const raw=san(document.getElementById('chatinput').value,300);
+  if(!raw.trim())return;
+  if(!canAPI()){const r=document.getElementById('crm');r.style.display='block';setTimeout(()=>r.style.display='none',3500);return}
+  document.getElementById('chatinput').value='';
+  const d=DIETS[P.diet];
+  const gt=(P.goals||[]).map(g=>COND[g]?.lb).filter(Boolean).join(', ')||'general wellness';
+  const box=document.getElementById('chatbox');
+  const empty=box.querySelector('#chat-empty');
+  if(empty)empty.remove();
+  // Render user message
+  box.innerHTML+=`<div style="align-self:flex-end;background:var(--al);color:var(--a);border-radius:14px 14px 4px 14px;padding:10px 14px;font-size:14px;max-width:85%;align-self:flex-end">${san(raw,300)}</div>`;
+  const typing=document.createElement('div');
+  typing.style.cssText='font-size:14px;color:var(--sub);padding:4px 0';
+  typing.textContent='Typing…';
+  box.appendChild(typing);
+  box.scrollTop=box.scrollHeight;
+  chatHistory.push({role:'user',content:raw});
+  if(chatHistory.length>10)chatHistory=chatHistory.slice(-10);
+  try{
+    const res=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','x-api-key':P.apiKey,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+      body:JSON.stringify({
+        model:'claude-sonnet-4-20250514',
+        max_tokens:600,
+        system:`You are ${P.name}'s personal nutrition coach. They follow the ${d.n} diet (${d.tags.join(', ')}). Daily targets: ${d.T.cal} calories, ${d.T.p}g protein. Health goals: ${gt}. Be warm, practical, and concise (under 150 words). Never suggest foods that break their diet rules.`,
+        messages:chatHistory
+      })
+    });
+    const data=await res.json();
+    const reply=san(data.content?.[0]?.text||'No response.',800);
+    chatHistory.push({role:'assistant',content:reply});
+    typing.remove();
+    box.innerHTML+=`<div style="background:#f5f9f5;border-radius:14px 14px 14px 4px;padding:10px 14px;font-size:14px;line-height:1.6;max-width:90%;color:var(--text)">${reply}</div>`;
+    box.scrollTop=box.scrollHeight;
+  }catch{typing.textContent='Connection error. Try again.'}
+}
+
+// ── PROFILE EDITORS ───────────────────────────────────────────────────────────
+function buildProfileEditors(){
+  pE=P.emoji;pD=P.diet;pG=[...(P.goals||[])];
+  document.getElementById('pname').value=P.name;
+  document.getElementById('pavatar').textContent=P.emoji;
+  if(P.apiKey)document.getElementById('pkey').value=P.apiKey;
+  // Profile emoji grid
+  const pg=document.getElementById('peg');pg.innerHTML='';
+  EM.forEach(e=>{const b=document.createElement('button');b.className='ebtn'+(e===pE?' sel':'');b.textContent=e;b.onclick=()=>{document.querySelectorAll('#peg .ebtn').forEach(x=>x.classList.remove('sel'));b.classList.add('sel');pE=e;document.getElementById('pavatar').textContent=e};pg.appendChild(b)});
+  // Diet
+  const pd=document.getElementById('pdo');pd.innerHTML='';
+  Object.entries(DIETS).forEach(([k,v])=>{const el=document.createElement('div');el.className='diet-opt'+(k===pD?' sel':'');el.innerHTML=`<div class="diet-opt-icon">${v.ic}</div><div><div class="diet-opt-name">${v.n}</div><div class="diet-opt-desc">${v.desc}</div></div>`;el.onclick=()=>{document.querySelectorAll('#pdo .diet-opt').forEach(x=>x.classList.remove('sel'));el.classList.add('sel');pD=k};pd.appendChild(el)});
+  // Goals
+  const pgo=document.getElementById('pgo');pgo.innerHTML='';
+  Object.entries(COND).forEach(([k,v])=>{const sel=pG.includes(k);const el=document.createElement('div');el.className='goal-opt'+(sel?' sel':'');el.innerHTML=`<span class="goal-ic">${v.em}</span><span class="goal-lbl">${v.lb}</span><div class="goal-chk">${sel?'✓':''}</div>`;el.onclick=()=>{el.classList.toggle('sel');const i=pG.indexOf(k);i>=0?pG.splice(i,1):pG.push(k);el.querySelector('.goal-chk').textContent=el.classList.contains('sel')?'✓':''};pgo.appendChild(el)});
+  renderDietInfo();
+}
+
+function toggleEP(){const ep=document.getElementById('pep');ep.style.display=ep.style.display==='none'?'block':'none'}
+
+function renderDietInfo(){
+  const d=DIETS[P.diet];
+  document.getElementById('dinfo').innerHTML=`
+    <div style="font-size:11px;font-weight:700;color:var(--sub);text-transform:uppercase;letter-spacing:.8px;margin-bottom:10px">Your Diet Plan</div>
+    <div style="font-size:36px;margin-bottom:8px">${d.ic}</div>
+    <div style="font-weight:700;font-size:16px;margin-bottom:4px">${d.n}</div>
+    <div style="font-size:14px;color:var(--sub);margin-bottom:12px">${d.desc}</div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px">${d.tags.map(t=>`<span class="pill" style="background:var(--al);color:var(--a);border:1px solid var(--a)30">${t}</span>`).join('')}</div>
+    <div class="diet-info-grid">
+      <div><div style="font-size:18px">🔥</div><div class="dig-val">${d.T.cal}</div><div class="dig-lbl">kcal</div></div>
+      <div><div style="font-size:18px">💪</div><div class="dig-val">${d.T.p}g</div><div class="dig-lbl">protein</div></div>
+      <div><div style="font-size:18px">🌾</div><div class="dig-val">${d.T.c}g</div><div class="dig-lbl">carbs</div></div>
+      <div><div style="font-size:18px">💧</div><div class="dig-val">${d.T.f}g</div><div class="dig-lbl">fat</div></div>
+    </div>`;
+}
+
+function savePro(){
+  const nm=san(document.getElementById('pname').value,24)||P.name;
+  const key=san(document.getElementById('pkey').value,220);
+  P={name:nm,emoji:pE,diet:pD,goals:pG,apiKey:key};
+  sP(P);
+  applyTheme();
+  renderHeader();
+  renderToday();
+  renderDietInfo();
+  const ok=document.getElementById('sok');ok.style.display='block';setTimeout(()=>ok.style.display='none',2200);
+}
+
+function doReset(){if(confirm('Reset your profile and start over? This clears all your data.')){localStorage.removeItem('mdf_p');localStorage.removeItem('mdf_c');location.reload()}}
+
+// ── INIT ──────────────────────────────────────────────────────────────────────
+buildSetup();
+P=lP();
+if(P){
+  CK=lC();
+  document.getElementById('setup').style.display='none';
+  document.getElementById('app').style.display='block';
+  applyTheme();
+  renderHeader();
+  renderToday();
+  buildProfileEditors();
+}
+</script>
+</body>
+</html>
