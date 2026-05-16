@@ -268,6 +268,44 @@ textarea{resize:none;min-height:110px}
 .wrow-delta.up{background:#fff5f5;color:#dc2626}
 .wrow-delta.same{background:var(--bg);color:var(--sub)}
 .wdef-card{background:#f4f9f5;border:1px solid #b8e0ca;border-radius:12px;padding:12px 14px;margin-bottom:14px;display:flex;align-items:center;gap:12px;cursor:pointer}
+
+/* ── 50-LB PROGRAM ──────────────────────────────────────────────── */
+.phase-road{display:flex;gap:6px;overflow-x:auto;padding:4px 0 12px;scrollbar-width:none;margin-bottom:2px}
+.phase-road::-webkit-scrollbar{display:none}
+.phase-pill{
+  flex-shrink:0;padding:8px 14px;border-radius:20px;font-size:12px;font-weight:700;
+  border:2px solid var(--border);background:#fff;color:var(--sub);
+  white-space:nowrap;transition:all .2s;cursor:default;
+}
+.phase-pill.done{background:var(--al);border-color:var(--a);color:var(--a);opacity:.7}
+.phase-pill.active{background:var(--a);border-color:var(--a);color:#fff;box-shadow:0 2px 12px rgba(0,0,0,.2)}
+.phase-pill.locked{opacity:.35}
+.pillar-card{background:#fff;border:1.5px solid var(--border);border-radius:14px;margin-bottom:10px;overflow:hidden}
+.pillar-hdr{display:flex;align-items:center;gap:10px;padding:14px 16px;cursor:pointer;user-select:none}
+.pillar-ic{font-size:22px;flex-shrink:0}
+.pillar-title{flex:1;font-weight:700;font-size:15px;color:var(--text)}
+.pillar-sub{font-size:12px;color:var(--sub);font-weight:400}
+.pillar-chev{font-size:14px;color:var(--sub);transition:transform .25s;flex-shrink:0}
+.pillar-hdr.open .pillar-chev{transform:rotate(180deg)}
+.pillar-body{display:none;padding:0 16px 16px;border-top:1px solid var(--border)}
+.pillar-body.open{display:block}
+.prog-rule{display:flex;align-items:flex-start;gap:8px;padding:7px 0;border-bottom:1px solid var(--border);font-size:13px;color:var(--text);line-height:1.55}
+.prog-rule:last-child{border-bottom:none}
+.prog-rule-dot{width:6px;height:6px;border-radius:50%;background:var(--a);flex-shrink:0;margin-top:6px}
+.ex-session{padding:8px 0;border-bottom:1px solid var(--border)}
+.ex-session:last-child{border-bottom:none}
+.ex-day{font-size:11px;font-weight:700;color:var(--a);text-transform:uppercase;letter-spacing:.8px}
+.ex-type{font-size:14px;font-weight:700;color:var(--text);margin:2px 0}
+.ex-detail{font-size:12px;color:var(--sub);line-height:1.5}
+.sleep-tip{display:flex;gap:8px;padding:7px 0;border-bottom:1px solid var(--border);font-size:13px;color:var(--text);line-height:1.55}
+.sleep-tip:last-child{border-bottom:none}
+.phase-why{background:#f4f9f5;border-left:3px solid var(--a);border-radius:0 8px 8px 0;padding:10px 12px;margin-top:10px;font-size:13px;color:#2a4a34;line-height:1.6}
+.wcheck-row{display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);cursor:pointer}
+.wcheck-row:last-child{border-bottom:none}
+.wcheck-box{width:22px;height:22px;border:2px solid var(--border);border-radius:6px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:13px;color:#fff;transition:all .2s;margin-top:1px}
+.wcheck-row.chk .wcheck-box{background:var(--a);border-color:var(--a)}
+.wcheck-lbl{font-size:13px;color:var(--text);line-height:1.5;flex:1}
+.wcheck-row.chk .wcheck-lbl{text-decoration:line-through;color:var(--sub)}
 </style>
 </head>
 <body>
@@ -468,11 +506,14 @@ textarea{resize:none;min-height:110px}
     <!-- ─ PROGRESS ────────────────────────────────────────────── -->
     <div class="panel" id="pw">
       <div class="sec-ttl">⚖️ Weight Progress</div>
-      <div class="sec-sub">Set your goal, log daily, watch the trend. Your deficit is calculated from your diet's baseline.</div>
+      <div class="sec-sub">Your complete 50-lb plan — food, exercise, and sleep. Log your weight to track phases.</div>
+
+      <!-- 50-lb Program (populated by JS) -->
+      <div id="wprogram"></div>
 
       <!-- Goal Setup -->
       <div class="card">
-        <div style="font-size:11px;font-weight:700;color:var(--sub);text-transform:uppercase;letter-spacing:.8px;margin-bottom:14px">Your Weight Goals</div>
+        <div style="font-size:11px;font-weight:700;color:var(--sub);text-transform:uppercase;letter-spacing:.8px;margin-bottom:14px">Weight Goals</div>
         <div style="display:flex;gap:10px;margin-bottom:14px">
           <div style="flex:1">
             <label class="flabel" style="margin-top:0">Starting Weight</label>
@@ -951,6 +992,108 @@ const lW=()=>{try{return JSON.parse(localStorage.getItem('mdf_w'))||{goalW:null,
 const sW=(w)=>{try{localStorage.setItem('mdf_w',JSON.stringify(w))}catch{}};
 let selectedRate=1;
 
+// ── 50-LB PROGRAM DATA ────────────────────────────────────────────
+const PROGRAM=[
+  {
+    id:1,name:'Foundation',emoji:'🌱',range:[0,10],weeks:'Weeks 1–4',
+    tagline:'Build the habits. Remove the noise. Start the engine.',
+    food:{
+      deficit:500,note:'−500 kcal/day ≈ 1 lb/wk from diet alone',
+      rules:['Eat 3 structured meals — no unplanned snacking between them','Protein at every meal: aim for 25–35g per sitting','Drink 2.5–3L water daily — before meals blunts hunger significantly','Remove ultra-processed foods, liquid calories, and alcohol completely','Last meal at least 3 hours before bed'],
+      avoid:['Fruit juice, sports drinks, soda (even "zero" versions)','Skipping breakfast — it leads to overeating at lunch and dinner','Eating while distracted (phone/TV) — reduces satiety signals by 30%'],
+    },
+    exercise:{
+      days:3,label:'Walking + Bodyweight',burn:600,
+      sessions:[
+        {day:'Mon',type:'🚶 Brisk Walk 30 min',detail:'Target 3,500–4,000 steps. Fast enough that talking is slightly harder.'},
+        {day:'Wed',type:'🏋️ Bodyweight Circuit',detail:'3×10 squats, push-ups (knee if needed), lunges, glute bridges. 60s rest between sets. 25 min total.'},
+        {day:'Fri',type:'🚶 Brisk Walk 40 min',detail:'Add 10 min vs Monday. Finish with 5-min full-body stretch.'},
+      ],
+    },
+    sleep:{
+      target:'7–8 hrs',bedtime:'10:30pm',
+      tips:['Fix your bedtime AND wake time — even weekends (circadian rhythm lock)','No screens 30 min before bed — blue light suppresses melatonin by up to 50%','Keep bedroom cool: 65–68°F (18–20°C) is the ideal fat-burning sleep temp','Cut caffeine after 2pm — half-life is 5–6 hours, it\'s still in your system at midnight'],
+      why:'Sleep deprivation raises ghrelin (hunger hormone) by 28% and cuts leptin (fullness). 7+ hours = 55% more fat loss vs sleep-deprived dieters eating the same calories. (CMAJ 2022)',
+    },
+  },
+  {
+    id:2,name:'Momentum',emoji:'⚡',range:[10,25],weeks:'Weeks 5–12',
+    tagline:'Stack your wins. Build the engine. Double down.',
+    food:{
+      deficit:600,note:'−600 kcal/day combining diet + added exercise burn',
+      rules:['Sunday meal prep: cook 4 breakfasts + 4 lunches to remove daily decisions','Increase protein to 0.8g per lb of body weight — muscle preserves your metabolism','Add 2 lower-carb days/week (under 100g carbs) — accelerates fat oxidation','Hit 25–35g fiber daily: vegetables, legumes, oats — keeps you full on fewer calories','Track everything for 2 weeks — portions are almost always larger than assumed'],
+      avoid:['Eating out more than 2×/week — restaurant meals average 60% more calories than home','Calorie-bomb salad dressings — Caesar, ranch average 200 kcal per serving','Late-night "small" snacks — they tend to be 300–500 kcal and almost pure stored fat'],
+    },
+    exercise:{
+      days:4,label:'Strength + Cardio',burn:900,
+      sessions:[
+        {day:'Mon',type:'🏋️ Full-Body Strength 45 min',detail:'4×10: goblet squat, dumbbell row, push-up, hip hinge (RDL). Add weight each session where possible.'},
+        {day:'Tue',type:'🚴 Steady Cardio 30 min',detail:'Bike, elliptical, or brisk walk at 65–70% max HR. This is your fat-burning zone.'},
+        {day:'Thu',type:'🏋️ Full-Body Strength 45 min',detail:'Same as Monday. Track weights — aim for +5% load or +1 rep vs last week.'},
+        {day:'Sat',type:'🏃 Longer Cardio 45 min',detail:'Outdoor run/walk, swim, or hike. Keep a conversational pace (Zone 2 = maximum fat burn).'},
+      ],
+    },
+    sleep:{
+      target:'7–9 hrs',bedtime:'10:00pm',
+      tips:['Track sleep cycles — aim for 90-min multiples (6h, 7.5h, or 9h are ideal wake points)','Add a 10-min wind-down ritual: light stretch, journal 3 things, dim lights at 9:30pm','Magnesium glycinate 200–400mg before bed improves deep sleep quality measurably','Cold shower or bath in evening drops core temp → signals brain to initiate sleep'],
+      why:'You\'re building muscle now. 80% of growth hormone is released during deep sleep. That muscle is your metabolic engine — poor sleep literally burns it for fuel instead of fat.',
+    },
+  },
+  {
+    id:3,name:'Deep Cut',emoji:'🔥',range:[25,40],weeks:'Weeks 13–24',
+    tagline:'Metabolic reset. Push through the plateau. Intensify.',
+    food:{
+      deficit:500,note:'Reduce slightly — metabolism has adapted, protect muscle',
+      rules:['Add 1 "refeed day"/week at full maintenance calories — resets leptin, prevents metabolic slowdown','Increase protein to 1g/lb — the most important lever against muscle loss during a deep cut','Carb cycle: higher carbs on workout days (150g+), under 80g on rest days','Lower sodium to 1,500–2,000mg/day — reduces water retention masking real fat loss','Try 16:8 intermittent fasting if tolerated: eat between 12pm–8pm, skip breakfast or after-dinner snack'],
+      avoid:['Single cheat meals over 1,000 kcal — they can erase 2 days of deficit in one sitting','Relying on willpower alone — redesign your environment (remove trigger foods from home)','Obsessing over daily scale weight — weigh weekly, same time, same conditions only'],
+    },
+    exercise:{
+      days:5,label:'Strength + HIIT',burn:1200,
+      sessions:[
+        {day:'Mon',type:'🏋️ Lower Body Strength',detail:'Squat, deadlift, lunges, leg press. 4 sets × 8–12 reps. Progressive overload each session.'},
+        {day:'Tue',type:'⚡ HIIT Circuit 20 min',detail:'20s on / 10s rest × 8 rounds per exercise: burpees, mountain climbers, jump squats, high knees. Burns 250+ kcal in 20 min.'},
+        {day:'Wed',type:'🏋️ Upper Body Strength',detail:'Bench press or push-up progression, barbell/DB rows, overhead press, bicep curl, tricep dip. 4×8–12.'},
+        {day:'Fri',type:'🏋️ Full Body Compound',detail:'Deadlift, pull-ups or lat pulldown, front squat, farmer carry. Heavy. This session drives the most metabolic adaptation.'},
+        {day:'Sat',type:'🚶 Active Recovery 60 min',detail:'Walking, yoga, or easy cycling. Zone 1 intensity keeps metabolism elevated without adding fatigue.'},
+      ],
+    },
+    sleep:{
+      target:'7–8 hrs',bedtime:'10:00pm',
+      tips:['At this stage — sleep > extra workouts. If under 6 hours, skip the gym and sleep.','Blackout curtains + white noise machine: darkness and silence cut cortisol at night','Rigid schedule even on weekends locks in circadian rhythm for optimal hormone release','No large meals within 3 hours of bed — active digestion fragments sleep architecture'],
+      why:'Cortisol is the enemy now. High cortisol from poor sleep deposits fat specifically in the abdomen and triggers muscle breakdown. 8 hours beats an extra workout every time.',
+    },
+  },
+  {
+    id:4,name:'Final Push',emoji:'🏆',range:[40,50],weeks:'Weeks 25–36',
+    tagline:'The finish line. Make it permanent. Win for life.',
+    food:{
+      deficit:300,note:'Smaller deficit — last 10 lbs need precision, not aggression',
+      rules:['Shift your mindset from "diet mode" to "how I\'ll eat forever" — identity is the lock-in','Protein stays at 1g/lb — non-negotiable, prevents the final stretch muscle loss','Add 2–3 maintenance calorie days/week — begin the reverse diet to prevent rebound','Focus on volume eating: cucumber, lettuce, broth-based soups — high satiety, low cal','Build your "5 staple meals": the meals you\'ll eat 80% of the time in maintenance'],
+      avoid:['Dropping below 1,200 kcal (women) or 1,500 kcal (men) — triggers starvation response','Eliminating carbs on lifting days — muscles need glycogen to train at intensity','Waiting for motivation — identity ("I\'m someone who moves daily") lasts; motivation doesn\'t'],
+    },
+    exercise:{
+      days:5,label:'Heavy Strength + Zone 2',burn:1100,
+      sessions:[
+        {day:'Mon',type:'🏋️ Heavy Lower Body',detail:'Squat + deadlift progressive overload: 5 sets × 5 reps at 80% max. This preserves maximum muscle as you lean out.'},
+        {day:'Tue',type:'🚴 Zone 2 Cardio 45 min',detail:'Bike, row, or easy jog at 60–70% max HR. Zone 2 = highest fat oxidation rate per minute of any cardio.'},
+        {day:'Wed',type:'🏋️ Heavy Upper Body',detail:'Bench press + rows + overhead press progressive overload 5×5. Track every session.'},
+        {day:'Thu',type:'🚴 Zone 2 Cardio 30 min',detail:'Shorter Zone 2 session. Can substitute a 45-min walk at a fast pace.'},
+        {day:'Sat',type:'🏋️ Full Body + Core 45 min',detail:'Functional compound movements + 15-min core: planks, dead bugs, pallof press, hollow holds.'},
+      ],
+    },
+    sleep:{
+      target:'7–9 hrs',bedtime:'9:45pm',
+      tips:['You built the habit — now protect it like a training session: it IS training','Track HRV (Heart Rate Variability) with a wearable — it tells you when to push vs rest','Recovery weeks every 4th week: cut training volume 40% and sleep 8+ hours — you get stronger','Sleep consolidates your new lower set-point weight. The body resets its baseline while you sleep.'],
+      why:'The last 10 lbs fight back hardest hormonally. Leptin is low. Ghrelin is high. Sleep is the single most powerful lever separating people who maintain their loss from those who regain it all.',
+    },
+  },
+];
+
+// ── WEEKLY CHECKLIST STORAGE ──────────────────────────────────────
+const getWeekKey=()=>{const d=new Date();const mon=new Date(d);mon.setDate(d.getDate()-((d.getDay()+6)%7));return 'wk_'+mon.toISOString().slice(0,10)};
+const lWK=()=>{try{return JSON.parse(localStorage.getItem('mdf_'+getWeekKey()))||{}}catch{return{}}};
+const sWK=(obj)=>{try{localStorage.setItem('mdf_'+getWeekKey(),JSON.stringify(obj))}catch{}};
+
 function initWeightTab(){
   const wd=lW();
   selectedRate=wd.rate||1;
@@ -960,7 +1103,144 @@ function initWeightTab(){
   const today=new Date().toISOString().slice(0,10);
   const tl=wd.logs.find(l=>l.d===today);
   if(tl)document.getElementById('wlog').value=tl.w;
+  renderProgram();
   renderWeightProgress();
+}
+
+// ── 50-LB PROGRAM RENDERER ────────────────────────────────────────
+function renderProgram(){
+  const el=document.getElementById('wprogram');
+  if(!el)return;
+  const wd=lW();
+  const lost=wd.startW&&wd.logs.length?Math.max(0,wd.startW-wd.logs[wd.logs.length-1].w):0;
+
+  // Determine active phase
+  let activeIdx=0;
+  for(let i=0;i<PROGRAM.length;i++){if(lost>=PROGRAM[i].range[0])activeIdx=i;}
+  const ph=PROGRAM[activeIdx];
+
+  // Phase roadmap pills
+  const pills=PROGRAM.map((p,i)=>{
+    const done=lost>=p.range[1];
+    const active=i===activeIdx;
+    const locked=lost<p.range[0]&&i!==0;
+    const cls=done?'done':active?'active':locked?'locked':'';
+    const check=done?'✓ ':active?'▶ ':'';
+    return`<div class="phase-pill ${cls}">${check}${p.emoji} ${p.name}</div>`;
+  }).join('');
+
+  // Phase completion
+  const phLost=Math.max(0,lost-ph.range[0]);
+  const phTotal=ph.range[1]-ph.range[0];
+  const phPct=Math.min(100,(phLost/phTotal)*100);
+  const totalPct=Math.min(100,(lost/50)*100);
+
+  // Weekly checklist items (food + exercise combined)
+  const wkChecks=[
+    ...ph.food.rules.slice(0,3).map((r,i)=>({id:`f${i}`,em:'🍽️',label:r})),
+    ...ph.exercise.sessions.map((s,i)=>({id:`e${i}`,em:'💪',label:`${s.type}: ${s.detail.split('.')[0]}`})),
+    {id:'s0',em:'😴',label:`Sleep ${ph.sleep.target} tonight — in bed by ${ph.sleep.bedtime}`},
+  ];
+  const wkState=lWK();
+  const checkRows=wkChecks.map(c=>{
+    const checked=!!wkState[c.id];
+    return`<div class="wcheck-row${checked?' chk':''}" onclick="toggleCheck('${c.id}',this)">
+      <div class="wcheck-box">${checked?'✓':''}</div>
+      <div class="wcheck-lbl"><span style="margin-right:5px">${c.em}</span>${c.label}</div>
+    </div>`;
+  }).join('');
+  const doneCount=wkChecks.filter(c=>wkState[c.id]).length;
+
+  // Build accordion pillars
+  const foodPillar=buildPillar('food','🍽️','Food','Calorie deficit + eating rules',activeIdx,`
+    <div style="background:var(--al);border-radius:8px;padding:8px 12px;margin-bottom:12px;font-size:13px;font-weight:700;color:var(--a)">${ph.food.note}</div>
+    <div style="font-size:11px;font-weight:700;color:var(--sub);text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px">✅ Do This</div>
+    ${ph.food.rules.map(r=>`<div class="prog-rule"><div class="prog-rule-dot"></div><div>${r}</div></div>`).join('')}
+    <div style="font-size:11px;font-weight:700;color:#c04040;text-transform:uppercase;letter-spacing:.8px;margin:12px 0 6px">🚫 Avoid</div>
+    ${ph.food.avoid.map(r=>`<div class="prog-rule"><div class="prog-rule-dot" style="background:#c04040"></div><div style="color:#7a4040">${r}</div></div>`).join('')}
+  `);
+
+  const exPillar=buildPillar('ex','💪','Exercise',`${ph.exercise.days} days/wk · ~${ph.exercise.burn} kcal/wk`,activeIdx,`
+    <div style="background:var(--al);border-radius:8px;padding:8px 12px;margin-bottom:12px;font-size:13px;font-weight:700;color:var(--a)">${ph.exercise.label} — ${ph.exercise.days}×/week</div>
+    ${ph.exercise.sessions.map(s=>`<div class="ex-session">
+      <div class="ex-day">${s.day}</div>
+      <div class="ex-type">${s.type}</div>
+      <div class="ex-detail">${s.detail}</div>
+    </div>`).join('')}
+  `);
+
+  const sleepPillar=buildPillar('slp','😴','Sleep',`Target ${ph.sleep.target} · Bed by ${ph.sleep.bedtime}`,activeIdx,`
+    <div style="background:#f0f4ff;border-radius:8px;padding:8px 12px;margin-bottom:12px;font-size:13px;font-weight:700;color:#2040a0">Bed by ${ph.sleep.bedtime} · ${ph.sleep.target}</div>
+    ${ph.sleep.tips.map(t=>`<div class="sleep-tip"><div style="font-size:16px;flex-shrink:0">🌙</div><div>${t}</div></div>`).join('')}
+    <div class="phase-why">🔬 <strong>Why it matters:</strong> ${ph.sleep.why}</div>
+  `);
+
+  el.innerHTML=`
+    <!-- Overall progress bar -->
+    <div class="card" style="margin-bottom:12px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+        <span style="font-size:13px;font-weight:700">50-lb Journey</span>
+        <span style="font-size:14px;font-weight:800;color:var(--a)">${lost.toFixed(1)} / 50 lbs</span>
+      </div>
+      <div class="wpbar-wrap"><div class="wpbar-fill" style="width:${totalPct}%"></div></div>
+      <div class="phase-road" style="margin-top:10px">${pills}</div>
+      <div style="background:var(--bg);border-radius:10px;padding:10px 12px">
+        <div style="font-size:13px;font-weight:700;color:var(--text)">${ph.emoji} Phase ${ph.id}: ${ph.name} <span style="font-size:11px;color:var(--sub);font-weight:400">${ph.weeks}</span></div>
+        <div style="font-size:13px;color:var(--sub);margin-top:3px">${ph.tagline}</div>
+        <div style="margin-top:8px;height:6px;background:var(--border);border-radius:3px;overflow:hidden"><div style="height:100%;width:${phPct}%;background:var(--a);border-radius:3px;transition:width .8s"></div></div>
+        <div style="font-size:11px;color:var(--sub);margin-top:4px">${phLost.toFixed(1)} of ${phTotal} lbs in this phase</div>
+      </div>
+    </div>
+
+    <!-- This Week Checklist -->
+    <div class="card" style="margin-bottom:12px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+        <div style="font-size:11px;font-weight:700;color:var(--sub);text-transform:uppercase;letter-spacing:.8px">This Week's Actions</div>
+        <div style="font-size:12px;font-weight:700;color:var(--a)">${doneCount}/${wkChecks.length} done</div>
+      </div>
+      ${checkRows}
+    </div>
+
+    <!-- Three Pillars -->
+    ${foodPillar}
+    ${exPillar}
+    ${sleepPillar}
+  `;
+}
+
+function buildPillar(id,ic,title,sub,phaseIdx,body){
+  return`<div class="pillar-card">
+    <div class="pillar-hdr" id="ph_${id}" onclick="togglePillar('${id}')">
+      <div class="pillar-ic">${ic}</div>
+      <div style="flex:1"><div class="pillar-title">${title}</div><div class="pillar-sub">${sub}</div></div>
+      <div class="pillar-chev">▼</div>
+    </div>
+    <div class="pillar-body" id="pb_${id}">${body}</div>
+  </div>`;
+}
+
+function togglePillar(id){
+  const hdr=document.getElementById('ph_'+id);
+  const body=document.getElementById('pb_'+id);
+  if(!hdr||!body)return;
+  const open=body.classList.toggle('open');
+  hdr.classList.toggle('open',open);
+}
+
+function toggleCheck(id,row){
+  const wk=lWK();
+  wk[id]=!wk[id];
+  sWK(wk);
+  row.classList.toggle('chk',!!wk[id]);
+  const box=row.querySelector('.wcheck-box');
+  if(box)box.textContent=wk[id]?'✓':'';
+  row.querySelector('.wcheck-lbl').style.textDecoration=wk[id]?'line-through':'';
+  row.querySelector('.wcheck-lbl').style.color=wk[id]?'var(--sub)':'';
+  // Update counter
+  const allRows=document.querySelectorAll('.wcheck-row');
+  const done=[...allRows].filter(r=>r.classList.contains('chk')).length;
+  const counter=document.querySelector('#wprogram .card div[style*="font-weight:700;color:var(--a)"]');
+  if(counter)counter.textContent=`${done}/${allRows.length} done`;
 }
 
 function selRate(btn){
