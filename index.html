@@ -242,6 +242,32 @@ textarea{resize:none;min-height:110px}
 .rate-msg{text-align:center;font-size:14px;color:var(--sub);margin-top:10px;display:none}
 .tip-card{background:#f4f9f5;border-left:3px solid var(--a);border-radius:10px;padding:13px 15px;font-size:14px;color:#2a4a34;line-height:1.6;margin-top:4px}
 .err{background:#fff5f5;border:1px solid #fccaca;border-radius:10px;padding:12px 14px;font-size:14px;color:#c04040;margin-top:10px}
+
+/* ── WEIGHT PROGRESS ────────────────────────────────────────────── */
+.wrate-btn{
+  flex:1;background:#fff;border:2px solid var(--border);border-radius:12px;
+  padding:10px 6px;cursor:pointer;font-size:12px;font-weight:700;color:var(--text);
+  text-align:center;transition:border-color .2s,background .2s;
+  font-family:'DM Sans',sans-serif;line-height:1.4;
+}
+.wrate-btn span{font-weight:400;color:var(--sub);font-size:11px;display:block}
+.wrate-btn.sel{border-color:var(--a);background:var(--al);color:var(--a)}
+.wstat-row{display:flex;gap:8px;margin-bottom:12px}
+.wstat{text-align:center;background:#fff;border-radius:14px;padding:12px 6px;flex:1;box-shadow:var(--sh)}
+.wstat-val{font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:var(--text);line-height:1.1}
+.wstat-lbl{font-size:10px;font-weight:700;color:var(--sub);text-transform:uppercase;letter-spacing:.5px;margin-top:4px}
+.wstat-delta{font-size:11px;font-weight:600;margin-top:3px}
+.wpbar-wrap{background:var(--border);border-radius:6px;height:12px;overflow:hidden;margin:8px 0}
+.wpbar-fill{height:100%;border-radius:6px;background:var(--a);transition:width 1s ease}
+.wrow{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border)}
+.wrow:last-child{border-bottom:none}
+.wrow-date{font-size:13px;color:var(--sub)}
+.wrow-val{font-weight:700;font-size:15px;color:var(--text)}
+.wrow-delta{font-size:12px;font-weight:600;margin-left:6px;padding:2px 7px;border-radius:10px}
+.wrow-delta.down{background:#f0fdf4;color:#16a34a}
+.wrow-delta.up{background:#fff5f5;color:#dc2626}
+.wrow-delta.same{background:var(--bg);color:var(--sub)}
+.wdef-card{background:#f4f9f5;border:1px solid #b8e0ca;border-radius:12px;padding:12px 14px;margin-bottom:14px;display:flex;align-items:center;gap:12px;cursor:pointer}
 </style>
 </head>
 <body>
@@ -342,6 +368,9 @@ textarea{resize:none;min-height:110px}
       <!-- Condition chips -->
       <div id="cchips" style="margin-bottom:14px"></div>
 
+      <!-- Weight loss callout -->
+      <div id="wdaycard" style="display:none;margin-bottom:14px"></div>
+
       <!-- Section title -->
       <div style="font-family:'Fraunces',serif;font-size:18px;color:var(--text);margin-bottom:10px">Today's Meals</div>
       <div id="mcards"></div>
@@ -436,6 +465,50 @@ textarea{resize:none;min-height:110px}
       </div>
     </div>
 
+    <!-- ─ PROGRESS ────────────────────────────────────────────── -->
+    <div class="panel" id="pw">
+      <div class="sec-ttl">⚖️ Weight Progress</div>
+      <div class="sec-sub">Set your goal, log daily, watch the trend. Your deficit is calculated from your diet's baseline.</div>
+
+      <!-- Goal Setup -->
+      <div class="card">
+        <div style="font-size:11px;font-weight:700;color:var(--sub);text-transform:uppercase;letter-spacing:.8px;margin-bottom:14px">Your Weight Goals</div>
+        <div style="display:flex;gap:10px;margin-bottom:14px">
+          <div style="flex:1">
+            <label class="flabel" style="margin-top:0">Starting Weight</label>
+            <input type="text" id="wcur" placeholder="185" style="font-size:18px;font-weight:700;text-align:center" inputmode="decimal">
+          </div>
+          <div style="flex:1">
+            <label class="flabel" style="margin-top:0">Goal Weight</label>
+            <input type="text" id="wgoal" placeholder="165" style="font-size:18px;font-weight:700;text-align:center" inputmode="decimal">
+          </div>
+        </div>
+        <div style="text-align:center;font-size:12px;color:var(--sub);margin:-6px 0 10px">lbs — tap a field and type your weight</div>
+        <label class="flabel" style="margin-top:4px">Weekly Loss Target</label>
+        <div style="display:flex;gap:8px;margin-bottom:14px">
+          <button class="wrate-btn" data-r="0.5" onclick="selRate(this)">½ lb/wk<span>Gentle</span></button>
+          <button class="wrate-btn sel" data-r="1" onclick="selRate(this)">1 lb/wk<span>Standard</span></button>
+          <button class="wrate-btn" data-r="2" onclick="selRate(this)">2 lb/wk<span>Aggressive</span></button>
+        </div>
+        <button class="btn btn-p" onclick="saveWGoal()">Save Goals</button>
+        <div id="wgsaved" style="display:none;text-align:center;color:var(--a);font-size:15px;font-weight:700;margin-top:8px">✓ Goals saved!</div>
+      </div>
+
+      <!-- Log Today -->
+      <div class="card">
+        <div style="font-size:11px;font-weight:700;color:var(--sub);text-transform:uppercase;letter-spacing:.8px;margin-bottom:10px">Log Today's Weight</div>
+        <div style="display:flex;gap:8px;align-items:center">
+          <input type="text" id="wlog" placeholder="185.0" style="flex:1;font-size:20px;font-weight:700;text-align:center" inputmode="decimal">
+          <span style="color:var(--sub);font-size:14px;flex-shrink:0">lbs</span>
+          <button onclick="logWeight()" style="background:var(--a);color:#fff;border:none;border-radius:12px;padding:13px 18px;font-size:15px;font-weight:700;cursor:pointer;flex-shrink:0">Log ✓</button>
+        </div>
+        <div id="wlogerr" style="display:none;color:#c04040;font-size:13px;margin-top:6px"></div>
+      </div>
+
+      <!-- Progress (populated by JS) -->
+      <div id="wprogress"></div>
+    </div>
+
   </div><!-- #content -->
 
   <!-- Bottom Nav -->
@@ -452,6 +525,10 @@ textarea{resize:none;min-height:110px}
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
       Profile
     </button>
+    <button class="nb" id="nw" onclick="sw('w')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3h18v4H3z"/><path d="M12 7v14"/><path d="M8 11l4-4 4 4"/></svg>
+      Progress
+    </button>
   </nav>
 
 </div><!-- #app -->
@@ -466,6 +543,7 @@ const COND={
   gout:          {lb:'Gout / Uric Acid',em:'🦶',c:'#7c50cc',bg:'#f7f4ff'},
   inflammation:  {lb:'Inflammation',em:'🔥',c:'#d48020',bg:'#fffbf0'},
   cholesterol:   {lb:'Cholesterol / LDL',em:'💙',c:'#1880c0',bg:'#f0f8ff'},
+  weight_loss:   {lb:'Lose Weight',em:'⚖️',c:'#e07830',bg:'#fff8f0'},
 };
 
 const DIETS={
@@ -628,6 +706,7 @@ function sw(t){
   document.getElementById('p'+t).classList.add('on');
   document.getElementById('n'+t).classList.add('on');
   if(t==='k'){renderKitchenMeta()}
+  if(t==='w'){initWeightTab()}
 }
 
 // ── HEADER ────────────────────────────────────────────────────────────────────
@@ -650,8 +729,36 @@ function renderToday(){
   // Condition chips
   const cc=document.getElementById('cchips');
   if(P.goals&&P.goals.length){
-    cc.innerHTML='<div style="display:flex;flex-wrap:wrap;gap:6px">'+P.goals.map(g=>{const c=COND[g];return`<span class="pill" style="background:${c.bg};color:${c.c};border:1px solid ${c.c}30">${c.em} ${c.lb}</span>`}).join('')+'</div>';
+    cc.innerHTML='<div style="display:flex;flex-wrap:wrap;gap:6px">'+P.goals.map(g=>{
+      const c=COND[g];
+      const onclick=g==='weight_loss'?' onclick="sw(\'w\')" title="Tap to open Progress"':'';
+      return`<span class="pill"${onclick} style="background:${c.bg};color:${c.c};border:1px solid ${c.c}30;${g==='weight_loss'?'cursor:pointer':''}">${c.em} ${c.lb}</span>`;
+    }).join('')+'</div>';
   }else{cc.innerHTML=''}
+  // Weight loss calorie target callout
+  const wcard=document.getElementById('wdaycard');
+  if(P.goals&&P.goals.includes('weight_loss')){
+    const wd=lW();
+    if(wd.goalW&&wd.logs.length){
+      const rate=wd.rate||1;
+      const deficit=rate===0.5?250:rate===1?500:1000;
+      const target=DIETS[P.diet].T.cal-deficit;
+      const latest=wd.logs[wd.logs.length-1].w;
+      const toGo=Math.max(0,latest-wd.goalW).toFixed(1);
+      if(wcard)wcard.innerHTML=`<div class="wdef-card" onclick="sw('w')">
+        <div style="font-size:28px">⚖️</div>
+        <div style="flex:1">
+          <div style="font-weight:700;font-size:14px;color:#2a4a34">Weight Loss Active — ${toGo} lbs to goal</div>
+          <div style="font-size:13px;color:#2a6a44;margin-top:2px">Calorie target: <strong>${target} kcal/day</strong> (−${deficit} deficit) · Tap to log weight →</div>
+        </div>
+      </div>`;
+      if(wcard)wcard.style.display='block';
+    } else {
+      if(wcard){wcard.innerHTML='';wcard.style.display='none';}
+    }
+  } else {
+    if(wcard){wcard.innerHTML='';wcard.style.display='none';}
+  }
   // Consumed macros
   let cal=0,p=0,c=0,f=0;
   SLOTS.forEach(s=>{if(CK[s.k]){const m=day[s.k];cal+=m.cal;p+=m.p;c+=m.c;f+=m.f}});
@@ -837,7 +944,174 @@ function savePro(){
   const ok=document.getElementById('sok');ok.style.display='block';setTimeout(()=>ok.style.display='none',2200);
 }
 
-function doReset(){if(confirm('Reset your profile and start over? This clears all your data.')){localStorage.removeItem('mdf_p');localStorage.removeItem('mdf_c');location.reload()}}
+function doReset(){if(confirm('Reset your profile and start over? This clears all your data.')){localStorage.removeItem('mdf_p');localStorage.removeItem('mdf_c');localStorage.removeItem('mdf_w');location.reload()}}
+
+// ── WEIGHT TRACKING ───────────────────────────────────────────────────────────
+const lW=()=>{try{return JSON.parse(localStorage.getItem('mdf_w'))||{goalW:null,startW:null,rate:1,logs:[]}}catch{return{goalW:null,startW:null,rate:1,logs:[]}}};
+const sW=(w)=>{try{localStorage.setItem('mdf_w',JSON.stringify(w))}catch{}};
+let selectedRate=1;
+
+function initWeightTab(){
+  const wd=lW();
+  selectedRate=wd.rate||1;
+  if(wd.goalW)document.getElementById('wgoal').value=wd.goalW;
+  if(wd.startW)document.getElementById('wcur').value=wd.startW;
+  document.querySelectorAll('.wrate-btn').forEach(b=>{b.classList.toggle('sel',parseFloat(b.dataset.r)===selectedRate)});
+  const today=new Date().toISOString().slice(0,10);
+  const tl=wd.logs.find(l=>l.d===today);
+  if(tl)document.getElementById('wlog').value=tl.w;
+  renderWeightProgress();
+}
+
+function selRate(btn){
+  document.querySelectorAll('.wrate-btn').forEach(b=>b.classList.remove('sel'));
+  btn.classList.add('sel');
+  selectedRate=parseFloat(btn.dataset.r);
+}
+
+function saveWGoal(){
+  const cw=parseFloat(document.getElementById('wcur').value);
+  const gw=parseFloat(document.getElementById('wgoal').value);
+  if(isNaN(cw)||isNaN(gw)||cw<50||cw>700||gw<50||gw>700){
+    document.getElementById('wgsaved').style.display='none';
+    return;
+  }
+  const wd=lW();
+  wd.startW=cw; wd.goalW=gw; wd.rate=selectedRate;
+  if(!wd.logs.length){
+    const today=new Date().toISOString().slice(0,10);
+    wd.logs.push({d:today,w:cw});
+    document.getElementById('wlog').value=cw;
+  }
+  sW(wd);
+  const s=document.getElementById('wgsaved');
+  s.style.display='block'; setTimeout(()=>s.style.display='none',2200);
+  renderWeightProgress();
+  renderToday(); // refresh deficit card on Today tab
+}
+
+function logWeight(){
+  const raw=parseFloat(document.getElementById('wlog').value);
+  const err=document.getElementById('wlogerr');
+  if(isNaN(raw)||raw<50||raw>700){
+    err.textContent='Please enter a valid weight (50–700 lbs).';
+    err.style.display='block';
+    setTimeout(()=>err.style.display='none',2500);
+    return;
+  }
+  const wd=lW();
+  const today=new Date().toISOString().slice(0,10);
+  const idx=wd.logs.findIndex(l=>l.d===today);
+  if(idx>=0)wd.logs[idx].w=raw; else wd.logs.push({d:today,w:raw});
+  wd.logs.sort((a,b)=>a.d.localeCompare(b.d));
+  if(wd.logs.length>90)wd.logs=wd.logs.slice(-90);
+  sW(wd);
+  err.style.display='none';
+  renderWeightProgress();
+  renderToday();
+  const btn=document.querySelector('[onclick="logWeight()"]');
+  if(btn){const o=btn.textContent;btn.textContent='✓ Logged!';btn.style.background='#16a34a';setTimeout(()=>{btn.textContent=o;btn.style.background=''},1600);}
+}
+
+function renderWeightProgress(){
+  const el=document.getElementById('wprogress');
+  if(!el)return;
+  const wd=lW();
+  const logs=wd.logs;
+  if(!logs.length||!wd.goalW){
+    el.innerHTML='<div style="text-align:center;color:var(--sub);font-size:14px;padding:24px 0;line-height:1.7">Set your goal weights above and log your first weight to see your progress chart and trend. ⬆️</div>';
+    return;
+  }
+  const latest=logs[logs.length-1].w;
+  const start=wd.startW||logs[0].w;
+  const goal=wd.goalW;
+  const rate=wd.rate||1;
+  const lost=parseFloat(Math.max(0,start-latest).toFixed(1));
+  const toGo=parseFloat(Math.max(0,latest-goal).toFixed(1));
+  const totalToLose=Math.max(0.1,start-goal);
+  const pct=Math.min(100,Math.max(0,((start-latest)/totalToLose)*100));
+  const weeksLeft=toGo>0?Math.ceil(toGo/rate):0;
+  const deficit=rate===0.5?250:rate===1?500:1000;
+  const targetCal=DIETS[P.diet].T.cal-deficit;
+
+  // SVG sparkline
+  const recent=logs.slice(-14);
+  let spark='';
+  if(recent.length>=2){
+    const ws=recent.map(l=>l.w);
+    const mn=Math.min(...ws),mx=Math.max(...ws);
+    const range=mx-mn||0.5;
+    const W=300,H=56,pad=6;
+    const pts=ws.map((w,i)=>{
+      const x=pad+(i/(ws.length-1))*(W-pad*2);
+      const y=H-pad-(((w-mn)/range)*(H-pad*2));
+      return[x.toFixed(1),y.toFixed(1)];
+    });
+    const polyPts=pts.map(p=>p.join(',')).join(' ');
+    const circles=pts.map((p,i)=>{
+      const isLast=i===pts.length-1;
+      return`<circle cx="${p[0]}" cy="${p[1]}" r="${isLast?5:3}" fill="${isLast?'var(--a)':'#fff'}" stroke="var(--a)" stroke-width="2"/>`;
+    }).join('');
+    spark=`<svg viewBox="0 0 ${W} ${H}" style="width:100%;height:64px;display:block;margin-bottom:4px">
+      <polyline points="${polyPts}" fill="none" stroke="var(--a)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+      ${circles}
+    </svg>`;
+  }
+
+  // History rows (most recent first)
+  const histRows=[...logs].reverse().slice(0,8).map((l,i,arr)=>{
+    const prev=arr[i+1];
+    const diff=prev?parseFloat((l.w-prev.w).toFixed(1)):null;
+    const diffStr=diff===null?'—':diff<0?`↓ ${Math.abs(diff)}`:diff>0?`↑ ${diff}`:'→';
+    const cls=diff===null?'same':diff<0?'down':diff>0?'up':'same';
+    const dt=new Date(l.d+'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric'});
+    return`<div class="wrow">
+      <span class="wrow-date">${dt}</span>
+      <div style="display:flex;align-items:center">
+        <span class="wrow-val">${l.w} lbs</span>
+        ${diff!==null?`<span class="wrow-delta ${cls}">${diffStr}</span>`:''}
+      </div>
+    </div>`;
+  }).join('');
+
+  el.innerHTML=`
+    <div class="wstat-row">
+      <div class="wstat"><div class="wstat-val">${latest}</div><div class="wstat-lbl">Now</div><div class="wstat-delta" style="color:var(--sub)">lbs</div></div>
+      <div class="wstat"><div class="wstat-val" style="color:#16a34a">${lost}</div><div class="wstat-lbl">Lost</div><div class="wstat-delta" style="color:#16a34a">↓ lbs</div></div>
+      <div class="wstat"><div class="wstat-val" style="color:var(--a)">${toGo}</div><div class="wstat-lbl">To Go</div><div class="wstat-delta" style="color:var(--sub)">${weeksLeft}w left</div></div>
+      <div class="wstat"><div class="wstat-val">${goal}</div><div class="wstat-lbl">Goal</div><div class="wstat-delta" style="color:var(--sub)">lbs</div></div>
+    </div>
+
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+        <span style="font-size:13px;font-weight:700">Progress to goal</span>
+        <span style="font-size:14px;font-weight:800;color:var(--a)">${pct.toFixed(0)}%</span>
+      </div>
+      <div class="wpbar-wrap"><div class="wpbar-fill" style="width:${pct}%"></div></div>
+      <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--sub);margin-top:4px"><span>Start ${start} lbs</span><span>Goal ${goal} lbs</span></div>
+      ${pct>=100
+        ?`<div style="text-align:center;margin-top:12px;font-size:16px;font-weight:700;color:#16a34a">🎉 Goal reached! Incredible work!</div>`
+        :`<div style="margin-top:12px;padding:10px 12px;background:#f4f9f5;border-radius:10px;border-left:3px solid var(--a);font-size:13px;color:#2a4a34;line-height:1.65">
+          💡 At <strong>${rate} lb/wk</strong> you'll reach your goal in ~<strong>${weeksLeft} weeks</strong>.
+          Calorie target: <strong>${targetCal} kcal/day</strong> (−${deficit} kcal deficit from your ${DIETS[P.diet].s} plan).
+        </div>`}
+    </div>
+
+    ${recent.length>=2?`<div class="card">
+      <div style="font-size:11px;font-weight:700;color:var(--sub);text-transform:uppercase;letter-spacing:.8px;margin-bottom:10px">Trend — Last ${recent.length} Check-ins</div>
+      ${spark}
+      <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--sub)">
+        <span>${new Date(recent[0].d+'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric'})}</span>
+        <span>${new Date(recent[recent.length-1].d+'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric'})}</span>
+      </div>
+    </div>`:''}
+
+    <div class="card">
+      <div style="font-size:11px;font-weight:700;color:var(--sub);text-transform:uppercase;letter-spacing:.8px;margin-bottom:10px">Weigh-In History</div>
+      ${histRows||'<div style="color:var(--sub);font-size:14px">No logs yet.</div>'}
+    </div>
+  `;
+}
 
 // ── INIT ──────────────────────────────────────────────────────────────────────
 buildSetup();
