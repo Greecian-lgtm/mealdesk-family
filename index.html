@@ -173,13 +173,14 @@ textarea{resize:none;min-height:110px}
 .macro-val{font-size:13px;font-weight:700;color:var(--text);width:88px;text-align:right;flex-shrink:0}
 .meal-card{
   background:#fff;border:1.5px solid var(--border);border-radius:14px;
-  padding:14px 14px 14px 16px;margin-bottom:10px;
-  display:flex;align-items:center;gap:12px;cursor:pointer;
+  padding:14px 14px 14px 16px;margin-bottom:0;
+  display:flex;align-items:flex-start;gap:12px;cursor:pointer;
   transition:opacity .2s,border-color .2s;
 }
+.meal-wrap{margin-bottom:10px}
 .meal-card.done{opacity:.5}
 .meal-card.done .mnm{text-decoration:line-through}
-.mic{font-size:22px;flex-shrink:0}
+.mic{font-size:22px;flex-shrink:0;padding-top:2px}
 .minfo{flex:1;min-width:0}
 .mlbl{font-size:11px;color:var(--sub);font-weight:600;text-transform:uppercase;letter-spacing:.5px}
 .mnm{font-weight:700;font-size:15px;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -187,9 +188,19 @@ textarea{resize:none;min-height:110px}
 .chk-btn{
   width:32px;height:32px;border-radius:50%;border:2px solid var(--border);
   background:none;display:flex;align-items:center;justify-content:center;
-  cursor:pointer;flex-shrink:0;transition:all .2s;
+  cursor:pointer;flex-shrink:0;transition:all .2s;margin-top:2px;
 }
 .meal-card.done .chk-btn{background:var(--a);border-color:var(--a)}
+/* ── RISK & ALLERGY ──────────────────────────────────────────────── */
+.meal-tags{display:flex;flex-wrap:wrap;gap:4px;padding:6px 16px 0;animation:fadeUp .2s ease}
+.rbadge{display:inline-flex;align-items:center;gap:3px;border-radius:10px;padding:2px 8px;font-size:11px;font-weight:700;line-height:1.5;cursor:pointer;user-select:none}
+.rbadge-high{background:#fff5f5;color:#dc2626;border:1px solid #fca5a5}
+.rbadge-med{background:#fffbf0;color:#d97706;border:1px solid #fcd34d}
+.rbadge-allergy{background:#fff7ed;color:#c2410c;border:1px solid #fdba74}
+.swap-tip{background:#f4f9f5;border:1px solid #b8e0ca;border-radius:0 0 12px 12px;padding:10px 14px;font-size:13px;color:#2a4a34;line-height:1.6;display:none}
+.swap-tip.on{display:block;animation:fadeUp .2s ease}
+.swap-tip-actions{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap}
+.tip-action-btn{background:var(--al);color:var(--a);border:1px solid var(--a)30;border-radius:8px;padding:4px 10px;font-size:12px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif}
 .pill{
   display:inline-flex;align-items:center;gap:4px;
   border-radius:20px;padding:4px 11px;font-size:12px;font-weight:600;
@@ -505,6 +516,9 @@ textarea{resize:none;min-height:110px}
         <span class="flabel">Health Goals</span>
         <div id="pgo" style="margin-bottom:4px"></div>
 
+        <span class="flabel">Allergies & Intolerances <span style="font-weight:400;color:var(--sub)">(flags meals + suggests swaps)</span></span>
+        <div id="pall" style="margin-bottom:12px"></div>
+
         <span class="flabel">Anthropic API Key <span style="font-weight:400;color:var(--sub)">(optional — enables AI Kitchen Scan)</span></span>
         <input type="password" id="pkey" placeholder="sk-ant-… get yours at console.anthropic.com" style="margin-bottom:6px" autocomplete="off" spellcheck="false">
         <div style="font-size:12px;color:var(--sub);margin-bottom:16px">Your key stays on this device — only sent to Anthropic's servers.</div>
@@ -649,6 +663,18 @@ const COND={
   inflammation:  {lb:'Inflammation',em:'🔥',c:'#d48020',bg:'#fffbf0'},
   cholesterol:   {lb:'Cholesterol / LDL',em:'💙',c:'#1880c0',bg:'#f0f8ff'},
   weight_loss:   {lb:'Lose Weight',em:'⚖️',c:'#e07830',bg:'#fff8f0'},
+};
+
+const ALLERGENS={
+  gluten:   {lb:'Gluten/Wheat',em:'🌾',keys:['bread','toast','pasta','naan','wrap','pita','oat','roll','grain','bagel','cracker','flour','couscous','tabbouleh','bolognese']},
+  dairy:    {lb:'Dairy',       em:'🥛',keys:['cheese','cream','yogurt','butter','milk','labneh','tzatziki']},
+  eggs:     {lb:'Eggs',        em:'🥚',keys:['egg','shakshuka','frittata','omelette','scrambled','pancake']},
+  nuts:     {lb:'Tree Nuts',   em:'🌰',keys:['almond','walnut','pistachio','macadamia','cashew','pecan','nut']},
+  peanuts:  {lb:'Peanuts',     em:'🥜',keys:['peanut']},
+  shellfish:{lb:'Shellfish',   em:'🦐',keys:['shrimp','prawn','lobster','crab','saganaki','scallop']},
+  fish:     {lb:'Fish/Seafood',em:'🐟',keys:['salmon','tuna','cod','branzino','sardine','anchov',' fish']},
+  soy:      {lb:'Soy',         em:'🫘',keys:['tofu','soy','edamame','miso']},
+  nightshade:{lb:'Nightshades',em:'🍅',keys:['tomato','pepper','eggplant','shakshuka','tikka','masala']},
 };
 
 const DIETS={
@@ -887,25 +913,48 @@ function renderToday(){
     const pct=Math.min((m.v/(m.mx||1))*100,100);
     return`<div class="macro-row"><div class="macro-lbl">${m.lb}</div><div class="bar-bg"><div class="bar-fill" style="width:${pct}%;background:${m.col}"></div></div><div class="macro-val" style="color:${m.col}">${m.v}<span style="color:var(--sub);font-weight:400">/${m.mx}${m.u}</span></div></div>`;
   }).join('');
-  // Meal cards with swap
+  // Meal cards with swap + risk + allergy badges
   const sel=lSel();
   const defIdx=new Date().getDay()%4;
   document.getElementById('mcards').innerHTML=SLOTS.map(s=>{
     const idx=sel[s.k]!==undefined?sel[s.k]:defIdx;
     const opts=d.days.map(day=>day[s.k]);
     const m=opts[idx];const done=CK[s.k]||false;
-    return`<div class="meal-card${done?' done':''}" onclick="tog('${s.k}')">
-      <div class="mic">${s.ic}</div>
-      <div class="minfo">
-        <div class="mlbl">${s.lb}</div>
-        <div class="mnm">${m.n}</div>
-        <div class="mmac">${m.cal} kcal · ${m.p}g protein · ${m.c}g carbs · ${m.f}g fat</div>
-        <div class="meal-alt-idx">Option ${idx+1} of ${opts.length}</div>
+    const risks=getMealRisks(m);
+    const allergens=getMealAllergens(m,P.allergies||[]);
+    const hasTip=risks.length||allergens.length;
+
+    const tagHTML=[
+      ...allergens.map(ak=>`<span class="rbadge rbadge-allergy" onclick="toggleTip('${s.k}')">⚠️ ${ALLERGENS[ak].em} ${ALLERGENS[ak].lb}</span>`),
+      ...risks.map(r=>`<span class="rbadge rbadge-${r.level}" onclick="toggleTip('${s.k}')" title="${r.tip}">${r.label}</span>`),
+    ].join('');
+
+    const tipHTML=hasTip?`
+      <div class="swap-tip" id="tip_${s.k}">
+        ${allergens.length?`<div style="margin-bottom:6px;font-weight:700;color:#c2410c">⚠️ Contains: ${allergens.map(ak=>ALLERGENS[ak].lb).join(', ')} — tap ↻ Swap to find alternatives.</div>`:''}
+        ${risks.map(r=>`<div style="margin-bottom:4px">• <strong>${r.label.replace(/[🔴🟡🩸⚡]/g,'').trim()}:</strong> ${r.tip}</div>`).join('')}
+        <div class="swap-tip-actions">
+          <button class="tip-action-btn" onclick="swapMeal('${s.k}')">↻ Try another option</button>
+          ${P.apiKey?`<button class="tip-action-btn" onclick="aiSwap('${s.k}','${m.n}')">✨ AI healthier swap</button>`:''}
+        </div>
+      </div>`:'';
+
+    return`<div class="meal-wrap">
+      <div class="meal-card${done?' done':''}" onclick="tog('${s.k}')">
+        <div class="mic">${s.ic}</div>
+        <div class="minfo">
+          <div class="mlbl">${s.lb}</div>
+          <div class="mnm">${m.n}</div>
+          <div class="mmac">${m.cal} kcal · ${m.p}g protein · ${m.c}g carbs · ${m.f}g fat</div>
+          <div class="meal-alt-idx" style="font-size:10px;color:var(--sub);margin-top:2px">Option ${idx+1} of ${opts.length}${hasTip?' · <span style="color:#d97706">tap badge for tips</span>':''}</div>
+        </div>
+        <button class="swap-btn" onclick="event.stopPropagation();swapMeal('${s.k}')">↻ Swap</button>
+        <button class="chk-btn" onclick="event.stopPropagation();tog('${s.k}')">
+          ${done?`<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20,6 9,17 4,12"/></svg>`:''}
+        </button>
       </div>
-      <button class="swap-btn" onclick="event.stopPropagation();swapMeal('${s.k}')">↻ Swap</button>
-      <button class="chk-btn" onclick="event.stopPropagation();tog('${s.k}')">
-        ${done?`<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20,6 9,17 4,12"/></svg>`:''}
-      </button>
+      ${tagHTML?`<div class="meal-tags">${tagHTML}</div>`:''}
+      ${tipHTML}
     </div>`;
   }).join('');
   // Health tip
@@ -921,9 +970,79 @@ function swapMeal(slot){
   const cur=sel[slot]!==undefined?sel[slot]:defIdx;
   sel[slot]=(cur+1)%4;
   sSel(sel);
-  CK[slot]=false; // uncheck when swapping
+  CK[slot]=false;
   sC();
   renderToday();
+}
+
+// ── RISK & ALLERGY ENGINE ─────────────────────────────────────────────────────
+function getMealRisks(meal){
+  const n=meal.n.toLowerCase();
+  const risks=[];
+  // Blood pressure / sodium
+  const hiNa=['bacon','soy sauce','pickle','jerky','rinds','smoked','bone broth','canned','salt cod'];
+  const hiNaLoose=['smoked salmon','cream cheese'];
+  if(hiNa.some(k=>n.includes(k))||hiNaLoose.some(k=>n.includes(k))){
+    risks.push({key:'bp',level:'high',label:'⚡ High Sodium',tip:'High sodium raises blood pressure. Swap smoked/cured meats for fresh protein, or use herbs + lemon instead of salt. Aim < 600mg sodium per meal.'});
+  }
+  // Saturated fat (fatty animal products)
+  const satFat=['ribeye','brisket','wagyu','pork belly','lamb chop','t-bone','ny strip','bone marrow','duck fat','tallow','butter-fried'];
+  if(satFat.some(k=>n.includes(k))){
+    risks.push({key:'satfat',level:'high',label:'🩸 Saturated Fat',tip:'High saturated fat raises LDL cholesterol. Trim visible fat, reduce portion, or swap for lean protein like chicken breast or fish.'});
+  }
+  // Total fat
+  if(meal.f>=35&&!risks.find(r=>r.key==='satfat'))risks.push({key:'fat',level:'high',label:'🔴 High Fat',tip:`${meal.f}g fat in one sitting. Reduce cooking oil by half, or choose a leaner preparation method (bake/grill vs fry).`});
+  else if(meal.f>=25&&!risks.find(r=>r.key==='satfat')&&!risks.find(r=>r.key==='fat'))risks.push({key:'fat',level:'med',label:'🟡 Moderate Fat',tip:`${meal.f}g fat — within range, but watch total daily intake. Use 1 tsp oil instead of 1 tbsp to save 80 kcal.`});
+  // Carbs / glycemic
+  if(meal.c>=65)risks.push({key:'carb',level:'high',label:'🔴 High Carb',tip:`${meal.c}g carbs can spike blood sugar. Reduce grain portion by half, add more vegetables, or choose a lower-GI grain like barley or lentils.`});
+  else if(meal.c>=45)risks.push({key:'carb',level:'med',label:'🟡 Moderate Carb',tip:`${meal.c}g carbs. If you're managing blood sugar, use a smaller grain portion and add extra non-starchy vegetables.`});
+  // Calorie density
+  if(meal.cal>=650)risks.push({key:'cal',level:'high',label:'🔴 High Calorie',tip:`${meal.cal} kcal is a large meal. Reduce portion by ~25%, remove a side, or split into main + light snack across 2 hours.`});
+  return risks;
+}
+
+function getMealAllergens(meal,userAllergies){
+  if(!userAllergies||!userAllergies.length)return[];
+  const n=meal.n.toLowerCase();
+  return userAllergies.filter(ak=>{
+    const a=ALLERGENS[ak];
+    return a&&a.keys.some(k=>n.includes(k));
+  });
+}
+
+function toggleTip(slot){
+  const el=document.getElementById('tip_'+slot);
+  if(el)el.classList.toggle('on');
+}
+
+async function aiSwap(slot,mealName){
+  if(!P||!P.apiKey)return;
+  const el=document.getElementById('tip_'+slot);
+  if(!el)return;
+  if(!canAPI()){return;}
+  const d=DIETS[P.diet];
+  const allergies=(P.allergies||[]).map(ak=>ALLERGENS[ak]?.lb).filter(Boolean).join(', ')||'none';
+  const goals=(P.goals||[]).map(g=>COND[g]?.lb).filter(Boolean).join(', ')||'general wellness';
+  const btn=el.querySelector('[onclick*="aiSwap"]');
+  if(btn){btn.textContent='✨ Generating…';btn.disabled=true;}
+  try{
+    const res=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','x-api-key':P.apiKey,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+      body:JSON.stringify({
+        model:'claude-sonnet-4-20250514',max_tokens:400,
+        system:`You are a nutrition expert. Give a concise healthier alternative to a meal. Format: 1 sentence swap suggestion + 3 bullet point benefits. No preamble. Diet: ${d.n}. Allergies to avoid: ${allergies}. Goals: ${goals}.`,
+        messages:[{role:'user',content:`Healthier swap for: "${mealName}". Keep it practical, same diet style, no allergens listed.`}]
+      })
+    });
+    const data=await res.json();
+    const txt=san(data.content?.[0]?.text||'',600);
+    const aiDiv=document.createElement('div');
+    aiDiv.style.cssText='margin-top:8px;padding:8px 10px;background:#fff;border:1.5px solid var(--a)30;border-radius:8px;font-size:13px;color:var(--text);line-height:1.65';
+    aiDiv.innerHTML='<strong style="color:var(--a)">✨ AI Swap:</strong><br>'+txt.replace(/\n/g,'<br>');
+    el.appendChild(aiDiv);
+  }catch(e){}
+  if(btn){btn.textContent='✨ AI healthier swap';btn.disabled=false;}
 }
 
 // ── PANTRY ────────────────────────────────────────────────────────────────────
@@ -1075,15 +1194,37 @@ function buildProfileEditors(){
   document.getElementById('pname').value=P.name;
   document.getElementById('pavatar').textContent=P.emoji;
   if(P.apiKey)document.getElementById('pkey').value=P.apiKey;
-  // Profile emoji grid
+  // Emoji grid
   const pg=document.getElementById('peg');pg.innerHTML='';
   EM.forEach(e=>{const b=document.createElement('button');b.className='ebtn'+(e===pE?' sel':'');b.textContent=e;b.onclick=()=>{document.querySelectorAll('#peg .ebtn').forEach(x=>x.classList.remove('sel'));b.classList.add('sel');pE=e;document.getElementById('pavatar').textContent=e};pg.appendChild(b)});
   // Diet
   const pd=document.getElementById('pdo');pd.innerHTML='';
   Object.entries(DIETS).forEach(([k,v])=>{const el=document.createElement('div');el.className='diet-opt'+(k===pD?' sel':'');el.innerHTML=`<div class="diet-opt-icon">${v.ic}</div><div><div class="diet-opt-name">${v.n}</div><div class="diet-opt-desc">${v.desc}</div></div>`;el.onclick=()=>{document.querySelectorAll('#pdo .diet-opt').forEach(x=>x.classList.remove('sel'));el.classList.add('sel');pD=k};pd.appendChild(el)});
-  // Goals
+  // Health Goals
   const pgo=document.getElementById('pgo');pgo.innerHTML='';
   Object.entries(COND).forEach(([k,v])=>{const sel=pG.includes(k);const el=document.createElement('div');el.className='goal-opt'+(sel?' sel':'');el.innerHTML=`<span class="goal-ic">${v.em}</span><span class="goal-lbl">${v.lb}</span><div class="goal-chk">${sel?'✓':''}</div>`;el.onclick=()=>{el.classList.toggle('sel');const i=pG.indexOf(k);i>=0?pG.splice(i,1):pG.push(k);el.querySelector('.goal-chk').textContent=el.classList.contains('sel')?'✓':''};pgo.appendChild(el)});
+  // Allergies
+  const pall=document.getElementById('pall');pall.innerHTML='';
+  const userAllergies=P.allergies||[];
+  Object.entries(ALLERGENS).forEach(([k,v])=>{
+    const sel=userAllergies.includes(k);
+    const el=document.createElement('div');
+    el.className='goal-opt'+(sel?' sel':'');
+    el.style.borderColor=sel?'#c2410c':'';
+    el.style.background=sel?'#fff7ed':'';
+    el.innerHTML=`<span class="goal-ic">${v.em}</span><span class="goal-lbl">${v.lb}</span><div class="goal-chk" style="${sel?'background:#c2410c;border-color:#c2410c':''}">${sel?'✓':''}</div>`;
+    el.onclick=()=>{
+      el.classList.toggle('sel');
+      const isNowSel=el.classList.contains('sel');
+      el.style.borderColor=isNowSel?'#c2410c':'';
+      el.style.background=isNowSel?'#fff7ed':'';
+      el.querySelector('.goal-chk').style.cssText=isNowSel?'background:#c2410c;border-color:#c2410c':'';
+      el.querySelector('.goal-chk').textContent=isNowSel?'✓':'';
+      if(isNowSel&&!userAllergies.includes(k))userAllergies.push(k);
+      else if(!isNowSel){const i=userAllergies.indexOf(k);if(i>=0)userAllergies.splice(i,1);}
+    };
+    pall.appendChild(el);
+  });
   renderDietInfo();
 }
 
@@ -1108,12 +1249,13 @@ function renderDietInfo(){
 function savePro(){
   const nm=san(document.getElementById('pname').value,24)||P.name;
   const key=san(document.getElementById('pkey').value,220);
-  P={name:nm,emoji:pE,diet:pD,goals:pG,apiKey:key};
+  const allergies=[...document.querySelectorAll('#pall .goal-opt.sel')].map(el=>{
+    const lbl=el.querySelector('.goal-lbl').textContent;
+    return Object.keys(ALLERGENS).find(k=>ALLERGENS[k].lb===lbl)||'';
+  }).filter(Boolean);
+  P={name:nm,emoji:pE,diet:pD,goals:pG,apiKey:key,allergies};
   sP(P);
-  applyTheme();
-  renderHeader();
-  renderToday();
-  renderDietInfo();
+  applyTheme();renderHeader();renderToday();renderDietInfo();
   const ok=document.getElementById('sok');ok.style.display='block';setTimeout(()=>ok.style.display='none',2200);
 }
 
