@@ -268,6 +268,12 @@ textarea{resize:none;min-height:110px}
 .wrow-delta.up{background:#fff5f5;color:#dc2626}
 .wrow-delta.same{background:var(--bg);color:var(--sub)}
 .wdef-card{background:#f4f9f5;border:1px solid #b8e0ca;border-radius:12px;padding:12px 14px;margin-bottom:14px;display:flex;align-items:center;gap:12px;cursor:pointer}
+/* ── PROGRESS SUB-TABS ───────────────────────────────────────────── */
+.ptab{flex:1;padding:9px 4px;background:#fff;border:1.5px solid var(--border);border-radius:10px;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:700;color:var(--sub);text-align:center;transition:all .2s;line-height:1.3}
+.ptab.on{border-color:var(--a);background:var(--al);color:var(--a)}
+.star{font-size:26px;cursor:pointer;transition:transform .15s;color:#ddd;line-height:1}
+.star.on{color:#f0a020}
+.star:active{transform:scale(1.25)}
 
 /* ── 50-LB PROGRAM ──────────────────────────────────────────────── */
 .phase-road{display:flex;gap:6px;overflow-x:auto;padding:4px 0 12px;scrollbar-width:none;margin-bottom:2px}
@@ -505,49 +511,94 @@ textarea{resize:none;min-height:110px}
 
     <!-- ─ PROGRESS ────────────────────────────────────────────── -->
     <div class="panel" id="pw">
-      <div class="sec-ttl">⚖️ Weight Progress</div>
-      <div class="sec-sub">Your complete 50-lb plan — food, exercise, and sleep. Log your weight to track phases.</div>
-
-      <!-- 50-lb Program (populated by JS) -->
-      <div id="wprogram"></div>
-
-      <!-- Goal Setup -->
-      <div class="card">
-        <div style="font-size:11px;font-weight:700;color:var(--sub);text-transform:uppercase;letter-spacing:.8px;margin-bottom:14px">Weight Goals</div>
-        <div style="display:flex;gap:10px;margin-bottom:14px">
-          <div style="flex:1">
-            <label class="flabel" style="margin-top:0">Starting Weight</label>
-            <input type="text" id="wcur" placeholder="185" style="font-size:18px;font-weight:700;text-align:center" inputmode="decimal">
-          </div>
-          <div style="flex:1">
-            <label class="flabel" style="margin-top:0">Goal Weight</label>
-            <input type="text" id="wgoal" placeholder="165" style="font-size:18px;font-weight:700;text-align:center" inputmode="decimal">
-          </div>
-        </div>
-        <div style="text-align:center;font-size:12px;color:var(--sub);margin:-6px 0 10px">lbs — tap a field and type your weight</div>
-        <label class="flabel" style="margin-top:4px">Weekly Loss Target</label>
-        <div style="display:flex;gap:8px;margin-bottom:14px">
-          <button class="wrate-btn" data-r="0.5" onclick="selRate(this)">½ lb/wk<span>Gentle</span></button>
-          <button class="wrate-btn sel" data-r="1" onclick="selRate(this)">1 lb/wk<span>Standard</span></button>
-          <button class="wrate-btn" data-r="2" onclick="selRate(this)">2 lb/wk<span>Aggressive</span></button>
-        </div>
-        <button class="btn btn-p" onclick="saveWGoal()">Save Goals</button>
-        <div id="wgsaved" style="display:none;text-align:center;color:var(--a);font-size:15px;font-weight:700;margin-top:8px">✓ Goals saved!</div>
+      <div id="prog50hero" style="margin-bottom:12px"></div>
+      <div style="display:flex;gap:6px;margin-bottom:14px">
+        <button class="ptab on" id="ptw" onclick="swPTab('w')">⚖️ Weight</button>
+        <button class="ptab" id="pte" onclick="swPTab('e')">🏃 Exercise</button>
+        <button class="ptab" id="pts" onclick="swPTab('s')">😴 Sleep</button>
+        <button class="ptab" id="ptp" onclick="swPTab('p')">📋 Plan</button>
       </div>
-
-      <!-- Log Today -->
-      <div class="card">
-        <div style="font-size:11px;font-weight:700;color:var(--sub);text-transform:uppercase;letter-spacing:.8px;margin-bottom:10px">Log Today's Weight</div>
-        <div style="display:flex;gap:8px;align-items:center">
-          <input type="text" id="wlog" placeholder="185.0" style="flex:1;font-size:20px;font-weight:700;text-align:center" inputmode="decimal">
-          <span style="color:var(--sub);font-size:14px;flex-shrink:0">lbs</span>
-          <button onclick="logWeight()" style="background:var(--a);color:#fff;border:none;border-radius:12px;padding:13px 18px;font-size:15px;font-weight:700;cursor:pointer;flex-shrink:0">Log ✓</button>
+      <!-- ▸ WEIGHT -->
+      <div id="pswgt">
+        <div class="card">
+          <div style="font-size:11px;font-weight:700;color:var(--sub);text-transform:uppercase;letter-spacing:.8px;margin-bottom:14px">Weight Goals</div>
+          <div style="display:flex;gap:10px;margin-bottom:12px">
+            <div style="flex:1"><label class="flabel" style="margin-top:0">Starting Weight</label>
+              <input type="text" id="wcur" placeholder="185" style="font-size:18px;font-weight:700;text-align:center" inputmode="decimal"></div>
+            <div style="flex:1"><label class="flabel" style="margin-top:0">Goal Weight</label>
+              <input type="text" id="wgoal" placeholder="165" style="font-size:18px;font-weight:700;text-align:center" inputmode="decimal"></div>
+          </div>
+          <div style="text-align:center;font-size:12px;color:var(--sub);margin:-4px 0 12px">lbs</div>
+          <label class="flabel" style="margin-top:4px">Weekly Target</label>
+          <div style="display:flex;gap:8px;margin-bottom:14px">
+            <button class="wrate-btn" data-r="0.5" onclick="selRate(this)">½ lb/wk<span>Gentle</span></button>
+            <button class="wrate-btn sel" data-r="1" onclick="selRate(this)">1 lb/wk<span>Standard</span></button>
+            <button class="wrate-btn" data-r="2" onclick="selRate(this)">2 lb/wk<span>Aggressive</span></button>
+          </div>
+          <button class="btn btn-p" onclick="saveWGoal()">Save Goals</button>
+          <div id="wgsaved" style="display:none;text-align:center;color:var(--a);font-size:15px;font-weight:700;margin-top:8px">✓ Goals saved!</div>
         </div>
-        <div id="wlogerr" style="display:none;color:#c04040;font-size:13px;margin-top:6px"></div>
+        <div class="card">
+          <div style="font-size:11px;font-weight:700;color:var(--sub);text-transform:uppercase;letter-spacing:.8px;margin-bottom:10px">Log Today's Weight</div>
+          <div style="display:flex;gap:8px;align-items:center">
+            <input type="text" id="wlog" placeholder="185.0" style="flex:1;font-size:20px;font-weight:700;text-align:center" inputmode="decimal">
+            <span style="color:var(--sub);font-size:14px;flex-shrink:0">lbs</span>
+            <button onclick="logWeight()" style="background:var(--a);color:#fff;border:none;border-radius:12px;padding:13px 18px;font-size:15px;font-weight:700;cursor:pointer;flex-shrink:0">Log ✓</button>
+          </div>
+          <div id="wlogerr" style="display:none;color:#c04040;font-size:13px;margin-top:6px"></div>
+        </div>
+        <div id="wprogress"></div>
       </div>
-
-      <!-- Progress (populated by JS) -->
-      <div id="wprogress"></div>
+      <!-- ▸ EXERCISE -->
+      <div id="psexr" style="display:none">
+        <div id="exphasecard" style="margin-bottom:12px"></div>
+        <div class="card">
+          <div style="font-size:11px;font-weight:700;color:var(--sub);text-transform:uppercase;letter-spacing:.8px;margin-bottom:12px">Log Today's Workout</div>
+          <div style="display:flex;gap:8px;margin-bottom:10px;align-items:center">
+            <select id="extype" style="flex:1;padding:12px;background:#fff;border:1.5px solid var(--border);border-radius:12px;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--text);outline:none">
+              <option value="walk">🚶 Walking</option>
+              <option value="run">🏃 Running</option>
+              <option value="strength">💪 Strength Training</option>
+              <option value="hiit">⚡ HIIT</option>
+              <option value="cycle">🚴 Cycling</option>
+              <option value="swim">🏊 Swimming</option>
+              <option value="yoga">🧘 Yoga / Stretch</option>
+              <option value="other">🏅 Other</option>
+            </select>
+            <input type="text" id="exmin" placeholder="30" style="width:62px;font-size:18px;font-weight:700;text-align:center" inputmode="numeric">
+            <span style="color:var(--sub);font-size:13px;flex-shrink:0">min</span>
+          </div>
+          <button onclick="logExercise()" class="btn btn-p">Log Workout ✓</button>
+          <div id="exlogerr" style="display:none;color:#c04040;font-size:13px;margin-top:6px"></div>
+        </div>
+        <div id="exresults"></div>
+      </div>
+      <!-- ▸ SLEEP -->
+      <div id="psslp" style="display:none">
+        <div id="slphasecard" style="margin-bottom:12px"></div>
+        <div class="card">
+          <div style="font-size:11px;font-weight:700;color:var(--sub);text-transform:uppercase;letter-spacing:.8px;margin-bottom:12px">Log Last Night's Sleep</div>
+          <div style="display:flex;gap:8px;align-items:center;margin-bottom:14px">
+            <input type="text" id="slphrs" placeholder="7.5" style="flex:1;font-size:20px;font-weight:700;text-align:center" inputmode="decimal">
+            <span style="color:var(--sub);font-size:14px;flex-shrink:0">hours</span>
+          </div>
+          <div style="margin-bottom:14px">
+            <div style="font-size:13px;font-weight:600;color:var(--sub);margin-bottom:8px">Sleep quality</div>
+            <div id="slpstars" style="display:flex;gap:6px">
+              <span class="star" onclick="selStar(1)">★</span>
+              <span class="star" onclick="selStar(2)">★</span>
+              <span class="star on" onclick="selStar(3)">★</span>
+              <span class="star" onclick="selStar(4)">★</span>
+              <span class="star" onclick="selStar(5)">★</span>
+            </div>
+          </div>
+          <button onclick="logSleep()" class="btn btn-p">Log Sleep ✓</button>
+          <div id="slplogerr" style="display:none;color:#c04040;font-size:13px;margin-top:6px"></div>
+        </div>
+        <div id="slpresults"></div>
+      </div>
+      <!-- ▸ PLAN -->
+      <div id="pspln" style="display:none"><div id="planresults"></div></div>
     </div>
 
   </div><!-- #content -->
@@ -747,7 +798,7 @@ function sw(t){
   document.getElementById('p'+t).classList.add('on');
   document.getElementById('n'+t).classList.add('on');
   if(t==='k'){renderKitchenMeta()}
-  if(t==='w'){initWeightTab()}
+  if(t==='w'){initProgressTab()}
 }
 
 // ── HEADER ────────────────────────────────────────────────────────────────────
@@ -985,415 +1036,331 @@ function savePro(){
   const ok=document.getElementById('sok');ok.style.display='block';setTimeout(()=>ok.style.display='none',2200);
 }
 
-function doReset(){if(confirm('Reset your profile and start over? This clears all your data.')){localStorage.removeItem('mdf_p');localStorage.removeItem('mdf_c');localStorage.removeItem('mdf_w');location.reload()}}
+function doReset(){if(confirm('Reset your profile and start over? This clears all your data.')){['mdf_p','mdf_c','mdf_w','mdf_e','mdf_s'].forEach(k=>localStorage.removeItem(k));location.reload()}}
 
-// ── WEIGHT TRACKING ───────────────────────────────────────────────────────────
-const lW=()=>{try{return JSON.parse(localStorage.getItem('mdf_w'))||{goalW:null,startW:null,rate:1,logs:[]}}catch{return{goalW:null,startW:null,rate:1,logs:[]}}};
-const sW=(w)=>{try{localStorage.setItem('mdf_w',JSON.stringify(w))}catch{}};
-let selectedRate=1;
-
-// ── 50-LB PROGRAM DATA ────────────────────────────────────────────
+// ── 50 LB PROGRAM ─────────────────────────────────────────────────────────────
 const PROGRAM=[
-  {
-    id:1,name:'Foundation',emoji:'🌱',range:[0,10],weeks:'Weeks 1–4',
-    tagline:'Build the habits. Remove the noise. Start the engine.',
-    food:{
-      deficit:500,note:'−500 kcal/day ≈ 1 lb/wk from diet alone',
-      rules:['Eat 3 structured meals — no unplanned snacking between them','Protein at every meal: aim for 25–35g per sitting','Drink 2.5–3L water daily — before meals blunts hunger significantly','Remove ultra-processed foods, liquid calories, and alcohol completely','Last meal at least 3 hours before bed'],
-      avoid:['Fruit juice, sports drinks, soda (even "zero" versions)','Skipping breakfast — it leads to overeating at lunch and dinner','Eating while distracted (phone/TV) — reduces satiety signals by 30%'],
-    },
-    exercise:{
-      days:3,label:'Walking + Bodyweight',burn:600,
-      sessions:[
-        {day:'Mon',type:'🚶 Brisk Walk 30 min',detail:'Target 3,500–4,000 steps. Fast enough that talking is slightly harder.'},
-        {day:'Wed',type:'🏋️ Bodyweight Circuit',detail:'3×10 squats, push-ups (knee if needed), lunges, glute bridges. 60s rest between sets. 25 min total.'},
-        {day:'Fri',type:'🚶 Brisk Walk 40 min',detail:'Add 10 min vs Monday. Finish with 5-min full-body stretch.'},
-      ],
-    },
-    sleep:{
-      target:'7–8 hrs',bedtime:'10:30pm',
-      tips:['Fix your bedtime AND wake time — even weekends (circadian rhythm lock)','No screens 30 min before bed — blue light suppresses melatonin by up to 50%','Keep bedroom cool: 65–68°F (18–20°C) is the ideal fat-burning sleep temp','Cut caffeine after 2pm — half-life is 5–6 hours, it\'s still in your system at midnight'],
-      why:'Sleep deprivation raises ghrelin (hunger hormone) by 28% and cuts leptin (fullness). 7+ hours = 55% more fat loss vs sleep-deprived dieters eating the same calories. (CMAJ 2022)',
-    },
+  {range:[0,10],title:'Foundation',emoji:'🌱',color:'#2ea860',
+    food:{focus:'Clean up your baseline',tips:['Eliminate ultra-processed foods and sugary drinks','Eat 25–35g protein at every meal (eggs, chicken, Greek yogurt)','Fill half your plate with non-starchy vegetables','Stop eating 2–3 hours before bedtime to improve fat burning']},
+    exercise:{title:'Start Moving',plan:'20–30 min walk, 5×/week',days:5,steps:['Walk 20–30 minutes every day — consistency beats intensity here','Take stairs instead of elevators every single time','Park further away and accumulate extra steps throughout the day','Stretch for 5 minutes after each walk to build the recovery habit']},
+    sleep:{target:7,tips:['Set a consistent bedtime and wake time — even on weekends','No screens 30 minutes before bed (use Night Shift or blue light glasses)','Keep your bedroom cool: 65–68°F is the optimal sleep temperature']}
   },
-  {
-    id:2,name:'Momentum',emoji:'⚡',range:[10,25],weeks:'Weeks 5–12',
-    tagline:'Stack your wins. Build the engine. Double down.',
-    food:{
-      deficit:600,note:'−600 kcal/day combining diet + added exercise burn',
-      rules:['Sunday meal prep: cook 4 breakfasts + 4 lunches to remove daily decisions','Increase protein to 0.8g per lb of body weight — muscle preserves your metabolism','Add 2 lower-carb days/week (under 100g carbs) — accelerates fat oxidation','Hit 25–35g fiber daily: vegetables, legumes, oats — keeps you full on fewer calories','Track everything for 2 weeks — portions are almost always larger than assumed'],
-      avoid:['Eating out more than 2×/week — restaurant meals average 60% more calories than home','Calorie-bomb salad dressings — Caesar, ranch average 200 kcal per serving','Late-night "small" snacks — they tend to be 300–500 kcal and almost pure stored fat'],
-    },
-    exercise:{
-      days:4,label:'Strength + Cardio',burn:900,
-      sessions:[
-        {day:'Mon',type:'🏋️ Full-Body Strength 45 min',detail:'4×10: goblet squat, dumbbell row, push-up, hip hinge (RDL). Add weight each session where possible.'},
-        {day:'Tue',type:'🚴 Steady Cardio 30 min',detail:'Bike, elliptical, or brisk walk at 65–70% max HR. This is your fat-burning zone.'},
-        {day:'Thu',type:'🏋️ Full-Body Strength 45 min',detail:'Same as Monday. Track weights — aim for +5% load or +1 rep vs last week.'},
-        {day:'Sat',type:'🏃 Longer Cardio 45 min',detail:'Outdoor run/walk, swim, or hike. Keep a conversational pace (Zone 2 = maximum fat burn).'},
-      ],
-    },
-    sleep:{
-      target:'7–9 hrs',bedtime:'10:00pm',
-      tips:['Track sleep cycles — aim for 90-min multiples (6h, 7.5h, or 9h are ideal wake points)','Add a 10-min wind-down ritual: light stretch, journal 3 things, dim lights at 9:30pm','Magnesium glycinate 200–400mg before bed improves deep sleep quality measurably','Cold shower or bath in evening drops core temp → signals brain to initiate sleep'],
-      why:'You\'re building muscle now. 80% of growth hormone is released during deep sleep. That muscle is your metabolic engine — poor sleep literally burns it for fuel instead of fat.',
-    },
+  {range:[10,20],title:'Building Habits',emoji:'💪',color:'#1a7aaa',
+    food:{focus:'Meal prep and portion mastery',tips:['Prep all proteins on Sunday for the whole week (saves decisions)','Use a 9" plate instead of 12" — reduces intake by 22% (Cornell, 2012)','Eat slowly: put fork down between bites, aim for 20-minute meals','Healthy snacks only: almonds, Greek yogurt, hard-boiled eggs, fruit']},
+    exercise:{title:'Add Strength Training',plan:'Walk 30 min + 2× strength/week',days:5,steps:['Continue daily 30-minute walks (increase to brisk walking pace)','2× per week: squats, push-ups, inverted rows, planks, hip hinges','3 sets × 10–12 reps each, rest 60–90 seconds between sets','Strength training preserves lean muscle as you lose fat — critical!']},
+    sleep:{target:7.5,tips:['Track sleep with an app — you may be sleeping less than you think','Avoid caffeine after 2 PM — caffeine has a 5–7 hour half-life','Try 5–10 min of stretching or box breathing (4-4-4-4) before bed']}
   },
-  {
-    id:3,name:'Deep Cut',emoji:'🔥',range:[25,40],weeks:'Weeks 13–24',
-    tagline:'Metabolic reset. Push through the plateau. Intensify.',
-    food:{
-      deficit:500,note:'Reduce slightly — metabolism has adapted, protect muscle',
-      rules:['Add 1 "refeed day"/week at full maintenance calories — resets leptin, prevents metabolic slowdown','Increase protein to 1g/lb — the most important lever against muscle loss during a deep cut','Carb cycle: higher carbs on workout days (150g+), under 80g on rest days','Lower sodium to 1,500–2,000mg/day — reduces water retention masking real fat loss','Try 16:8 intermittent fasting if tolerated: eat between 12pm–8pm, skip breakfast or after-dinner snack'],
-      avoid:['Single cheat meals over 1,000 kcal — they can erase 2 days of deficit in one sitting','Relying on willpower alone — redesign your environment (remove trigger foods from home)','Obsessing over daily scale weight — weigh weekly, same time, same conditions only'],
-    },
-    exercise:{
-      days:5,label:'Strength + HIIT',burn:1200,
-      sessions:[
-        {day:'Mon',type:'🏋️ Lower Body Strength',detail:'Squat, deadlift, lunges, leg press. 4 sets × 8–12 reps. Progressive overload each session.'},
-        {day:'Tue',type:'⚡ HIIT Circuit 20 min',detail:'20s on / 10s rest × 8 rounds per exercise: burpees, mountain climbers, jump squats, high knees. Burns 250+ kcal in 20 min.'},
-        {day:'Wed',type:'🏋️ Upper Body Strength',detail:'Bench press or push-up progression, barbell/DB rows, overhead press, bicep curl, tricep dip. 4×8–12.'},
-        {day:'Fri',type:'🏋️ Full Body Compound',detail:'Deadlift, pull-ups or lat pulldown, front squat, farmer carry. Heavy. This session drives the most metabolic adaptation.'},
-        {day:'Sat',type:'🚶 Active Recovery 60 min',detail:'Walking, yoga, or easy cycling. Zone 1 intensity keeps metabolism elevated without adding fatigue.'},
-      ],
-    },
-    sleep:{
-      target:'7–8 hrs',bedtime:'10:00pm',
-      tips:['At this stage — sleep > extra workouts. If under 6 hours, skip the gym and sleep.','Blackout curtains + white noise machine: darkness and silence cut cortisol at night','Rigid schedule even on weekends locks in circadian rhythm for optimal hormone release','No large meals within 3 hours of bed — active digestion fragments sleep architecture'],
-      why:'Cortisol is the enemy now. High cortisol from poor sleep deposits fat specifically in the abdomen and triggers muscle breakdown. 8 hours beats an extra workout every time.',
-    },
+  {range:[20,30],title:'Building Momentum',emoji:'🔥',color:'#d48020',
+    food:{focus:'Protein and intermittent fasting',tips:['Aim for 1g protein per lb of goal body weight per day','Try 16:8 intermittent fasting — skip breakfast or eat first meal at noon','Add 30g+ of fiber daily: legumes, oats, veggies, flaxseed','Limit alcohol to weekends only — 7 kcal/g and disrupts fat burning']},
+    exercise:{title:'Increase Intensity',plan:'3× cardio + 3× strength/week',days:6,steps:['3× cardio: 30–45 min brisk walk, cycling, or swimming','3× strength: full-body circuit, 45 minutes, progressive overload','Start adding weight or reps each week to continue adapting','One active recovery day: yoga, light stretching, or easy walk']},
+    sleep:{target:8,tips:['Sleep is when your body releases growth hormone for fat burning','Magnesium glycinate (200–400mg) before bed may improve sleep quality','Protect 8 hours — studies show <6h sleep doubles fat gain rate']}
   },
-  {
-    id:4,name:'Final Push',emoji:'🏆',range:[40,50],weeks:'Weeks 25–36',
-    tagline:'The finish line. Make it permanent. Win for life.',
-    food:{
-      deficit:300,note:'Smaller deficit — last 10 lbs need precision, not aggression',
-      rules:['Shift your mindset from "diet mode" to "how I\'ll eat forever" — identity is the lock-in','Protein stays at 1g/lb — non-negotiable, prevents the final stretch muscle loss','Add 2–3 maintenance calorie days/week — begin the reverse diet to prevent rebound','Focus on volume eating: cucumber, lettuce, broth-based soups — high satiety, low cal','Build your "5 staple meals": the meals you\'ll eat 80% of the time in maintenance'],
-      avoid:['Dropping below 1,200 kcal (women) or 1,500 kcal (men) — triggers starvation response','Eliminating carbs on lifting days — muscles need glycogen to train at intensity','Waiting for motivation — identity ("I\'m someone who moves daily") lasts; motivation doesn\'t'],
-    },
-    exercise:{
-      days:5,label:'Heavy Strength + Zone 2',burn:1100,
-      sessions:[
-        {day:'Mon',type:'🏋️ Heavy Lower Body',detail:'Squat + deadlift progressive overload: 5 sets × 5 reps at 80% max. This preserves maximum muscle as you lean out.'},
-        {day:'Tue',type:'🚴 Zone 2 Cardio 45 min',detail:'Bike, row, or easy jog at 60–70% max HR. Zone 2 = highest fat oxidation rate per minute of any cardio.'},
-        {day:'Wed',type:'🏋️ Heavy Upper Body',detail:'Bench press + rows + overhead press progressive overload 5×5. Track every session.'},
-        {day:'Thu',type:'🚴 Zone 2 Cardio 30 min',detail:'Shorter Zone 2 session. Can substitute a 45-min walk at a fast pace.'},
-        {day:'Sat',type:'🏋️ Full Body + Core 45 min',detail:'Functional compound movements + 15-min core: planks, dead bugs, pallof press, hollow holds.'},
-      ],
-    },
-    sleep:{
-      target:'7–9 hrs',bedtime:'9:45pm',
-      tips:['You built the habit — now protect it like a training session: it IS training','Track HRV (Heart Rate Variability) with a wearable — it tells you when to push vs rest','Recovery weeks every 4th week: cut training volume 40% and sleep 8+ hours — you get stronger','Sleep consolidates your new lower set-point weight. The body resets its baseline while you sleep.'],
-      why:'The last 10 lbs fight back hardest hormonally. Leptin is low. Ghrelin is high. Sleep is the single most powerful lever separating people who maintain their loss from those who regain it all.',
-    },
+  {range:[30,40],title:'Breaking the Plateau',emoji:'⚡',color:'#7c50cc',
+    food:{focus:'Beat adaptation with variation',tips:['Try a 2-week diet break at maintenance calories to reset metabolism','Audit hidden calories: cooking oils, sauces, dressings, liquid calories','Eat your largest meal right after your workout for better nutrient use','Track macros closely for 2 weeks — most plateaus are hidden calories']},
+    exercise:{title:'Add HIIT',plan:'2× HIIT + 3× strength + 1× cardio',days:6,steps:['2× HIIT: 20–25 min, 30 sec on / 30 sec off (sprints, burpees, jumps)','3× strength: focus on compound lifts — deadlift, squat, bench, rows','1× longer steady-state cardio: 45–60 min hiking or cycling','HIIT creates EPOC — elevated fat burning for 24–48 hours post-workout']},
+    sleep:{target:8,tips:['High cortisol from poor sleep directly stalls fat loss — protect sleep','Box breathing at bedtime resets cortisol: 4 in, hold 4, out 4, hold 4','If weight is stuck 3+ weeks, check sleep before changing diet or exercise']}
   },
+  {range:[40,50],title:'The Final 10',emoji:'🏆',color:'#e05050',
+    food:{focus:'Fine-tune and plan maintenance',tips:['Tighten tracking now — weigh and measure food for precision','Eat 30+ different plant foods weekly for gut microbiome optimization','Anti-inflammatory focus: berries, fatty fish, leafy greens, olive oil','Begin planning maintenance calories — start transitioning 5 lbs before goal']},
+    exercise:{title:'Peak Performance',plan:'6-day upper/lower split + 1× HIIT',days:6,steps:['Upper/lower split: 3× upper body + 3× lower body strength sessions','Add 1× HIIT session for metabolic boost and cardiovascular health','Daily step goal: 10,000+ steps — use a phone or watch to track','Celebrate every session — you have built a life-changing habit! 🎉']},
+    sleep:{target:8,tips:['Recovery is your secret weapon in the final phase — do not skip it','Optimize your sleep environment: blackout curtains, white noise, cool room','You are so close — poor sleep is the #1 reason people stall in the final stretch']}
+  }
 ];
 
-// ── WEEKLY CHECKLIST STORAGE ──────────────────────────────────────
-const getWeekKey=()=>{const d=new Date();const mon=new Date(d);mon.setDate(d.getDate()-((d.getDay()+6)%7));return 'wk_'+mon.toISOString().slice(0,10)};
-const lWK=()=>{try{return JSON.parse(localStorage.getItem('mdf_'+getWeekKey()))||{}}catch{return{}}};
-const sWK=(obj)=>{try{localStorage.setItem('mdf_'+getWeekKey(),JSON.stringify(obj))}catch{}};
+// ── STORAGE ───────────────────────────────────────────────────────────────────
+const lW=()=>{try{return JSON.parse(localStorage.getItem('mdf_w'))||{goalW:null,startW:null,rate:1,logs:[]}}catch{return{goalW:null,startW:null,rate:1,logs:[]}}};
+const svW=(w)=>{try{localStorage.setItem('mdf_w',JSON.stringify(w))}catch{}};
+const lEx=()=>{try{return JSON.parse(localStorage.getItem('mdf_e'))||{logs:[]}}catch{return{logs:[]}}};
+const svEx=(e)=>{try{localStorage.setItem('mdf_e',JSON.stringify(e))}catch{}};
+const lSlp=()=>{try{return JSON.parse(localStorage.getItem('mdf_s'))||{logs:[]}}catch{return{logs:[]}}};
+const svSlp=(s)=>{try{localStorage.setItem('mdf_s',JSON.stringify(s))}catch{}};
 
-function initWeightTab(){
+let selectedRate=1;
+let selectedStars=3;
+let curPTab='w';
+const EX_IC={walk:'🚶',run:'🏃',strength:'💪',hiit:'⚡',cycle:'🚴',swim:'🏊',yoga:'🧘',other:'🏅'};
+
+function getCurrentPhase(lost){
+  for(let i=0;i<PROGRAM.length;i++){if(lost<PROGRAM[i].range[1])return i;}
+  return PROGRAM.length-1;
+}
+
+function initProgressTab(){
   const wd=lW();
   selectedRate=wd.rate||1;
   if(wd.goalW)document.getElementById('wgoal').value=wd.goalW;
   if(wd.startW)document.getElementById('wcur').value=wd.startW;
-  document.querySelectorAll('.wrate-btn').forEach(b=>{b.classList.toggle('sel',parseFloat(b.dataset.r)===selectedRate)});
+  document.querySelectorAll('.wrate-btn').forEach(b=>b.classList.toggle('sel',parseFloat(b.dataset.r)===selectedRate));
   const today=new Date().toISOString().slice(0,10);
   const tl=wd.logs.find(l=>l.d===today);
   if(tl)document.getElementById('wlog').value=tl.w;
-  renderProgram();
-  renderWeightProgress();
+  renderProg50Hero();
+  swPTab(curPTab);
 }
 
-// ── 50-LB PROGRAM RENDERER ────────────────────────────────────────
-function renderProgram(){
-  const el=document.getElementById('wprogram');
-  if(!el)return;
-  const wd=lW();
-  const lost=wd.startW&&wd.logs.length?Math.max(0,wd.startW-wd.logs[wd.logs.length-1].w):0;
-
-  // Determine active phase
-  let activeIdx=0;
-  for(let i=0;i<PROGRAM.length;i++){if(lost>=PROGRAM[i].range[0])activeIdx=i;}
-  const ph=PROGRAM[activeIdx];
-
-  // Phase roadmap pills
-  const pills=PROGRAM.map((p,i)=>{
-    const done=lost>=p.range[1];
-    const active=i===activeIdx;
-    const locked=lost<p.range[0]&&i!==0;
-    const cls=done?'done':active?'active':locked?'locked':'';
-    const check=done?'✓ ':active?'▶ ':'';
-    return`<div class="phase-pill ${cls}">${check}${p.emoji} ${p.name}</div>`;
-  }).join('');
-
-  // Phase completion
-  const phLost=Math.max(0,lost-ph.range[0]);
-  const phTotal=ph.range[1]-ph.range[0];
-  const phPct=Math.min(100,(phLost/phTotal)*100);
-  const totalPct=Math.min(100,(lost/50)*100);
-
-  // Weekly checklist items (food + exercise combined)
-  const wkChecks=[
-    ...ph.food.rules.slice(0,3).map((r,i)=>({id:`f${i}`,em:'🍽️',label:r})),
-    ...ph.exercise.sessions.map((s,i)=>({id:`e${i}`,em:'💪',label:`${s.type}: ${s.detail.split('.')[0]}`})),
-    {id:'s0',em:'😴',label:`Sleep ${ph.sleep.target} tonight — in bed by ${ph.sleep.bedtime}`},
-  ];
-  const wkState=lWK();
-  const checkRows=wkChecks.map(c=>{
-    const checked=!!wkState[c.id];
-    return`<div class="wcheck-row${checked?' chk':''}" onclick="toggleCheck('${c.id}',this)">
-      <div class="wcheck-box">${checked?'✓':''}</div>
-      <div class="wcheck-lbl"><span style="margin-right:5px">${c.em}</span>${c.label}</div>
-    </div>`;
-  }).join('');
-  const doneCount=wkChecks.filter(c=>wkState[c.id]).length;
-
-  // Build accordion pillars
-  const foodPillar=buildPillar('food','🍽️','Food','Calorie deficit + eating rules',activeIdx,`
-    <div style="background:var(--al);border-radius:8px;padding:8px 12px;margin-bottom:12px;font-size:13px;font-weight:700;color:var(--a)">${ph.food.note}</div>
-    <div style="font-size:11px;font-weight:700;color:var(--sub);text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px">✅ Do This</div>
-    ${ph.food.rules.map(r=>`<div class="prog-rule"><div class="prog-rule-dot"></div><div>${r}</div></div>`).join('')}
-    <div style="font-size:11px;font-weight:700;color:#c04040;text-transform:uppercase;letter-spacing:.8px;margin:12px 0 6px">🚫 Avoid</div>
-    ${ph.food.avoid.map(r=>`<div class="prog-rule"><div class="prog-rule-dot" style="background:#c04040"></div><div style="color:#7a4040">${r}</div></div>`).join('')}
-  `);
-
-  const exPillar=buildPillar('ex','💪','Exercise',`${ph.exercise.days} days/wk · ~${ph.exercise.burn} kcal/wk`,activeIdx,`
-    <div style="background:var(--al);border-radius:8px;padding:8px 12px;margin-bottom:12px;font-size:13px;font-weight:700;color:var(--a)">${ph.exercise.label} — ${ph.exercise.days}×/week</div>
-    ${ph.exercise.sessions.map(s=>`<div class="ex-session">
-      <div class="ex-day">${s.day}</div>
-      <div class="ex-type">${s.type}</div>
-      <div class="ex-detail">${s.detail}</div>
-    </div>`).join('')}
-  `);
-
-  const sleepPillar=buildPillar('slp','😴','Sleep',`Target ${ph.sleep.target} · Bed by ${ph.sleep.bedtime}`,activeIdx,`
-    <div style="background:#f0f4ff;border-radius:8px;padding:8px 12px;margin-bottom:12px;font-size:13px;font-weight:700;color:#2040a0">Bed by ${ph.sleep.bedtime} · ${ph.sleep.target}</div>
-    ${ph.sleep.tips.map(t=>`<div class="sleep-tip"><div style="font-size:16px;flex-shrink:0">🌙</div><div>${t}</div></div>`).join('')}
-    <div class="phase-why">🔬 <strong>Why it matters:</strong> ${ph.sleep.why}</div>
-  `);
-
-  el.innerHTML=`
-    <!-- Overall progress bar -->
-    <div class="card" style="margin-bottom:12px">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
-        <span style="font-size:13px;font-weight:700">50-lb Journey</span>
-        <span style="font-size:14px;font-weight:800;color:var(--a)">${lost.toFixed(1)} / 50 lbs</span>
-      </div>
-      <div class="wpbar-wrap"><div class="wpbar-fill" style="width:${totalPct}%"></div></div>
-      <div class="phase-road" style="margin-top:10px">${pills}</div>
-      <div style="background:var(--bg);border-radius:10px;padding:10px 12px">
-        <div style="font-size:13px;font-weight:700;color:var(--text)">${ph.emoji} Phase ${ph.id}: ${ph.name} <span style="font-size:11px;color:var(--sub);font-weight:400">${ph.weeks}</span></div>
-        <div style="font-size:13px;color:var(--sub);margin-top:3px">${ph.tagline}</div>
-        <div style="margin-top:8px;height:6px;background:var(--border);border-radius:3px;overflow:hidden"><div style="height:100%;width:${phPct}%;background:var(--a);border-radius:3px;transition:width .8s"></div></div>
-        <div style="font-size:11px;color:var(--sub);margin-top:4px">${phLost.toFixed(1)} of ${phTotal} lbs in this phase</div>
-      </div>
-    </div>
-
-    <!-- This Week Checklist -->
-    <div class="card" style="margin-bottom:12px">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
-        <div style="font-size:11px;font-weight:700;color:var(--sub);text-transform:uppercase;letter-spacing:.8px">This Week's Actions</div>
-        <div style="font-size:12px;font-weight:700;color:var(--a)">${doneCount}/${wkChecks.length} done</div>
-      </div>
-      ${checkRows}
-    </div>
-
-    <!-- Three Pillars -->
-    ${foodPillar}
-    ${exPillar}
-    ${sleepPillar}
-  `;
+function swPTab(t){
+  curPTab=t;
+  document.querySelectorAll('.ptab').forEach(b=>b.classList.remove('on'));
+  const btn=document.getElementById('pt'+t);if(btn)btn.classList.add('on');
+  ['pswgt','psexr','psslp','pspln'].forEach(id=>{const el=document.getElementById(id);if(el)el.style.display='none';});
+  const panels={w:'pswgt',e:'psexr',s:'psslp',p:'pspln'};
+  const el=document.getElementById(panels[t]);if(el)el.style.display='block';
+  if(t==='w')renderWeightProgress();
+  if(t==='e')renderExercisePanel();
+  if(t==='s')renderSleepPanel();
+  if(t==='p')renderPlanPanel();
 }
 
-function buildPillar(id,ic,title,sub,phaseIdx,body){
-  return`<div class="pillar-card">
-    <div class="pillar-hdr" id="ph_${id}" onclick="togglePillar('${id}')">
-      <div class="pillar-ic">${ic}</div>
-      <div style="flex:1"><div class="pillar-title">${title}</div><div class="pillar-sub">${sub}</div></div>
-      <div class="pillar-chev">▼</div>
-    </div>
-    <div class="pillar-body" id="pb_${id}">${body}</div>
-  </div>`;
-}
+function selRate(btn){document.querySelectorAll('.wrate-btn').forEach(b=>b.classList.remove('sel'));btn.classList.add('sel');selectedRate=parseFloat(btn.dataset.r);}
 
-function togglePillar(id){
-  const hdr=document.getElementById('ph_'+id);
-  const body=document.getElementById('pb_'+id);
-  if(!hdr||!body)return;
-  const open=body.classList.toggle('open');
-  hdr.classList.toggle('open',open);
-}
-
-function toggleCheck(id,row){
-  const wk=lWK();
-  wk[id]=!wk[id];
-  sWK(wk);
-  row.classList.toggle('chk',!!wk[id]);
-  const box=row.querySelector('.wcheck-box');
-  if(box)box.textContent=wk[id]?'✓':'';
-  row.querySelector('.wcheck-lbl').style.textDecoration=wk[id]?'line-through':'';
-  row.querySelector('.wcheck-lbl').style.color=wk[id]?'var(--sub)':'';
-  // Update counter
-  const allRows=document.querySelectorAll('.wcheck-row');
-  const done=[...allRows].filter(r=>r.classList.contains('chk')).length;
-  const counter=document.querySelector('#wprogram .card div[style*="font-weight:700;color:var(--a)"]');
-  if(counter)counter.textContent=`${done}/${allRows.length} done`;
-}
-
-function selRate(btn){
-  document.querySelectorAll('.wrate-btn').forEach(b=>b.classList.remove('sel'));
-  btn.classList.add('sel');
-  selectedRate=parseFloat(btn.dataset.r);
+function selStar(v){
+  selectedStars=v;
+  document.querySelectorAll('#slpstars .star').forEach((s,i)=>s.classList.toggle('on',i<v));
 }
 
 function saveWGoal(){
   const cw=parseFloat(document.getElementById('wcur').value);
   const gw=parseFloat(document.getElementById('wgoal').value);
-  if(isNaN(cw)||isNaN(gw)||cw<50||cw>700||gw<50||gw>700){
-    document.getElementById('wgsaved').style.display='none';
-    return;
-  }
-  const wd=lW();
-  wd.startW=cw; wd.goalW=gw; wd.rate=selectedRate;
-  if(!wd.logs.length){
-    const today=new Date().toISOString().slice(0,10);
-    wd.logs.push({d:today,w:cw});
-    document.getElementById('wlog').value=cw;
-  }
-  sW(wd);
-  const s=document.getElementById('wgsaved');
-  s.style.display='block'; setTimeout(()=>s.style.display='none',2200);
-  renderWeightProgress();
-  renderToday(); // refresh deficit card on Today tab
+  if(isNaN(cw)||isNaN(gw)||cw<50||cw>700||gw<50||gw>700)return;
+  const wd=lW();wd.startW=cw;wd.goalW=gw;wd.rate=selectedRate;
+  if(!wd.logs.length){const today=new Date().toISOString().slice(0,10);wd.logs.push({d:today,w:cw});document.getElementById('wlog').value=cw;}
+  svW(wd);
+  const s=document.getElementById('wgsaved');s.style.display='block';setTimeout(()=>s.style.display='none',2200);
+  renderProg50Hero();renderWeightProgress();renderToday();
 }
 
 function logWeight(){
   const raw=parseFloat(document.getElementById('wlog').value);
   const err=document.getElementById('wlogerr');
-  if(isNaN(raw)||raw<50||raw>700){
-    err.textContent='Please enter a valid weight (50–700 lbs).';
-    err.style.display='block';
-    setTimeout(()=>err.style.display='none',2500);
-    return;
-  }
+  if(isNaN(raw)||raw<50||raw>700){err.textContent='Enter a valid weight (50–700 lbs).';err.style.display='block';setTimeout(()=>err.style.display='none',2500);return;}
   const wd=lW();
   const today=new Date().toISOString().slice(0,10);
   const idx=wd.logs.findIndex(l=>l.d===today);
-  if(idx>=0)wd.logs[idx].w=raw; else wd.logs.push({d:today,w:raw});
+  if(idx>=0)wd.logs[idx].w=raw;else wd.logs.push({d:today,w:raw});
   wd.logs.sort((a,b)=>a.d.localeCompare(b.d));
   if(wd.logs.length>90)wd.logs=wd.logs.slice(-90);
-  sW(wd);
-  err.style.display='none';
-  renderWeightProgress();
-  renderToday();
+  svW(wd);err.style.display='none';
+  renderProg50Hero();renderWeightProgress();renderToday();
   const btn=document.querySelector('[onclick="logWeight()"]');
   if(btn){const o=btn.textContent;btn.textContent='✓ Logged!';btn.style.background='#16a34a';setTimeout(()=>{btn.textContent=o;btn.style.background=''},1600);}
 }
 
-function renderWeightProgress(){
-  const el=document.getElementById('wprogress');
-  if(!el)return;
+function logExercise(){
+  const type=document.getElementById('extype').value;
+  const min=parseInt(document.getElementById('exmin').value);
+  const err=document.getElementById('exlogerr');
+  if(isNaN(min)||min<1||min>600){err.textContent='Enter duration in minutes.';err.style.display='block';setTimeout(()=>err.style.display='none',2500);return;}
+  const ed=lEx();const today=new Date().toISOString().slice(0,10);
+  const idx=ed.logs.findIndex(l=>l.d===today);
+  const entry={d:today,type,min};
+  if(idx>=0)ed.logs[idx]=entry;else ed.logs.push(entry);
+  ed.logs.sort((a,b)=>a.d.localeCompare(b.d));
+  if(ed.logs.length>90)ed.logs=ed.logs.slice(-90);
+  svEx(ed);err.style.display='none';renderExercisePanel();renderToday();
+  const btn=document.querySelector('[onclick="logExercise()"]');
+  if(btn){const o=btn.textContent;btn.textContent='✓ Logged!';btn.style.background='#16a34a';setTimeout(()=>{btn.textContent=o;btn.style.background=''},1600);}
+}
+
+function logSleep(){
+  const h=parseFloat(document.getElementById('slphrs').value);
+  const err=document.getElementById('slplogerr');
+  if(isNaN(h)||h<1||h>16){err.textContent='Enter hours between 1 and 16.';err.style.display='block';setTimeout(()=>err.style.display='none',2500);return;}
+  const sd=lSlp();const today=new Date().toISOString().slice(0,10);
+  const idx=sd.logs.findIndex(l=>l.d===today);
+  const entry={d:today,h,q:selectedStars};
+  if(idx>=0)sd.logs[idx]=entry;else sd.logs.push(entry);
+  sd.logs.sort((a,b)=>a.d.localeCompare(b.d));
+  if(sd.logs.length>90)sd.logs=sd.logs.slice(-90);
+  svSlp(sd);err.style.display='none';renderSleepPanel();renderToday();
+  const btn=document.querySelector('[onclick="logSleep()"]');
+  if(btn){const o=btn.textContent;btn.textContent='✓ Logged!';btn.style.background='#16a34a';setTimeout(()=>{btn.textContent=o;btn.style.background=''},1600);}
+}
+
+function renderProg50Hero(){
+  const el=document.getElementById('prog50hero');if(!el)return;
   const wd=lW();
-  const logs=wd.logs;
-  if(!logs.length||!wd.goalW){
-    el.innerHTML='<div style="text-align:center;color:var(--sub);font-size:14px;padding:24px 0;line-height:1.7">Set your goal weights above and log your first weight to see your progress chart and trend. ⬆️</div>';
+  if(!wd.startW||!wd.goalW){
+    el.innerHTML=`<div class="card" style="border-left:4px solid var(--a)"><div style="font-family:'Fraunces',serif;font-size:20px;margin-bottom:6px">🏆 Your 50 lb Journey</div><div style="font-size:14px;color:var(--sub);line-height:1.6">Set your starting and goal weights in <strong>Weight</strong> to activate your 5-phase plan covering food, exercise, and sleep step by step.</div></div>`;
     return;
   }
-  const latest=logs[logs.length-1].w;
-  const start=wd.startW||logs[0].w;
-  const goal=wd.goalW;
-  const rate=wd.rate||1;
+  const latest=wd.logs.length?wd.logs[wd.logs.length-1].w:wd.startW;
+  const start=wd.startW,goal=wd.goalW;
+  const totalToLose=Math.max(0.1,start-goal);
+  const lost=Math.max(0,start-latest);
+  const pct=Math.min(100,(lost/totalToLose)*100);
+  const phaseIdx=getCurrentPhase(lost);
+  const phase=PROGRAM[phaseIdx];
+  const milestones=[10,20,30,40,50];
+  const mileHTML=milestones.map((m,i)=>{
+    const reached=lost>=m;const active=lost<m&&lost>=m-10;
+    return`<div style="display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid var(--border)">
+      <span style="font-size:18px;width:24px;text-align:center">${reached?'✅':active?phase.emoji:'⚪'}</span>
+      <span style="flex:1;font-size:13px;font-weight:${active?700:500};color:${active?'var(--text)':'var(--sub)'}">${PROGRAM[i].title} — ${m} lbs lost</span>
+      ${reached?`<span style="font-size:11px;font-weight:700;background:#f0fdf4;color:#16a34a;padding:2px 8px;border-radius:8px">Done ✓</span>`:active?`<span style="font-size:11px;font-weight:700;background:var(--al);color:var(--a);padding:2px 8px;border-radius:8px">Active</span>`:''}
+    </div>`;
+  }).join('');
+  el.innerHTML=`<div class="card" style="border-left:4px solid ${phase.color}">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+      <span style="font-size:26px">${phase.emoji}</span>
+      <div style="flex:1"><div style="font-family:'Fraunces',serif;font-size:17px">50 lb Journey</div><div style="font-size:12px;font-weight:700;color:${phase.color}">Phase ${phaseIdx+1}/5: ${phase.title}</div></div>
+      <div style="text-align:right"><div style="font-family:'Fraunces',serif;font-size:22px;color:var(--text)">${lost.toFixed(1)}</div><div style="font-size:11px;color:var(--sub)">lbs lost</div></div>
+    </div>
+    <div style="background:var(--border);border-radius:5px;height:10px;overflow:hidden;margin-bottom:6px"><div style="width:${pct.toFixed(0)}%;height:100%;border-radius:5px;background:${phase.color};transition:width 1s ease"></div></div>
+    <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--sub);margin-bottom:12px"><span>${pct.toFixed(0)}% complete</span><span>${(totalToLose-lost).toFixed(1)} lbs to go</span></div>
+    <div style="font-size:11px;font-weight:700;color:var(--sub);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px">Milestones</div>
+    ${mileHTML}
+  </div>`;
+}
+
+function renderWeightProgress(){
+  const el=document.getElementById('wprogress');if(!el)return;
+  const wd=lW();const logs=wd.logs;
+  if(!logs.length||!wd.goalW){el.innerHTML='<div style="text-align:center;color:var(--sub);font-size:14px;padding:24px 0">Set goals above and log your first weight to see your chart ⬆️</div>';return;}
+  const latest=logs[logs.length-1].w,start=wd.startW||logs[0].w,goal=wd.goalW,rate=wd.rate||1;
   const lost=parseFloat(Math.max(0,start-latest).toFixed(1));
   const toGo=parseFloat(Math.max(0,latest-goal).toFixed(1));
-  const totalToLose=Math.max(0.1,start-goal);
-  const pct=Math.min(100,Math.max(0,((start-latest)/totalToLose)*100));
+  const pct=Math.min(100,Math.max(0,((start-latest)/Math.max(0.1,start-goal))*100));
   const weeksLeft=toGo>0?Math.ceil(toGo/rate):0;
   const deficit=rate===0.5?250:rate===1?500:1000;
   const targetCal=DIETS[P.diet].T.cal-deficit;
-
-  // SVG sparkline
   const recent=logs.slice(-14);
   let spark='';
   if(recent.length>=2){
-    const ws=recent.map(l=>l.w);
-    const mn=Math.min(...ws),mx=Math.max(...ws);
-    const range=mx-mn||0.5;
+    const ws=recent.map(l=>l.w);const mn=Math.min(...ws),mx=Math.max(...ws);const range=mx-mn||0.5;
     const W=300,H=56,pad=6;
-    const pts=ws.map((w,i)=>{
-      const x=pad+(i/(ws.length-1))*(W-pad*2);
-      const y=H-pad-(((w-mn)/range)*(H-pad*2));
-      return[x.toFixed(1),y.toFixed(1)];
-    });
-    const polyPts=pts.map(p=>p.join(',')).join(' ');
-    const circles=pts.map((p,i)=>{
-      const isLast=i===pts.length-1;
-      return`<circle cx="${p[0]}" cy="${p[1]}" r="${isLast?5:3}" fill="${isLast?'var(--a)':'#fff'}" stroke="var(--a)" stroke-width="2"/>`;
-    }).join('');
+    const pts=ws.map((w,i)=>{const x=pad+(i/(ws.length-1))*(W-pad*2);const y=H-pad-(((w-mn)/range)*(H-pad*2));return[x.toFixed(1),y.toFixed(1)];});
     spark=`<svg viewBox="0 0 ${W} ${H}" style="width:100%;height:64px;display:block;margin-bottom:4px">
-      <polyline points="${polyPts}" fill="none" stroke="var(--a)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-      ${circles}
+      <polyline points="${pts.map(p=>p.join(',')).join(' ')}" fill="none" stroke="var(--a)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+      ${pts.map((p,i)=>`<circle cx="${p[0]}" cy="${p[1]}" r="${i===pts.length-1?5:3}" fill="${i===pts.length-1?'var(--a)':'#fff'}" stroke="var(--a)" stroke-width="2"/>`).join('')}
     </svg>`;
   }
-
-  // History rows (most recent first)
   const histRows=[...logs].reverse().slice(0,8).map((l,i,arr)=>{
-    const prev=arr[i+1];
-    const diff=prev?parseFloat((l.w-prev.w).toFixed(1)):null;
-    const diffStr=diff===null?'—':diff<0?`↓ ${Math.abs(diff)}`:diff>0?`↑ ${diff}`:'→';
+    const prev=arr[i+1];const diff=prev?parseFloat((l.w-prev.w).toFixed(1)):null;
     const cls=diff===null?'same':diff<0?'down':diff>0?'up':'same';
     const dt=new Date(l.d+'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric'});
-    return`<div class="wrow">
-      <span class="wrow-date">${dt}</span>
-      <div style="display:flex;align-items:center">
-        <span class="wrow-val">${l.w} lbs</span>
-        ${diff!==null?`<span class="wrow-delta ${cls}">${diffStr}</span>`:''}
-      </div>
-    </div>`;
+    return`<div class="wrow"><span class="wrow-date">${dt}</span><div style="display:flex;align-items:center"><span class="wrow-val">${l.w} lbs</span>${diff!==null?`<span class="wrow-delta ${cls}">${diff<0?'↓ '+Math.abs(diff):diff>0?'↑ '+diff:'→'}</span>`:''}</div></div>`;
   }).join('');
-
   el.innerHTML=`
     <div class="wstat-row">
       <div class="wstat"><div class="wstat-val">${latest}</div><div class="wstat-lbl">Now</div><div class="wstat-delta" style="color:var(--sub)">lbs</div></div>
       <div class="wstat"><div class="wstat-val" style="color:#16a34a">${lost}</div><div class="wstat-lbl">Lost</div><div class="wstat-delta" style="color:#16a34a">↓ lbs</div></div>
-      <div class="wstat"><div class="wstat-val" style="color:var(--a)">${toGo}</div><div class="wstat-lbl">To Go</div><div class="wstat-delta" style="color:var(--sub)">${weeksLeft}w left</div></div>
+      <div class="wstat"><div class="wstat-val" style="color:var(--a)">${toGo}</div><div class="wstat-lbl">To Go</div><div class="wstat-delta" style="color:var(--sub)">${weeksLeft}w</div></div>
       <div class="wstat"><div class="wstat-val">${goal}</div><div class="wstat-lbl">Goal</div><div class="wstat-delta" style="color:var(--sub)">lbs</div></div>
     </div>
-
-    <div class="card">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
-        <span style="font-size:13px;font-weight:700">Progress to goal</span>
-        <span style="font-size:14px;font-weight:800;color:var(--a)">${pct.toFixed(0)}%</span>
-      </div>
+    <div class="card"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px"><span style="font-size:13px;font-weight:700">Progress to goal</span><span style="font-size:14px;font-weight:800;color:var(--a)">${pct.toFixed(0)}%</span></div>
       <div class="wpbar-wrap"><div class="wpbar-fill" style="width:${pct}%"></div></div>
       <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--sub);margin-top:4px"><span>Start ${start} lbs</span><span>Goal ${goal} lbs</span></div>
-      ${pct>=100
-        ?`<div style="text-align:center;margin-top:12px;font-size:16px;font-weight:700;color:#16a34a">🎉 Goal reached! Incredible work!</div>`
-        :`<div style="margin-top:12px;padding:10px 12px;background:#f4f9f5;border-radius:10px;border-left:3px solid var(--a);font-size:13px;color:#2a4a34;line-height:1.65">
-          💡 At <strong>${rate} lb/wk</strong> you'll reach your goal in ~<strong>${weeksLeft} weeks</strong>.
-          Calorie target: <strong>${targetCal} kcal/day</strong> (−${deficit} kcal deficit from your ${DIETS[P.diet].s} plan).
-        </div>`}
+      ${pct>=100?`<div style="text-align:center;margin-top:12px;font-size:15px;font-weight:700;color:#16a34a">🎉 Goal reached! Incredible!</div>`:`<div style="margin-top:10px;padding:10px 12px;background:#f4f9f5;border-radius:10px;border-left:3px solid var(--a);font-size:13px;color:#2a4a34;line-height:1.6">💡 At <strong>${rate} lb/wk</strong>, goal in ~<strong>${weeksLeft} weeks</strong>. Calorie target: <strong>${targetCal} kcal/day</strong> (−${deficit} from your ${DIETS[P.diet].s} baseline).</div>`}
     </div>
-
-    ${recent.length>=2?`<div class="card">
-      <div style="font-size:11px;font-weight:700;color:var(--sub);text-transform:uppercase;letter-spacing:.8px;margin-bottom:10px">Trend — Last ${recent.length} Check-ins</div>
-      ${spark}
-      <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--sub)">
-        <span>${new Date(recent[0].d+'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric'})}</span>
-        <span>${new Date(recent[recent.length-1].d+'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric'})}</span>
-      </div>
-    </div>`:''}
-
-    <div class="card">
-      <div style="font-size:11px;font-weight:700;color:var(--sub);text-transform:uppercase;letter-spacing:.8px;margin-bottom:10px">Weigh-In History</div>
-      ${histRows||'<div style="color:var(--sub);font-size:14px">No logs yet.</div>'}
-    </div>
-  `;
+    ${recent.length>=2?`<div class="card"><div style="font-size:11px;font-weight:700;color:var(--sub);text-transform:uppercase;letter-spacing:.8px;margin-bottom:10px">Trend — Last ${recent.length} Check-ins</div>${spark}<div style="display:flex;justify-content:space-between;font-size:11px;color:var(--sub)"><span>${new Date(recent[0].d+'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric'})}</span><span>${new Date(recent[recent.length-1].d+'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric'})}</span></div></div>`:''}
+    <div class="card"><div style="font-size:11px;font-weight:700;color:var(--sub);text-transform:uppercase;letter-spacing:.8px;margin-bottom:10px">Weigh-In History</div>${histRows||'<div style="color:var(--sub);font-size:14px">No logs yet.</div>'}</div>`;
 }
 
-// ── INIT ──────────────────────────────────────────────────────────────────────
+function renderExercisePanel(){
+  const wd=lW();const start=wd.startW;const wlogs=wd.logs;
+  const latest=wlogs.length?wlogs[wlogs.length-1].w:start;
+  const lost=Math.max(0,(start||0)-(latest||0));
+  const ph=PROGRAM[getCurrentPhase(lost)];
+  const phIdx=getCurrentPhase(lost);
+  const pcard=document.getElementById('exphasecard');
+  if(pcard)pcard.innerHTML=`<div style="background:${ph.color}15;border:1.5px solid ${ph.color}50;border-radius:14px;padding:14px 16px">
+    <div style="font-size:11px;font-weight:700;color:${ph.color};text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px">Phase ${phIdx+1} · ${ph.title} ${ph.emoji}</div>
+    <div style="font-weight:700;font-size:15px;color:var(--text);margin-bottom:4px">🏃 ${ph.exercise.title}</div>
+    <div style="font-size:13px;color:var(--sub);margin-bottom:10px">${ph.exercise.plan} · ${ph.exercise.days} days/week</div>
+    ${ph.exercise.steps.map((s,i)=>`<div style="font-size:13px;color:var(--text);padding:3px 0;line-height:1.5"><span style="font-weight:700;color:${ph.color}">${i+1}.</span> ${s}</div>`).join('')}
+  </div>`;
+  const ed=lEx();const today=new Date().toISOString().slice(0,10);
+  const todayEx=ed.logs.find(l=>l.d===today);
+  if(todayEx){document.getElementById('exmin').value=todayEx.min;document.getElementById('extype').value=todayEx.type;}
+  const weekLogs=ed.logs.filter(l=>(new Date()-new Date(l.d+'T12:00:00'))<7*86400000);
+  const weekMin=weekLogs.reduce((s,l)=>s+l.min,0);
+  const weekDays=new Set(weekLogs.map(l=>l.d)).size;
+  const el=document.getElementById('exresults');if(!el)return;
+  const histRows=[...ed.logs].reverse().slice(0,10).map(l=>{
+    const dt=new Date(l.d+'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric'});
+    return`<div class="wrow"><span class="wrow-date">${dt}${l.d===today?' <strong style="color:var(--a)">· Today</strong>':''}</span><div style="display:flex;align-items:center;gap:6px"><span style="font-size:16px">${EX_IC[l.type]||'🏅'}</span><span class="wrow-val">${l.min} min</span></div></div>`;
+  }).join('');
+  el.innerHTML=`
+    <div class="wstat-row">
+      <div class="wstat"><div class="wstat-val">${weekDays}</div><div class="wstat-lbl">Days</div><div class="wstat-delta" style="color:var(--sub)">this wk</div></div>
+      <div class="wstat"><div class="wstat-val" style="color:var(--a)">${weekMin}</div><div class="wstat-lbl">Minutes</div><div class="wstat-delta" style="color:var(--sub)">this wk</div></div>
+      <div class="wstat"><div class="wstat-val">${ed.logs.length}</div><div class="wstat-lbl">Total</div><div class="wstat-delta" style="color:var(--sub)">workouts</div></div>
+    </div>
+    ${histRows?`<div class="card"><div style="font-size:11px;font-weight:700;color:var(--sub);text-transform:uppercase;letter-spacing:.8px;margin-bottom:10px">Workout Log</div>${histRows}</div>`:'<div style="text-align:center;color:var(--sub);font-size:14px;padding:20px 0">No workouts yet. Log your first one above! 💪</div>'}`;
+}
+
+function renderSleepPanel(){
+  const wd=lW();const wlogs=wd.logs;
+  const latest=wlogs.length?wlogs[wlogs.length-1].w:wd.startW;
+  const lost=Math.max(0,(wd.startW||0)-(latest||0));
+  const phIdx=getCurrentPhase(lost);const ph=PROGRAM[phIdx];
+  const sc=document.getElementById('slphasecard');
+  if(sc)sc.innerHTML=`<div style="background:#f0f4ff;border:1.5px solid #b8c8f0;border-radius:14px;padding:14px 16px">
+    <div style="font-size:11px;font-weight:700;color:#5060c0;text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px">Phase ${phIdx+1} Sleep Goal ${ph.emoji}</div>
+    <div style="font-weight:700;font-size:15px;color:var(--text);margin-bottom:4px">😴 Target: ${ph.sleep.target} hours/night</div>
+    <div style="font-size:13px;color:#4a5a9a;line-height:1.7;margin-bottom:10px">${ph.sleep.tips.map(t=>`<div style="padding:2px 0">💤 ${t}</div>`).join('')}</div>
+    <div style="background:#e8eeff;border-radius:8px;padding:8px 10px;font-size:13px;color:#3040a0;line-height:1.5"><strong>Why sleep drives fat loss:</strong> Poor sleep raises ghrelin (hunger) by 24% and lowers leptin (fullness) by 18% — causing direct fat retention regardless of diet.</div>
+  </div>`;
+  const sd=lSlp();const today=new Date().toISOString().slice(0,10);
+  const todaySlp=sd.logs.find(l=>l.d===today);
+  if(todaySlp){document.getElementById('slphrs').value=todaySlp.h;selStar(todaySlp.q||3);}else{selStar(3);}
+  const el=document.getElementById('slpresults');if(!el)return;
+  const weekLogs=sd.logs.filter(l=>(new Date()-new Date(l.d+'T12:00:00'))<7*86400000);
+  const avgH=weekLogs.length?(weekLogs.reduce((s,l)=>s+l.h,0)/weekLogs.length).toFixed(1):null;
+  const avgQ=weekLogs.length?(weekLogs.reduce((s,l)=>s+(l.q||3),0)/weekLogs.length).toFixed(1):null;
+  const goalNights=weekLogs.filter(l=>l.h>=ph.sleep.target).length;
+  const histRows=[...sd.logs].reverse().slice(0,7).map(l=>{
+    const dt=new Date(l.d+'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric'});
+    const col=l.h>=ph.sleep.target?'#16a34a':l.h>=6?'#d48020':'#dc2626';
+    const stars='★'.repeat(l.q||3)+'☆'.repeat(5-(l.q||3));
+    return`<div class="wrow"><span class="wrow-date">${dt}${l.d===today?' <strong style="color:var(--a)">· Today</strong>':''}</span><div style="text-align:right"><span style="font-weight:700;color:${col}">${l.h}h</span><div style="font-size:11px;color:#f0a020">${stars}</div></div></div>`;
+  }).join('');
+  el.innerHTML=`
+    <div class="wstat-row">
+      <div class="wstat"><div class="wstat-val" style="color:${parseFloat(avgH||0)>=ph.sleep.target?'#16a34a':'var(--text)'}">${avgH||'—'}</div><div class="wstat-lbl">Avg Hrs</div><div class="wstat-delta" style="color:var(--sub)">this wk</div></div>
+      <div class="wstat"><div class="wstat-val">${avgQ||'—'}</div><div class="wstat-lbl">Avg Quality</div><div class="wstat-delta" style="color:var(--sub)">/ 5 ★</div></div>
+      <div class="wstat"><div class="wstat-val" style="color:${goalNights>=5?'#16a34a':'var(--text)'}">${goalNights}</div><div class="wstat-lbl">Goal Nights</div><div class="wstat-delta" style="color:var(--sub)">this wk</div></div>
+    </div>
+    ${histRows?`<div class="card"><div style="font-size:11px;font-weight:700;color:var(--sub);text-transform:uppercase;letter-spacing:.8px;margin-bottom:10px">Sleep Log</div>${histRows}</div>`:'<div style="text-align:center;color:var(--sub);font-size:14px;padding:20px 0">No sleep logged yet. Log last night above! 😴</div>'}`;
+}
+
+function renderPlanPanel(){
+  const wd=lW();const wlogs=wd.logs;
+  const latest=wlogs.length?wlogs[wlogs.length-1].w:wd.startW;
+  const lost=Math.max(0,(wd.startW||0)-(latest||0));
+  const curPhaseIdx=getCurrentPhase(lost);
+  const el=document.getElementById('planresults');if(!el)return;
+  el.innerHTML=PROGRAM.map((ph,i)=>{
+    const isActive=i===curPhaseIdx;const isDone=lost>=ph.range[1];
+    return`<div style="margin-bottom:14px">
+      <div style="border:2px solid ${isActive?ph.color:isDone?ph.color+'60':'var(--border)'};border-radius:16px;overflow:hidden">
+        <div style="background:${ph.color};padding:12px 16px;display:flex;align-items:center;gap:10px">
+          <span style="font-size:26px">${isDone?'✅':ph.emoji}</span>
+          <div style="flex:1"><div style="font-weight:800;font-size:14px;color:#fff">Phase ${i+1}: ${ph.title}</div>
+            <div style="font-size:12px;color:rgba(255,255,255,.85)">Lose lbs ${ph.range[0]}–${ph.range[1]} · ${isDone?'Complete ✓':isActive?'Active now':'Upcoming'}</div></div>
+          ${isActive?`<span style="background:rgba(255,255,255,.25);color:#fff;font-size:10px;font-weight:700;padding:3px 8px;border-radius:8px">YOU ARE HERE</span>`:''}
+        </div>
+        <div style="padding:14px 16px;background:${ph.color}08">
+          <div style="margin-bottom:12px">
+            <div style="font-size:11px;font-weight:700;color:var(--sub);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px">🥗 Food — ${ph.food.focus}</div>
+            ${ph.food.tips.map(t=>`<div style="font-size:13px;color:var(--text);padding:2px 0;line-height:1.55">→ ${t}</div>`).join('')}
+          </div>
+          <div style="margin-bottom:12px">
+            <div style="font-size:11px;font-weight:700;color:var(--sub);text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px">🏃 Exercise — ${ph.exercise.title}</div>
+            <div style="font-size:12px;font-weight:700;color:${ph.color};margin-bottom:6px">${ph.exercise.plan} · ${ph.exercise.days} days/wk</div>
+            ${ph.exercise.steps.map((s,si)=>`<div style="font-size:13px;color:var(--text);padding:2px 0;line-height:1.55"><span style="font-weight:700;color:${ph.color}">${si+1}.</span> ${s}</div>`).join('')}
+          </div>
+          <div>
+            <div style="font-size:11px;font-weight:700;color:var(--sub);text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px">😴 Sleep — Target ${ph.sleep.target} hrs/night</div>
+            ${ph.sleep.tips.map(t=>`<div style="font-size:13px;color:var(--text);padding:2px 0;line-height:1.55">→ ${t}</div>`).join('')}
+          </div>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+
 buildSetup();
 P=lP();
 if(P){
