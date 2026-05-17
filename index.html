@@ -201,6 +201,26 @@ textarea{resize:none;min-height:110px}
 .swap-tip.on{display:block;animation:fadeUp .2s ease}
 .swap-tip-actions{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap}
 .tip-action-btn{background:var(--al);color:var(--a);border:1px solid var(--a)30;border-radius:8px;padding:4px 10px;font-size:12px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif}
+/* ── PREP PANEL ─────────────────────────────────────────────────────── */
+.prep-btn{
+  background:none;border:none;color:var(--a);font-size:12px;font-weight:700;
+  cursor:pointer;padding:0;font-family:'DM Sans',sans-serif;white-space:nowrap;
+}
+.prep-panel{
+  background:#f8fbff;border:1px solid #c0d8f0;border-radius:0 0 12px 12px;
+  padding:12px 14px;display:none;
+}
+.prep-panel.on{display:block;animation:fadeUp .2s ease}
+.prep-step{
+  display:flex;gap:10px;font-size:13px;color:#1a3050;line-height:1.55;
+  padding:4px 0;border-bottom:1px solid #e8f0f8;
+}
+.prep-step:last-child{border-bottom:none;padding-bottom:0}
+.prep-step span{
+  background:#1a7aaa;color:#fff;border-radius:50%;
+  min-width:20px;height:20px;display:flex;align-items:center;justify-content:center;
+  font-size:11px;font-weight:700;flex-shrink:0;margin-top:1px;
+}
 .pill{
   display:inline-flex;align-items:center;gap:4px;
   border-radius:20px;padding:4px 11px;font-size:12px;font-weight:600;
@@ -763,10 +783,18 @@ const DIETS={
     T:{cal:2000,p:150,c:25,f:155},
     tip:'💡 <strong>Keto tip:</strong> If you feel fatigued, you likely need more electrolytes — especially sodium, potassium, and magnesium. Add salt to meals and eat more avocados.',
     days:[
-      {breakfast:{n:'Bacon & Egg Cups',cal:320,p:24,c:2,f:26},lunch:{n:'BLT Lettuce Wraps',cal:380,p:28,c:8,f:28},dinner:{n:'Seared Salmon + Asparagus',cal:520,p:42,c:8,f:35},snack:{n:'Cheese Crisps + Almonds',cal:280,p:14,c:4,f:24}},
-      {breakfast:{n:'Avocado Scrambled Eggs',cal:380,p:22,c:4,f:32},lunch:{n:'Chicken Cauliflower Bowl',cal:420,p:38,c:12,f:24},dinner:{n:'Ribeye + Roasted Broccoli',cal:680,p:52,c:6,f:52},snack:{n:'Celery + Almond Butter',cal:200,p:6,c:8,f:18}},
-      {breakfast:{n:'Smoked Salmon & Cream Cheese',cal:340,p:28,c:2,f:26},lunch:{n:'Tuna-Stuffed Avocado',cal:360,p:32,c:6,f:24},dinner:{n:'Ground Beef Zucchini Boats',cal:540,p:42,c:10,f:38},snack:{n:'Hard-Boiled Eggs + Pickles',cal:160,p:12,c:2,f:10}},
-      {breakfast:{n:'Coconut Chia Pudding',cal:310,p:16,c:8,f:24},lunch:{n:'Keto Cobb Salad',cal:480,p:36,c:8,f:36},dinner:{n:'Pork Belly + Cauliflower Mash',cal:620,p:44,c:8,f:48},snack:{n:'Macadamia + Dark Chocolate',cal:320,p:4,c:10,f:30}},
+      {
+        breakfast:{n:'Bacon & Egg Cups',cal:320,p:24,c:2,f:26,prep:['Line a muffin tin with bacon slices pressed into each cup. Preheat oven to 375°F.','Crack one egg into each bacon cup. Season with salt and pepper.','Bake 15–18 min until eggs are just set. Cool 2 min before popping out.']},
+        lunch:{n:'BLT Lettuce Wraps',cal:380,p:28,c:8,f:28,prep:['Cook bacon in a pan over medium heat 6–8 min until crispy. Drain on paper towel.','Wash and dry large romaine or butter lettuce leaves to use as wraps.','Layer bacon, sliced tomato, and a spread of mayo into each leaf. Roll and eat.']},
+        dinner:{n:'Seared Salmon + Asparagus',cal:520,p:42,c:8,f:35,prep:['Pat salmon dry and season with salt, pepper, and lemon juice. Toss asparagus in olive oil and salt.','Heat pan to medium-high. Place salmon skin-side down and press gently. Cook 4 min without moving.','Flip salmon and cook 2–3 min more. Add asparagus to the same pan or roast at 400°F for 12 min.']},
+        snack:{n:'Cheese Crisps + Almonds',cal:280,p:14,c:4,f:24,prep:['Place small mounds of shredded parmesan on a parchment-lined baking sheet.','Bake at 375°F for 5–7 min until golden. Let cool completely — they crisp as they cool.','Serve with a small handful of raw almonds.']},
+      },
+      {
+        breakfast:{n:'Avocado Scrambled Eggs',cal:380,p:22,c:4,f:32,prep:['Whisk 3 eggs with a pinch of salt and pepper until smooth.','Melt 1 tsp butter in a pan over low-medium heat. Add eggs and stir slowly and constantly with a spatula.','Remove from heat just before fully set — they finish in the pan. Serve with sliced avocado.']},
+        lunch:{n:'Chicken Cauliflower Bowl',cal:420,p:38,c:12,f:24,prep:['Season chicken thighs with salt, garlic powder, and paprika. Pan-fry over medium heat 6–7 min per side.','Pulse raw cauliflower in a food processor until rice-sized. Sauté in a dry pan over medium heat 5 min.','Slice chicken and serve over cauliflower rice. Drizzle with olive oil.']},
+        dinner:{n:'Ribeye + Roasted Broccoli',cal:680,p:52,c:6,f:52,prep:['Season ribeye generously with salt and pepper. Let it sit at room temp 20 min before cooking.','Heat cast iron pan until very hot. Sear steak 3–4 min per side. Rest on a board 5 min before slicing.','Toss broccoli in olive oil and salt. Roast at 425°F for 18–20 min until edges are slightly charred.']},
+        snack:{n:'Celery + Almond Butter',cal:200,p:6,c:8,f:18,prep:['Cut celery stalks into 3-inch pieces.','Serve with 2 tbsp almond butter for dipping. No cooking needed.']},
+      },
     ]
   },
   vegan:{
@@ -777,10 +805,18 @@ const DIETS={
     T:{cal:1900,p:85,c:240,f:65},
     tip:'💡 <strong>Vegan tip:</strong> Pair iron-rich foods (lentils, spinach) with Vitamin C (bell peppers, citrus) to significantly boost iron absorption — the body absorbs plant iron 3× better with Vitamin C.',
     days:[
-      {breakfast:{n:'Overnight Oats + Chia + Blueberries',cal:380,p:14,c:58,f:12},lunch:{n:'Lentil & Spinach Soup',cal:340,p:20,c:52,f:6},dinner:{n:'Chickpea Tikka Masala + Rice',cal:520,p:22,c:78,f:14},snack:{n:'Apple + Almond Butter',cal:240,p:7,c:32,f:12}},
-      {breakfast:{n:'Smoothie Bowl + Blueberry Granola',cal:420,p:12,c:70,f:14},lunch:{n:'Black Bean Tacos (corn tortilla)',cal:380,p:18,c:62,f:8},dinner:{n:'Tofu Stir-Fry + Quinoa',cal:480,p:28,c:58,f:16},snack:{n:'Edamame + Rice Cakes',cal:200,p:10,c:30,f:4}},
-      {breakfast:{n:'Tofu Scramble + Whole Grain Toast',cal:360,p:22,c:40,f:14},lunch:{n:'Buddha Bowl + Tahini Dressing',cal:440,p:18,c:62,f:18},dinner:{n:'Red Lentil Dal + Whole Grain Naan',cal:500,p:24,c:72,f:12},snack:{n:'Hummus + Veggie Sticks',cal:180,p:8,c:24,f:8}},
-      {breakfast:{n:'Banana Protein Pancakes',cal:400,p:18,c:62,f:10},lunch:{n:'Pea & Mint Soup + Bread',cal:320,p:16,c:44,f:8},dinner:{n:'Mushroom Walnut Bolognese + Pasta',cal:520,p:20,c:82,f:14},snack:{n:'Mixed Nuts + Dried Mango',cal:260,p:7,c:32,f:14}},
+      {
+        breakfast:{n:'Overnight Oats + Chia + Blueberries',cal:380,p:14,c:58,f:12,prep:['In a jar, combine ½ cup oats, 1 tbsp chia seeds, and 1 cup plant milk. Stir well.','Refrigerate overnight (or at least 4 hours). The oats absorb the liquid and thicken.','In the morning, stir and top with fresh or frozen blueberries. Add a drizzle of maple syrup if desired.']},
+        lunch:{n:'Lentil & Spinach Soup',cal:340,p:20,c:52,f:6,prep:['Sauté diced onion and 2 garlic cloves in olive oil over medium heat for 3 min.','Add 1 cup rinsed lentils and 4 cups vegetable broth. Bring to a boil, then simmer 25 min.','Stir in 2 large handfuls of spinach in the last 2 min. Season with salt, lemon juice, and cumin.']},
+        dinner:{n:'Chickpea Tikka Masala + Rice',cal:520,p:22,c:78,f:14,prep:['Cook rice per package. Sauté diced onion in oil 4 min, add 1 tbsp tikka spice blend and stir 1 min.','Add a can of crushed tomatoes and a can of drained chickpeas. Simmer 20 min until sauce thickens.','Stir in coconut milk or plant cream for richness. Serve over rice.']},
+        snack:{n:'Apple + Almond Butter',cal:240,p:7,c:32,f:12,prep:['Slice one medium apple into wedges.','Serve with 2 tbsp almond butter for dipping. No cooking needed.']},
+      },
+      {
+        breakfast:{n:'Smoothie Bowl + Blueberry Granola',cal:420,p:12,c:70,f:14,prep:['Blend 1 frozen banana and 1 cup frozen blueberries with a small splash of plant milk until very thick.','Pour into a bowl — it should be thick enough to hold toppings.','Top with granola, fresh fruit, and seeds. Eat immediately before it melts.']},
+        lunch:{n:'Black Bean Tacos (corn tortilla)',cal:380,p:18,c:62,f:8,prep:['Warm canned black beans in a pan with cumin, lime juice, and a pinch of salt for 3 min.','Heat corn tortillas in a dry pan 30 sec per side until warm and slightly charred.','Fill with beans, fresh salsa, sliced avocado, and any greens you have.']},
+        dinner:{n:'Tofu Stir-Fry + Quinoa',cal:480,p:28,c:58,f:16,prep:['Press tofu between paper towels 10 min to remove moisture. Cut into cubes. Rinse quinoa and cook 15 min in 2x water.','Pan-fry tofu in oil over medium-high heat 5 min per side until golden. Remove.','In same pan stir-fry vegetables 4 min, add tofu back, splash with tamari and sesame oil. Serve over quinoa.']},
+        snack:{n:'Edamame + Rice Cakes',cal:200,p:10,c:30,f:4,prep:['Microwave frozen edamame in the bag for 4 min. Alternatively boil in salted water 3 min.','Sprinkle with sea salt and a squeeze of lemon. Serve with plain rice cakes.']},
+      },
     ]
   },
   mediterranean:{
@@ -791,10 +827,18 @@ const DIETS={
     T:{cal:2100,p:120,c:260,f:80},
     tip:'💡 <strong>Med tip:</strong> Use extra virgin olive oil as your primary fat — it contains oleocanthal, which inhibits inflammation the same way as ibuprofen (Nature, 2005). 2 tbsp = a low dose NSAID.',
     days:[
-      {breakfast:{n:'Greek Yogurt + Honey + Walnuts',cal:340,p:20,c:38,f:14},lunch:{n:'Grilled Chicken Greek Salad + EVOO',cal:420,p:38,c:18,f:22},dinner:{n:'Baked Salmon + Roasted Veg + Quinoa',cal:580,p:44,c:52,f:22},snack:{n:'Hummus + Whole Grain Pita + Olives',cal:320,p:10,c:38,f:16}},
-      {breakfast:{n:'Oat Porridge + Berries + Honey',cal:320,p:12,c:58,f:6},lunch:{n:'Lentil Soup + Crusty Bread + EVOO',cal:400,p:22,c:62,f:10},dinner:{n:'Lamb Kebabs + Tzatziki + Tabbouleh',cal:560,p:42,c:38,f:26},snack:{n:'Almonds + Dried Figs',cal:280,p:8,c:32,f:16}},
-      {breakfast:{n:'Avocado Toast + Poached Egg + EVOO',cal:380,p:18,c:32,f:22},lunch:{n:'Tuna Niçoise Salad',cal:440,p:38,c:28,f:20},dinner:{n:'Shrimp Saganaki + Brown Rice',cal:500,p:36,c:48,f:16},snack:{n:'Fresh Fruit + Pistachios',cal:220,p:6,c:28,f:10}},
-      {breakfast:{n:'Shakshuka (tomato baked eggs)',cal:360,p:22,c:24,f:20},lunch:{n:'Falafel Wrap + Tahini',cal:460,p:18,c:58,f:20},dinner:{n:'Whole Branzino + Lemon Herb Veg',cal:540,p:46,c:22,f:28},snack:{n:'Labneh + Cucumber + Mint',cal:180,p:10,c:12,f:10}},
+      {
+        breakfast:{n:'Greek Yogurt + Honey + Walnuts',cal:340,p:20,c:38,f:14,prep:['Spoon 1 cup plain Greek yogurt into a bowl.','Drizzle with 1 tsp raw honey. Top with a small handful of crushed walnuts.','Optional: add a few fresh berries or a pinch of cinnamon. No cooking needed.']},
+        lunch:{n:'Grilled Chicken Greek Salad',cal:420,p:38,c:18,f:22,prep:['Season chicken breast with salt, pepper, oregano, and a squeeze of lemon. Grill or pan-fry 6 min per side.','While chicken rests, chop tomatoes, cucumber, red onion, and olives into a bowl. Add crumbled feta.','Slice chicken and lay over salad. Drizzle generously with extra virgin olive oil.']},
+        dinner:{n:'Baked Salmon + Roasted Veg + Quinoa',cal:580,p:44,c:52,f:22,prep:['Rinse quinoa and cook in 2x water, simmering 15 min covered. Fluff with a fork.','Toss vegetables (zucchini, peppers, onion) in olive oil, salt, and herbs. Spread on a baking sheet.','Place salmon on same sheet. Bake everything at 400°F for 15 min until salmon flakes easily.']},
+        snack:{n:'Hummus + Whole Grain Pita + Olives',cal:320,p:10,c:38,f:16,prep:['Warm pita in a dry pan 30 sec per side, or in a toaster. Cut into wedges.','Serve with store-bought or homemade hummus and a small bowl of olives. No cooking needed.']},
+      },
+      {
+        breakfast:{n:'Oat Porridge + Berries + Honey',cal:320,p:12,c:58,f:6,prep:['Bring 1 cup water or milk to a boil. Add ½ cup rolled oats and reduce to a simmer.','Cook 5 min, stirring occasionally, until oats are creamy. Add a pinch of salt.','Pour into a bowl and top with fresh berries and a small drizzle of honey.']},
+        lunch:{n:'Lentil Soup + Crusty Bread',cal:400,p:22,c:62,f:10,prep:['Sauté onion, carrot, and celery in olive oil 5 min. Add 2 garlic cloves and cook 1 min more.','Add 1 cup lentils and 4 cups stock. Simmer 30 min until lentils are very soft.','Season with lemon juice, cumin, and salt. Serve with a slice of crusty whole grain bread.']},
+        dinner:{n:'Lamb Kebabs + Tzatziki + Tabbouleh',cal:560,p:42,c:38,f:26,prep:['Mix ground lamb with garlic, cumin, paprika, salt. Form onto skewers. Grill or broil 8–10 min turning.','Make tzatziki: grate cucumber, squeeze dry, mix with Greek yogurt, garlic, dill, and lemon.','Prepare tabbouleh: cook bulgur, cool, toss with parsley, tomato, mint, olive oil, and lemon.']},
+        snack:{n:'Almonds + Dried Figs',cal:280,p:8,c:32,f:16,prep:['Portion 10–12 raw almonds and 2–3 dried figs.','No prep needed. Eat together as a sweet and savory combo.']},
+      },
     ]
   },
   paleo:{
@@ -805,10 +849,18 @@ const DIETS={
     T:{cal:2200,p:165,c:110,f:115},
     tip:'💡 <strong>Paleo tip:</strong> Grass-fed beef has up to 5× more anti-inflammatory omega-3 fatty acids than grain-fed. Choose grass-fed when possible — it changes the fatty acid profile dramatically.',
     days:[
-      {breakfast:{n:'Sweet Potato Hash + Eggs + Bacon',cal:480,p:28,c:36,f:24},lunch:{n:'Grilled Chicken Lettuce Wraps + Guac',cal:420,p:42,c:14,f:22},dinner:{n:'Grass-Fed Steak + Roasted Beets',cal:620,p:54,c:22,f:38},snack:{n:'Mixed Berries + Coconut Flakes',cal:180,p:3,c:28,f:10}},
-      {breakfast:{n:'Banana Almond Butter Smoothie',cal:380,p:14,c:44,f:18},lunch:{n:'Salmon Patties + Steamed Broccoli',cal:460,p:44,c:12,f:26},dinner:{n:'Pork Tenderloin + Roasted Root Veg',cal:560,p:50,c:32,f:24},snack:{n:'Walnuts + Dried Apricots',cal:220,p:6,c:24,f:14}},
-      {breakfast:{n:'Egg Frittata + Spinach + Mushrooms',cal:360,p:26,c:8,f:26},lunch:{n:'Turkey & Avocado Collard Wraps',cal:400,p:38,c:14,f:22},dinner:{n:'Baked Wild Salmon + Asparagus',cal:520,p:48,c:10,f:30},snack:{n:'Apple + Almond Butter',cal:240,p:6,c:30,f:14}},
-      {breakfast:{n:'Paleo Pancakes (almond + banana)',cal:360,p:16,c:42,f:16},lunch:{n:'Grilled Shrimp + Cauliflower Rice Bowl',cal:380,p:36,c:18,f:16},dinner:{n:'Lamb Chops + Roasted Garlic Brussels',cal:640,p:52,c:18,f:42},snack:{n:'Beef Jerky + Macadamia Nuts',cal:280,p:18,c:8,f:20}},
+      {
+        breakfast:{n:'Sweet Potato Hash + Eggs + Bacon',cal:480,p:28,c:36,f:24,prep:['Dice 1 medium sweet potato into small cubes. Cook in a pan with oil over medium heat 10–12 min, stirring, until soft.','In a separate pan, cook bacon until crispy. Set aside.','Make a well in the sweet potato, crack in 2 eggs, and scramble or fry to your liking. Serve with bacon.']},
+        lunch:{n:'Grilled Chicken Lettuce Wraps + Guac',cal:420,p:42,c:14,f:22,prep:['Season chicken breast with salt, pepper, garlic powder. Grill or pan-fry over medium heat 6 min per side.','Rest 3 min then slice thin. Mash an avocado with lime juice, salt, and a pinch of cumin for the guac.','Place chicken strips in large romaine leaves. Top with guac and any fresh vegetables.']},
+        dinner:{n:'Grass-Fed Steak + Roasted Beets',cal:620,p:54,c:22,f:38,prep:['Cut beets into wedges, toss in olive oil and salt. Roast at 400°F for 30 min until tender.','Season steak generously with salt and pepper. Rest at room temp 15 min before cooking.','Sear steak in a hot cast iron pan 3–4 min per side. Rest 5 min before slicing. Serve with beets.']},
+        snack:{n:'Mixed Berries + Coconut Flakes',cal:180,p:3,c:28,f:10,prep:['Combine fresh or thawed frozen berries in a bowl.','Top with a tablespoon of unsweetened toasted coconut flakes. No cooking needed.']},
+      },
+      {
+        breakfast:{n:'Banana Almond Butter Smoothie',cal:380,p:14,c:44,f:18,prep:['Add 1 frozen banana, 2 tbsp almond butter, and 1 cup unsweetened almond milk to a blender.','Toss in a handful of ice. Blend on high 30–45 sec until smooth and creamy.','Drink immediately. Add a scoop of collagen or protein powder to boost protein if desired.']},
+        lunch:{n:'Salmon Patties + Steamed Broccoli',cal:460,p:44,c:12,f:26,prep:['Mix 1 can of drained salmon with 1 egg, parsley, salt, and garlic powder. Form into 2 patties.','Pan-fry in oil over medium heat 3–4 min per side until golden and firm.','Steam broccoli in a pot with 1 inch of water, covered, for 5 min. Serve alongside.']},
+        dinner:{n:'Pork Tenderloin + Roasted Root Veg',cal:560,p:50,c:32,f:24,prep:['Chop carrots, parsnips, and sweet potato into chunks. Toss with oil and salt. Spread on a baking sheet.','Season pork tenderloin all over with salt, garlic, and rosemary. Sear all sides in an oven-safe pan 3 min.','Add vegetables and roast everything at 400°F for 20–25 min until pork reaches 145°F. Rest 5 min.']},
+        snack:{n:'Walnuts + Dried Apricots',cal:220,p:6,c:24,f:14,prep:['Portion 10 walnut halves and 3–4 unsweetened dried apricots.','No prep needed. A natural sweet and crunchy paleo snack.']},
+      },
     ]
   },
   diabetic:{
@@ -819,10 +871,18 @@ const DIETS={
     T:{cal:1600,p:100,c:130,f:60},
     tip:'💡 <strong>Diabetic tip:</strong> Ceylon cinnamon (not Cassia) reduces fasting glucose by 18–29% (Diabetes Care, 2003). Add ½ tsp to your oatmeal or yogurt daily for cumulative effect.',
     days:[
-      {breakfast:{n:'Steel-Cut Oats + Cinnamon + Almonds',cal:320,p:14,c:42,f:12},lunch:{n:'Lentil & Kale Soup + Whole Grain Roll',cal:340,p:20,c:44,f:8},dinner:{n:'Baked Cod + Broccoli + Quinoa',cal:420,p:38,c:38,f:12},snack:{n:'Greek Yogurt (plain) + Blueberries',cal:180,p:14,c:22,f:4}},
-      {breakfast:{n:'Veggie Egg White Omelette',cal:240,p:22,c:12,f:8},lunch:{n:'Chickpea + Spinach Salad + ACV Dressing',cal:320,p:16,c:40,f:10},dinner:{n:'Turkey Meatballs + Zucchini Noodles',cal:380,p:38,c:28,f:14},snack:{n:'Apple + 1 tsp Almond Butter',cal:180,p:4,c:28,f:8}},
-      {breakfast:{n:'Chia Pudding + Tart Cherry + Walnuts',cal:300,p:12,c:34,f:14},lunch:{n:'Grilled Chicken + Mixed Greens + EVOO',cal:360,p:36,c:14,f:16},dinner:{n:'Salmon + Roasted Asparagus + Barley',cal:420,p:36,c:36,f:14},snack:{n:'Celery + Hummus',cal:140,p:6,c:16,f:6}},
-      {breakfast:{n:'Avocado + Poached Egg + Spinach',cal:320,p:16,c:14,f:22},lunch:{n:'Lentil + Tomato Tabbouleh',cal:320,p:16,c:44,f:8},dinner:{n:'Lean Beef + Cauliflower Mash + Green Beans',cal:380,p:36,c:24,f:14},snack:{n:'Kiwi + Low-fat Cottage Cheese',cal:160,p:14,c:18,f:2}},
+      {
+        breakfast:{n:'Steel-Cut Oats + Cinnamon + Almonds',cal:320,p:14,c:42,f:12,prep:['Bring 1¾ cups water to a boil. Add ½ cup steel-cut oats. Reduce heat and simmer 20–25 min, stirring occasionally.','When oats are thick and creamy, remove from heat. Stir in ½ tsp Ceylon cinnamon.','Top with 8–10 chopped almonds. Do not add sugar — the cinnamon provides natural sweetness.']},
+        lunch:{n:'Grilled Chicken + Roasted Veg',cal:340,p:36,c:18,f:10,prep:['Season chicken breast with herbs, salt, and lemon. Grill or bake at 400°F for 22–25 min until 165°F internal.','Toss mixed vegetables (zucchini, peppers, onion) in 1 tsp olive oil and salt. Roast on same tray the last 20 min.','Slice chicken and serve alongside roasted veg. Drizzle with a little extra lemon juice.']},
+        dinner:{n:'Baked Cod + Broccoli + Quinoa',cal:420,p:38,c:38,f:12,prep:['Rinse quinoa. Cook in 1¼ cups water — bring to boil, cover, simmer 15 min. Fluff with fork.','Season cod fillet with salt, lemon, and herbs. Place on a parchment-lined baking sheet.','Bake cod at 400°F for 12–15 min until it flakes easily. Steam broccoli 6 min and serve alongside.']},
+        snack:{n:'Greek Yogurt (plain) + Blueberries',cal:180,p:14,c:22,f:4,prep:['Spoon plain (unsweetened) Greek yogurt into a small bowl.','Top with a handful of fresh or frozen blueberries. No sweetener needed.']},
+      },
+      {
+        breakfast:{n:'Veggie Egg White Omelette',cal:240,p:22,c:12,f:8,prep:['Dice ¼ cup each of bell pepper, spinach, and mushroom. Sauté in a non-stick pan 2 min.','Whisk 3 egg whites with a pinch of salt until slightly frothy. Pour into the pan over the vegetables.','When edges set (about 2 min), fold omelette in half. Slide onto plate and serve.']},
+        lunch:{n:'Chickpea + Spinach Salad',cal:320,p:16,c:40,f:10,prep:['Rinse and drain one can of chickpeas. Combine with fresh spinach, sliced cucumber, and red onion in a bowl.','Make dressing: 1 tbsp olive oil, 1 tbsp apple cider vinegar, salt, and pepper. Whisk together.','Toss salad with dressing just before eating to keep greens crisp.']},
+        dinner:{n:'Turkey Meatballs + Zucchini Noodles',cal:380,p:38,c:28,f:14,prep:['Mix ground turkey with garlic, parsley, salt, and pepper. Roll into golf-ball sized portions.','Bake meatballs at 375°F for 20 min until cooked through and slightly browned.','Spiralize 2 zucchinis into noodles (or use a vegetable peeler). Sauté in pan 2–3 min. Top with meatballs and marinara.']},
+        snack:{n:'Apple + Almond Butter',cal:180,p:4,c:28,f:8,prep:['Slice one small apple into wedges.','Serve with 1 tsp almond butter. The fiber in the apple slows sugar absorption.']},
+      },
     ]
   },
   carnivore:{
@@ -833,10 +893,18 @@ const DIETS={
     T:{cal:2400,p:200,c:0,f:180},
     tip:'💡 <strong>Carnivore tip:</strong> Organ meats — especially beef liver — are the most nutrient-dense food on earth. Just 2oz of liver weekly covers your B12, Vitamin A, and folate requirements completely.',
     days:[
-      {breakfast:{n:'Ribeye + 4 Eggs (butter-fried)',cal:720,p:62,c:0,f:52},lunch:{n:'Ground Beef Patties + Bacon',cal:580,p:52,c:0,f:42},dinner:{n:'NY Strip + Bone Broth',cal:680,p:58,c:0,f:50},snack:{n:'Hard-Boiled Eggs (3) + Cheese',cal:280,p:24,c:0,f:20}},
-      {breakfast:{n:'Salmon + Scrambled Eggs (4) + Butter',cal:640,p:58,c:0,f:46},lunch:{n:'Pork Ribs + Pork Belly',cal:700,p:50,c:0,f:56},dinner:{n:'Lamb Chops + Tallow',cal:680,p:54,c:0,f:52},snack:{n:'Beef Jerky + Hard Cheese',cal:260,p:28,c:0,f:16}},
-      {breakfast:{n:'Brisket (leftover) + Eggs (3)',cal:600,p:58,c:0,f:42},lunch:{n:'Chicken Thighs (skin-on) + Liver',cal:520,p:54,c:0,f:32},dinner:{n:'T-Bone Steak + Bone Marrow',cal:780,p:60,c:0,f:60},snack:{n:'Sardines in Olive Oil',cal:200,p:22,c:0,f:12}},
-      {breakfast:{n:'Smoked Salmon + Cream Cheese + Eggs',cal:580,p:52,c:2,f:42},lunch:{n:'Chuck Roast (slow-cooked)',cal:640,p:60,c:0,f:44},dinner:{n:'Wagyu Beef + Duck Fat',cal:820,p:58,c:0,f:66},snack:{n:'Pork Rinds + Bone Broth',cal:220,p:24,c:0,f:12}},
+      {
+        breakfast:{n:'Ribeye + Fried Eggs',cal:720,p:62,c:0,f:52,prep:['Season ribeye generously with salt. Heat cast iron pan until very hot — add no oil, the fat will render.','Sear steak 3–4 min per side for medium-rare. Rest on a board 3–4 min before eating.','In the same pan (still hot), fry 4 eggs in the rendered beef fat. Season with salt.']},
+        lunch:{n:'Ground Beef Patties + Bacon',cal:580,p:52,c:0,f:42,prep:['Season 80/20 ground beef with salt. Form into two ½-inch thick patties. Do not overwork the meat.','Cook patties in a cast iron pan over medium-high heat 4–5 min per side without pressing down.','Cook bacon in the same pan alongside. Serve patties with bacon — no bun needed.']},
+        dinner:{n:'NY Strip + Bone Broth',cal:680,p:58,c:0,f:50,prep:['Season strip steak well with coarse salt. Let it sit at room temp 15 min.','Heat cast iron until smoking. Sear steak 4 min per side for medium. Rest on a board 5 min.','Warm 1 cup bone broth in a mug to sip alongside. Season broth with salt if needed.']},
+        snack:{n:'Hard-Boiled Eggs + Cheese',cal:280,p:24,c:0,f:20,prep:['Place cold eggs in a pot. Cover with cold water. Bring to a boil, then cook 10 min on medium.','Transfer eggs to ice water for 5 min to stop cooking. Peel under cold running water.','Slice hard cheese and serve alongside. A clean, zero-prep animal protein snack.']},
+      },
+      {
+        breakfast:{n:'Salmon + Scrambled Eggs',cal:640,p:58,c:0,f:46,prep:['Melt 1 tbsp butter in a pan over medium heat. Season salmon fillet with salt.','Cook salmon 4 min per side until flesh is opaque and flakes easily. Remove from pan.','In remaining butter, add 4 whisked eggs. Stir constantly over low-medium heat until just set. Season with salt.']},
+        lunch:{n:'Chicken Thighs + Bacon',cal:580,p:50,c:0,f:44,prep:['Season skin-on chicken thighs generously with salt. Place skin-side down in a cold pan.','Turn heat to medium. Cook 8–10 min until skin is deeply golden and crispy. Flip and cook 5 min more.','Cook bacon in a separate pan. Serve both together — eat the crispy chicken skin.']},
+        dinner:{n:'Lamb Chops + Tallow',cal:680,p:54,c:0,f:52,prep:['Season lamb chops with salt and press in a garlic clove on each side.','Melt 1 tbsp beef tallow or butter in a cast iron pan over high heat until shimmering.','Sear chops 3–4 min per side for medium-rare. Rest 3 min. Pour the pan drippings over before serving.']},
+        snack:{n:'Beef Jerky + Hard Cheese',cal:260,p:28,c:0,f:16,prep:['Slice 2 oz of aged hard cheese (cheddar, gouda, or parmesan work well).','Serve alongside beef jerky. Look for jerky with no sugar or soy in the ingredients.']},
+      },
     ]
   },
 };
@@ -974,7 +1042,7 @@ function renderToday(){
   }
   // Consumed macros (use selected meals)
   const selForMacros=lSel();
-  const defIdxM=new Date().getDay()%4;
+  const defIdxM=new Date().getDay()%2;
   let cal=0,p=0,c=0,f=0;
   SLOTS.forEach(s=>{
     if(CK[s.k]){
@@ -995,7 +1063,7 @@ function renderToday(){
   }).join('');
   // Meal cards with swap + risk + allergy badges
   const sel=lSel();
-  const defIdx=new Date().getDay()%4;
+  const defIdx=new Date().getDay()%2;
   document.getElementById('mcards').innerHTML=SLOTS.map(s=>{
     const idx=sel[s.k]!==undefined?sel[s.k]:defIdx;
     const opts=d.days.map(day=>day[s.k]);
@@ -1019,6 +1087,12 @@ function renderToday(){
         </div>
       </div>`:'';
 
+    const prepHTML=m.prep&&m.prep.length?`
+      <div class="prep-panel" id="prep_${s.k}">
+        <div style="font-size:11px;font-weight:700;color:var(--a);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px">How to prepare</div>
+        ${m.prep.map((step,i)=>`<div class="prep-step"><span>${i+1}</span><div>${step}</div></div>`).join('')}
+      </div>`:'';
+
     return`<div class="meal-wrap">
       <div class="meal-card${done?' done':''}" onclick="tog('${s.k}')">
         <div class="mic">${s.ic}</div>
@@ -1026,7 +1100,10 @@ function renderToday(){
           <div class="mlbl">${s.lb}</div>
           <div class="mnm">${m.n}</div>
           <div class="mmac">${m.cal} kcal · ${m.p}g protein · ${m.c}g carbs · ${m.f}g fat</div>
-          <div class="meal-alt-idx" style="font-size:10px;color:var(--sub);margin-top:2px">Option ${idx+1} of ${opts.length}${hasTip?' · <span style="color:#d97706">tap badge for tips</span>':''}</div>
+          <div style="display:flex;align-items:center;gap:8px;margin-top:4px">
+            <div style="font-size:10px;color:var(--sub)">Option ${idx+1} of ${opts.length}${hasTip?' · <span style="color:#d97706">tap badge for tips</span>':''}</div>
+            ${m.prep?`<button class="prep-btn" onclick="event.stopPropagation();togglePrep('${s.k}')">📋 How to prep</button>`:''}
+          </div>
         </div>
         <button class="swap-btn" onclick="event.stopPropagation();swapMeal('${s.k}')">↻ Swap</button>
         <button class="chk-btn" onclick="event.stopPropagation();tog('${s.k}')">
@@ -1035,6 +1112,7 @@ function renderToday(){
       </div>
       ${tagHTML?`<div class="meal-tags">${tagHTML}</div>`:''}
       ${tipHTML}
+      ${prepHTML}
     </div>`;
   }).join('');
   // Health tip
@@ -1046,13 +1124,18 @@ function tog(k){CK[k]=!CK[k];sC();renderToday()}
 function swapMeal(slot){
   const d=DIETS[P.diet];
   const sel=lSel();
-  const defIdx=new Date().getDay()%4;
+  const defIdx=new Date().getDay()%2;
   const cur=sel[slot]!==undefined?sel[slot]:defIdx;
-  sel[slot]=(cur+1)%4;
+  sel[slot]=(cur+1)%2;
   sSel(sel);
   CK[slot]=false;
   sC();
   renderToday();
+}
+
+function togglePrep(slot){
+  const el=document.getElementById('prep_'+slot);
+  if(el)el.classList.toggle('on');
 }
 
 // ── RISK & ALLERGY ENGINE ─────────────────────────────────────────────────────
