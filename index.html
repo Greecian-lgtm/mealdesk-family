@@ -237,6 +237,23 @@ textarea{resize:none;min-height:110px}
   padding:14px 16px;font-size:14px;color:#8a6a20;line-height:1.55;
 }
 
+/* ── FOOD GUIDE ─────────────────────────────────────────────────── */
+.fg-cat-btn{
+  flex-shrink:0;background:#fff;border:1.5px solid var(--border);
+  border-radius:20px;padding:5px 13px;font-size:12px;font-weight:700;
+  color:var(--sub);cursor:pointer;white-space:nowrap;
+  font-family:'DM Sans',sans-serif;transition:all .2s;
+}
+.fg-cat-btn.on{background:var(--al);border-color:var(--a);color:var(--a)}
+.fg-chip{
+  background:var(--bg);border:1.5px solid var(--border);border-radius:20px;
+  padding:5px 12px;font-size:13px;font-weight:500;color:var(--text);
+  cursor:pointer;transition:all .15s;user-select:none;
+  font-family:'DM Sans',sans-serif;
+}
+.fg-chip:active{transform:scale(.95)}
+.fg-chip.added{background:var(--al);border-color:var(--a);color:var(--a)}
+
 /* ── PROFILE ────────────────────────────────────────────────────── */
 .avatar-wrap{font-size:52px;cursor:pointer;line-height:1;user-select:none}
 .flabel{font-size:12px;font-weight:700;color:var(--sub);text-transform:uppercase;letter-spacing:.8px;margin-bottom:7px;margin-top:14px;display:block}
@@ -449,6 +466,16 @@ textarea{resize:none;min-height:110px}
           <input type="text" id="pantryinput" placeholder="e.g. chicken, garlic, spinach…" maxlength="40" style="flex:1;font-size:14px;padding:10px 14px" onkeydown="if(event.key==='Enter'){addPantryItem();event.preventDefault()}">
           <button onclick="addPantryItem()" style="background:var(--a);color:#fff;border:none;border-radius:12px;padding:0 16px;font-size:20px;cursor:pointer;flex-shrink:0">+</button>
         </div>
+      </div>
+
+      <!-- Food Guide -->
+      <div class="card" id="foodguidecard">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+          <div style="font-size:11px;font-weight:700;color:var(--sub);text-transform:uppercase;letter-spacing:.8px" id="fgtitle">🛒 Approved Foods</div>
+          <span style="font-size:11px;color:var(--sub)">Tap to add to pantry</span>
+        </div>
+        <div id="fgcats" style="display:flex;gap:6px;overflow-x:auto;padding-bottom:8px;margin-bottom:10px;scrollbar-width:none;-webkit-overflow-scrolling:touch"></div>
+        <div id="fgitems" style="display:flex;flex-wrap:wrap;gap:6px;min-height:32px"></div>
       </div>
 
       <!-- Scan -->
@@ -677,6 +704,56 @@ const ALLERGENS={
   nightshade:{lb:'Nightshades',em:'🍅',keys:['tomato','pepper','eggplant','shakshuka','tikka','masala']},
 };
 
+const FOOD_GUIDE={
+  keto:{
+    '🍓 Fruits':      ['Avocado','Blueberries','Blackberries','Raspberries','Strawberries','Lemon','Lime'],
+    '🥦 Vegetables':  ['Spinach','Kale','Arugula','Zucchini','Broccoli','Cauliflower','Asparagus','Brussels Sprouts','Cucumber','Cabbage','Celery','Mushrooms'],
+    '🍗 Proteins':    ['Eggs','Salmon','Tuna','Sardines','Chicken Thighs','Ground Beef','Ribeye','Pork Belly','Bacon','Shrimp','Cod','Turkey'],
+    '🧀 Dairy':       ['Cheddar','Cream Cheese','Mozzarella','Parmesan','Greek Yogurt','Sour Cream','Butter','Heavy Cream'],
+    '🫒 Fats & Oils': ['Avocado Oil','Coconut Oil','Olive Oil','Ghee','MCT Oil'],
+    '🌰 Nuts & Seeds':['Almonds','Macadamia Nuts','Walnuts','Pecans','Chia Seeds','Flaxseeds','Hemp Seeds','Pumpkin Seeds'],
+  },
+  vegan:{
+    '🍎 Fruits':      ['Apples','Bananas','Blueberries','Strawberries','Mango','Oranges','Grapes','Pineapple','Peaches','Pears','Kiwi','Watermelon','Cherries','Pomegranate','Avocado'],
+    '🥦 Vegetables':  ['Spinach','Kale','Broccoli','Sweet Potato','Carrots','Bell Peppers','Tomatoes','Zucchini','Cucumber','Beets','Cauliflower','Eggplant','Corn','Green Beans','Onions','Garlic'],
+    '🫘 Proteins':    ['Lentils','Chickpeas','Black Beans','Tofu','Tempeh','Edamame','Kidney Beans','Pinto Beans','Hemp Seeds','Nutritional Yeast'],
+    '🌾 Grains':      ['Oats','Brown Rice','Quinoa','Whole Wheat Bread','Barley','Farro','Corn Tortillas','Whole Wheat Pasta','Millet'],
+    '🫒 Fats & Oils': ['Avocado','Olive Oil','Coconut Oil','Tahini','Almond Butter','Peanut Butter'],
+    '🌰 Nuts & Seeds':['Almonds','Walnuts','Cashews','Chia Seeds','Flaxseeds','Sunflower Seeds','Pumpkin Seeds','Pistachios'],
+  },
+  mediterranean:{
+    '🍎 Fruits':      ['Apples','Grapes','Figs','Oranges','Lemons','Pomegranate','Strawberries','Blueberries','Peaches','Pears','Dates','Watermelon'],
+    '🥦 Vegetables':  ['Tomatoes','Cucumbers','Spinach','Eggplant','Zucchini','Bell Peppers','Artichokes','Olives','Onions','Garlic','Kale','Arugula'],
+    '🍗 Proteins':    ['Salmon','Sardines','Tuna','Branzino','Shrimp','Chicken Breast','Lamb','Eggs','Lentils','Chickpeas'],
+    '🌾 Grains':      ['Whole Wheat Bread','Brown Rice','Quinoa','Farro','Whole Wheat Pita','Whole Wheat Pasta','Couscous','Barley','Bulgur'],
+    '🫒 Fats & Oils': ['Extra Virgin Olive Oil','Avocado','Olives','Tahini','Hummus'],
+    '🧀 Dairy':       ['Greek Yogurt','Feta Cheese','Labneh','Ricotta','Halloumi','Parmesan'],
+  },
+  paleo:{
+    '🍎 Fruits':      ['Apples','Bananas','Blueberries','Strawberries','Mango','Oranges','Grapes','Peaches','Pears','Kiwi','Watermelon','Cherries','Avocado','Coconut'],
+    '🥦 Vegetables':  ['Sweet Potato','Spinach','Kale','Broccoli','Carrots','Beets','Asparagus','Zucchini','Cauliflower','Brussels Sprouts','Onions','Garlic','Mushrooms'],
+    '🍗 Proteins':    ['Grass-Fed Beef','Salmon','Tuna','Chicken Breast','Turkey','Pork Tenderloin','Lamb','Eggs','Shrimp','Sardines','Bison','Beef Jerky'],
+    '🫒 Fats & Oils': ['Avocado','Avocado Oil','Coconut Oil','Olive Oil','Ghee','Coconut Flakes'],
+    '🌰 Nuts & Seeds':['Almonds','Walnuts','Macadamia Nuts','Pecans','Cashews','Chia Seeds','Flaxseeds','Sunflower Seeds','Pumpkin Seeds'],
+  },
+  diabetic:{
+    '🍎 Fruits':      ['Apples','Blueberries','Strawberries','Raspberries','Peaches','Pears','Cherries','Grapefruit','Kiwi','Avocado'],
+    '🥦 Vegetables':  ['Spinach','Kale','Broccoli','Cauliflower','Asparagus','Green Beans','Zucchini','Cucumber','Celery','Mushrooms','Onions','Garlic','Tomatoes'],
+    '🍗 Proteins':    ['Chicken Breast','Turkey','Salmon','Tuna','Eggs','Greek Yogurt','Lentils','Chickpeas','Tofu','Cottage Cheese','Shrimp'],
+    '🌾 Grains':      ['Steel-Cut Oats','Barley','Quinoa','Brown Rice','Whole Grain Bread','Lentil Pasta','Chickpea Pasta'],
+    '🧀 Dairy':       ['Greek Yogurt (plain)','Cottage Cheese','Mozzarella','Parmesan'],
+    '🫒 Fats & Oils': ['Olive Oil','Avocado','Flaxseeds','Chia Seeds'],
+  },
+  carnivore:{
+    '🥩 Beef':        ['Ribeye','NY Strip','T-Bone','Ground Beef','Brisket','Chuck Roast','Short Ribs','Flank Steak','Liver','Heart','Bone Marrow'],
+    '🐷 Pork':        ['Pork Belly','Bacon','Pork Ribs','Pork Tenderloin','Pork Chops','Prosciutto'],
+    '🐔 Poultry':     ['Chicken Thighs','Chicken Wings','Chicken Liver','Turkey','Duck','Eggs'],
+    '🐟 Seafood':     ['Salmon','Sardines','Tuna','Mackerel','Shrimp','Oysters','Cod','Smoked Salmon'],
+    '🧀 Dairy':       ['Butter','Ghee','Heavy Cream','Cheddar','Parmesan','Cream Cheese'],
+    '🫙 Other':       ['Bone Broth','Tallow','Duck Fat','Beef Jerky','Pork Rinds'],
+  },
+};
+
 const DIETS={
   keto:{
     n:'Ketogenic',s:'Keto',ic:'🥑',a:'#c87a10',
@@ -776,7 +853,10 @@ let chatHistory=[];
 
 // ── SECURITY ──────────────────────────────────────────────────────────────────
 const san=(s,mx=400)=>String(s||'').replace(/<[^>]*>/g,'').replace(/javascript:/gi,'').replace(/data:/gi,'').replace(/on\w+\s*=/gi,'').replace(/eval\s*\(/gi,'').slice(0,mx).trim();
-const canAPI=()=>{const n=Date.now();if(n-lastT<4000)return false;lastT=n;return true};
+const canAPI=()=>{
+  if(!P||!P.apiKey){return false;}
+  const n=Date.now();if(n-lastT<4000)return false;lastT=n;return true;
+};
 
 // ── STORAGE ───────────────────────────────────────────────────────────────────
 const lP=()=>{try{return JSON.parse(localStorage.getItem('mdf_p'))||null}catch{return null}};
@@ -1025,11 +1105,16 @@ async function aiSwap(slot,mealName){
   const btn=el.querySelector('[onclick*="aiSwap"]');
   if(btn){btn.textContent='✨ Generating…';btn.disabled=true;}
   try{
-    const res=await fetch('/api/chat',{
+    const res=await fetch('https://api.anthropic.com/v1/messages',{
       method:'POST',
-      headers:{'Content-Type':'application/json'},
+      headers:{
+        'Content-Type':'application/json',
+        'x-api-key':P.apiKey,
+        'anthropic-version':'2023-06-01',
+        'anthropic-dangerous-direct-browser-access':'true'
+      },
       body:JSON.stringify({
-        model:'claude-sonnet-4-20250514',max_tokens:400,
+        model:'claude-haiku-4-5-20251001',max_tokens:400,
         system:`You are a nutrition expert. Give a concise healthier alternative to a meal. Format: 1 sentence swap suggestion + 3 bullet point benefits. No preamble. Diet: ${d.n}. Allergies to avoid: ${allergies}. Goals: ${goals}.`,
         messages:[{role:'user',content:`Healthier swap for: "${mealName}". Keep it practical, same diet style, no allergens listed.`}]
       })
@@ -1085,18 +1170,54 @@ function usePantry(){
   }
 }
 
+// ── FOOD GUIDE ────────────────────────────────────────────────────────────────
+let fgCat='';
+function renderFoodGuide(){
+  const guide=FOOD_GUIDE[P.diet]||{};
+  const cats=Object.keys(guide);
+  if(!cats.length)return;
+  if(!fgCat||!guide[fgCat])fgCat=cats[0];
+  // Category buttons
+  const catEl=document.getElementById('fgcats');
+  if(!catEl)return;
+  catEl.innerHTML=cats.map(c=>`<button class="fg-cat-btn${c===fgCat?' on':''}" onclick="setFgCat('${c}')">${c}</button>`).join('');
+  // Food chips
+  const itemEl=document.getElementById('fgitems');
+  if(!itemEl)return;
+  const pantry=lPantry();
+  itemEl.innerHTML=(guide[fgCat]||[]).map(food=>{
+    const inP=pantry.some(p=>p.toLowerCase()===food.toLowerCase());
+    return`<button class="fg-chip${inP?' added':''}" onclick="addFoodToGuide('${food.replace(/'/g,"\\'")}',this)">${inP?'✓ ':''} ${food}</button>`;
+  }).join('');
+}
+function setFgCat(cat){fgCat=cat;renderFoodGuide()}
+function addFoodToGuide(food,btn){
+  const items=lPantry();
+  if(!items.some(p=>p.toLowerCase()===food.toLowerCase())&&items.length<40){
+    items.push(food);sPantry(items);
+  }
+  btn.classList.add('added');
+  btn.textContent='✓ '+food;
+  renderPantry();
+}
+
 // ── KITCHEN ───────────────────────────────────────────────────────────────────
 function renderKitchenMeta(){
   const d=DIETS[P.diet];
   const el=document.getElementById('kdb');
   if(el)el.textContent=`${d.ic} ${d.n} filter`;
-  // Hide the "no key" warning — AI runs server-side
   const nk=document.getElementById('nokey');const kb=document.getElementById('kbtn');
-  if(nk)nk.style.display='none';
-  if(kb)kb.style.display='block';
+  if(P.apiKey){
+    if(nk)nk.style.display='none';
+    if(kb)kb.style.display='block';
+  }else{
+    if(nk)nk.style.display='block';
+    if(kb)kb.style.display='none';
+  }
   const inp=document.getElementById('kinput');
   if(inp)inp.oninput=()=>{document.getElementById('kcc').textContent=`${inp.value.length} / 400`};
   renderPantry();
+  renderFoodGuide();
 }
 
 async function doScan(){
@@ -1110,12 +1231,17 @@ async function doScan(){
   document.getElementById('ld').style.display='block';
   document.getElementById('kres').innerHTML='';
   try{
-    const res=await fetch('/api/chat',{
+    const res=await fetch('https://api.anthropic.com/v1/messages',{
       method:'POST',
-      headers:{'Content-Type':'application/json'},
+      headers:{
+        'Content-Type':'application/json',
+        'x-api-key':P.apiKey,
+        'anthropic-version':'2023-06-01',
+        'anthropic-dangerous-direct-browser-access':'true'
+      },
       body:JSON.stringify({
-        model:'claude-sonnet-4-20250514',
-        max_tokens:1400,
+        model:'claude-haiku-4-5-20251001',
+        max_tokens:1000,
         system:`You are a nutrition expert. Respond ONLY with a valid JSON array of exactly 3 meal objects. No markdown, no backticks, no preamble. Each object: {name, time, serves, steps, cal, protein, carbs, fat, benefits, note}. Steps: 3-5 clear sentences. Benefits: array of 1-3 short strings. Note: one science-backed fact. Diet: ${d.n} — rules: ${d.tags.join('; ')}. Goals: ${gt}.${allergies?' Avoid allergens: '+allergies+'.':''} ALL meals must strictly follow ${d.n} diet rules.`,
         messages:[{role:'user',content:`Ingredients I have: ${raw}. Create 3 complete meals. Follow ${d.n} diet strictly and optimise for: ${gt}.`}]
       })
@@ -1164,11 +1290,16 @@ async function doChat(){
   chatHistory.push({role:'user',content:raw});
   if(chatHistory.length>10)chatHistory=chatHistory.slice(-10);
   try{
-    const res=await fetch('/api/chat',{
+    const res=await fetch('https://api.anthropic.com/v1/messages',{
       method:'POST',
-      headers:{'Content-Type':'application/json'},
+      headers:{
+        'Content-Type':'application/json',
+        'x-api-key':P.apiKey,
+        'anthropic-version':'2023-06-01',
+        'anthropic-dangerous-direct-browser-access':'true'
+      },
       body:JSON.stringify({
-        model:'claude-sonnet-4-20250514',
+        model:'claude-haiku-4-5-20251001',
         max_tokens:600,
         system:`You are ${P.name}'s personal nutrition coach. They follow the ${d.n} diet (${d.tags.join(', ')}). Daily targets: ${d.T.cal} calories, ${d.T.p}g protein. Health goals: ${gt}.${allergies.length?' Allergies/intolerances: '+allergies.join(', ')+'.':''} Be warm, practical, and concise (under 150 words). Never suggest foods that break their diet rules or trigger their allergens.`,
         messages:chatHistory
