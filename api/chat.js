@@ -17,9 +17,9 @@ export default async function handler(req) {
 
   const apiKey = process.env.ANTHROPIC_API_KEY;
   if (!apiKey) {
-    return new Response(JSON.stringify({ error: { message: 'API key not configured on server.' } }), {
+    return new Response(JSON.stringify({ error: { message: 'AI not configured. Add ANTHROPIC_API_KEY to Vercel env vars.' } }), {
       status: 500,
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' },
     });
   }
 
@@ -33,8 +33,8 @@ export default async function handler(req) {
         'anthropic-version': '2023-06-01',
       },
       body: JSON.stringify({
-        model: body.model || 'claude-sonnet-4-20250514',
-        max_tokens: body.max_tokens || 1000,
+        model: 'claude-haiku-4-5-20251001',
+        max_tokens: body.max_tokens || 600,
         system: body.system || '',
         messages: body.messages || [],
       }),
@@ -42,12 +42,12 @@ export default async function handler(req) {
     const data = await response.json();
     return new Response(JSON.stringify(data), {
       status: response.status,
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' },
     });
   } catch (err) {
     return new Response(JSON.stringify({ error: { message: err.message } }), {
       status: 500,
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' },
     });
   }
 }

@@ -1602,7 +1602,6 @@ let chatHistory=[];
 // ── SECURITY ──────────────────────────────────────────────────────────────────
 const san=(s,mx=400)=>String(s||'').replace(/<[^>]*>/g,'').replace(/javascript:/gi,'').replace(/data:/gi,'').replace(/on\w+\s*=/gi,'').replace(/eval\s*\(/gi,'').slice(0,mx).trim();
 const canAPI=()=>{
-  if(!P||!P.apiKey){return false;}
   const n=Date.now();if(n-lastT<4000)return false;lastT=n;return true;
 };
 
@@ -2113,14 +2112,9 @@ async function aiSwap(slot,mealName){
   const btn=el.querySelector('[onclick*="aiSwap"]');
   if(btn){btn.textContent='✨ Generating…';btn.disabled=true;}
   try{
-    const res=await fetch('https://api.anthropic.com/v1/messages',{
+    const res=await fetch('/api/chat',{
       method:'POST',
-      headers:{
-        'Content-Type':'application/json',
-        'x-api-key':P.apiKey,
-        'anthropic-version':'2023-06-01',
-        'anthropic-dangerous-direct-browser-access':'true'
-      },
+      headers:{'Content-Type':'application/json'},
       body:JSON.stringify({
         model:'claude-haiku-4-5-20251001',max_tokens:400,
         system:`You are a nutrition expert. Give a concise healthier alternative to a meal. Format: 1 sentence swap suggestion + 3 bullet point benefits. No preamble. Diet: ${d.n}. Allergies to avoid: ${allergies}. Goals: ${goals}.`,
@@ -2226,14 +2220,9 @@ async function askAIMeal(slot){
   const conditions=(P.goals||[]).map(g=>COND[g]?.lb).filter(Boolean);
   const allergies=(P.allergies||[]).map(ak=>ALLERGENS[ak]?.lb).filter(Boolean);
 
-  // No API key
-  if(!P.apiKey){
-    inner.innerHTML=`<div style="font-size:13px;color:#7c3aed;line-height:1.55;text-align:center;padding:8px 0">🔑 Add your Anthropic API key in <strong>Profile</strong> to enable AI meal suggestions.</div>`;
-    return;
-  }
   // No conditions
   if(!conditions.length){
-    inner.innerHTML=`<div style="font-size:13px;color:#7c3aed;line-height:1.55;text-align:center;padding:8px 0">Select health conditions in <strong>Profile</strong> to get personalised meal suggestions for your conditions.</div>`;
+    inner.innerHTML=`<div style="font-size:13px;color:#7c3aed;line-height:1.55;text-align:center;padding:8px 0">Select health conditions in <strong>Profile</strong> to get personalised meal suggestions.</div>`;
     return;
   }
 
@@ -2245,9 +2234,9 @@ async function askAIMeal(slot){
   inner.innerHTML=`<div class="dots" style="padding:16px 0"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div><p style="text-align:center;font-size:13px;color:#7c3aed;margin-top:-8px">Finding the best meal for your conditions…</p>`;
 
   try{
-    const res=await fetch('https://api.anthropic.com/v1/messages',{
+    const res=await fetch('/api/chat',{
       method:'POST',
-      headers:{'Content-Type':'application/json','x-api-key':P.apiKey,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+      headers:{'Content-Type':'application/json'},
       body:JSON.stringify({
         model:'claude-haiku-4-5-20251001',
         max_tokens:300,
@@ -2282,13 +2271,8 @@ function renderKitchenMeta(){
   const el=document.getElementById('kdb');
   if(el)el.textContent=`${d.ic} ${d.n} filter`;
   const nk=document.getElementById('nokey');const kb=document.getElementById('kbtn');
-  if(P.apiKey){
-    if(nk)nk.style.display='none';
-    if(kb)kb.style.display='block';
-  }else{
-    if(nk)nk.style.display='block';
-    if(kb)kb.style.display='none';
-  }
+  if(nk)nk.style.display='none';
+  if(kb)kb.style.display='block';
   const inp=document.getElementById('kinput');
   if(inp)inp.oninput=()=>{document.getElementById('kcc').textContent=`${inp.value.length} / 400`};
   renderPantry();
@@ -2306,14 +2290,9 @@ async function doScan(){
   document.getElementById('ld').style.display='block';
   document.getElementById('kres').innerHTML='';
   try{
-    const res=await fetch('https://api.anthropic.com/v1/messages',{
+    const res=await fetch('/api/chat',{
       method:'POST',
-      headers:{
-        'Content-Type':'application/json',
-        'x-api-key':P.apiKey,
-        'anthropic-version':'2023-06-01',
-        'anthropic-dangerous-direct-browser-access':'true'
-      },
+      headers:{'Content-Type':'application/json'},
       body:JSON.stringify({
         model:'claude-haiku-4-5-20251001',
         max_tokens:1000,
@@ -2365,14 +2344,9 @@ async function doChat(){
   chatHistory.push({role:'user',content:raw});
   if(chatHistory.length>10)chatHistory=chatHistory.slice(-10);
   try{
-    const res=await fetch('https://api.anthropic.com/v1/messages',{
+    const res=await fetch('/api/chat',{
       method:'POST',
-      headers:{
-        'Content-Type':'application/json',
-        'x-api-key':P.apiKey,
-        'anthropic-version':'2023-06-01',
-        'anthropic-dangerous-direct-browser-access':'true'
-      },
+      headers:{'Content-Type':'application/json'},
       body:JSON.stringify({
         model:'claude-haiku-4-5-20251001',
         max_tokens:600,
