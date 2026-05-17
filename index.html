@@ -221,6 +221,28 @@ textarea{resize:none;min-height:110px}
   min-width:20px;height:20px;display:flex;align-items:center;justify-content:center;
   font-size:11px;font-weight:700;flex-shrink:0;margin-top:1px;
 }
+
+/* ── FOOD GROUP PICKER ──────────────────────────────────────────────── */
+.fg-panel{
+  background:#f8f9fe;border:1px solid #d0d8f0;
+  border-radius:0 0 14px 14px;padding:12px 14px;display:none;
+}
+.fg-panel.on{display:block;animation:fadeUp .2s ease}
+.fg-group-chip{
+  flex-shrink:0;background:#fff;border:1.5px solid var(--border);
+  border-radius:20px;padding:5px 13px;font-size:12px;font-weight:700;
+  color:var(--sub);cursor:pointer;white-space:nowrap;
+  font-family:'DM Sans',sans-serif;transition:all .15s;
+}
+.fg-group-chip.on{background:var(--al);border-color:var(--a);color:var(--a)}
+.fg-meal-chip{
+  width:100%;background:#fff;border:1.5px solid var(--border);
+  border-radius:10px;padding:8px 12px;font-size:13px;font-weight:500;
+  color:var(--text);cursor:pointer;text-align:left;
+  font-family:'DM Sans',sans-serif;transition:border-color .15s,color .15s;
+}
+.fg-meal-chip:active{transform:scale(.98)}
+.fg-meal-chip:hover{border-color:var(--a);color:var(--a)}
 .pill{
   display:inline-flex;align-items:center;gap:4px;
   border-radius:20px;padding:4px 11px;font-size:12px;font-weight:600;
@@ -774,6 +796,45 @@ const FOOD_GUIDE={
   },
 };
 
+const MEAL_GROUPS={
+  keto:{
+    breakfast:{'🥚 Eggs':['Scrambled Eggs + Bacon','Butter-Fried Eggs','Veggie Omelette + Cheese','Egg Muffin Cups (batch cook)','Shakshuka (keto-style)'],'🐟 Fish':['Smoked Salmon + Cream Cheese','Salmon + Scrambled Eggs','Sardines + Boiled Eggs','Tinned Mackerel + Eggs'],'🥩 Meat':['Bacon + Sausage Plate','Ground Beef Patty + Egg','Leftover Steak + Eggs','Prosciutto-Wrapped Eggs'],'🧀 Dairy':['Greek Yogurt + Almonds','Cream Cheese Bowl + Berries (small)','Cottage Cheese + Walnuts']},
+    lunch:{'🍗 Chicken':['Chicken Caesar Salad (no croutons)','Grilled Chicken + Avocado','Chicken Bacon Ranch Lettuce Wraps','Chicken Cauliflower Rice Bowl'],'🐟 Fish':['Tuna-Stuffed Avocado','Salmon Salad Bowl','Sardine + Cucumber Plate','Tuna Lettuce Wraps'],'🥩 Beef':['Bunless Burger + Cheese','Ground Beef Bowl','Steak Salad','Beef + Avocado Bowl'],'🥦 Veggie':['Keto Cobb Salad','BLT Salad (extra bacon)','Cauliflower Fried Rice','Zucchini Noodle Salad + Pesto']},
+    dinner:{'🥩 Beef':['Ribeye + Asparagus','Ground Beef Zucchini Boats','Steak + Roasted Broccoli','Beef Stuffed Peppers (no rice)'],'🍗 Chicken':['Baked Chicken Thighs + Green Beans','Garlic Butter Chicken + Spinach','Chicken Thighs + Cauliflower Mash','Chicken Stir-Fry (no sauce)'],'🐟 Fish':['Seared Salmon + Asparagus','Baked Cod + Roasted Veg','Shrimp + Zucchini Noodles','Tuna Steak + Salad'],'🐷 Pork':['Pork Chops + Mushrooms','Pork Belly + Cabbage','Pulled Pork + Coleslaw','Pork Ribs']},
+    snack:{'🧀 Dairy':['String Cheese','Cream Cheese + Cucumber Slices','Cheese Crisps','Cottage Cheese (small)'],'🥚 Eggs':['Hard-Boiled Eggs','Deviled Eggs','Mini Egg Muffins'],'🌰 Nuts':['Almonds + Parmesan','Macadamia Nuts','Mixed Keto Nuts','Pecans + Cheese'],'🥩 Meat':['Beef Jerky (sugar-free)','Pepperoni + Cheese','Salami Roll-Ups']},
+  },
+  vegan:{
+    breakfast:{'🌾 Grains':['Overnight Oats + Berries','Whole Grain Toast + Nut Butter','Oat Porridge + Banana','Granola + Plant Milk','Muesli + Soy Milk'],'🍌 Fruit':['Smoothie Bowl + Granola','Fruit Salad + Chia Seeds','Banana Nice Cream','Acai Bowl + Seeds'],'🫘 Protein':['Tofu Scramble + Toast','Tempeh Breakfast Hash','Protein Smoothie (pea protein)','Edamame + Toast'],'🌰 Nuts':['PB Banana Toast','Almond Butter + Rice Cakes','Walnut + Fig Bowl','Chia Pudding + Almond Butter']},
+    lunch:{'🫘 Legumes':['Lentil Soup + Bread','Chickpea Salad Wrap','Black Bean Tacos','White Bean + Kale Stew','Hummus + Veggie Wrap'],'🥦 Veggie':['Veggie Stir-Fry + Rice','Buddha Bowl + Tahini','Roasted Veg + Quinoa','Stuffed Bell Peppers','Rainbow Salad + Seeds'],'🫙 Tofu':['Crispy Tofu Bowl','Tofu + Veggie Wrap','Miso Soup + Tofu + Rice','Tofu Salad + Ginger Dressing'],'🌾 Grains':['Quinoa + Roasted Veg Bowl','Vegan Fried Rice','Grain Bowl + Tahini','Pasta Salad + Olives']},
+    dinner:{'🫘 Legumes':['Chickpea Tikka Masala + Rice','Red Lentil Dal + Naan','Black Bean Burrito Bowl','Split Pea Soup + Bread'],'🫙 Tofu':['Tofu Stir-Fry + Noodles','Tempeh Tacos','Baked Tofu + Roasted Veg','Teriyaki Tempeh + Rice'],'🥦 Veggie':['Mushroom Walnut Bolognese','Roasted Veg Pasta','Stuffed Sweet Potato','Cauliflower Curry + Rice'],'🌾 Pasta':['Tomato Lentil Pasta','Pesto Pasta + Veggies','Pasta Primavera','Mac and No-Cheese (cashew)']},
+    snack:{'🍎 Fruit':['Apple + PB','Banana + Almond Butter','Orange + Walnuts','Mixed Berries','Mango Slices'],'🌰 Nuts':['Trail Mix','Cashews + Dried Mango','Mixed Nuts','Almonds + Dates'],'🫘 Dips':['Hummus + Veggie Sticks','Hummus + Pita Chips','White Bean Dip + Crackers'],'🌾 Grains':['Rice Cakes + Avocado','Oat Energy Balls','Whole Grain Crackers + Nut Butter']},
+  },
+  mediterranean:{
+    breakfast:{'🥚 Eggs':['Shakshuka','Avocado Toast + Poached Egg','Greek Omelette + Feta','Egg + Veggie Frittata','Fried Eggs + EVOO + Bread'],'🥛 Dairy':['Greek Yogurt + Honey + Walnuts','Labneh + Honey + Bread','Cottage Cheese + Fruit','Feta + Tomato + Olive Oil Plate'],'🌾 Grains':['Oat Porridge + Berries','Whole Grain Toast + EVOO','Avocado Toast + Seeds','Overnight Oats + Figs'],'🍎 Fruit':['Fruit Salad + Greek Yogurt','Fresh Figs + Cheese','Berry Smoothie + Oats','Sliced Peaches + Labneh']},
+    lunch:{'🐟 Fish':['Tuna Niçoise Salad','Grilled Sardines + Salad','Salmon + Quinoa Bowl','Anchovy + Pasta Salad','Tuna + Cannellini Bean Salad'],'🍗 Chicken':['Greek Salad + Grilled Chicken','Chicken Souvlaki + Pita','Chicken + Hummus Wrap','Lemon Herb Chicken + Greens'],'🫘 Legumes':['Lentil Soup + Crusty Bread','Falafel Bowl + Tahini','Chickpea + Spinach Salad','White Bean Salad + EVOO'],'🥗 Salad':['Classic Greek Salad','Fattoush Salad','Tabbouleh + Pita','Mezze Plate (hummus/feta/olives)']},
+    dinner:{'🐟 Fish':['Baked Salmon + Quinoa + Veg','Whole Branzino + Lemon Herbs','Shrimp Saganaki + Rice','Grilled Swordfish + Salad','Pan-Seared Sea Bass + Veg'],'🍖 Lamb':['Lamb Kebabs + Tzatziki + Pita','Slow-Cooked Lamb Shoulder','Lamb Chops + Roasted Potatoes','Lamb Stew + Crusty Bread'],'🍗 Chicken':['Baked Chicken + Roasted Potatoes','Chicken Shawarma + Rice','Lemon Roast Chicken + Veg','Chicken Stifado + Orzo'],'🥦 Veggie':['Stuffed Eggplant (Papoutsakia)','Vegetable Moussaka','Gigantes (Giant Beans) Bake','Spanakopita']},
+    snack:{'🧀 Dairy':['Greek Yogurt','Labneh + Cucumber','Feta + Olives','Tzatziki + Veggie Sticks'],'🌰 Nuts':['Almonds + Dried Figs','Pistachios','Walnuts + Honey','Mixed Nuts + Dates'],'🍎 Fruit':['Fresh Fruit + Cheese','Orange + Walnuts','Grapes + Cheese','Pomegranate Seeds'],'🫒 Savory':['Hummus + Pita Wedges','Olives + Feta Cubes','Bruschetta + Tomato','Caprese Skewers']},
+  },
+  paleo:{
+    breakfast:{'🥚 Eggs':['Scrambled Eggs + Bacon','Egg Frittata + Veggies','Fried Eggs + Sweet Potato Hash','Boiled Eggs + Avocado','Egg Muffins (batch)'],'🍌 Fruit':['Banana Almond Butter Smoothie','Fruit + Coconut Flakes','Berry Coconut Bowl','Mango + Macadamia Nuts'],'🥩 Meat':['Bacon + Sweet Potato Hash','Ground Beef Breakfast Bowl','Leftover Chicken + Eggs','Prosciutto + Fruit'],'🌰 Nuts':['Almond Butter Smoothie','Paleo Granola + Coconut Milk','Nut + Seed Bowl + Berries']},
+    lunch:{'🍗 Chicken':['Chicken Lettuce Wraps + Guac','Grilled Chicken + Salad','Chicken Avocado Bowl','Chicken Collard Wraps','Cold Chicken + Cucumber Salad'],'🐟 Fish':['Salmon Patties + Greens','Tuna Salad (avocado oil mayo)','Sardine + Avocado Bowl','Grilled Shrimp Salad'],'🥩 Beef':['Beef + Sweet Potato Bowl','Ground Beef Lettuce Wraps','Steak Salad + Avocado','Burger (no bun) + Big Salad'],'🥦 Veggie':['Big Salad + Grilled Protein','Roasted Veg + Chicken','Sweet Potato + Protein Bowl','Coleslaw + Pulled Pork']},
+    dinner:{'🥩 Beef':['Grass-Fed Steak + Roasted Veg','Ground Beef + Zucchini','Beef Short Ribs','Slow-Cooked Beef Stew (no beans)'],'🍗 Chicken':['Baked Chicken + Root Veg','Chicken Stir-Fry (coconut aminos)','Lemon Herb Chicken + Asparagus','Chicken Thighs + Sweet Potato'],'🐷 Pork':['Pork Tenderloin + Root Veg','Pork Chops + Apple + Cabbage','Pulled Pork (no sauce)','Pork Ribs'],'🐟 Fish':['Baked Salmon + Asparagus','Grilled Shrimp + Cauliflower Rice','Pan-Seared Cod + Sweet Potato','Salmon + Roasted Broccoli']},
+    snack:{'🍎 Fruit':['Apple + Almond Butter','Mixed Berries + Coconut Flakes','Banana + Nut Butter','Mango Slices + Lime'],'🌰 Nuts':['Mixed Nuts','Walnuts + Dried Apricots','Macadamia + Dark Chocolate','Paleo Trail Mix'],'🥩 Meat':['Beef Jerky (clean label)','Hard-Boiled Eggs','Cold Chicken Drumstick'],'🥑 Fats':['Guacamole + Veggie Sticks','Avocado + Salt + Lemon','Coconut Flakes + Almonds']},
+  },
+  diabetic:{
+    breakfast:{'🌾 Grains':['Steel-Cut Oats + Cinnamon','Whole Grain Toast + Avocado','Barley Porridge + Seeds','Quinoa Breakfast Bowl'],'🥚 Eggs':['Veggie Egg White Omelette','Poached Egg on Whole Grain','Scrambled Eggs + Spinach','Frittata + Low-GI Veg'],'🫘 Legumes':['Lentil Breakfast Bowl','Chickpea Scramble + Toast'],'🍓 Fruit':['Chia Pudding + Tart Berries','Greek Yogurt + Blueberries','Smoothie: spinach + berries + protein','Apple + Almond Butter']},
+    lunch:{'🍗 Chicken':['Grilled Chicken + Mixed Greens','Chicken Lettuce Wraps','Chicken + Barley Soup','Chicken + Roasted Veg Bowl'],'🐟 Fish':['Tuna Salad (light mayo)','Salmon + Quinoa Bowl','Baked Cod + Salad','Sardines + Whole Grain Crackers'],'🫘 Legumes':['Lentil Soup + Whole Grain Bread','Chickpea + Spinach Salad','Black Bean Bowl','White Bean Stew + Greens'],'🥦 Veggie':['Big Salad + Lean Protein','Roasted Veg + Grain Bowl','Zucchini Noodles + Turkey Meatballs','Cauliflower Soup + Whole Grain']},
+    dinner:{'🐟 Fish':['Baked Cod + Broccoli + Barley','Salmon + Asparagus + Quinoa','Tuna Steak + Salad','Shrimp Stir-Fry + Brown Rice'],'🍗 Chicken':['Turkey Meatballs + Zucchini Noodles','Baked Chicken + Roasted Veg','Chicken Stir-Fry + Brown Rice','Lemon Chicken + Green Beans'],'🥩 Lean Beef':['Lean Beef Stir-Fry + Brown Rice','Sirloin + Roasted Veg','Beef + Lentil Stew','Lean Meatloaf + Sweet Potato'],'🫘 Plant':['Lentil Bolognese + Whole Grain Pasta','Black Bean Burrito Bowl','Tofu Stir-Fry + Brown Rice','Chickpea Curry + Cauliflower Rice']},
+    snack:{'🍓 Fruit':['Apple + 1 tsp Almond Butter','Berries + Greek Yogurt','Kiwi + Cottage Cheese','Orange Slices + Almonds'],'🥦 Veggie':['Celery + Hummus','Cucumber + Labneh','Carrot Sticks + Guac (small)','Bell Pepper + Hummus'],'🧀 Dairy':['Plain Greek Yogurt','Cottage Cheese (small)','String Cheese (1 stick)'],'🌰 Nuts':['Almonds (small handful)','Walnuts + 1 Date','Mixed Nuts (10-12)']},
+  },
+  carnivore:{
+    breakfast:{'🥩 Beef':['Ribeye + Fried Eggs','Ground Beef + Scrambled Eggs','Steak + Eggs (any cut)','Brisket Hash + Eggs'],'🐔 Poultry':['Chicken Thighs + Fried Eggs','Turkey Sausage + Eggs','Duck + Fried Eggs','Chicken Liver + Scrambled Eggs'],'🐟 Fish':['Salmon + Scrambled Eggs','Smoked Salmon + Cream Cheese + Eggs','Sardines + Boiled Eggs','Tuna + Fried Eggs'],'🐷 Pork':['Bacon + Eggs (any style)','Pork Sausage + Fried Eggs','Pork Chop + Eggs','Prosciutto + Fried Eggs']},
+    lunch:{'🥩 Beef':['Ground Beef Patties + Bacon','Ribeye Steak','Beef Short Ribs','Chuck Roast (leftover)','Beef Burger (no bun)'],'🐔 Poultry':['Crispy Chicken Thighs','Chicken Wings','Turkey Breast + Butter','Duck Confit'],'🐷 Pork':['Pork Ribs','Pork Belly Slices','Bacon + Sausage Plate','Pulled Pork (no sauce)'],'🐟 Fish':['Salmon Fillet + Butter','Sardines in Oil','Tuna Steak','Mackerel Fillet']},
+    dinner:{'🥩 Beef':['NY Strip Steak','T-Bone Steak','Slow-Cooked Chuck Roast','Beef Short Ribs','Prime Rib'],'🍖 Lamb':['Lamb Chops + Tallow','Rack of Lamb','Slow-Cooked Lamb Leg','Lamb Mince Patties + Eggs'],'🐷 Pork':['Pork Belly + Fried Eggs','Pork Ribs','Slow-Cooked Pork Shoulder','Pork Tenderloin + Butter'],'🐟 Fish':['Salmon + Brown Butter','Baked Cod + Ghee','Pan-Seared Trout','Grilled Tuna Steak']},
+    snack:{'🥩 Meat':['Beef Jerky (clean)','Pepperoni Slices','Salami','Prosciutto + Cheese'],'🐟 Fish':['Sardines in Oil','Smoked Salmon','Tinned Mackerel','Canned Tuna in Oil'],'🥚 Eggs':['Hard-Boiled Eggs','Fried Egg','Mini Egg Bites','Deviled Eggs'],'🧀 Dairy':['Hard Cheese Slices','String Cheese','Pork Rinds + Cream Cheese','Bone Broth (mug)']},
+  },
+};
+
 const DIETS={
   keto:{
     n:'Ketogenic',s:'Keto',ic:'🥑',a:'#c87a10',
@@ -1008,6 +1069,44 @@ const sSel=(sel)=>{try{const d=new Date().toDateString(),a=JSON.parse(localStora
 const lPantry=()=>{try{return JSON.parse(localStorage.getItem('mdf_pantry'))||[]}catch{return[]}};
 const sPantry=(p)=>{try{localStorage.setItem('mdf_pantry',JSON.stringify(p))}catch{}};
 
+let fgGroups={}; // active group chip per slot
+
+// ── FOOD GROUP SELECTION STORAGE ─────────────────────────────────────────────
+const lGS=()=>{try{const d=new Date().toDateString(),a=JSON.parse(localStorage.getItem('mdf_gs'))||{};return a[d]||{}}catch{return{}}};
+const sGS=(gs)=>{try{const d=new Date().toDateString(),a=JSON.parse(localStorage.getItem('mdf_gs'))||{};a[d]=gs;const ks=Object.keys(a);if(ks.length>7)delete a[ks[0]];localStorage.setItem('mdf_gs',JSON.stringify(a))}catch{}};
+
+// ── FOOD GROUP PICKER ─────────────────────────────────────────────────────────
+function openFGPanel(slot){
+  SLOTS.forEach(s=>{if(s.k!==slot){const p=document.getElementById('fg_'+s.k);if(p)p.classList.remove('on');}});
+  const el=document.getElementById('fg_'+slot);if(!el)return;
+  el.classList.toggle('on');
+  if(el.classList.contains('on'))renderFGPanel(slot);
+}
+function renderFGPanel(slot){
+  const el=document.getElementById('fg_'+slot);if(!el)return;
+  const guide=(MEAL_GROUPS[P.diet]||{})[slot];
+  if(!guide){el.innerHTML='<div style="font-size:13px;color:var(--sub);padding:4px 0">No food groups for this diet yet.</div>';return;}
+  const groups=Object.keys(guide);
+  if(!fgGroups[slot]||!guide[fgGroups[slot]])fgGroups[slot]=groups[0];
+  const cur=fgGroups[slot];
+  const meals=guide[cur]||[];
+  el.innerHTML=`
+    <div style="font-size:11px;font-weight:700;color:var(--sub);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px">Pick a food group →</div>
+    <div style="display:flex;gap:6px;overflow-x:auto;padding-bottom:8px;margin-bottom:10px;scrollbar-width:none">
+      ${groups.map(g=>`<button class="fg-group-chip${g===cur?' on':''}" onclick="selFGGroup('${slot}','${g.replace(/['"]/g,'')}');event.stopPropagation()">${g}</button>`).join('')}
+    </div>
+    <div style="display:flex;flex-direction:column;gap:5px">
+      ${meals.map(m=>`<button class="fg-meal-chip" onclick="pickFGMeal('${slot}','${m.replace(/'/g,"\\'")}');event.stopPropagation()">→ ${m}</button>`).join('')}
+    </div>`;
+}
+function selFGGroup(slot,group){fgGroups[slot]=group;renderFGPanel(slot);}
+function pickFGMeal(slot,name){
+  const gs=lGS();gs[slot]=name;sGS(gs);
+  const el=document.getElementById('fg_'+slot);if(el)el.classList.remove('on');
+  renderToday();
+}
+function clearFGMeal(slot){const gs=lGS();delete gs[slot];sGS(gs);renderToday();}
+
 // ── SETUP FLOW ────────────────────────────────────────────────────────────────
 function buildSetup(){
   // Emoji grid
@@ -1135,11 +1234,37 @@ function renderToday(){
   }).join('');
   // Meal cards with swap + risk + allergy badges
   const sel=lSel();
+  const gs=lGS(); // custom food group selections for today
   const defIdx=new Date().getDay()%4;
   document.getElementById('mcards').innerHTML=SLOTS.map(s=>{
+    const customMeal=gs[s.k]||null;
+    const done=CK[s.k]||false;
+    const chkBtn=`<button class="chk-btn" onclick="event.stopPropagation();tog('${s.k}')">${done?`<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20,6 9,17 4,12"/></svg>`:''}</button>`;
+
+    // ── CUSTOM FOOD GROUP PICK ──
+    if(customMeal){
+      return`<div class="meal-wrap">
+        <div class="meal-card${done?' done':''}" onclick="tog('${s.k}')">
+          <div class="mic">${s.ic}</div>
+          <div class="minfo">
+            <div class="mlbl">${s.lb} · <span style="color:var(--a);font-size:10px;font-weight:700">🏷️ Your pick</span></div>
+            <div class="mnm">${customMeal}</div>
+            <div style="font-size:12px;color:var(--sub);margin-top:2px">Ask Your Chef below for a full recipe</div>
+            <div style="display:flex;align-items:center;gap:8px;margin-top:4px">
+              <button class="prep-btn" onclick="event.stopPropagation();openFGPanel('${s.k}')">📂 Change</button>
+              <button class="prep-btn" onclick="event.stopPropagation();clearFGMeal('${s.k}')" style="color:var(--sub)">✕ Clear</button>
+            </div>
+          </div>
+          ${chkBtn}
+        </div>
+        <div class="fg-panel" id="fg_${s.k}"></div>
+      </div>`;
+    }
+
+    // ── NORMAL MEAL CARD ──
     const idx=sel[s.k]!==undefined?sel[s.k]:defIdx;
     const opts=d.days.map(day=>day[s.k]);
-    const m=opts[idx];const done=CK[s.k]||false;
+    const m=opts[idx];
     const risks=getMealRisks(m);
     const allergens=getMealAllergens(m,P.allergies||[]);
     const hasTip=risks.length||allergens.length;
@@ -1172,19 +1297,19 @@ function renderToday(){
           <div class="mlbl">${s.lb}</div>
           <div class="mnm">${m.n}</div>
           <div class="mmac">${m.cal} kcal · ${m.p}g protein · ${m.c}g carbs · ${m.f}g fat</div>
-          <div style="display:flex;align-items:center;gap:8px;margin-top:4px">
+          <div style="display:flex;align-items:center;gap:8px;margin-top:4px;flex-wrap:wrap">
             <div style="font-size:10px;color:var(--sub)">Option ${idx+1} of ${opts.length}${hasTip?' · <span style="color:#d97706">tap badge for tips</span>':''}</div>
-            ${m.prep?`<button class="prep-btn" onclick="event.stopPropagation();togglePrep('${s.k}')">📋 How to prep</button>`:''}
+            ${m.prep?`<button class="prep-btn" onclick="event.stopPropagation();togglePrep('${s.k}')">📋 Prep</button>`:''}
+            <button class="prep-btn" onclick="event.stopPropagation();openFGPanel('${s.k}')" style="color:#5060b8">📂 Food Groups</button>
           </div>
         </div>
         <button class="swap-btn" onclick="event.stopPropagation();swapMeal('${s.k}')">↻ Swap</button>
-        <button class="chk-btn" onclick="event.stopPropagation();tog('${s.k}')">
-          ${done?`<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20,6 9,17 4,12"/></svg>`:''}
-        </button>
+        ${chkBtn}
       </div>
       ${tagHTML?`<div class="meal-tags">${tagHTML}</div>`:''}
       ${tipHTML}
       ${prepHTML}
+      <div class="fg-panel" id="fg_${s.k}"></div>
     </div>`;
   }).join('');
   // Health tip
