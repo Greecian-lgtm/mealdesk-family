@@ -296,6 +296,21 @@ textarea{resize:none;min-height:110px}
 .herb-card{background:#fff;border-radius:14px;box-shadow:var(--sh);margin-bottom:10px;overflow:hidden}
 .herb-hdr{display:flex;align-items:center;gap:10px;padding:13px 16px;cursor:pointer}
 .herb-prop{background:#eff6ff;border:1px solid #bfdbfe;border-radius:20px;padding:2px 9px;font-size:11px;color:#1e40af;font-weight:600}
+
+/* ── AI MEAL SUGGEST PANEL ──────────────────────────────────────────── */
+.aim-panel{
+  background:#faf5ff;border:1px solid #d8b4fe;
+  border-radius:0 0 12px 12px;padding:12px 14px;display:none;
+}
+.aim-panel.on{display:block;animation:fadeUp .2s ease}
+.aim-response{font-size:13px;color:var(--text);line-height:1.7;white-space:pre-wrap}
+.aim-btn{
+  background:#7c3aed;color:#fff;border:none;border-radius:10px;
+  padding:9px 16px;font-family:'DM Sans',sans-serif;font-size:13px;
+  font-weight:700;cursor:pointer;width:100%;margin-top:2px;
+  transition:opacity .2s;
+}
+.aim-btn:disabled{opacity:.5;cursor:not-allowed}
 .pill{
   display:inline-flex;align-items:center;gap:4px;
   border-radius:20px;padding:4px 11px;font-size:12px;font-weight:600;
@@ -1589,7 +1604,7 @@ function swRT(t){
   ['y','c','h'].forEach(x=>{
     const btn=document.getElementById('rt'+x);const el=document.getElementById('rt-'+x);
     if(btn)btn.classList.toggle('on',x===t);
-    if(el)el.style.display=x===t?'block':'none';
+    if(el){el.style.display=x===t?'block':'none';if(x!==t)el.innerHTML='';}
   });
   renderRT();
 }
@@ -1791,14 +1806,15 @@ function renderToday(){
           <div class="minfo">
             <div class="mlbl">${s.lb} · <span style="color:var(--a);font-size:10px;font-weight:700">🏷️ Your pick</span></div>
             <div class="mnm">${customMeal}</div>
-            <div style="font-size:12px;color:var(--sub);margin-top:2px">Ask Your Chef below for a full recipe</div>
-            <div style="display:flex;align-items:center;gap:8px;margin-top:4px">
+            <div style="display:flex;align-items:center;gap:8px;margin-top:4px;flex-wrap:wrap">
               <button class="prep-btn" onclick="event.stopPropagation();openFGPanel('${s.k}')">📂 Change</button>
               <button class="prep-btn" onclick="event.stopPropagation();clearFGMeal('${s.k}')" style="color:var(--sub)">✕ Clear</button>
+              <button class="prep-btn" onclick="event.stopPropagation();toggleAIM('${s.k}')" style="color:#7c3aed">✨ AI for my conditions</button>
             </div>
           </div>
           ${chkBtn}
         </div>
+        <div class="aim-panel" id="aim_${s.k}"><div id="aim-inner_${s.k}"></div></div>
         <div class="fg-panel" id="fg_${s.k}"></div>
       </div>`;
     }
@@ -1843,6 +1859,7 @@ function renderToday(){
             <div style="font-size:10px;color:var(--sub)">Option ${idx+1} of ${opts.length}${hasTip?' · <span style="color:#d97706">tap badge for tips</span>':''}</div>
             ${m.prep?`<button class="prep-btn" onclick="event.stopPropagation();togglePrep('${s.k}')">📋 Prep</button>`:''}
             <button class="prep-btn" onclick="event.stopPropagation();openFGPanel('${s.k}')" style="color:#5060b8">📂 Food Groups</button>
+            <button class="prep-btn" onclick="event.stopPropagation();toggleAIM('${s.k}')" style="color:#7c3aed">✨ AI for my conditions</button>
           </div>
         </div>
         <button class="swap-btn" onclick="event.stopPropagation();swapMeal('${s.k}')">↻ Swap</button>
@@ -1851,6 +1868,7 @@ function renderToday(){
       ${tagHTML?`<div class="meal-tags">${tagHTML}</div>`:''}
       ${tipHTML}
       ${prepHTML}
+      <div class="aim-panel" id="aim_${s.k}"><div id="aim-inner_${s.k}"></div></div>
       <div class="fg-panel" id="fg_${s.k}"></div>
     </div>`;
   }).join('');
@@ -2064,6 +2082,73 @@ function addFoodToGuide(food,btn){
   btn.classList.add('added');
   btn.textContent='✓ '+food;
   renderPantry();
+}
+
+// ── AI MEAL SUGGESTIONS ───────────────────────────────────────────────────────
+function toggleAIM(slot){
+  const el=document.getElementById('aim_'+slot);
+  if(!el)return;
+  const opening=!el.classList.contains('on');
+  el.classList.toggle('on');
+  if(opening)askAIMeal(slot);
+}
+
+async function askAIMeal(slot){
+  const el=document.getElementById('aim_'+slot);if(!el)return;
+  const inner=document.getElementById('aim-inner_'+slot);if(!inner)return;
+  const slotLabel=SLOTS.find(s=>s.k===slot)?.lb||slot;
+  const d=DIETS[P.diet];
+  const conditions=(P.goals||[]).map(g=>COND[g]?.lb).filter(Boolean);
+  const allergies=(P.allergies||[]).map(ak=>ALLERGENS[ak]?.lb).filter(Boolean);
+
+  // No API key
+  if(!P.apiKey){
+    inner.innerHTML=`<div style="font-size:13px;color:#7c3aed;line-height:1.55;text-align:center;padding:8px 0">🔑 Add your Anthropic API key in <strong>Profile</strong> to enable AI meal suggestions.</div>`;
+    return;
+  }
+  // No conditions
+  if(!conditions.length){
+    inner.innerHTML=`<div style="font-size:13px;color:#7c3aed;line-height:1.55;text-align:center;padding:8px 0">Select health conditions in <strong>Profile</strong> to get personalised meal suggestions for your conditions.</div>`;
+    return;
+  }
+
+  // Rate limit
+  const n=Date.now();if(n-lastT<4000){lastT=n;}
+  lastT=n;
+
+  const btn=inner.querySelector('.aim-btn');if(btn){btn.disabled=true;}
+  inner.innerHTML=`<div class="dots" style="padding:16px 0"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div><p style="text-align:center;font-size:13px;color:#7c3aed;margin-top:-8px">Finding the best meal for your conditions…</p>`;
+
+  try{
+    const res=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','x-api-key':P.apiKey,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+      body:JSON.stringify({
+        model:'claude-haiku-4-5-20251001',
+        max_tokens:300,
+        system:`You are a clinical nutritionist and chef. The user follows the ${d.n} diet (${d.tags.join(', ')}) and has these health conditions: ${conditions.join(', ')}.${allergies.length?' They cannot eat: '+allergies.join(', ')+'.':''}
+
+Suggest ONE specific, practical ${slotLabel} meal that directly supports their conditions. Use this exact format — no extra text:
+
+🍽️ [Meal Name]
+
+Good for your conditions: [1–2 sentences explaining exactly how this meal benefits their specific listed conditions — name the conditions explicitly]
+
+Quick prep:
+1. [step — under 15 words]
+2. [step — under 15 words]
+3. [step — under 15 words]`,
+        messages:[{role:'user',content:`What is the best ${slotLabel.toLowerCase()} I can eat today for my health conditions?`}]
+      })
+    });
+    const data=await res.json();
+    const txt=san(data.content?.[0]?.text||'',700);
+    inner.innerHTML=`
+      <div class="aim-response">${txt.replace(/\n/g,'<br>')}</div>
+      <button class="aim-btn" style="margin-top:12px" onclick="askAIMeal('${slot}')">↻ Get another suggestion</button>`;
+  }catch(e){
+    inner.innerHTML=`<div style="font-size:13px;color:#c04040;margin-bottom:8px">Something went wrong. Please try again.</div><button class="aim-btn" onclick="askAIMeal('${slot}')">↻ Retry</button>`;
+  }
 }
 
 // ── KITCHEN ───────────────────────────────────────────────────────────────────
