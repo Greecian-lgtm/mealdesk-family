@@ -243,6 +243,34 @@ textarea{resize:none;min-height:110px}
 }
 .fg-meal-chip:active{transform:scale(.98)}
 .fg-meal-chip:hover{border-color:var(--a);color:var(--a)}
+
+/* ── HEALTH GUIDE ─────────────────────────────────────────────────── */
+.hguide-card{
+  background:#fff;border-radius:14px;box-shadow:var(--sh);
+  margin-bottom:10px;overflow:hidden;
+}
+.hguide-hdr{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 16px;cursor:pointer;user-select:none;
+}
+.hguide-arrow{color:var(--sub);font-size:11px;transition:transform .2s;flex-shrink:0}
+.hguide-card.open .hguide-arrow{transform:rotate(180deg)}
+.hguide-body{padding:0 16px 16px;border-top:1px solid var(--border);padding-top:12px}
+.hg-eat-cat{font-size:12px;font-weight:700;color:var(--text);margin-bottom:5px;margin-top:10px}
+.hg-chips{display:flex;flex-wrap:wrap;gap:4px}
+.hg-chip{
+  background:var(--bg);border:1px solid var(--border);
+  border-radius:20px;padding:3px 10px;font-size:12px;color:var(--text);
+}
+.hg-avoid-item{
+  font-size:13px;color:#8a2020;padding:5px 0;
+  border-bottom:1px solid #fce8e8;line-height:1.4;
+}
+.hg-avoid-item:last-child{border-bottom:none}
+.hg-tip{
+  border-radius:8px;padding:10px 12px;
+  font-size:13px;line-height:1.55;margin-top:12px;
+}
 .pill{
   display:inline-flex;align-items:center;gap:4px;
   border-radius:20px;padding:4px 11px;font-size:12px;font-weight:600;
@@ -490,6 +518,8 @@ textarea{resize:none;min-height:110px}
 
       <!-- Health tip -->
       <div id="htip"></div>
+      <!-- Health food guide (per selected conditions) -->
+      <div id="healthguide"></div>
     </div>
 
     <!-- ─ KITCHEN ─────────────────────────────────────────────── -->
@@ -732,9 +762,136 @@ const COND={
   inflammation:  {lb:'Inflammation',em:'🔥',c:'#d48020',bg:'#fffbf0'},
   cholesterol:   {lb:'Cholesterol / LDL',em:'💙',c:'#1880c0',bg:'#f0f8ff'},
   weight_loss:   {lb:'Lose Weight',em:'⚖️',c:'#e07830',bg:'#fff8f0'},
+  tinnitus:      {lb:'Tinnitus / Ear Ringing',em:'👂',c:'#6060b8',bg:'#f0f0ff'},
+  joint:         {lb:'Joint Pain / Arthritis',em:'🦴',c:'#c06030',bg:'#fff4ee'},
+  energy:        {lb:'Low Energy / Fatigue',em:'⚡',c:'#b08010',bg:'#fefce8'},
+  digestion:     {lb:'Gut Health / Digestion',em:'🌿',c:'#1a8060',bg:'#f0fdf4'},
 };
 
-const ALLERGENS={
+
+const CONDITION_GUIDE={
+  blood_pressure:{
+    summary:'Potassium and magnesium lower BP naturally. The DASH diet is clinically proven to reduce systolic pressure by 8–14 mmHg.',
+    eat:{
+      '🍗 Proteins':['Salmon','Sardines','Chicken breast','Turkey','Lentils','Tofu','Eggs (2–3/day)','Mackerel'],
+      '🥦 Vegetables':['Spinach','Kale','Beets','Broccoli','Sweet potato','Garlic','Celery','Artichoke'],
+      '🍎 Fruits':['Bananas','Oranges','Berries','Pomegranate','Kiwi','Watermelon','Avocado'],
+      '🥜 Snacks':['Unsalted almonds','Pumpkin seeds','Low-fat Greek yogurt','Celery + hummus','Banana + almond butter'],
+      '🫖 Drinks':['Hibiscus tea (lowers BP ~7 mmHg)','Beet juice','Pomegranate juice (small)','Green tea','Water 8+ cups/day'],
+    },
+    avoid:['Table salt & salty snacks','Processed meats (bacon, deli meat)','Canned soups','Fast food','Alcohol (more than 1 drink)','Pickled foods','Excess cheese','Caffeine (excess)','Frozen meals'],
+    tip:'Eating 4,700mg potassium daily can lower systolic BP by 8 points. A banana + sweet potato covers ~50% of your daily need.',
+  },
+  insulin:{
+    summary:'Low-glycemic, high-fiber foods keep blood sugar stable. Combining carbs with protein and fat blunts glucose spikes significantly.',
+    eat:{
+      '🍗 Proteins':['Eggs','Chicken breast','Salmon','Turkey','Lentils','Greek yogurt (plain)','Cottage cheese','Sardines'],
+      '🥦 Vegetables':['Broccoli','Spinach','Kale','Zucchini','Cauliflower','Brussels sprouts','Asparagus','Mushrooms'],
+      '🍎 Fruits':['Blueberries','Strawberries','Raspberries','Tart cherries','Apples (with skin)','Pears','Grapefruit'],
+      '🥜 Snacks':['Almonds (10–15)','Celery + almond butter','Greek yogurt + berries','Hard-boiled eggs','Cheese + apple slices'],
+      '🫖 Drinks':['Water with lemon','Cinnamon tea','Green tea','Apple cider vinegar water (1 tbsp before meals)','Sparkling water'],
+    },
+    avoid:['White bread & white rice','Sugary drinks (soda, juice)','Candy & pastries','Breakfast cereals (most)','Fruit juice (spikes faster than soda)','Alcohol','Flavored yogurt','Instant oatmeal','French fries & fried potatoes'],
+    tip:'Ceylon cinnamon (½ tsp daily) reduces fasting glucose by 18–29%. Apple cider vinegar before meals cuts post-meal glucose spikes by up to 34%.',
+  },
+  gout:{
+    summary:'High uric acid crystallizes in joints causing severe pain. Avoid high-purine foods and stay very well hydrated — water is the #1 treatment.',
+    eat:{
+      '🍗 Proteins':['Chicken breast','Eggs','Tofu','Low-fat dairy','Turkey (limited)','Lentils (limited)'],
+      '🥦 Vegetables':['Potatoes','Carrots','Cucumbers','Celery','Cabbage','Kale','Broccoli','Zucchini'],
+      '🍎 Fruits':['Tart cherries (reduces attacks 35%)','Strawberries','Blueberries','Oranges','Banana','Watermelon'],
+      '🥜 Snacks':['Low-fat yogurt','Apple slices','Celery sticks','Plain crackers','Banana','Low-fat cheese'],
+      '🫖 Drinks':['Water (3+ liters/day — critical)','Tart cherry juice','Skim milk (lowers uric acid)','Coffee (2–3 cups can help)','Lemon water'],
+    },
+    avoid:['Red meat (beef, pork, lamb)','Organ meats (liver, kidney)','Shellfish (shrimp, lobster)','Sardines & anchovies','Alcohol (especially beer)','High-fructose corn syrup','Asparagus & mushrooms (excess)','Fruit juice (fructose raises uric acid)','Turkey in large amounts'],
+    tip:'Eating 15–20 tart cherries daily reduces gout attack frequency by 35% (Arthritis & Rheumatism, 2012). Hydration is the single most effective daily intervention.',
+  },
+  inflammation:{
+    summary:'Chronic inflammation drives most disease. Anti-inflammatory foods shift your body toward healing at the cellular level.',
+    eat:{
+      '🍗 Proteins':['Wild salmon','Sardines','Mackerel','Chicken breast','Omega-3 eggs','Legumes','Tofu'],
+      '🥦 Vegetables':['Turmeric (in cooking)','Ginger','Dark leafy greens','Broccoli','Brussels sprouts','Beets','Sweet potato'],
+      '🍎 Fruits':['Blueberries','Tart cherries','Pomegranate','Strawberries','Pineapple (bromelain)','Oranges','Grapes'],
+      '🥜 Snacks':['Walnuts','Almonds','Dark chocolate 85%+ (1 square)','Avocado + seed crackers','Blueberries + Greek yogurt'],
+      '🫖 Drinks':['Turmeric golden milk','Green tea (EGCG)','Tart cherry juice','Ginger tea','Water (baseline anti-inflammatory)'],
+    },
+    avoid:['Refined vegetable oils (canola, soybean)','Trans fats (fried foods, margarine)','White sugar & HFCS','Refined carbs (white bread, white rice)','Processed meats','Excessive alcohol','Fast food','Artificial sweeteners'],
+    tip:'Curcumin (turmeric) inhibits the same inflammatory pathway as ibuprofen. Adding black pepper increases absorption by 2,000%. Cook turmeric in olive oil + pepper daily.',
+  },
+  cholesterol:{
+    summary:'Soluble fiber binds LDL in the gut and removes it. Unsaturated fats directly replace harmful LDL-raising saturated fats.',
+    eat:{
+      '🍗 Proteins':['Salmon','Sardines','Mackerel','Chicken breast (no skin)','Legumes','Soy protein','Egg whites','Tofu'],
+      '🥦 Vegetables':['Eggplant','Okra','Brussels sprouts','Broccoli','Artichoke','Garlic','Onion','Leafy greens'],
+      '🍎 Fruits':['Apples','Pears','Citrus fruits','Berries','Avocado','Grapes','Prunes'],
+      '🥜 Snacks':['Oat crackers','Almonds','Walnuts','Edamame','Avocado + whole grain crackers','Psyllium husk in water'],
+      '🫖 Drinks':['Green tea (reduces LDL 5–10%)','Pomegranate juice (small)','Soy milk','Red wine (1 glass max)','Water'],
+    },
+    avoid:['Saturated fat (fatty red meat, butter)','Trans fats (fried food, margarine)','Full-fat dairy in excess','Baked goods (cookies, pastries)','Organ meats','Processed meats','Tropical oils (palm oil)','Shellfish in excess'],
+    tip:'5–10g soluble fiber daily — 2 servings of oats + an apple — reduces LDL by 5–11%. Each 1% drop in LDL equals a 1% drop in heart attack risk.',
+  },
+  weight_loss:{
+    summary:'Volume eating + protein at every meal keeps you full on fewer calories. Fiber and protein drive fat loss more sustainably than restriction alone.',
+    eat:{
+      '🍗 Proteins':['Chicken breast','Turkey','Egg whites','Greek yogurt','Cottage cheese','White fish (cod, tilapia)','Shrimp','Lentils'],
+      '🥦 Vegetables':['Leafy greens (near-zero calories)','Cucumber','Celery','Zucchini','Broccoli','Cauliflower','Mushrooms','Bell peppers'],
+      '🍎 Fruits':['Berries (lowest sugar)','Grapefruit','Watermelon','Apple (pectin fills you up)','Pears','Kiwi'],
+      '🥜 Snacks':['Hard-boiled eggs','Greek yogurt + berries','Celery + 1 tsp almond butter','Apple slices','Edamame','Cottage cheese + cucumber'],
+      '🫖 Drinks':['Water before meals (reduces intake 13%)','Green tea (boosts metabolism 4–5%)','Black coffee (suppresses appetite)','Sparkling water','Protein shake (post-workout)'],
+    },
+    avoid:['Liquid calories (juice, soda, alcohol)','Ultra-processed snacks (chips, cookies)','White bread & pasta','Fast food','Sugary breakfast cereals','Flavored yogurt (hidden sugar)','Energy drinks','Large portions of nut butters'],
+    tip:'Eating 30g protein at breakfast reduces hunger hormones for up to 12 hours. Protein burns 25% of its own calories during digestion — more than any other macronutrient.',
+  },
+  tinnitus:{
+    summary:'Tinnitus links to inflammation, inner-ear blood flow, and nerve health. Magnesium, zinc, and omega-3s are the most evidence-backed nutrients for reducing ringing.',
+    eat:{
+      '🍗 Proteins':['Wild salmon (omega-3)','Sardines','Eggs (B12, choline)','Chicken (B vitamins)','Beef liver (B12 + zinc)','Legumes (magnesium)'],
+      '🥦 Vegetables':['Spinach (magnesium)','Pumpkin (zinc)','Garlic (circulation)','Ginger (anti-inflammatory)','Kale (antioxidants)','Beets (blood flow)'],
+      '🍎 Fruits':['Pineapple (bromelain reduces inflammation)','Bananas (magnesium + potassium)','Blueberries (antioxidants)','Oranges (Vitamin C)','Avocado (potassium + magnesium)'],
+      '🥜 Snacks':['Pumpkin seeds (highest magnesium per gram)','Almonds (magnesium + Vitamin E)','Dark chocolate 85%+ (magnesium)','Sunflower seeds (Vitamin E)','Walnuts (omega-3)'],
+      '🫖 Drinks':['Ginkgo biloba tea (inner ear blood flow)','Green tea (antioxidants)','Water 8+ cups (dehydration worsens tinnitus)','Ginger tea (anti-inflammatory)'],
+    },
+    avoid:['Salt & high-sodium foods (restricts inner ear blood flow)','Alcohol (damages cochlear hair cells)','Caffeine in excess (worsens ringing in many)','Aspirin & NSAIDs in high doses (ototoxic)','Quinine (in tonic water)','MSG & artificial flavors','Sugar & refined carbs (glucose spikes worsen symptoms)','Saturated fats (reduce cochlear circulation)'],
+    tip:'Magnesium deficiency is directly linked to tinnitus severity. 400mg magnesium daily has been shown to significantly reduce ringing intensity. Pumpkin seeds are the highest magnesium food per gram.',
+  },
+  joint:{
+    summary:'Joint pain is driven by inflammation and cartilage degradation. Collagen-building nutrients and anti-inflammatory foods reduce pain and protect joints long-term.',
+    eat:{
+      '🍗 Proteins':['Salmon (omega-3)','Sardines','Chicken bone broth (collagen)','Eggs','Lentils','Tofu','Tuna'],
+      '🥦 Vegetables':['Broccoli (sulforaphane protects cartilage)','Spinach','Kale','Ginger','Turmeric','Garlic','Sweet potato (Vitamin C for collagen)'],
+      '🍎 Fruits':['Tart cherries (anti-inflammatory)','Strawberries (Vitamin C)','Blueberries','Pineapple (bromelain)','Oranges (Vitamin C for collagen)','Avocado'],
+      '🥜 Snacks':['Walnuts (omega-3)','Almonds','Bone broth (sip warm)','Pumpkin seeds','Edamame (isoflavones reduce inflammation)'],
+      '🫖 Drinks':['Bone broth (daily — collagen + glycine)','Turmeric golden milk','Tart cherry juice','Green tea','Ginger tea'],
+    },
+    avoid:['Sugar & refined carbs (trigger inflammatory cytokines)','Fried foods (trans fats)','Processed meats','Excessive alcohol','Refined vegetable oils (omega-6 excess)','Dairy in excess (for some people)','Nightshades (tomatoes, peppers — for sensitive individuals)','Gluten (if sensitive)'],
+    tip:'Vitamin C is essential for collagen synthesis in joints. Just 1 orange + 1 cup of broccoli daily covers 100%+ of your daily requirement. Bone broth provides glycine and proline — direct collagen precursors.',
+  },
+  energy:{
+    summary:'Chronic fatigue links to blood sugar instability, nutrient deficiencies (iron, B12, magnesium), and poor sleep quality. Food timing matters as much as food choice.',
+    eat:{
+      '🍗 Proteins':['Eggs (B12 + choline)','Salmon (B12 + CoQ10)','Chicken liver (iron + B12)','Lentils (iron + folate)','Lean beef (iron, zinc, B12)','Greek yogurt','Sardines'],
+      '🥦 Vegetables':['Spinach (iron + magnesium)','Kale (iron)','Beets (nitrates improve cellular energy)','Sweet potato (complex carbs + B6)','Broccoli (CoQ10)'],
+      '🍎 Fruits':['Bananas (B6 + fast energy)','Oranges (Vitamin C aids iron absorption)','Berries (antioxidants)','Dates (quick natural energy)','Avocado (healthy fats for sustained energy)'],
+      '🥜 Snacks':['Almonds + dark chocolate','Banana + peanut butter','Hard-boiled eggs','Pumpkin seeds (magnesium + zinc)','Greek yogurt + berries'],
+      '🫖 Drinks':['Water (dehydration is #1 cause of fatigue)','Green tea (gentle caffeine + L-theanine)','Beet juice (nitric oxide)','Lemon water (Vitamin C)','Matcha'],
+    },
+    avoid:['Sugar spikes (causes energy crashes 1–2 hrs later)','Refined white carbs alone (no protein/fat paired)','Alcohol (disrupts deep sleep cycles)','Excess caffeine (adrenal fatigue)','Ultra-processed foods (nutrient-empty calories)','Skipping meals (blood sugar drops)','Large heavy lunches (blood diverts to digestion)'],
+    tip:'Iron-deficiency anaemia is the most common cause of fatigue — especially in women. Pairing iron-rich foods with Vitamin C (e.g. lentils + lemon juice) increases iron absorption by 300%. Get iron levels checked.',
+  },
+  digestion:{
+    summary:'Gut health drives immunity, mood, and energy. 70% of your immune system lives in your gut. Fiber diversity and fermented foods heal the microbiome.',
+    eat:{
+      '🍗 Proteins':['Salmon (anti-inflammatory)','Chicken breast','Eggs','Bone broth (heals gut lining)','Lentils (prebiotic fiber)','Tofu (easy to digest)'],
+      '🥦 Vegetables':['Ginger (reduces nausea + bloating)','Garlic (prebiotic)','Artichoke (prebiotic)','Leeks (prebiotic)','Asparagus (prebiotic)','Sweet potato','Zucchini (easy to digest)'],
+      '🍎 Fruits':['Papaya (papain enzyme)','Pineapple (bromelain enzyme)','Bananas (pectin feeds good bacteria)','Berries (polyphenols)','Kiwi (natural laxative enzymes)','Apples with skin'],
+      '🥜 Snacks':['Kefir or yogurt with live cultures','Kimchi (probiotic)','Sauerkraut (probiotic)','Almonds (prebiotic fiber)','Banana + almond butter'],
+      '🫖 Drinks':['Bone broth (L-glutamine heals gut)','Ginger tea (anti-bloating)','Peppermint tea (IBS relief)','Kefir (probiotics)','Water with lemon (digestive enzymes)'],
+    },
+    avoid:['Processed foods (disrupt microbiome diversity)','Artificial sweeteners (kill good bacteria)','Alcohol (damages gut lining)','Fried foods (slows motility)','Excess red meat (promotes bad bacteria)','Gluten (if sensitive — causes leaky gut)','Dairy (if lactose intolerant)','Stress eating (cortisol damages gut barrier)'],
+    tip:'Eating 30 different plant foods per week is the single most powerful thing for microbiome diversity (American Gut Project, 2018). Count spices, herbs, nuts, seeds — it adds up faster than you think.',
+  },
+};
+
   gluten:   {lb:'Gluten/Wheat',em:'🌾',keys:['bread','toast','pasta','naan','wrap','pita','oat','roll','grain','bagel','cracker','flour','couscous','tabbouleh','bolognese']},
   dairy:    {lb:'Dairy',       em:'🥛',keys:['cheese','cream','yogurt','butter','milk','labneh','tzatziki']},
   eggs:     {lb:'Eggs',        em:'🥚',keys:['egg','shakshuka','frittata','omelette','scrambled','pancake']},
@@ -1314,6 +1471,49 @@ function renderToday(){
   }).join('');
   // Health tip
   document.getElementById('htip').innerHTML=`<div class="tip-card">${d.tip}</div>`;
+  renderHealthGuide();
+}
+
+function renderHealthGuide(){
+  const el=document.getElementById('healthguide');if(!el)return;
+  const goals=(P.goals||[]).filter(g=>CONDITION_GUIDE[g]);
+  if(!goals.length){el.innerHTML='';return;}
+  el.innerHTML=`<div style="font-family:'Fraunces',serif;font-size:18px;color:var(--text);margin:16px 0 10px">🏥 Your Health Food Guide</div>`
+  +goals.map(g=>{
+    const c=COND[g],guide=CONDITION_GUIDE[g];
+    return`<div class="hguide-card" id="hg_${g}">
+      <div class="hguide-hdr" onclick="toggleHGuide('${g}')">
+        <div style="display:flex;align-items:center;gap:10px;flex:1;min-width:0">
+          <span style="font-size:24px;flex-shrink:0">${c.em}</span>
+          <div style="min-width:0">
+            <div style="font-weight:700;font-size:14px;color:var(--text)">${c.lb}</div>
+            <div style="font-size:12px;color:var(--sub);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${guide.summary.slice(0,55)}…</div>
+          </div>
+        </div>
+        <span class="hguide-arrow" style="margin-left:10px">▼</span>
+      </div>
+      <div class="hguide-body" id="hgb_${g}" style="display:none">
+        <div style="font-size:13px;color:#3a4a3a;line-height:1.6;margin-bottom:12px;border-left:3px solid ${c.c};padding-left:10px;background:${c.bg};padding:8px 10px 8px 12px;border-radius:0 8px 8px 0">${guide.summary}</div>
+        <div style="font-size:11px;font-weight:700;color:#166534;text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px">✅ Eat These</div>
+        ${Object.entries(guide.eat).map(([cat,foods])=>`
+          <div class="hg-eat-cat">${cat}</div>
+          <div class="hg-chips">${foods.map(f=>`<span class="hg-chip">${f}</span>`).join('')}</div>
+        `).join('')}
+        <div style="font-size:11px;font-weight:700;color:#991b1b;text-transform:uppercase;letter-spacing:.8px;margin-top:16px;margin-bottom:6px">❌ Avoid These</div>
+        ${guide.avoid.map(a=>`<div class="hg-avoid-item">✕ ${a}</div>`).join('')}
+        <div class="hg-tip" style="background:${c.bg};border-left:3px solid ${c.c}">💡 ${guide.tip}</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function toggleHGuide(g){
+  const body=document.getElementById('hgb_'+g);
+  const card=document.getElementById('hg_'+g);
+  if(!body)return;
+  const open=body.style.display!=='none';
+  body.style.display=open?'none':'block';
+  card.classList.toggle('open',!open);
 }
 
 function tog(k){CK[k]=!CK[k];sC();renderToday()}
