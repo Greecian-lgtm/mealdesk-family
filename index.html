@@ -271,6 +271,31 @@ textarea{resize:none;min-height:110px}
   border-radius:8px;padding:10px 12px;
   font-size:13px;line-height:1.55;margin-top:12px;
 }
+
+/* ── REMEDIES TAB ─────────────────────────────────────────────────── */
+.rem-card{background:#fff;border-radius:14px;box-shadow:var(--sh);margin-bottom:10px;overflow:hidden}
+.rem-hdr{display:flex;align-items:center;gap:10px;padding:13px 16px;cursor:pointer;user-select:none}
+.rem-hdr-icon{font-size:22px;flex-shrink:0}
+.rem-hdr-text{flex:1;min-width:0}
+.rem-hdr-title{font-weight:700;font-size:14px;color:var(--text)}
+.rem-hdr-sub{font-size:11px;color:var(--sub);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rem-arrow{color:var(--sub);font-size:11px;transition:transform .2s;flex-shrink:0}
+.rem-card.open .rem-arrow{transform:rotate(180deg)}
+.rem-body{border-top:1px solid var(--border);padding:14px 16px}
+.rem-section-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px;margin-top:12px}
+.rem-section-title:first-child{margin-top:0}
+.rem-step{display:flex;gap:8px;font-size:13px;color:var(--text);padding:4px 0;border-bottom:1px solid var(--border);line-height:1.5}
+.rem-step:last-child{border-bottom:none}
+.rem-step-num{background:var(--a);color:#fff;border-radius:50%;min-width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;margin-top:1px}
+.rem-chips{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px}
+.rem-chip{background:var(--bg);border:1px solid var(--border);border-radius:20px;padding:3px 10px;font-size:12px;color:var(--text)}
+.rem-herb-chip{background:#f0fdf4;border:1px solid #86efac;border-radius:20px;padding:3px 10px;font-size:12px;color:#166534;font-weight:600}
+.rem-avoid{font-size:13px;color:#991b1b;padding:3px 0;border-bottom:1px solid #fee2e2;line-height:1.4}
+.rem-avoid:last-child{border-bottom:none}
+.rem-source{font-size:11px;color:var(--sub);margin-top:10px;font-style:italic}
+.herb-card{background:#fff;border-radius:14px;box-shadow:var(--sh);margin-bottom:10px;overflow:hidden}
+.herb-hdr{display:flex;align-items:center;gap:10px;padding:13px 16px;cursor:pointer}
+.herb-prop{background:#eff6ff;border:1px solid #bfdbfe;border-radius:20px;padding:2px 9px;font-size:11px;color:#1e40af;font-weight:600}
 .pill{
   display:inline-flex;align-items:center;gap:4px;
   border-radius:20px;padding:4px 11px;font-size:12px;font-weight:600;
@@ -727,6 +752,20 @@ textarea{resize:none;min-height:110px}
       <div id="pspln" style="display:none"><div id="planresults"></div></div>
     </div>
 
+    <!-- ─ REMEDIES ────────────────────────────────────────── -->
+    <div class="panel" id="pr">
+      <div class="sec-ttl">🌿 Natural Remedies</div>
+      <div class="sec-sub">From the Natural Remedies Encyclopedia — conditions, protocols, and herbs.</div>
+      <div style="display:flex;gap:6px;margin-bottom:14px;overflow-x:auto;padding-bottom:2px;scrollbar-width:none">
+        <button class="ptab on" id="rty" onclick="swRT('y')">⭐ For You</button>
+        <button class="ptab" id="rtc" onclick="swRT('c')">🫀 Conditions</button>
+        <button class="ptab" id="rth" onclick="swRT('h')">🌿 Herbs</button>
+      </div>
+      <div id="rt-y"></div>
+      <div id="rt-c" style="display:none"></div>
+      <div id="rt-h" style="display:none"></div>
+    </div>
+
   </div><!-- #content -->
 
   <!-- Bottom Nav -->
@@ -742,6 +781,10 @@ textarea{resize:none;min-height:110px}
     <button class="nb" id="np" onclick="sw('p')">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
       Profile
+    </button>
+    <button class="nb" id="nr" onclick="sw('r')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 000 20"/><path d="M12 2c2.5 4 4 7 4 10a10 10 0 01-4 8"/><path d="M2 12h20"/></svg>
+      Remedies
     </button>
     <button class="nb" id="nw" onclick="sw('w')">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3h18v4H3z"/><path d="M12 7v14"/><path d="M8 11l4-4 4 4"/></svg>
@@ -902,6 +945,223 @@ const CONDITION_GUIDE={
   soy:      {lb:'Soy',         em:'🫘',keys:['tofu','soy','edamame','miso']},
   nightshade:{lb:'Nightshades',em:'🍅',keys:['tomato','pepper','eggplant','shakshuka','tikka','masala']},
 };
+
+
+// ── NATURAL REMEDIES DATA (from Natural Remedies Encyclopedia) ────────────────
+const REMEDIES_DATA={
+  blood_pressure:{icon:'❤️',title:'High Blood Pressure',cat:'Cardiovascular',
+    symptoms:['Headaches (back of head)','Dizziness or lightheadedness','Shortness of breath','Nosebleeds','Often NO symptoms — called the "silent killer"'],
+    protocols:['Hibiscus tea — 2 cups daily reduces systolic BP ~7 mmHg, equivalent to some medications','Hawthorn berry tea — 3 cups daily, strengthens heart muscle and dilates vessels','Garlic — 2 raw cloves daily or 600mg aged garlic extract; proven to lower BP','Celery — 4 stalks daily; contains phthalides that relax arterial walls','Magnesium 400mg daily — most hypertensives are deficient','Beet juice 250ml daily — nitrates convert to nitric oxide, dilating vessels','Reduce sodium below 1,500mg/day — single most impactful dietary change','Deep breathing 5 min/day — activates parasympathetic nervous system','Potassium-rich foods at every meal — counteracts sodium directly'],
+    herbs:['Hibiscus','Hawthorn Berry','Garlic','Celery Seed','Olive Leaf','Valerian (stress-related BP)'],
+    prep:'Hibiscus tea: steep 2 tsp dried hibiscus in boiling water 10 min, drink 2× daily. Hawthorn: simmer 1 tbsp berries 15 min, strain, 3 cups/day.',
+    avoid:['Table salt and salty snacks','Processed and canned foods','Alcohol more than 1 drink','Caffeine in excess','Fried foods','Smoking'],
+    tip:'The DASH diet reduces systolic BP by 8–14 mmHg — as effective as a single blood pressure medication.',
+    source:'Natural Remedies Encyclopedia'},
+  insulin:{icon:'💉',title:'Blood Sugar / Insulin',cat:'Metabolic',
+    symptoms:['Excessive thirst and urination','Fatigue after meals','Blurred vision','Slow wound healing','Frequent infections','Sugar cravings'],
+    protocols:['Ceylon cinnamon ½ tsp daily — reduces fasting glucose 18–29% (Diabetes Care, 2003)','Apple cider vinegar 1 tbsp in water before meals — cuts post-meal glucose spikes 34%','Berberine 500mg 3× daily — as effective as Metformin in studies','Bitter melon tea — contains plant insulin (polypeptide-p)','Chromium picolinate 200mcg daily — improves insulin sensitivity','Fenugreek seeds 1 tbsp daily — slows glucose absorption','Eat protein and fat with every carb to blunt the glucose spike','Walk 10 min after each meal — lowers post-meal glucose significantly','Intermittent fasting 16:8 — dramatically improves insulin sensitivity'],
+    herbs:['Berberine','Cinnamon (Ceylon)','Bitter Melon','Fenugreek','Gymnema Sylvestre','Dandelion Root'],
+    prep:'Fenugreek: soak 1 tbsp seeds in water overnight, drink water and eat seeds in morning. Bitter melon: slice and simmer 15 min, drink 1 cup/day.',
+    avoid:['White bread and white rice','Sugary drinks and fruit juice','Candy and pastries','Most breakfast cereals','Alcohol','Instant oatmeal','Flavored yogurt'],
+    tip:'Gymnema sylvestre literally blocks sweet taste receptors and reduces sugar absorption in the intestine — used for 2,000 years in Ayurvedic medicine.',
+    source:'Natural Remedies Encyclopedia'},
+  gout:{icon:'🦶',title:'Gout / Uric Acid',cat:'Joints',
+    symptoms:['Sudden severe joint pain (especially big toe)','Redness, warmth, swelling of joint','Pain worst at night','Joint feels hot to the touch','Crystals may form under skin (tophi)'],
+    protocols:['Tart cherry juice 8oz twice daily — reduces gout attacks by 35% (Arthritis & Rheumatism, 2012)','Water — drink 3+ liters daily; the most important single intervention','Drink lemon water — alkalizes blood and helps dissolve uric acid crystals','Celery seed extract 1,000mg daily — potent uric acid reducer','Nettle leaf tea — naturally lowers uric acid levels','Avoid all alcohol especially beer during attack','Eat low-purine proteins (eggs, dairy, legumes) instead of red meat','Cherry extract capsules 500mg if fresh cherries unavailable','Cold compress on affected joint for pain relief'],
+    herbs:['Tart Cherry','Celery Seed','Nettle Leaf','Devil\'s Claw','Turmeric','Ginger'],
+    prep:'Tart cherry: 8oz pure tart cherry juice 2× daily. Celery seed tea: simmer 1 tsp seeds 10 min, drink 2 cups/day during flare.',
+    avoid:['Red meat (beef, pork, lamb)','Organ meats (liver, kidney)','Shellfish','Sardines and anchovies','Beer and alcohol','High-fructose corn syrup','Fruit juice (fructose raises uric acid)'],
+    tip:'Skim milk proteins — casein and lactalbumin — actively promote uric acid excretion through the kidneys. 1 glass of skim milk daily reduces attack frequency.',
+    source:'Natural Remedies Encyclopedia'},
+  inflammation:{icon:'🔥',title:'Inflammation',cat:'Systemic',
+    symptoms:['Chronic pain (joints, muscles)','Fatigue and brain fog','Skin conditions (eczema, psoriasis)','Digestive issues','Frequent illness','Swelling and redness'],
+    protocols:['Turmeric 1 tsp with black pepper in warm milk daily (golden milk) — most powerful natural anti-inflammatory','Omega-3 fatty acids 2–3g daily from fish oil — directly reduces inflammatory markers','Ginger tea 3 cups daily — inhibits same enzyme as ibuprofen','Boswellia (frankincense) 300mg 3× daily — clinical studies match NSAID effectiveness','Quercetin 500mg 2× daily — potent anti-inflammatory flavonoid','Eliminate refined oils (canola, soybean) and replace with olive oil and coconut oil','10 days sugar-free — inflammation markers drop measurably in lab tests','Cold water therapy — brief cold exposure activates anti-inflammatory response'],
+    herbs:['Turmeric + Black Pepper','Ginger','Boswellia','Willow Bark','Rosemary','Green Tea'],
+    prep:'Golden milk: 1 tsp turmeric + ¼ tsp black pepper + 1 tsp honey in warm milk. Drink nightly. Ginger tea: simmer 1 inch fresh ginger 15 min.',
+    avoid:['Sugar and refined carbs','Refined vegetable oils','Trans fats (fried foods, margarine)','Processed meats','Alcohol','Artificial sweeteners'],
+    tip:'Curcumin (turmeric) inhibits NF-κB — the same inflammatory master switch targeted by ibuprofen and aspirin. Black pepper increases absorption 2,000%.',
+    source:'Natural Remedies Encyclopedia'},
+  cholesterol:{icon:'💙',title:'Cholesterol / LDL',cat:'Cardiovascular',
+    symptoms:['Usually no symptoms','Chest pain (if arteries affected)','Yellowish deposits around eyes (xanthelasma)','Elevated number on blood test'],
+    protocols:['Oat bran or oatmeal daily — beta-glucan fiber binds LDL in the gut and removes it','Red yeast rice 1,200mg 2× daily — contains natural statin compounds','Psyllium husk 7g daily in water — reduces LDL by 7% (FDA approved claim)','Artichoke leaf extract 320mg 3× daily — inhibits cholesterol production in liver','Plant sterols 2g daily (in fortified foods) — proven to lower LDL 10%','Garlic 2 cloves daily — reduces LDL and oxidation of LDL','Niacin (B3) under doctor supervision — raises HDL significantly','Green tea 3 cups daily — reduces LDL 5–10%','Reduce saturated fat and eliminate trans fat completely'],
+    herbs:['Red Yeast Rice','Artichoke Leaf','Garlic','Psyllium','Guggul','Green Tea'],
+    prep:'Psyllium: 7g in 8oz water, drink immediately before it gels, 2× daily. Artichoke leaf: 320mg extract 3× daily with meals.',
+    avoid:['Saturated fats (fatty meat, butter, full-fat dairy)','Trans fats (anything with "partially hydrogenated" oil)','Fried foods','Baked goods with shortening','Processed meats','Tropical oils in excess'],
+    tip:'Every 1% reduction in LDL equals a 1% reduction in heart attack risk. 5–10g soluble fiber daily achieves this — 2 bowls of oatmeal + an apple covers this.',
+    source:'Natural Remedies Encyclopedia'},
+  tinnitus:{icon:'👂',title:'Tinnitus / Ear Ringing',cat:'Neurological',
+    symptoms:['Constant or intermittent ringing in ears','Hissing, buzzing, roaring, or clicking sounds','Worsens in quiet environments','May affect sleep and concentration','Can affect one or both ears'],
+    protocols:['Magnesium 400mg daily — deficiency directly linked to tinnitus severity; most impactful supplement','Zinc 30mg daily — inner ear has highest zinc concentration in the body; deficiency worsens tinnitus','Ginkgo biloba 120–240mg daily — improves inner ear blood flow; 6–12 weeks to work','B12 injections or 1,000mcg sublingual — B12 deficiency causes auditory nerve damage','Limit sodium strictly — salt causes fluid retention in the inner ear (endolymph)','Eliminate caffeine for 30 days and assess — many see significant improvement','N-acetyl cysteine (NAC) 1,800mg daily — protects cochlear hair cells from oxidative damage','Increase omega-3 fatty acids — improves cochlear blood flow and reduces inflammation','Pumpkin seeds daily — highest magnesium food source per gram'],
+    herbs:['Ginkgo Biloba','Ginger (circulation)','Garlic (blood flow)','Black Cohosh','Hawthorn'],
+    prep:'Ginkgo biloba: 120mg standardized extract twice daily. Must take for minimum 6 weeks. Pumpkin seeds: 1 oz daily (156mg magnesium).',
+    avoid:['Salt and high-sodium foods (restricts inner ear blood flow)','Alcohol (damages cochlear hair cells)','Caffeine in excess','Aspirin and NSAIDs in high doses (ototoxic)','Quinine (in tonic water)','MSG and artificial flavors','Sugar and refined carbs'],
+    tip:'A single high dose of aspirin can cause temporary tinnitus. Chronic aspirin/NSAID use can cause permanent damage. Always discuss with your doctor if on these medications.',
+    source:'Natural Remedies Encyclopedia'},
+  joint:{icon:'🦴',title:'Joint Pain / Arthritis',cat:'Joints',
+    symptoms:['Pain, stiffness, swelling in joints','Worse in morning (rheumatoid) or after activity (osteoarthritis)','Reduced range of motion','Joint warmth and redness','Fatigue with rheumatoid arthritis'],
+    protocols:['Bone broth daily — provides collagen, glycine, and glucosamine directly','Turmeric + black pepper — inhibits COX-2 enzyme same as prescription anti-inflammatories','Boswellia 300mg 3× daily — clinically proven to reduce joint pain by 50%+ in studies','Omega-3s 3g daily — reduces morning stiffness in rheumatoid arthritis significantly','Glucosamine sulfate 1,500mg + Chondroitin 1,200mg daily — rebuilds cartilage over months','Tart cherry juice 8oz 2× daily — reduces inflammation markers','Vitamin D3 5,000 IU daily if deficient — low D3 dramatically worsens arthritis','Heat therapy for chronic stiffness; cold packs for acute inflammation','Gentle movement — stationary joints deteriorate faster than mobile ones'],
+    herbs:['Boswellia','Turmeric','Devil\'s Claw','Willow Bark','Ginger','Nettle Leaf'],
+    prep:'Bone broth: simmer bones with apple cider vinegar 8–24 hours. Drink 1–2 cups daily. Boswellia: 300mg extract 3× daily with food.',
+    avoid:['Sugar (directly triggers inflammatory cytokines)','Nightshades (tomatoes, peppers) for sensitive individuals','Refined oils and trans fats','Processed meats','Gluten if sensitive','Alcohol'],
+    tip:'Vitamin C is essential for collagen synthesis in joint cartilage. 1 orange + 1 cup broccoli covers 100%+ of your daily requirement. Cartilage has no blood supply — it gets nutrients through movement.',
+    source:'Natural Remedies Encyclopedia'},
+  energy:{icon:'⚡',title:'Low Energy / Fatigue',cat:'Metabolic',
+    symptoms:['Persistent tiredness regardless of sleep','Brain fog and poor concentration','Muscle weakness','Waking unrefreshed','Afternoon energy crash','Mood changes'],
+    protocols:['Test for iron-deficiency anaemia — most common cause of fatigue especially in women','B12 1,000mcg sublingual daily — deficiency causes profound fatigue and is very common','Ashwagandha 600mg daily — reduces cortisol, improves energy and stress tolerance','Rhodiola rosea 400mg morning — adaptogen that reduces mental and physical fatigue','Coenzyme Q10 200mg daily — essential for cellular energy production in mitochondria','Pair iron foods with Vitamin C — increases iron absorption 300% (lentils + lemon)','Eliminate sugar — causes energy crashes 1–2 hrs after consumption','Beet juice daily — nitrates improve cellular oxygen utilization','Magnesium 400mg before bed — deficiency causes fatigue and poor sleep'],
+    herbs:['Ashwagandha','Rhodiola Rosea','Ginseng','Eleuthero','Maca Root','Green Tea (gentle)'],
+    prep:'Ashwagandha: 600mg KSM-66 extract with warm milk at bedtime. Rhodiola: 400mg in morning, not evening (can be stimulating).',
+    avoid:['Sugar and refined carbs (energy crashes)','Alcohol (disrupts deep sleep cycles)','Excess caffeine (adrenal fatigue)','Skipping meals','Ultra-processed foods (nutrient-empty)','Large lunches (diverts blood to digestion)'],
+    tip:'Coenzyme Q10 production in the body drops 50% by age 50. Statins (cholesterol drugs) also deplete CoQ10 — if you take statins, CoQ10 supplementation is especially important.',
+    source:'Natural Remedies Encyclopedia'},
+  digestion:{icon:'🌿',title:'Gut Health / Digestion',cat:'Gastro-Intestinal',
+    symptoms:['Bloating, gas, cramping','Irregular bowel movements','Heartburn and acid reflux','Food sensitivities','Skin conditions (linked to gut)','Brain fog (gut-brain connection)'],
+    protocols:['Bone broth daily — L-glutamine seals leaky gut and heals intestinal lining','Fermented foods daily (kefir, kimchi, sauerkraut) — 10 billion live bacteria per serving','Slippery elm 1 tbsp in water — coats and soothes entire digestive tract','Aloe vera juice ¼ cup before meals — reduces inflammation in gut lining','Digestive enzymes with meals — especially important over age 40','Activated charcoal for acute bloating and gas','Peppermint oil capsules (enteric coated) — clinically proven for IBS symptoms','Probiotic 50 billion CFU daily — restores microbiome after antibiotics or poor diet','Eat 30 different plant foods weekly — single best strategy for microbiome diversity'],
+    herbs:['Slippery Elm','Peppermint','Marshmallow Root','Ginger','Fennel','Licorice Root (DGL)'],
+    prep:'Slippery elm: mix 1 tbsp powder in warm water, drink before meals. Ginger tea: simmer 1 inch fresh ginger 15 min, sip after meals.',
+    avoid:['Artificial sweeteners (kill beneficial bacteria)','Processed foods (disrupt microbiome)','Alcohol (damages gut lining)','Gluten if sensitive','Dairy if lactose intolerant','NSAIDs (damage gut lining)'],
+    tip:'The gut microbiome contains 38 trillion bacteria — more than human cells in the body. These bacteria produce 95% of your serotonin. Gut health directly controls mood, immunity, and brain function.',
+    source:'Natural Remedies Encyclopedia'},
+  weight_loss:{icon:'⚖️',title:'Lose Weight',cat:'Metabolic',
+    symptoms:['Excess body fat','Fatigue','Joint strain','High blood pressure','Blood sugar instability','Low energy'],
+    protocols:['Drink 500ml water before each meal — reduces calorie intake 13% (Obesity journal study)','Eat protein at every meal — triggers satiety hormones for 4–6 hours','Apple cider vinegar 1 tbsp before meals — reduces appetite and fat storage','Green coffee bean extract 400mg — inhibits glucose absorption from intestines','Intermittent fasting 16:8 — body shifts to fat burning after 12+ hours without food','Remove liquid calories first — juices, soda, alcohol are the biggest hidden source','High-fiber vegetables at start of every meal — fills stomach and slows carb absorption','Sleep 7–8 hours — sleep deprivation raises ghrelin (hunger) 24% and drops leptin 18%','Resistance training 2× per week — builds muscle that burns fat 24/7'],
+    herbs:['Green Tea Extract','Garcinia Cambogia (limited evidence)','Conjugated Linoleic Acid (CLA)','Berberine','Psyllium Husk'],
+    prep:'Green tea: 3–4 cups daily or 400mg EGCG extract. Apple cider vinegar: 1 tbsp in 8oz water before meals.',
+    avoid:['Liquid calories (juice, soda, alcohol)','Ultra-processed snacks','White bread and pasta','Fast food','Sugary breakfast cereals','Skipping meals (slows metabolism)'],
+    tip:'Protein has a thermic effect of 25–30% — your body burns 25 calories just to digest 100 calories of protein. No other macronutrient comes close.',
+    source:'Natural Remedies Encyclopedia'},
+  // ── GASTRO-INTESTINAL (from book pages) ──────────────────
+  hepatitis:{icon:'🫀',title:'Hepatitis',cat:'Liver & Gallbladder',
+    symptoms:['Weakness and fatigue','Nausea and vomiting','Fever','Abdominal pain (upper right)','Jaundice — yellow skin and eyes','Dark urine, light-colored stools','Enlarged tender liver'],
+    protocols:['Complete bed rest — the single most important treatment','Milk thistle (silymarin) 420mg daily — regenerates liver cells and reduces enzymes','Dandelion root tea 3 cups daily — cleanses and supports liver detox pathways','Avoid ALL alcohol completely and indefinitely during recovery','Vitamin C 3,000–6,000mg daily in divided doses — immune support','Beet and carrot juice 1 glass daily — liver detox support','Oregon Grape Root tea — stimulates bile flow, antibacterial action on liver','Burdock root tea — blood purifier and liver cleanser','Light diet only: steamed vegetables, brown rice, fresh fruit'],
+    herbs:['Milk Thistle','Dandelion Root','Oregon Grape Root','Burdock Root','Licorice Root','Astragalus'],
+    prep:'Milk thistle: 420mg standardized silymarin extract 3× daily with meals. Dandelion root: 1 tsp dried root simmered 10 min, 3 cups/day.',
+    avoid:['Alcohol (completely)','Fatty and fried foods','Processed foods','Excess medications','Sugar and refined carbs','Raw shellfish'],
+    tip:'Silymarin (milk thistle) is the most clinically validated liver herb in the world. Studies show 30% reduction in liver enzymes (ALT, AST) after 8 weeks of use.',
+    source:'Natural Remedies Encyclopedia, p.448'},
+  gallstones:{icon:'🟡',title:'Gallstones',cat:'Liver & Gallbladder',
+    symptoms:['Sudden severe pain in upper right abdomen','Pain after eating fatty meals','Pain radiating to right shoulder or back','Nausea and vomiting','Fever with chills if infected (seek medical care)'],
+    protocols:['Apple juice fast 3 days — malic acid in apple juice softens gallstones for passage','Classic flush: ½ cup olive oil + ½ cup fresh lemon juice at bedtime, lie on right side 30 min','Pear juice 4 glasses daily — shown to dissolve small cholesterol stones','Dandelion root tea 3 cups daily — stimulates bile flow, prevents stone formation','Lecithin 2 tbsp daily — keeps cholesterol in solution in bile and prevents crystallization','Low-fat diet strictly — reduces gallbladder contraction pain','Milk thistle — prevents cholesterol from crystallizing in bile','Drink 8+ glasses of water daily','Avoid rapid weight loss — fastest way to form new stones'],
+    herbs:['Dandelion Root','Milk Thistle','Peppermint Oil','Turmeric','Oregon Grape Root','Artichoke'],
+    prep:'Olive oil flush: ½ cup olive oil + ½ cup fresh lemon juice blended; drink at bedtime, lie on right side. Peppermint oil: enteric-coated capsule 1–2 before meals.',
+    avoid:['Fatty and fried foods','Full-fat dairy','Refined carbs and sugar','Eggs (for some patients)','Pork','Alcohol','Rapid weight loss'],
+    tip:'The liver produces 1 quart of bile daily. Lecithin (phosphatidylcholine) is what keeps cholesterol dissolved in bile. Low lecithin = gallstone risk. Eggs and soy are high in lecithin.',
+    source:'Natural Remedies Encyclopedia, p.464'},
+  cirrhosis:{icon:'🫁',title:'Cirrhosis of the Liver',cat:'Liver & Gallbladder',
+    symptoms:['Fatigue and weakness','Jaundice (yellow skin)','Swelling of legs (edema)','Abdominal swelling (ascites)','Easy bruising and bleeding','Mental confusion (hepatic encephalopathy)','Enlarged abdomen'],
+    protocols:['Milk thistle 420mg 3× daily — primary herb; shown to slow cirrhosis progression','Eliminate ALL alcohol — the only intervention that stops further damage','Liver flush quarterly — olive oil and lemon protocol to clear bile ducts','SAMe (S-adenosyl-L-methionine) 400mg — protects liver cell membranes','Dandelion root and burdock root tea alternating — support detox pathways','Low-sodium diet strictly — prevents and reduces ascites (abdominal fluid)','High-quality protein from plant sources — plant protein is better tolerated than animal','Vitamin E 400 IU daily — antioxidant protection of liver cells','Selenium 200mcg daily — antioxidant cofactor'],
+    herbs:['Milk Thistle','Dandelion Root','Burdock Root','Turmeric','Licorice Root'],
+    prep:'SAMe: 400mg on empty stomach in morning. Milk thistle: 420mg 3× daily with meals. Do not skip doses — consistent use essential.',
+    avoid:['Alcohol (completely and forever)','High-sodium foods','Fatty foods','Excess protein from animal sources','NSAIDs (further damage liver)','Raw shellfish'],
+    tip:'Milk thistle contains silymarin — it blocks toxin binding sites on liver cell membranes, acts as antioxidant, and stimulates production of new liver cells (hepatocytes).',
+    source:'Natural Remedies Encyclopedia, p.460'},
+  gallbladder:{icon:'🫚',title:'Gallbladder Inflammation',cat:'Liver & Gallbladder',
+    symptoms:['Steady pain upper right abdomen','Pain worsens with deep breathing','Fever and chills','Nausea and vomiting','Tenderness when pressing right side','May follow a fatty meal'],
+    protocols:['Fast for 24–48 hours to rest the gallbladder completely','Peppermint tea — relaxes the bile duct sphincter and reduces spasm','Turmeric 500mg 3× daily — reduces gallbladder inflammation','Dandelion root tea — stimulates bile flow and reduces inflammation','Hot castor oil pack on upper right abdomen — relieves pain and reduces inflammation','Magnesium glycinate 400mg — relaxes smooth muscle of bile duct','Apple cider vinegar in water before meals — improves bile composition','Low-fat diet after recovery — prevents future attacks','Artichoke extract — increases bile flow and gallbladder emptying'],
+    herbs:['Peppermint','Dandelion Root','Turmeric','Milk Thistle','Artichoke','Oregon Grape Root'],
+    prep:'Castor oil pack: soak flannel cloth in warm castor oil, place on upper right abdomen, cover with plastic, apply heating pad for 45 min. Peppermint tea: 2 cups daily.',
+    avoid:['All fat during acute phase','Fried foods','Dairy','Eggs (often trigger)','Alcohol','Coffee (stimulates gallbladder contraction)'],
+    tip:'Peppermint oil directly relaxes the sphincter of Oddi — the valve controlling bile duct flow. This is why peppermint tea relieves gallbladder cramping within 15–20 minutes.',
+    source:'Natural Remedies Encyclopedia, p.461'},
+  pancreatitis:{icon:'🔴',title:'Pancreatitis',cat:'Gastro-Intestinal',
+    symptoms:['Pain in upper-left abdomen radiating to back','Nausea and vomiting','Fever','Pain worsens after eating','Swollen and tender abdomen','Rapid pulse'],
+    protocols:['Complete rest and fasting for 24–48 hours — pancreas needs complete rest','Diluted vegetable juices only when reintroducing food — carrot, cucumber, celery','Pancreatic enzymes supplement with meals after recovery — reduces workload','Licorice root tea — anti-inflammatory and soothing to pancreatic tissue','Turmeric 500mg 3× daily — reduces pancreatic inflammation','Avoid ALL alcohol — leading cause of pancreatitis','Small frequent meals only when eating resumes','High-antioxidant diet — vitamins C and E protect pancreatic tissue','Selenium 200mcg daily — shown to reduce recurrence'],
+    herbs:['Licorice Root (DGL)','Turmeric','Dandelion Root','Gentian','Milk Thistle'],
+    prep:'Diluted juice: ¼ cup carrot + cucumber juice in 8oz water. No solid food until pain resolves. Licorice root tea: 1 tsp in boiling water, steep 15 min.',
+    avoid:['Alcohol (completely)','Fatty and fried foods','High-fat dairy','Processed meats','Caffeine during recovery','Large meals','Smoking'],
+    tip:'Pancreatitis is one of the most serious GI conditions. Acute cases require medical supervision. Natural remedies support recovery but do not replace emergency care.',
+    source:'Natural Remedies Encyclopedia, p.448'},
+  intestinal_cramps:{icon:'🌀',title:'Intestinal Cramps / IBS',cat:'Gastro-Intestinal',
+    symptoms:['Sudden cramping abdominal pain','Alternating constipation and diarrhea','Bloating and gas','Mucus in stool','Pain relieved after bowel movement','Worsens with stress'],
+    protocols:['Peppermint oil capsules (enteric coated) — clinical gold standard for IBS, reduces cramps significantly','Slippery elm 1 tbsp in water 3× daily — coats and soothes intestinal lining','Ginger tea 3 cups daily — relaxes intestinal smooth muscle','Fennel seed tea — relieves gas, bloating, and intestinal spasm','Chamomile tea 3 cups daily — antispasmodic and anti-inflammatory','Low-FODMAP diet trial — eliminates fermentable carbs that feed bacteria','Probiotics 50 billion CFU daily — restores bacterial balance','Magnesium citrate 400mg — regulates bowel motility','Stress reduction — IBS is strongly driven by gut-brain axis'],
+    herbs:['Peppermint','Slippery Elm','Ginger','Fennel Seed','Chamomile','Marshmallow Root'],
+    prep:'Peppermint oil: enteric-coated capsule (0.2ml) 1 hour before meals. Fennel tea: crush 1 tsp seeds, steep in boiling water 10 min.',
+    avoid:['Gluten (for many IBS sufferers)','Dairy','Cruciferous vegetables in excess','Beans and legumes in excess (during flare)','Carbonated drinks','Artificial sweeteners','Stress eating'],
+    tip:'The gut has its own nervous system — the enteric nervous system — with more neurons than the spinal cord. This is why stress, anxiety, and emotions so directly cause physical gut symptoms.',
+    source:'Natural Remedies Encyclopedia, p.463'},
+  stomach:{icon:'🫙',title:'Stomach Problems / Acid',cat:'Gastro-Intestinal',
+    symptoms:['Heartburn and acid reflux','Bloating after meals','Nausea','Belching','Upper abdominal pain','Feeling of fullness quickly'],
+    protocols:['Stomach acid self-test: drink 1 tsp baking soda in water fasting; if no burp in 2 min, low acid is the problem (not high)','Aloe vera juice ¼ cup before meals — soothes and heals stomach lining','DGL licorice chewable tablets before meals — proven to heal stomach lining without side effects','Stomach tonic: 1 tsp brewer\'s yeast + peppermint in warm water before meals','Apple cider vinegar 1 tbsp in water with meals — increases stomach acid if low','Slippery elm powder 1 tbsp in water — coats and protects stomach lining','Chew food thoroughly (30× per bite) — chewing releases digestive enzymes in saliva','Eat smaller, more frequent meals — reduces acid and bloating','Sit upright after meals for 30 min minimum'],
+    herbs:['DGL Licorice','Slippery Elm','Ginger','Chamomile','Marshmallow Root','Meadowsweet'],
+    prep:'DGL licorice: chew 2 tablets 20 min before meals. Slippery elm: mix 1 tbsp in warm water, stir well, drink before meals.',
+    avoid:['Large meals (stretches stomach)','Mint and peppermint (relaxes LES valve — worsens reflux)','Citrus and tomatoes when inflamed','Fatty and fried foods','Alcohol and caffeine','Lying down within 3 hours of eating','NSAIDs (damage stomach lining)'],
+    tip:'90% of chronic heartburn is caused by LOW stomach acid, not high — leading to bacterial overgrowth and fermentation. The burning sensation is acid in the wrong place, not excess acid.',
+    source:'Natural Remedies Encyclopedia, p.448'},
+};
+
+const HERBS_DATA=[
+  {id:'oregon_grape',name:'Oregon Grape Root',icon:'🔵',latin:'Berberis aquifolium',
+    parts:'Root',
+    properties:['Alterative','Antiseptic','Cholagogue','Laxative','Tonic'],
+    affects:['Liver','Stomach','Intestines','Blood','Skin'],
+    uses:['Stimulates bile secretion and liver function','Cleanses blood and purifies the lymph','Treats chronic skin conditions: psoriasis, eczema, acne','Antibacterial action in the GI tract','Treats hepatitis and gallbladder congestion','Mild laxative action — cleanses the bowel','Improves assimilation of nutrients','Treats bronchial congestion and rheumatoid arthritis'],
+    prep:'Infusion: simmer 1 tsp dried root in 2 cups water for 10–15 minutes. Strain. Drink 1 cup 3× daily. Or 300mg capsule 3× daily.',
+    cautions:['Do not take during pregnancy','Do not use long-term — take breaks','Berberine (active compound) can interact with some medications'],
+    source:'Natural Remedies Encyclopedia, p.172'},
+  {id:'milk_thistle',name:'Milk Thistle',icon:'🌸',latin:'Silybum marianum',
+    parts:'Seeds',
+    properties:['Hepatoprotective','Antioxidant','Anti-inflammatory','Cholagogue'],
+    affects:['Liver','Gallbladder','Kidneys'],
+    uses:['Protects liver cells from toxins and alcohol damage','Regenerates damaged liver cells (hepatocytes)','Treats hepatitis A, B, and C','Supports recovery from cirrhosis','Lowers elevated liver enzymes (ALT, AST)','Protects against chemotherapy and drug-induced liver damage','Improves gallbladder function'],
+    prep:'Standardized extract: 420mg silymarin (70–80% standardized) daily in 3 divided doses. Tea: simmer crushed seeds 20 min (less effective than capsules).',
+    cautions:['Very safe — no significant drug interactions','May mildly lower blood sugar','Seeds work better than tea form'],
+    source:'Natural Remedies Encyclopedia'},
+  {id:'dandelion',name:'Dandelion Root',icon:'🌼',latin:'Taraxacum officinale',
+    parts:'Root and Leaf',
+    properties:['Diuretic','Cholagogue','Hepatic','Bitter tonic','Alterative'],
+    affects:['Liver','Kidneys','Gallbladder','Digestive system'],
+    uses:['Stimulates bile production and flow','Cleanses and detoxifies the liver','Natural diuretic (leaves) — as effective as Furosemide in studies','Supports gallbladder and treats gallstones','Reduces water retention','Rich in potassium — replaces what diuretic use removes','Prebiotic fiber (inulin) feeds beneficial gut bacteria','Treats hepatitis and jaundice'],
+    prep:'Root tea: simmer 1–2 tsp dried root in 2 cups water 15 min. 2–3 cups daily. Leaf tea: steep 2 tsp in boiling water 10 min. Or 500mg capsule 2× daily.',
+    cautions:['Avoid if gallbladder obstruction is present','May interact with blood thinners','Use with caution with diuretic medications'],
+    source:'Natural Remedies Encyclopedia'},
+  {id:'turmeric',name:'Turmeric',icon:'🟡',latin:'Curcuma longa',
+    parts:'Rhizome (root)',
+    properties:['Anti-inflammatory','Antioxidant','Cholagogue','Hepatoprotective','Antibacterial'],
+    affects:['Liver','Joints','Gut','Brain','Cardiovascular system'],
+    uses:['Most powerful natural anti-inflammatory — inhibits NF-κB same as ibuprofen','Protects liver and supports detoxification (phase I and II)','Reduces arthritis pain comparably to NSAID medications in studies','Supports gallbladder function and bile flow','Potent antioxidant — protects DNA from oxidative damage','May prevent and support cancer treatment (ongoing research)','Improves brain function and reduces depression markers'],
+    prep:'Golden milk: 1 tsp turmeric + ¼ tsp black pepper + 1 tsp honey in warm milk. Nightly. Capsule: 500mg standardized curcumin (95%) 3× daily always with black pepper.',
+    cautions:['Black pepper (piperine) increases absorption 2,000% — always combine','May interfere with blood thinners at high doses','Avoid therapeutic doses during pregnancy'],
+    source:'Natural Remedies Encyclopedia'},
+  {id:'ginger',name:'Ginger',icon:'🫚',latin:'Zingiber officinale',
+    parts:'Root (fresh or dried)',
+    properties:['Anti-inflammatory','Antiemetic','Carminative','Circulatory stimulant','Antispasmodic'],
+    affects:['Digestive system','Joints','Cardiovascular','Respiratory','Immune system'],
+    uses:['Eliminates nausea (pregnancy, chemotherapy, motion sickness) — clinically proven','Reduces intestinal cramps, gas, and bloating','Anti-inflammatory — inhibits COX-2 and 5-LOX enzymes','Improves circulation and warms extremities','Reduces menstrual pain as effectively as ibuprofen (study)','Supports immune function against colds and flu','Reduces morning stiffness in arthritis'],
+    prep:'Tea: simmer 1 inch fresh ginger sliced in 2 cups water 15 min. Drink 3 cups daily. Capsule: 550mg dried ginger 3× daily. Crystallized ginger for nausea.',
+    cautions:['Very safe for most people','Avoid high doses with blood thinners','Fresh ginger is more effective than dried'],
+    source:'Natural Remedies Encyclopedia'},
+  {id:'garlic',name:'Garlic',icon:'🧄',latin:'Allium sativum',
+    parts:'Bulb (cloves)',
+    properties:['Antimicrobial','Antiviral','Antifungal','Cardiovascular tonic','Immune stimulant','Antiparasitic'],
+    affects:['Cardiovascular','Immune system','Gut (antibiotic)','Respiratory','Blood'],
+    uses:['Reduces blood pressure by up to 10 mmHg','Lowers LDL cholesterol and increases HDL','Potent antibiotic — effective against MRSA in lab studies','Antifungal — treats candida and other fungal infections','Antiparasitic — expels intestinal worms','Reduces platelet aggregation (blood clot prevention)','Anti-cancer properties — reduces risk of stomach and colorectal cancer','Boosts immune system against colds and flu'],
+    prep:'Raw: 2 cloves crushed daily (crush and wait 10 min before eating — activates allicin). Aged extract: 600mg daily. Cooking destroys allicin — raw is most therapeutic.',
+    cautions:['⚠️ Onion oil used heavily over time causes serious iron anemia (California research study)','Can interact significantly with blood-thinning medications','May cause digestive upset in sensitive individuals'],
+    source:'Natural Remedies Encyclopedia'},
+  {id:'peppermint',name:'Peppermint',icon:'🌿',latin:'Mentha piperita',
+    parts:'Leaves and Oil',
+    properties:['Antispasmodic','Carminative','Analgesic','Cooling','Antibacterial'],
+    affects:['Digestive system','Respiratory','Nervous system','Skin'],
+    uses:['Clinically proven for IBS — reduces pain and cramping in 75% of sufferers','Relieves intestinal spasm and colic','Reduces nausea and vomiting','Relieves gallbladder spasm and pain (relaxes sphincter of Oddi)','Headache relief — topical peppermint oil as effective as acetaminophen in studies','Decongestant for respiratory conditions','Antibacterial in the gut — reduces bacterial overgrowth'],
+    prep:'Tea: 2 tsp dried leaves steeped in boiling water 10 min, covered (volatile oils escape). 3 cups daily. IBS: enteric-coated capsules of peppermint oil (0.2ml) only — not tea (oil must reach intestines intact).',
+    cautions:['Do NOT use plain peppermint oil for acid reflux/GERD — relaxes LES valve and worsens reflux','Enteric-coated capsules bypass the stomach for intestinal action','Avoid in infants and small children'],
+    source:'Natural Remedies Encyclopedia'},
+  {id:'burdock',name:'Burdock Root',icon:'🌱',latin:'Arctium lappa',
+    parts:'Root',
+    properties:['Alterative','Diuretic','Diaphoretic','Mild laxative','Blood purifier'],
+    affects:['Blood','Liver','Kidneys','Skin','Lymphatic system'],
+    uses:['Powerful blood and lymph cleanser','Treats chronic skin conditions: eczema, psoriasis, acne, boils','Stimulates liver detoxification','Supports kidney function and urinary tract','Used in hepatitis and liver disease protocols','Removes heavy metals from tissues','Prebiotic (inulin content) — feeds beneficial gut bacteria','Traditional cancer-preventive herb (Essiac formula)'],
+    prep:'Root tea: simmer 1 tbsp dried root in 3 cups water for 20 min. Strain. Drink 2–3 cups daily. Or 400mg capsule 3× daily. Can be eaten as a vegetable (gobo in Japanese cuisine).',
+    cautions:['Avoid during pregnancy','May interact with diuretic medications','Use cautiously with diabetes medications (lowers blood sugar)'],
+    source:'Natural Remedies Encyclopedia'},
+  {id:'parsley',name:'Parsley',icon:'🥬',latin:'Petroselinum crispum',
+    parts:'Leaves, Root, Seeds',
+    properties:['Diuretic','Carminative','Antioxidant','Emmenagogue','Rich in Vitamin C, K, iron'],
+    affects:['Kidneys','Urinary tract','Digestive system','Blood'],
+    uses:['Powerful natural diuretic — treats fluid retention and kidney stones','Rich in vitamin C — 2× more than orange per gram','Rich in iron and Vitamin K','Freshens breath (chlorophyll)','Supports kidney stone prevention','Anti-inflammatory flavonoids (apigenin)','Helps regulate menstrual cycle','Antioxidant protection of cells'],
+    prep:'Fresh: 1 cup chopped parsley daily in juices or salads. Tea: steep 2 tsp dried parsley in boiling water 10 min. 3 cups/day for kidney flushing.',
+    cautions:['Avoid large medicinal doses during pregnancy (uterine stimulant)','Seeds are much stronger than leaves — avoid seed use without guidance','Normal food amounts are completely safe'],
+    source:'Natural Remedies Encyclopedia, p.172'},
+];
 
 const FOOD_GUIDE={
   keto:{
@@ -1317,6 +1577,130 @@ function sw(t){
   document.getElementById('n'+t).classList.add('on');
   if(t==='k'){renderKitchenMeta()}
   if(t==='w'){initProgressTab()}
+  if(t==='r'){initRemediesTab()}
+}
+
+// ── REMEDIES TAB ──────────────────────────────────────────────────────────────
+let curRT='y';
+function initRemediesTab(){renderRT();}
+function swRT(t){
+  curRT=t;
+  ['y','c','h'].forEach(x=>{
+    const btn=document.getElementById('rt'+x);const el=document.getElementById('rt-'+x);
+    if(btn)btn.classList.toggle('on',x===t);
+    if(el)el.style.display=x===t?'block':'none';
+  });
+  renderRT();
+}
+function renderRT(){
+  if(curRT==='y')renderRT_ForYou();
+  if(curRT==='c')renderRT_Conditions();
+  if(curRT==='h')renderRT_Herbs();
+}
+
+function remCard(key,rd,open){
+  const syms=rd.symptoms?(rd.symptoms.map(s=>`<div style="font-size:13px;color:var(--sub);padding:2px 0;line-height:1.45">• ${s}</div>`).join('')):'';
+  const steps=rd.protocols.map((p,i)=>`<div class="rem-step"><span class="rem-step-num">${i+1}</span><div>${p}</div></div>`).join('');
+  const herbs=rd.herbs?rd.herbs.map(h=>`<span class="rem-herb-chip">🌿 ${h}</span>`).join(''):'';
+  const avoids=rd.avoid?rd.avoid.map(a=>`<div class="rem-avoid">✕ ${a}</div>`).join(''):'';
+  const bodyDisplay=open?'block':'none';
+  return`<div class="rem-card${open?' open':''}" id="rc_${key}">
+    <div class="rem-hdr" onclick="toggleRC('${key}')">
+      <div class="rem-hdr-icon">${rd.icon}</div>
+      <div class="rem-hdr-text">
+        <div class="rem-hdr-title">${rd.title}</div>
+        <div class="rem-hdr-sub">${rd.cat} · ${rd.protocols.length} protocols</div>
+      </div>
+      <span class="rem-arrow">▼</span>
+    </div>
+    <div class="rem-body" id="rcb_${key}" style="display:${bodyDisplay}">
+      ${syms?`<div class="rem-section-title" style="color:#991b1b">Symptoms</div>${syms}`:''}
+      <div class="rem-section-title" style="color:#166534;margin-top:${syms?'12px':'0'}">✅ Natural Protocols</div>
+      ${steps}
+      ${herbs?`<div class="rem-section-title" style="color:#166534;margin-top:12px">🌿 Key Herbs</div><div class="rem-chips">${herbs}</div>`:''}
+      ${rd.prep?`<div class="rem-section-title" style="color:#1a4080;margin-top:12px">⚗️ How to Prepare</div><div style="font-size:13px;color:#1a3060;background:#f0f6ff;border-radius:8px;padding:10px 12px;line-height:1.6">${rd.prep}</div>`:''}
+      ${avoids?`<div class="rem-section-title" style="color:#991b1b;margin-top:12px">❌ Avoid</div>${avoids}`:''}
+      ${rd.tip?`<div style="background:#f0fdf4;border-left:3px solid #4ade80;border-radius:8px;padding:10px 12px;font-size:13px;color:#166534;line-height:1.55;margin-top:12px">💡 ${rd.tip}</div>`:''}
+      <div class="rem-source">📖 ${rd.source}</div>
+    </div>
+  </div>`;
+}
+
+function toggleRC(key){
+  const body=document.getElementById('rcb_'+key);
+  const card=document.getElementById('rc_'+key);
+  if(!body)return;
+  const open=body.style.display!=='none';
+  body.style.display=open?'none':'block';
+  card.classList.toggle('open',!open);
+}
+
+function renderRT_ForYou(){
+  const el=document.getElementById('rt-y');if(!el)return;
+  const goals=P.goals||[];
+  if(!goals.length){
+    el.innerHTML=`<div class="card" style="text-align:center;padding:28px 20px">
+      <div style="font-size:32px;margin-bottom:8px">🌿</div>
+      <div style="font-weight:700;font-size:15px;margin-bottom:6px">No conditions selected</div>
+      <div style="font-size:13px;color:var(--sub);line-height:1.6">Go to Profile and select your health goals to see personalised natural remedy protocols here.</div>
+    </div>`;return;
+  }
+  el.innerHTML=`<div style="font-size:13px;color:var(--sub);margin-bottom:12px;line-height:1.5">Protocols tailored to your selected conditions. Tap any card to expand.</div>`
+    +goals.map(g=>{const rd=REMEDIES_DATA[g];return rd?remCard(g,rd,false):'';}).join('');
+}
+
+function renderRT_Conditions(){
+  const el=document.getElementById('rt-c');if(!el)return;
+  const cats={};
+  Object.entries(REMEDIES_DATA).forEach(([k,rd])=>{
+    if(!cats[rd.cat])cats[rd.cat]=[];
+    cats[rd.cat].push([k,rd]);
+  });
+  el.innerHTML=Object.entries(cats).map(([cat,items])=>`
+    <div style="font-size:12px;font-weight:700;color:var(--sub);text-transform:uppercase;letter-spacing:.8px;margin:16px 0 8px;padding-bottom:4px;border-bottom:1px solid var(--border)">${cat}</div>
+    ${items.map(([k,rd])=>remCard(k,rd,false)).join('')}
+  `).join('');
+}
+
+function renderRT_Herbs(){
+  const el=document.getElementById('rt-h');if(!el)return;
+  el.innerHTML=`<div style="font-size:13px;color:var(--sub);margin-bottom:12px;line-height:1.5">125 Most Important Herbs — key entries from the Natural Remedies Encyclopedia.</div>`
+  +HERBS_DATA.map(h=>{
+    const props=h.properties.map(p=>`<span class="herb-prop">${p}</span>`).join('');
+    const uses=h.uses.map(u=>`<div style="font-size:13px;color:var(--text);padding:3px 0;border-bottom:1px solid var(--border);line-height:1.45">→ ${u}</div>`).join('');
+    const cautions=h.cautions.map(c=>`<div style="font-size:13px;color:#991b1b;padding:2px 0;line-height:1.4">⚠️ ${c}</div>`).join('');
+    return`<div class="herb-card" id="hc_${h.id}">
+      <div class="herb-hdr" onclick="toggleHC('${h.id}')">
+        <span style="font-size:24px">${h.icon}</span>
+        <div style="flex:1;min-width:0">
+          <div style="font-weight:700;font-size:14px;color:var(--text)">${h.name}</div>
+          <div style="font-size:12px;color:var(--sub);font-style:italic">${h.latin}</div>
+        </div>
+        <span class="rem-arrow" id="ha_${h.id}">▼</span>
+      </div>
+      <div id="hcb_${h.id}" style="display:none;padding:0 16px 16px;border-top:1px solid var(--border);padding-top:12px">
+        <div style="margin-bottom:8px"><span style="font-size:12px;font-weight:700;color:var(--sub)">Part used: </span><span style="font-size:12px;color:var(--text)">${h.parts}</span></div>
+        <div class="rem-chips" style="margin-bottom:10px">${props}</div>
+        <div style="font-size:12px;font-weight:700;color:var(--sub);margin-bottom:2px">Affects:</div>
+        <div style="font-size:13px;color:var(--text);margin-bottom:10px">${h.affects.join(' · ')}</div>
+        <div style="font-size:11px;font-weight:700;color:#166534;text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px">Uses</div>
+        ${uses}
+        <div style="font-size:11px;font-weight:700;color:#1a4080;text-transform:uppercase;letter-spacing:.8px;margin-top:12px;margin-bottom:4px">⚗️ Preparation</div>
+        <div style="font-size:13px;color:#1a3060;background:#f0f6ff;border-radius:8px;padding:10px 12px;line-height:1.6">${h.prep}</div>
+        ${cautions?`<div style="font-size:11px;font-weight:700;color:#991b1b;text-transform:uppercase;letter-spacing:.8px;margin-top:12px;margin-bottom:4px">⚠️ Cautions</div>${cautions}`:''}
+        <div class="rem-source">📖 ${h.source}</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function toggleHC(id){
+  const body=document.getElementById('hcb_'+id);
+  const arr=document.getElementById('ha_'+id);
+  if(!body)return;
+  const open=body.style.display!=='none';
+  body.style.display=open?'none':'block';
+  if(arr)arr.style.transform=open?'':'rotate(180deg)';
 }
 
 // ── HEADER ────────────────────────────────────────────────────────────────────
