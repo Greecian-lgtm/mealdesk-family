@@ -827,6 +827,7 @@ const COND={
   digestion:     {lb:'Gut Health / Digestion',em:'🌿',c:'#1a8060',bg:'#f0fdf4'},
   cancer_care:   {lb:'Cancer Care / Support',em:'🎗️',c:'#8b5cf6',bg:'#faf5ff'},
   pancreas:      {lb:'Pancreas / Pancreatitis',em:'🫁',c:'#0891b2',bg:'#f0f9ff'},
+  parasites:     {lb:'Parasites / Gut Cleanse',em:'🦠',c:'#059669',bg:'#f0fdf4'},
 };
 
 
@@ -1067,6 +1068,18 @@ const CONDITION_GUIDE={
     },
     avoid:['Alcohol — #1 cause of pancreatitis, zero tolerance','All fried and fatty foods — maximize enzyme demand','Red and processed meat — high fat stresses pancreas','Full-fat dairy — cream, butter, whole milk','Large meals — overwhelm enzyme capacity','Refined sugar and carbs — exhaust insulin-producing beta cells','Spicy food during flares','Caffeine in excess','Ultra-processed foods'],
     tip:'The pancreas cannot rest when you eat fat — every gram of fat forces enzyme production. During healing, under 30g fat/day is the single most important rule. Small frequent meals reduce pancreatic stress dramatically.',
+  },
+  parasites:{
+    summary:'Parasites compete for your nutrients, damage gut lining, and suppress immunity. Diet starves them while herbs eliminate them. Sugar and refined carbs are their primary food source.',
+    eat:{
+      '🧄 Antiparasitic Foods':['Raw garlic crushed (allicin — #1 natural antiparasitic)','Pumpkin seeds raw (cucurbitacin paralyzes worms)','Papaya + seeds (carpaine + digestive enzymes)','Pineapple (bromelain disrupts parasite proteins)','Pomegranate (pelletierine kills tapeworms)','Bitter melon (traditional antiparasitic)','Coconut oil (caprylic acid — antifungal + antiparasitic)'],
+      '🥦 Gut-Healing Vegetables':['Garlic (raw daily)','Ginger (anti-inflammatory)','Turmeric (anti-inflammatory)','Carrots (beta-carotene — hostile to parasites)','Beets (cleanse blood and liver)','Dark leafy greens (magnesium + iron — replenish what parasites steal)'],
+      '🍎 Fruits':['Papaya (papain enzyme)','Pineapple (bromelain)','Pomegranate (pelletierine)','Berries (antioxidants support immunity)'],
+      '🫙 Fermented (restore microbiome)':['Kefir (probiotics — 10+ billion CFU)','Kimchi (Lactobacillus)','Sauerkraut','Plain Greek yogurt with live cultures','Kombucha (small amounts)'],
+      '🫖 Teas':['Clove tea (eugenol kills parasite eggs)','Wormwood tea (kills adults and larvae)','Black walnut tea','Ginger tea (anti-inflammatory)','Peppermint tea (soothes gut post-cleanse)'],
+    },
+    avoid:['Sugar and all refined carbs (PRIMARY parasite food)','Pork (tapeworm and trichinosis risk if undercooked)','Raw shellfish (multiple parasite species)','Raw or undercooked meat','Unwashed produce (eggs on surface)','Alcohol (suppresses immune system during cleanse)','Dairy in excess (feeds certain parasites)'],
+    tip:'Keto diet + intermittent fasting is Dr. Berg\'s foundational anti-parasite strategy. Eliminating sugar starves parasites of their primary fuel while fasting triggers autophagy — the body\'s cellular cleanup mechanism — which can help eliminate parasitic organisms.',
   },
 };
 
@@ -1752,6 +1765,63 @@ const REMEDIES_DATA={
     avoid:['Self-prescribing prescription medications','Veterinary formulations of ivermectin (toxic excipients, wrong dosing)','Purchasing from unregulated online sources','Treating cancer without conventional medical team involvement','Stopping prescribed cancer treatments without oncologist approval'],
     tip:'⚠️ MEDICAL DISCLAIMER: Ivermectin and Mebendazole are prescription drugs being studied off-label for cancer. The evidence base is observational and early-phase — NOT proven by randomized clinical trials. The FLCCC observational data (84.4% clinical benefit) is promising but preliminary. This information is educational only. Never substitute this for your oncologist\'s treatment plan. Always discuss with your medical team. Sources: FLCCC Alliance, Dr. Paul Marik, The Wellness Company, Hulscher et al. 2024, Cedars-Sinai NCT05318469.',
     source:'FLCCC Alliance · Dr. Paul Marik · Hulscher et al. 2024 · Cedars-Sinai NCT05318469 · Dr. Berg (natural antiparasitic protocols)'},
+  parasite_cleanse:{icon:'🌿',title:'Natural Parasite Cleanse — Where to Get & How to Use',cat:'Natural Remedies',
+    subtitle:'Black walnut · Wormwood · Clove · Garlic · Oregano oil — buying guide & protocol',
+    symptoms:['Bloating, gas, and digestive discomfort','Fatigue and brain fog','Itching (especially at night — pinworms)','Unexplained food cravings (especially sugar)','Teeth grinding during sleep','Dark circles under eyes despite good sleep','Travel to high-risk areas or exposure to pets'],
+    protocols:[
+      '🌰 BLACK WALNUT HULL (Juglans nigra) — Best forms: liquid tincture (fastest absorption) or capsules. Dose: 20 drops tincture in 2oz water OR 500mg capsules, 3× daily on empty stomach. Active compound: juglone — kills parasites, fungi, and bacteria. Duration: 14–21 days.',
+      '🌿 WORMWOOD (Artemisia absinthium) — Best forms: capsules or tincture. Dose: 200–500mg capsule OR 20 drops tincture, 3× daily on empty stomach. Active compound: absinthin + artemisinin — kills parasite larvae and adults. Duration: 14–21 days. Note: use Artemisia absinthium, NOT Artemisia annua (sweet wormwood — different plant).',
+      '🌸 CLOVES (Syzygium aromaticum) — Best forms: whole cloves (grind fresh), capsules, or organic ground cloves. Dose: 500mg capsule OR ½ tsp freshly ground in warm water, 3× daily. Active compound: eugenol — kills parasite EGGS (the only herb that does this, making cloves essential to the trio). Duration: 14–21 days.',
+      '🧄 RAW GARLIC — Form: fresh bulbs only (capsules/supplements are far less effective). Dose: 2–4 raw cloves daily. Method: crush cloves and WAIT 10 MINUTES before eating — this activates allicin (the antiparasitic compound). Swallow with water or chop into food. Do not cook. Duration: ongoing.',
+      '🫒 OREGANO OIL (Carvacrol) — Best forms: oil of oregano (Origanum vulgare subsp. hirtum), NOT regular cooking oregano. Dose: 3–4 drops in ½ cup water or orange juice, 3× daily before meals OR enteric-coated capsules (2 caps 3× daily). Must be at least 70–80% carvacrol. Duration: 14–21 days.',
+      'THE CLASSIC TRIO PROTOCOL (Dr. Hulda Clark / Dr. Berg): Take all three — black walnut hull + wormwood + clove — TOGETHER on an empty stomach, 3× daily (morning, midday, evening), for 14–21 days. Together they cover all three stages: adults (wormwood), larvae (black walnut), and eggs (cloves). Missing any one reduces effectiveness.',
+      'MAINTENANCE after cleanse: 1 round of the trio every 3–6 months. Daily raw garlic + oregano oil ongoing. Keto diet and intermittent fasting create an ongoing hostile environment for parasites (Dr. Berg).',
+    ],
+    homeRemedies:[
+      'FRESH GARLIC METHOD: Peel 3 cloves. Crush with back of a knife. Leave on cutting board 10 minutes (allicin forms). Swallow whole like pills with a glass of water. Do not chew if taste is too strong. Best taken in the morning on empty stomach.',
+      'OREGANO OIL SHOT: Add 4 drops of oil of oregano to 2oz fresh orange juice (Vitamin C enhances absorption + masks the strong taste). Drink quickly. Chase with plain water. Repeat 3× daily before meals.',
+      'ANTI-PARASITE MORNING SHOT: Combine in a small glass — 1 tbsp apple cider vinegar + 4 drops oregano oil + juice of ½ lemon + pinch of cayenne. Drink on empty stomach. This combination lowers gut pH, making the environment hostile to parasites while supporting stomach acid production.',
+      'PUMPKIN SEED METHOD: Eat 1 cup of raw, unsalted pumpkin seeds on an empty stomach first thing in the morning. Traditional remedy — cucurbitacin paralyzes intestinal worms. Follow with a cup of peppermint tea. Do this for 3 consecutive days.',
+      'PAPAYA SEED CLEANSE: Scoop seeds from a fresh papaya. Blend 1 tsp seeds with 1 tbsp honey and ½ cup papaya flesh. Eat on empty stomach daily for 7 days. Carpaine and benzyl isothiocyanate in seeds have antiparasitic properties.',
+      'ANTI-PARASITE SMOOTHIE: Blend raw papaya + pineapple (bromelain) + 1 clove raw garlic + ½ tsp ginger + coconut water. Drink on empty stomach. The enzyme-rich combination disrupts parasite membranes.',
+    ],
+    healingFoods:[
+      'Raw garlic (allicin — #1 natural antiparasitic per Dr. Berg)',
+      'Pumpkin seeds raw (cucurbitacin paralyzes worms)',
+      'Fresh papaya + seeds (carpaine + enzymes)',
+      'Pineapple (bromelain disrupts parasite proteins)',
+      'Coconut oil (caprylic acid — antifungal + antiparasitic)',
+      'Fermented foods — kefir, kimchi, sauerkraut (restore microbiome after cleanse)',
+      'Cloves (eugenol — kills eggs)',
+      'Pomegranate juice (pelletierine kills tapeworms)',
+      'Turmeric (anti-inflammatory during cleanse)',
+      'Bitter melon (traditional antiparasitic)',
+      'Carrot + beet juice (high beta-carotene — hostile to parasites)',
+    ],
+    triggerFoods:[
+      'Sugar and refined carbs — PRIMARY food source for parasites',
+      'Raw or undercooked meat and fish — transmission route',
+      'Unwashed produce — eggs on surface',
+      'Pork (especially undercooked — trichinosis, tapeworms)',
+      'Raw shellfish — multiple parasites',
+    ],
+    herbs:['Black Walnut Hull','Wormwood (Artemisia absinthium)','Cloves (Eugenol)','Oregano Oil (Carvacrol)','Garlic (Allicin)','Wormwood','Black Seed (Nigella sativa)','Goldenseal'],
+    prep:`WHERE TO BUY — each item:
+
+🌰 BLACK WALNUT HULL: iHerb.com (search "black walnut hull tincture") · Amazon · Vitacost · Whole Foods. Best brands: Herb Pharm (tincture), Nature's Sunshine (capsules), NOW Foods (capsules). Look for: "hull" specifically (not the nut).
+
+🌿 WORMWOOD: Mountain Rose Herbs (bulk, highest quality) · iHerb · Vitacost · Amazon. Best brands: Herb Pharm (tincture), Nature's Sunshine, Frontier Co-op (loose herb). Look for: Artemisia absinthium (Latin name on label).
+
+🌸 CLOVES: Any grocery store (Walmart, Kroger, Whole Foods) — spice aisle, whole cloves. Or capsules from iHerb/Amazon. Best brand capsules: Nature's Sunshine, NOW Foods. Buy whole, grind fresh for highest potency.
+
+🧄 RAW GARLIC: Any grocery store produce section. Buy fresh organic bulbs. Avoid pre-minced jars (allicin degrades).
+
+🫒 OREGANO OIL: Health food stores (Sprouts, Whole Foods, Natural Grocers) · iHerb · Amazon. Best brands: North American Herb & Spice "Oreganol P73" (strongest, most trusted) · Gaia Herbs · Herb Pharm · Natural Factors. Look for: at least 70% carvacrol, Origanum vulgare hirtum, diluted in olive oil.
+
+PRE-MADE TRIO COMBOS (all 3 herbs together): "Para-Cleanse" by Nature's Sunshine · "Para-Protect" by NOW Foods · "ParaGard" by Zahlers · "Worm Out" by Gaia — all on Amazon/iHerb. Easiest option.`,
+    avoid:['Pure essential oil of oregano undiluted directly (burns mucosa — always dilute)','Wormwood during pregnancy (uterine stimulant)','High doses of wormwood long-term (thujone is neurotoxic in excess)','Starting without consulting a doctor if on medication','Treating children without pediatric guidance'],
+    tip:'The most affordable complete solution: whole cloves ($3 at any grocery store, grind in coffee grinder), fresh garlic bulbs ($2), wormwood capsules and black walnut tincture from iHerb (total ~$25-35 for a full 21-day protocol). The North American Herb & Spice Oreganol P73 is widely considered the gold standard oregano oil — widely available on Amazon and at Whole Foods.',
+    source:'Dr. Eric Berg (drberg.com) · Dr. Hulda Clark · Natural Remedies Encyclopedia'},
 };
 
 const HERBS_DATA=[
@@ -2345,6 +2415,9 @@ function renderRT_ForYou(){
           :'')
           +(g==='pancreas'?
             (REMEDIES_DATA.pancreas_health?remCard('pancreas_health',REMEDIES_DATA.pancreas_health,false):'')
+          :'')
+          +(g==='parasites'?
+            (REMEDIES_DATA.parasite_cleanse?remCard('parasite_cleanse',REMEDIES_DATA.parasite_cleanse,false):'')
           :'');
         return (rd?remCard(g,rd,true):'')+extra;
       }catch(e){
