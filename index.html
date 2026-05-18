@@ -824,6 +824,7 @@ const COND={
   joint:         {lb:'Joint Pain / Arthritis',em:'🦴',c:'#c06030',bg:'#fff4ee'},
   energy:        {lb:'Low Energy / Fatigue',em:'⚡',c:'#b08010',bg:'#fefce8'},
   digestion:     {lb:'Gut Health / Digestion',em:'🌿',c:'#1a8060',bg:'#f0fdf4'},
+  cancer_care:   {lb:'Cancer Care / Support',em:'🎗️',c:'#8b5cf6',bg:'#faf5ff'},
 };
 
 
@@ -1324,6 +1325,19 @@ const REMEDIES_DATA={
     avoid:['Artificial sweeteners (kill beneficial bacteria)','Processed foods (disrupt microbiome)','Alcohol (damages gut lining)','Gluten if sensitive','Dairy if lactose intolerant','NSAIDs (damage gut lining)'],
     tip:'The gut microbiome contains 38 trillion bacteria — more than human cells in the body. These bacteria produce 95% of your serotonin. Gut health directly controls mood, immunity, and brain function.',
     source:'Natural Remedies Encyclopedia'},
+  cancer_care:{
+    summary:'Diet creates an environment where cancer cells struggle to thrive by limiting their specific fuel sources. Always work with your oncology team. For informational purposes only — not a substitute for medical treatment.',
+    eat:{
+      '🥦 Anti-Cancer Vegetables':['Broccoli sprouts (sulforaphane — #1 anti-cancer compound)','Broccoli, kale, cabbage, Brussels sprouts (cruciferous)','Shiitake, maitake, turkey tail mushrooms','Garlic (allicin)','Onions, leeks, shallots (quercetin)','Celery, beets, carrots','Tomatoes (lycopene)','Asparagus, artichoke, bok choy'],
+      '🍎 Anti-Cancer Fruits':['Pomegranate (ellagitannins)','Blueberries, blackberries, raspberries, cranberries','Strawberries (anthocyanins)','Red/purple grapes (resveratrol)','Grapefruit (limonene)','Lemons and oranges (Vitamin C + flavonoids)'],
+      '🍗 Proteins (moderate, clean)':['Wild salmon, sardines, mackerel (omega-3 EPA/DHA)','Pasture-raised eggs (moderate)','Legumes: lentils, chickpeas, black beans','Grass-fed meat in small portions only'],
+      '🌿 Anti-Cancer Herbs & Spices':['Turmeric + black pepper (curcumin — most clinically studied)','Rosemary, thyme, oregano (anti-proliferative compounds)','Ginger (apoptosis support)','Cinnamon (anti-angiogenic)','Parsley (apigenin)'],
+      '🥜 Seeds, Nuts & Fats':['Flaxseeds (lignans — anti-estrogenic)','Chia seeds (omega-3 ALA)','Walnuts (ellagic acid + omega-3)','Sesame seeds (sesamin)','Extra-virgin olive oil (oleocanthal)','Dark chocolate / raw cacao (flavonoids)','Black cumin / black seed oil (thymoquinone)'],
+      '🫖 Therapeutic Drinks':['Green tea (EGCG — most studied anti-cancer polyphenol)','Hibiscus tea (anthocyanins)','Turmeric-ginger tea','Pomegranate juice (small amounts)','Matcha (concentrated EGCG)','Ginger tea'],
+    },
+    avoid:['All sugar and refined carbs — primary fuel for glucose-dependent cancers','Processed seed oils (canola, corn, soybean, sunflower) — pro-inflammatory omega-6','Ultra-processed and packaged foods','Alcohol — directly linked to 7 cancer types','Non-organic produce — pesticide load burdens liver detox systems','Processed meats (bacon, deli meat) — WHO Group 1 carcinogen','Excessive animal protein — BCAAs fuel certain cancer types'],
+    tip:'Choose organic produce always. Rotating between the 5 anti-cancer diet strategies prevents cancer cells from adapting to any single metabolic restriction. Consult your oncology team before making dietary changes during active treatment.',
+  },
   weight_loss:{icon:'⚖️',title:'Lose Weight',cat:'Metabolic',
     symptoms:['Excess body fat','Fatigue','Joint strain','High blood pressure','Blood sugar instability','Low energy'],
     protocols:['Drink 500ml water before each meal — reduces calorie intake 13% (Obesity journal study)','Eat protein at every meal — triggers satiety hormones for 4–6 hours','Apple cider vinegar 1 tbsp before meals — reduces appetite and fat storage','Green coffee bean extract 400mg — inhibits glucose absorption from intestines','Intermittent fasting 16:8 — body shifts to fat burning after 12+ hours without food','Remove liquid calories first — juices, soda, alcohol are the biggest hidden source','High-fiber vegetables at start of every meal — fills stomach and slows carb absorption','Sleep 7–8 hours — sleep deprivation raises ghrelin (hunger) 24% and drops leptin 18%','Resistance training 2× per week — builds muscle that burns fat 24/7'],
@@ -1389,6 +1403,135 @@ const REMEDIES_DATA={
     avoid:['Large meals (stretches stomach)','Mint and peppermint (relaxes LES valve — worsens reflux)','Citrus and tomatoes when inflamed','Fatty and fried foods','Alcohol and caffeine','Lying down within 3 hours of eating','NSAIDs (damage stomach lining)'],
     tip:'90% of chronic heartburn is caused by LOW stomach acid, not high — leading to bacterial overgrowth and fermentation. The burning sensation is acid in the wrong place, not excess acid.',
     source:'Natural Remedies Encyclopedia, p.448'},
+  cancer_care:{icon:'🎗️',title:'Cancer Care — Diet Foundations',cat:'Cancer Support',
+    subtitle:'Anti-cancer foods, core principles & Dr. Berg framework',
+    symptoms:['⚠️ Informational only — always work with your oncology team','Diet creates an environment where cancer cells struggle to thrive','Cancer cells depend on specific fuel sources: glucose, glutamine, lipids, ketones, BCAAs','Limiting these fuels through diet rotation may support conventional treatment'],
+    protocols:[
+      'Choose organic produce always — pesticides burden the liver\'s detox systems critical to healing',
+      'Eliminate ALL sugar and refined carbs — glucose is the primary fuel for most cancers (Warburg Effect)',
+      'Remove all processed seed oils (canola, corn, soybean) — replace with EVOO, coconut oil, avocado oil',
+      'Eat cruciferous vegetables daily — sulforaphane in broccoli sprouts is the most studied anti-cancer compound',
+      'Green tea 3–4 cups daily — EGCG (epigallocatechin gallate) is the most researched anti-cancer polyphenol',
+      'Turmeric + black pepper at every meal — curcumin inhibits cancer proliferation; black pepper increases absorption 2,000%',
+      'Turkey tail + shiitake + maitake mushrooms — clinically studied for immune enhancement during cancer treatment',
+      'Intermittent fasting 16:8 daily — creates metabolic stress cancer cells struggle to adapt to',
+      'Prolonged fasting 24–72 hours every 2–3 weeks — may enhance chemotherapy effectiveness (emerging research)',
+      'Rotate between the 5 anti-cancer diet strategies — prevents cancer cells from adapting to any single approach',
+    ],
+    healingFoods:[
+      'Broccoli sprouts — sulforaphane (highest anti-cancer compound per gram)',
+      'Garlic — allicin; anti-proliferative at every stage',
+      'Turmeric — curcumin; inhibits NF-κB same as many cancer drugs',
+      'Green tea — EGCG; inhibits angiogenesis (tumor blood supply)',
+      'Pomegranate — ellagitannins; anti-metastatic',
+      'Blueberries — anthocyanins; protect DNA from oxidative damage',
+      'Wild salmon — omega-3 EPA/DHA; anti-inflammatory',
+      'Walnuts — ellagic acid + omega-3',
+      'Flaxseeds — lignans (anti-estrogenic for ER+ cancers)',
+      'Shiitake, maitake, turkey tail mushrooms — beta-glucans',
+      'Grapefruit — limonene; induces apoptosis',
+      'Black cumin / black seed oil — thymoquinone',
+      'Extra-virgin olive oil — oleocanthal (NSAID-like anti-inflammatory)',
+      'Dark chocolate 85%+ / raw cacao — flavonoids + magnesium',
+      'Rosemary, thyme, oregano — anti-proliferative terpenes',
+    ],
+    triggerFoods:[
+      'Sugar in all forms — Warburg Effect: cancer cells consume glucose at 200× rate of normal cells',
+      'White bread, pasta, rice — convert to glucose rapidly',
+      'Fruit juice — glucose spike without fiber buffer',
+      'Alcohol — directly carcinogenic; linked to breast, colon, liver, esophageal, oral cancers',
+      'Processed meats — bacon, hot dogs, deli meat (WHO Group 1 carcinogen)',
+      'Non-organic produce — pesticide residues burden detox pathways',
+      'Processed seed oils — pro-inflammatory linoleic acid drives tumor growth',
+      'Charred / grilled meat — heterocyclic amines and PAHs are mutagenic',
+      'Excess animal protein — excess BCAAs (leucine, isoleucine, valine) fuel certain cancers',
+    ],
+    homeRemedies:[
+      'Morning broccoli sprout protocol: blend 1 cup fresh broccoli sprouts with water daily. Sulforaphane peaks 1–3 hours after eating. Do not cook — heat destroys the enzyme needed to produce sulforaphane.',
+      'Polyphenol burst (fasting alternative): flood the body with green tea, turmeric tea, pomegranate, berries, and cruciferous sprouts throughout the day. Concentrated polyphenols may limit tumor growth during non-fasting periods.',
+      'Turmeric paste: simmer 1 tsp turmeric + ¼ tsp black pepper + 1 tsp coconut oil in ½ cup water 10 min. Store in fridge. Add to warm drinks, soups, or eat directly 1–2 tsp daily. Always cook turmeric in fat for maximum absorption.',
+      '24-hour weekly fast: water, green tea, herbal teas only. Bone broth optional if weak. Creates metabolic stress cancer cells cannot adapt to while healthy cells rest and rejuvenate.',
+      'Anti-cancer tea blend: combine green tea + hibiscus + ginger + turmeric. Brew 4–5 cups and drink throughout the day. This provides EGCG, anthocyanins, gingerols, and curcumin in a single routine.',
+    ],
+    herbs:['Green Tea (EGCG)','Turmeric (Curcumin)','Berberine','Quercetin','Resveratrol','Sulforaphane','Apigenin','Black Seed Oil'],
+    prep:'Broccoli sprouts: grow at home — 3 day sprout. Blend raw with water. Never cook. Turmeric: always combine with black pepper and fat. Green tea: steep 3 min at 80°C (not boiling — destroys EGCG).',
+    avoid:['All sugar and refined carbs','Processed seed oils','Alcohol','Processed meats','Non-organic produce','Excess animal protein','Charred grilled meats'],
+    tip:'⚠️ This information is for educational purposes only. It does not diagnose, treat, cure, or prevent cancer. Always consult your oncologist before changing your diet during active treatment. Source: Dr. Eric Berg, drberg.com — 5 Diet Strategies for Cancer Care (2026).',
+    source:'Dr. Berg — 5 Diet Strategies for Cancer Care (2026)'},
+  cancer_strategies:{icon:'🔬',title:'5 Anti-Cancer Diet Strategies',cat:'Cancer Support',
+    subtitle:'Anti-glucose · Anti-glutamine · Anti-lipid · Anti-ketone · Anti-BCAA',
+    symptoms:['Each strategy limits a specific metabolic fuel cancer cells depend on','Rotate between strategies to prevent cellular adaptation','Always combine with your oncology team\'s treatment plan','⚠️ Informational only — not a substitute for medical treatment'],
+    protocols:[
+      '1️⃣ ANTI-GLUCOSE (most common): ≤20g carbs/day, unlimited non-starchy veg, 3–6oz protein/meal, healthy fats (olive oil, avocado, coconut oil). No snacking. Top foods: cruciferous veg, mushrooms, garlic/onions, oily fish, rosemary/turmeric/thyme. Use for: glioblastoma, KRAS+ colorectal, ER+ breast, lung adenocarcinoma, head/neck, cervical cancer.',
+      '2️⃣ ANTI-GLUTAMINE: Plant-based only, little/no animal protein. Broccoli sprouts, seeds (chia, flax, hemp), colorful berries, polyphenol teas (hibiscus, green tea, turmeric tea) daily. Every meal spiced with turmeric, rosemary, oregano, cumin. Use for: pancreatic, triple-negative breast (TNBC), melanoma, leukemia, lymphoma.',
+      '3️⃣ ANTI-LIPID: Low total fat. No seed oils (canola, corn, sunflower). Omega-3 from oily fish, flax, chia only. Fill plate with antioxidant-rich plant foods. Berries, grapes, pomegranate, apples. Use for: prostate, ovarian, ER+ breast, liver (hepatocellular).',
+      '4️⃣ ANTI-KETONE: No prolonged keto. Moderate fat. Polyphenol-rich plant foods + berries. Regular 24–36hr fasts each week. Use for: advanced/metastatic breast, advanced ovarian, late-stage/aggressive cancers. Cruciferous sprouts, alliums, pumpkin seeds, flaxseed.',
+      '5️⃣ ANTI-BCAA: Limit all animal protein (no meat, poultry, eggs, whey). Plant-based + polyphenols. Onions, kale, celery, spinach, garlic, cauliflower, bok choy, apples, berries, flaxseed, sesame seeds. Regular fasting. Use for: AML, CML, certain lung cancers, gliomas, liver cancer.',
+      'PROLONGED FASTING (24–72 hrs, 1–2× every 2–3 weeks): Water, green tea, herbal teas only. Optional bone broth if weak. Creates metabolic stress cancer cells cannot adapt to. Example day: morning matcha broccoli sprout salad; midday pomegranate smoothie + blueberries + ginger; evening cauliflower-turmeric soup + rosemary tea.',
+      'POLYPHENOL BURST (fasting alternative): Flood with green tea, turmeric, ginger, pomegranate, berries, cruciferous sprouts all day.',
+    ],
+    healingFoods:[
+      'Cruciferous sprouts (all strategies)',
+      'Mushrooms: shiitake, maitake, turkey tail',
+      'Garlic + onions + leeks (alliums)',
+      'Wild salmon, sardines, mackerel',
+      'Berries: all types (all strategies)',
+      'Pomegranate (all strategies)',
+      'Green tea (all strategies)',
+      'Turmeric + black pepper',
+      'Flaxseed, chia, sesame, hemp seeds',
+      'Walnuts',
+      'Quinoa (anti-ketone strategy)',
+      'Legumes: lentils, chickpeas, black beans',
+      'Broccoli sprouts (anti-glutamine + anti-BCAA)',
+    ],
+    triggerFoods:[
+      'Sugar and all refined carbs (avoided in ALL 5 strategies)',
+      'Animal protein (avoided in anti-glutamine, anti-BCAA)',
+      'Prolonged keto (avoided in anti-ketone strategy)',
+      'Processed seed oils (avoided in all)',
+      'Alcohol (avoided in all)',
+      'Non-organic produce (avoided in all)',
+    ],
+    herbs:['EGCG (green tea extract)','Curcumin (turmeric)','Berberine','Quercetin','Resveratrol','Sulforaphane','Apigenin','Alpha-lipoic acid','Honokiol (magnolia bark)'],
+    prep:'Anti-glucose breakfast: avocado + wild smoked salmon + lemon + capers. Anti-glutamine breakfast: green tea smoothie with kale, spinach, broccoli sprouts, blueberries, flaxseed. Anti-lipid breakfast: overnight oats with chia, blueberries, walnuts. Anti-ketone breakfast: broccoli sprout + berry smoothie with flaxseed. Anti-BCAA breakfast: overnight chia with almond milk, cranberries, cinnamon.',
+    avoid:['Sugar in all forms','Processed seed oils','Alcohol','Processed meats','Non-organic produce'],
+    tip:'⚠️ Informational only. Rotating between strategies prevents cancer cells from adapting to a single metabolic restriction. The overlap across all 5 strategies: eliminate sugar, avoid processed seed oils, eat cruciferous vegetables and berries daily, drink green tea, and use turmeric at every meal.',
+    source:'Dr. Berg — 5 Diet Strategies for Cancer Care (2026)'},
+  cancer_rotation:{icon:'🔄',title:'Diet Rotation by Cancer Type',cat:'Cancer Support',
+    subtitle:'Which strategy to use + supportive nutrients per cancer type',
+    symptoms:['⚠️ Informational only — always consult your oncologist','Different cancers rely on different metabolic fuels','Rotating strategies limits nutrients cancer cells depend on while supporting overall health'],
+    protocols:[
+      '🧠 GLUCOSE-DOMINANT (glioblastoma, KRAS+ colorectal, ER+ breast, lung adenocarcinoma, head/neck, cervical): Anti-glucose 10–14 days → Anti-glutamine 4–5 days → repeat. Key nutrients: Berberine, Quercetin, Resveratrol, EGCG green tea extract, Cinnamon, Alpha-lipoic acid (ALA).',
+      '🫀 GLUTAMINE-DOMINANT (pancreatic, triple-negative breast TNBC, melanoma, leukemia, lymphoma): Anti-glucose 5–7 days → Anti-glutamine 7–10 days → repeat. Key nutrients: EGCG, Curcumin, Apigenin, Baicalein (skullcap root), Sulforaphane (broccoli sprouts), Honokiol, Omega-3 EPA/DHA, Genistein.',
+      '🫶 LIPID-DOMINANT (prostate, ovarian, ER+ breast, liver/hepatocellular): Anti-lipid 7–10 days → optional Anti-glucose 2–3 days → repeat. Key nutrients: EGCG, Quercetin, Resveratrol, Curcumin.',
+      '⚡ KETONE-DOMINANT (late-stage/aggressive, advanced metastatic breast, advanced ovarian, metastatic): Anti-glucose up to 3 days → Anti-glutamine 7–10 days → Anti-ketone 7–10 days → repeat. Key nutrients: Alpha-lipoic acid (ALA), Hydroxycitrate (Garcinia cambogia).',
+      '💪 BCAA-DOMINANT (AML, CML, certain lung cancers, squamous cell, gliomas, liver): Anti-glucose 5–7 days → Anti-BCAA 7–10 days → repeat. Key nutrients: EGCG, Curcumin, Quercetin, Resveratrol, Apigenin, Berberine, Spirulina, Red algae, Black seed oil, Allicin (garlic).',
+    ],
+    healingFoods:[
+      'Berberine — glucose and glutamine metabolism',
+      'Quercetin — anti-proliferative, all types',
+      'Resveratrol — red grapes, blueberries, dark chocolate',
+      'EGCG (green tea) — anti-angiogenic, all types',
+      'Curcumin — all 5 strategies',
+      'Sulforaphane — broccoli sprouts (must eat raw)',
+      'Apigenin — parsley, chamomile, celery',
+      'Alpha-lipoic acid (ALA) — mitochondrial antioxidant',
+      'Spirulina — BCAA-dominant cancers specifically',
+      'Allicin (raw garlic) — BCAA and glutamine-dominant',
+      'Black seed oil — thymoquinone, BCAA-dominant',
+    ],
+    triggerFoods:[
+      'Sugar (all types feed glucose-dominant cancers)',
+      'Animal protein in excess (fuels BCAA-dominant cancers)',
+      'Prolonged ketogenic diet (feeds ketone-dominant cancers)',
+      'Glutamine-rich foods in excess for glutamine-dominant: animal protein, dairy, nuts',
+    ],
+    herbs:['Berberine','Quercetin','Resveratrol','EGCG','Curcumin','Sulforaphane','Apigenin','Alpha-Lipoic Acid','Black Seed Oil','Spirulina'],
+    prep:'Berberine: 500mg 3× daily with meals. Quercetin: 500mg 2× daily. EGCG: 3–4 cups green tea OR 400mg extract. Sulforaphane: eat raw broccoli sprouts daily — do not cook (heat destroys myrosinase enzyme needed for conversion). Resveratrol: found in red wine (small amounts only) — supplement 250–500mg.',
+    avoid:['Foods that feed the dominant fuel type of your specific cancer — see rotation above'],
+    tip:'⚠️ This is informational content from Dr. Berg\'s 2026 clinical PDF. It does not replace your oncology team\'s treatment plan. Use this as a supportive dietary framework alongside conventional treatment. Every cancer is metabolically unique — discuss rotation timing with your doctor.',
+    source:'Dr. Berg — 5 Diet Strategies for Cancer Care (2026)'},
 };
 
 const HERBS_DATA=[
@@ -1957,9 +2100,15 @@ function renderRT_ForYou(){
   el.innerHTML=`<div style="font-size:13px;color:var(--sub);margin-bottom:12px;line-height:1.5">Protocols tailored to your selected conditions. Tap any card to expand.</div>`
     +goals.map(g=>{
       const rd=REMEDIES_DATA[g];
-      const extra=(g==='tinnitus')?
-        (REMEDIES_DATA.tinnitus_insulin?remCard('tinnitus_insulin',REMEDIES_DATA.tinnitus_insulin,false):'')+
-        (REMEDIES_DATA.tinnitus_berg?remCard('tinnitus_berg',REMEDIES_DATA.tinnitus_berg,false):''):'';
+      const extra=
+        (g==='tinnitus'?
+          (REMEDIES_DATA.tinnitus_insulin?remCard('tinnitus_insulin',REMEDIES_DATA.tinnitus_insulin,false):'')+
+          (REMEDIES_DATA.tinnitus_berg?remCard('tinnitus_berg',REMEDIES_DATA.tinnitus_berg,false):'')
+        :'')
+        +(g==='cancer_care'?
+          (REMEDIES_DATA.cancer_strategies?remCard('cancer_strategies',REMEDIES_DATA.cancer_strategies,false):'')+
+          (REMEDIES_DATA.cancer_rotation?remCard('cancer_rotation',REMEDIES_DATA.cancer_rotation,false):'')
+        :'');
       return (rd?remCard(g,rd,false):'')+extra;
     }).join('');
 }
