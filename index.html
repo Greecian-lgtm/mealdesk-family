@@ -255,7 +255,8 @@ textarea{resize:none;min-height:110px}
 }
 .hguide-arrow{color:var(--sub);font-size:11px;transition:transform .2s;flex-shrink:0}
 .hguide-card.open .hguide-arrow{transform:rotate(180deg)}
-.hguide-body{padding:0 16px 16px;border-top:1px solid var(--border);padding-top:12px}
+.hguide-body{padding:12px 16px 16px;border-top:1px solid var(--border)}
+.hguide-card:not(.open) .hguide-body{display:none}
 .hg-eat-cat{font-size:12px;font-weight:700;color:var(--text);margin-bottom:5px;margin-top:10px}
 .hg-chips{display:flex;flex-wrap:wrap;gap:4px}
 .hg-chip{
@@ -1041,6 +1042,31 @@ const CONDITION_GUIDE={
     },
     avoid:['Processed foods (disrupt microbiome diversity)','Artificial sweeteners (kill good bacteria)','Alcohol (damages gut lining)','Fried foods (slows motility)','Excess red meat (promotes bad bacteria)','Gluten (if sensitive — causes leaky gut)','Dairy (if lactose intolerant)','Stress eating (cortisol damages gut barrier)'],
     tip:'Eating 30 different plant foods per week is the single most powerful thing for microbiome diversity (American Gut Project, 2018). Count spices, herbs, nuts, seeds — it adds up faster than you think.',
+  },
+  cancer_care:{
+    summary:'Diet limits specific fuel sources cancer cells depend on — glucose, glutamine, lipids, ketones, BCAAs. Always work with your oncology team. Informational only.',
+    eat:{
+      '🥦 Anti-Cancer Vegetables':['Broccoli sprouts (sulforaphane — #1 anti-cancer compound)','Broccoli, kale, cabbage, Brussels sprouts','Shiitake, maitake, turkey tail mushrooms','Garlic (allicin)','Onions, leeks (quercetin)','Celery, beets, carrots','Tomatoes (lycopene)','Asparagus, bok choy'],
+      '🍎 Anti-Cancer Fruits':['Pomegranate (ellagitannins)','Blueberries, blackberries, raspberries, cranberries','Strawberries (anthocyanins)','Red/purple grapes (resveratrol)','Grapefruit (limonene)','Lemons and oranges (Vitamin C + flavonoids)'],
+      '🍗 Clean Proteins':['Wild salmon, sardines, mackerel (omega-3 EPA/DHA)','Pasture-raised eggs (moderate)','Legumes: lentils, chickpeas, black beans','Grass-fed meat in small portions only'],
+      '🌿 Anti-Cancer Herbs & Spices':['Turmeric + black pepper (curcumin — most studied)','Rosemary, thyme, oregano (anti-proliferative)','Ginger (apoptosis support)','Cinnamon (anti-angiogenic)','Parsley (apigenin)'],
+      '🥜 Seeds, Nuts & Fats':['Flaxseeds (lignans)','Chia seeds (omega-3)','Walnuts (ellagic acid + omega-3)','Sesame seeds','Extra-virgin olive oil (oleocanthal)','Dark chocolate / raw cacao','Black cumin / black seed oil'],
+      '🫖 Therapeutic Drinks':['Green tea (EGCG — most studied anti-cancer polyphenol)','Hibiscus tea (anthocyanins)','Turmeric-ginger tea','Pomegranate juice (small)','Matcha (concentrated EGCG)'],
+    },
+    avoid:['All sugar and refined carbs — primary cancer fuel (Warburg Effect)','Processed seed oils (canola, corn, soybean) — pro-inflammatory','Ultra-processed and packaged foods','Alcohol — linked to 7 cancer types','Non-organic produce — pesticides burden detox','Processed meats (WHO Group 1 carcinogen)','Excess animal protein — BCAAs fuel certain cancers'],
+    tip:'Choose organic always. Rotating between the 5 anti-cancer diet strategies prevents cancer cells adapting to any single metabolic restriction. Always consult your oncology team.',
+  },
+  pancreas:{
+    summary:'The pancreas produces digestive enzymes AND insulin. Healing requires both anti-inflammatory foods AND blood sugar stabilization. Low-fat, low-GI, plant-forward diet addresses both functions.',
+    eat:{
+      '🍗 Proteins (lean, easy-digest)':['Steamed/poached salmon (omega-3)','Chicken breast (steamed or baked)','Eggs (2-3/day, not fried)','Lentils (well-cooked, low fat)','Tofu (very low fat)','Greek yogurt plain (probiotics)','Sardines in water (omega-3)'],
+      '🥦 Vegetables':['Steamed broccoli (sulforaphane)','Sweet potato (easy-digest complex carbs)','Carrots (beta-carotene)','Cucumber (extremely gentle)','Spinach (magnesium + folate)','Steamed zucchini (easiest to digest)','Cooked mushrooms (very low fat)','Garlic (anti-inflammatory)','Ginger (reduces nausea)'],
+      '🍎 Fruits':['Papaya — papain enzyme reduces pancreatic workload','Pineapple — bromelain enzyme, anti-inflammatory','Blueberries — antioxidants protect pancreatic cells','Watermelon (hydrating, easy digest)','Banana (gentle, potassium)','Kiwi (digestive enzymes + Vitamin C)'],
+      '🌾 Grains (low-fat, low-GI)':['Steel-cut oats (soluble fiber, low GI)','Brown rice (easy to digest)','Quinoa (complete protein, easy digestion)','Barley (lowest GI grain)'],
+      '🫖 Drinks & Teas':['Ginger tea (anti-nausea, anti-inflammatory)','Turmeric tea with black pepper','Bone broth (glycine + collagen for lining)','Coconut water (electrolytes)','Green tea (EGCG antioxidants)','Water 8+ cups (critical for enzyme production)'],
+    },
+    avoid:['Alcohol — #1 cause of pancreatitis, zero tolerance','All fried and fatty foods — maximize enzyme demand','Red and processed meat — high fat stresses pancreas','Full-fat dairy — cream, butter, whole milk','Large meals — overwhelm enzyme capacity','Refined sugar and carbs — exhaust insulin-producing beta cells','Spicy food during flares','Caffeine in excess','Ultra-processed foods'],
+    tip:'The pancreas cannot rest when you eat fat — every gram of fat forces enzyme production. During healing, under 30g fat/day is the single most important rule. Small frequent meals reduce pancreatic stress dramatically.',
   },
 };
 
@@ -2252,22 +2278,26 @@ function renderRT_ForYou(){
   }
   el.innerHTML=`<div style="font-size:13px;color:var(--sub);margin-bottom:12px;line-height:1.5">Your selected conditions — foods, herbs, teas and protocols. Tap any card to collapse or expand.</div>`
     +goals.map(g=>{
-      const rd=REMEDIES_DATA[g];
-      const extra=
-        (g==='tinnitus'?
-          (REMEDIES_DATA.tinnitus_insulin?remCard('tinnitus_insulin',REMEDIES_DATA.tinnitus_insulin,false):'')+
-          (REMEDIES_DATA.tinnitus_berg?remCard('tinnitus_berg',REMEDIES_DATA.tinnitus_berg,false):'')
-        :'')
-        +(g==='cancer_care'?
-          (REMEDIES_DATA.cancer_strategies?remCard('cancer_strategies',REMEDIES_DATA.cancer_strategies,false):'')+
-          (REMEDIES_DATA.cancer_rotation?remCard('cancer_rotation',REMEDIES_DATA.cancer_rotation,false):'')+
-          (REMEDIES_DATA.cancer_pancreas?remCard('cancer_pancreas',REMEDIES_DATA.cancer_pancreas,false):'')
-        :'')
-        +(g==='pancreas'?
-          (REMEDIES_DATA.pancreas_health?remCard('pancreas_health',REMEDIES_DATA.pancreas_health,false):'')
-        :'');
-      // Primary condition card opens automatically; companion cards start closed
-      return (rd?remCard(g,rd,true):'')+extra;
+      try{
+        const rd=REMEDIES_DATA[g];
+        const extra=
+          (g==='tinnitus'?
+            (REMEDIES_DATA.tinnitus_insulin?remCard('tinnitus_insulin',REMEDIES_DATA.tinnitus_insulin,false):'')+
+            (REMEDIES_DATA.tinnitus_berg?remCard('tinnitus_berg',REMEDIES_DATA.tinnitus_berg,false):'')
+          :'')
+          +(g==='cancer_care'?
+            (REMEDIES_DATA.cancer_strategies?remCard('cancer_strategies',REMEDIES_DATA.cancer_strategies,false):'')+
+            (REMEDIES_DATA.cancer_rotation?remCard('cancer_rotation',REMEDIES_DATA.cancer_rotation,false):'')+
+            (REMEDIES_DATA.cancer_pancreas?remCard('cancer_pancreas',REMEDIES_DATA.cancer_pancreas,false):'')
+          :'')
+          +(g==='pancreas'?
+            (REMEDIES_DATA.pancreas_health?remCard('pancreas_health',REMEDIES_DATA.pancreas_health,false):'')
+          :'');
+        return (rd?remCard(g,rd,true):'')+extra;
+      }catch(e){
+        console.error('remCard error for',g,e);
+        return`<div class="card" style="padding:12px 16px;color:#c04040;font-size:13px">⚠️ Error loading ${g} card. ${e.message}</div>`;
+      }
     }).join('');
 }
 
@@ -2490,39 +2520,34 @@ function renderHealthGuide(){
   el.innerHTML=`<div style="font-family:'Fraunces',serif;font-size:18px;color:var(--text);margin:16px 0 10px">🏥 Your Health Food Guide</div>`
   +goals.map(g=>{
     const c=COND[g],guide=CONDITION_GUIDE[g];
+    if(!c||!guide||!guide.eat)return'';
     return`<div class="hguide-card open" id="hg_${g}">
-      <div class="hguide-hdr" onclick="toggleHGuide('${g}')" style="cursor:pointer">
+      <div class="hguide-hdr" onclick="toggleHGuide('${g}')">
         <div style="display:flex;align-items:center;gap:10px;flex:1;min-width:0">
           <span style="font-size:24px;flex-shrink:0">${c.em}</span>
-          <div style="min-width:0">
-            <div style="font-weight:700;font-size:14px;color:var(--text)">${c.lb}</div>
-            <div style="font-size:12px;color:var(--sub);margin-top:1px">Foods · Herbs · Teas · Avoid</div>
-          </div>
+          <div><div style="font-weight:700;font-size:14px;color:var(--text)">${c.lb}</div>
+          <div style="font-size:12px;color:var(--sub);margin-top:1px">Foods · Herbs · Teas · Avoid</div></div>
         </div>
-        <span class="hguide-arrow" style="margin-left:10px;transform:rotate(180deg)">▼</span>
+        <span class="hguide-arrow" style="margin-left:10px">▼</span>
       </div>
-      <div class="hguide-body" id="hgb_${g}" style="display:block">
-        <div style="font-size:13px;color:#3a4a3a;line-height:1.6;margin-bottom:12px;border-left:3px solid ${c.c};padding:8px 10px 8px 12px;background:${c.bg};border-radius:0 8px 8px 0">${guide.summary}</div>
+      <div class="hguide-body" id="hgb_${g}">
+        <div style="font-size:13px;color:#3a4a3a;line-height:1.6;margin-bottom:12px;border-left:3px solid ${c.c};padding:8px 10px 8px 12px;background:${c.bg};border-radius:0 8px 8px 0">${guide.summary||''}</div>
         <div style="font-size:11px;font-weight:700;color:#166534;text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px">✅ Eat These</div>
         ${Object.entries(guide.eat).map(([cat,foods])=>`
           <div class="hg-eat-cat">${cat}</div>
           <div class="hg-chips" style="margin-bottom:8px">${foods.map(f=>`<span class="hg-chip">${f}</span>`).join('')}</div>
         `).join('')}
         <div style="font-size:11px;font-weight:700;color:#991b1b;text-transform:uppercase;letter-spacing:.8px;margin-top:14px;margin-bottom:6px">❌ Avoid These</div>
-        ${guide.avoid.map(a=>`<div class="hg-avoid-item">✕ ${a}</div>`).join('')}
-        <div class="hg-tip" style="background:${c.bg};border-left:3px solid ${c.c}">💡 ${guide.tip}</div>
+        ${(guide.avoid||[]).map(a=>`<div class="hg-avoid-item">✕ ${a}</div>`).join('')}
+        ${guide.tip?`<div class="hg-tip" style="background:${c.bg};border-left:3px solid ${c.c}">💡 ${guide.tip}</div>`:''}
       </div>
     </div>`;
   }).join('');
 }
 
 function toggleHGuide(g){
-  const body=document.getElementById('hgb_'+g);
   const card=document.getElementById('hg_'+g);
-  if(!body)return;
-  const open=body.style.display!=='none';
-  body.style.display=open?'none':'block';
-  card.classList.toggle('open',!open);
+  if(card)card.classList.toggle('open');
 }
 
 function tog(k){CK[k]=!CK[k];sC();renderToday()}
