@@ -2195,14 +2195,15 @@ function remCard(key,rd,open){
   const trigF=rd.triggerFoods?rd.triggerFoods.map(f=>`<span class="hg-chip" style="background:#fef2f2;border-color:#fca5a5;color:#991b1b">❌ ${f}</span>`).join(''):'';
   const bodyDisplay=open?'block':'none';
   const subtitle=rd.subtitle||`${rd.cat} · ${rd.protocols.length} protocols`;
+  const hint=open?'tap to collapse ▲':'tap to open ▼';
   return`<div class="rem-card${open?' open':''}" id="rc_${key}">
     <div class="rem-hdr" onclick="toggleRC('${key}')">
       <div class="rem-hdr-icon">${rd.icon}</div>
       <div class="rem-hdr-text">
         <div class="rem-hdr-title">${rd.title}</div>
-        <div class="rem-hdr-sub">${subtitle}</div>
+        <div class="rem-hdr-sub">${open?subtitle:subtitle+' · '+hint}</div>
       </div>
-      <span class="rem-arrow">▼</span>
+      <span class="rem-arrow">${open?'▲':'▼'}</span>
     </div>
     <div class="rem-body" id="rcb_${key}" style="display:${bodyDisplay}">
       ${syms?`<div class="rem-section-title" style="color:#991b1b">Symptoms</div>${syms}`:''}
@@ -2224,9 +2225,19 @@ function toggleRC(key){
   const body=document.getElementById('rcb_'+key);
   const card=document.getElementById('rc_'+key);
   if(!body)return;
-  const open=body.style.display!=='none';
-  body.style.display=open?'none':'block';
-  card.classList.toggle('open',!open);
+  const isOpen=body.style.display!=='none';
+  body.style.display=isOpen?'none':'block';
+  card.classList.toggle('open',!isOpen);
+  // Update arrow
+  const arrow=card.querySelector('.rem-arrow');
+  if(arrow)arrow.textContent=isOpen?'▼':'▲';
+  // Update sub hint
+  const sub=card.querySelector('.rem-hdr-sub');
+  if(sub){
+    const rd=Object.values(REMEDIES_DATA).find(r=>r.title===card.querySelector('.rem-hdr-title')?.textContent);
+    const base=rd?(rd.subtitle||`${rd.cat} · ${rd.protocols.length} protocols`):'';
+    sub.textContent=isOpen?base+' · tap to open ▼':base;
+  }
 }
 
 function renderRT_ForYou(){
@@ -2239,7 +2250,7 @@ function renderRT_ForYou(){
       <div style="font-size:13px;color:var(--sub);line-height:1.6">Go to Profile and select your health goals to see personalised natural remedy protocols here.</div>
     </div>`;return;
   }
-  el.innerHTML=`<div style="font-size:13px;color:var(--sub);margin-bottom:12px;line-height:1.5">Protocols tailored to your selected conditions. Tap any card to expand.</div>`
+  el.innerHTML=`<div style="font-size:13px;color:var(--sub);margin-bottom:12px;line-height:1.5">Your selected conditions — foods, herbs, teas and protocols. Tap any card to collapse or expand.</div>`
     +goals.map(g=>{
       const rd=REMEDIES_DATA[g];
       const extra=
@@ -2255,7 +2266,8 @@ function renderRT_ForYou(){
         +(g==='pancreas'?
           (REMEDIES_DATA.pancreas_health?remCard('pancreas_health',REMEDIES_DATA.pancreas_health,false):'')
         :'');
-      return (rd?remCard(g,rd,false):'')+extra;
+      // Primary condition card opens automatically; companion cards start closed
+      return (rd?remCard(g,rd,true):'')+extra;
     }).join('');
 }
 
@@ -2478,25 +2490,25 @@ function renderHealthGuide(){
   el.innerHTML=`<div style="font-family:'Fraunces',serif;font-size:18px;color:var(--text);margin:16px 0 10px">🏥 Your Health Food Guide</div>`
   +goals.map(g=>{
     const c=COND[g],guide=CONDITION_GUIDE[g];
-    return`<div class="hguide-card" id="hg_${g}">
-      <div class="hguide-hdr" onclick="toggleHGuide('${g}')">
+    return`<div class="hguide-card open" id="hg_${g}">
+      <div class="hguide-hdr" onclick="toggleHGuide('${g}')" style="cursor:pointer">
         <div style="display:flex;align-items:center;gap:10px;flex:1;min-width:0">
           <span style="font-size:24px;flex-shrink:0">${c.em}</span>
           <div style="min-width:0">
             <div style="font-weight:700;font-size:14px;color:var(--text)">${c.lb}</div>
-            <div style="font-size:12px;color:var(--sub);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${guide.summary.slice(0,55)}…</div>
+            <div style="font-size:12px;color:var(--sub);margin-top:1px">Foods · Herbs · Teas · Avoid</div>
           </div>
         </div>
-        <span class="hguide-arrow" style="margin-left:10px">▼</span>
+        <span class="hguide-arrow" style="margin-left:10px;transform:rotate(180deg)">▼</span>
       </div>
-      <div class="hguide-body" id="hgb_${g}" style="display:none">
-        <div style="font-size:13px;color:#3a4a3a;line-height:1.6;margin-bottom:12px;border-left:3px solid ${c.c};padding-left:10px;background:${c.bg};padding:8px 10px 8px 12px;border-radius:0 8px 8px 0">${guide.summary}</div>
-        <div style="font-size:11px;font-weight:700;color:#166534;text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px">✅ Eat These</div>
+      <div class="hguide-body" id="hgb_${g}" style="display:block">
+        <div style="font-size:13px;color:#3a4a3a;line-height:1.6;margin-bottom:12px;border-left:3px solid ${c.c};padding:8px 10px 8px 12px;background:${c.bg};border-radius:0 8px 8px 0">${guide.summary}</div>
+        <div style="font-size:11px;font-weight:700;color:#166534;text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px">✅ Eat These</div>
         ${Object.entries(guide.eat).map(([cat,foods])=>`
           <div class="hg-eat-cat">${cat}</div>
-          <div class="hg-chips">${foods.map(f=>`<span class="hg-chip">${f}</span>`).join('')}</div>
+          <div class="hg-chips" style="margin-bottom:8px">${foods.map(f=>`<span class="hg-chip">${f}</span>`).join('')}</div>
         `).join('')}
-        <div style="font-size:11px;font-weight:700;color:#991b1b;text-transform:uppercase;letter-spacing:.8px;margin-top:16px;margin-bottom:6px">❌ Avoid These</div>
+        <div style="font-size:11px;font-weight:700;color:#991b1b;text-transform:uppercase;letter-spacing:.8px;margin-top:14px;margin-bottom:6px">❌ Avoid These</div>
         ${guide.avoid.map(a=>`<div class="hg-avoid-item">✕ ${a}</div>`).join('')}
         <div class="hg-tip" style="background:${c.bg};border-left:3px solid ${c.c}">💡 ${guide.tip}</div>
       </div>
