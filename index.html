@@ -2044,6 +2044,15 @@ const FOOD_GUIDE={
     '🧀 Dairy':       ['Butter','Ghee','Heavy Cream','Cheddar','Parmesan','Cream Cheese'],
     '🫙 Other':       ['Bone Broth','Tallow','Duck Fat','Beef Jerky','Pork Rinds'],
   },
+  animalbased:{
+    '🥩 Meat & Organs':['Ribeye (grass-fed)','80/20 Ground Beef','Lamb Chops','Bison','Wild Game','Beef Liver (0.5oz/day)','Heart','Kidney','Spleen','Bone Marrow','Pancreas'],
+    '🐟 Seafood':      ['Salmon','Sardines','Mackerel','Oysters','Clams','Shrimp'],
+    '🥚 Eggs':         ['Pasture-Raised Eggs (no corn/soy feed priority)'],
+    '🍎 Fruit (carbs)':['Watermelon','Mango','Papaya','Banana','Orange','Blueberries','Avocado','Squash (no skin/seeds)','Cucumber (no skin/seeds)','Coconut Water'],
+    '🍯 Honey':        ['Raw Honey (lineage/local preferred) — ~10 tbsp daily at medium activity'],
+    '🧀 Raw Dairy':    ['Raw Whole Milk','Raw Cheese','Kefir','Butter','Yogurt (full-fat)','Parmigiano Reggiano','Colostrum'],
+    '❌ Avoid':        ['All seed oils (canola, soybean, corn, sunflower)','Grains & legumes (lectins, phytic acid)','Nuts & seeds (oxalates, omega-6)','Leafy greens (oxalates)','Processed foods','Artificial sweeteners','Oats & oat milk','Mushrooms (oxalates)'],
+  },
 };
 
 const MEAL_GROUPS={
@@ -2082,6 +2091,12 @@ const MEAL_GROUPS={
     lunch:{'🥩 Beef':['Ground Beef Patties + Bacon','Ribeye Steak','Beef Short Ribs','Chuck Roast (leftover)','Beef Burger (no bun)'],'🐔 Poultry':['Crispy Chicken Thighs','Chicken Wings','Turkey Breast + Butter','Duck Confit'],'🐷 Pork':['Pork Ribs','Pork Belly Slices','Bacon + Sausage Plate','Pulled Pork (no sauce)'],'🐟 Fish':['Salmon Fillet + Butter','Sardines in Oil','Tuna Steak','Mackerel Fillet']},
     dinner:{'🥩 Beef':['NY Strip Steak','T-Bone Steak','Slow-Cooked Chuck Roast','Beef Short Ribs','Prime Rib'],'🍖 Lamb':['Lamb Chops + Tallow','Rack of Lamb','Slow-Cooked Lamb Leg','Lamb Mince Patties + Eggs'],'🐷 Pork':['Pork Belly + Fried Eggs','Pork Ribs','Slow-Cooked Pork Shoulder','Pork Tenderloin + Butter'],'🐟 Fish':['Salmon + Brown Butter','Baked Cod + Ghee','Pan-Seared Trout','Grilled Tuna Steak']},
     snack:{'🥩 Meat':['Beef Jerky (clean)','Pepperoni Slices','Salami','Prosciutto + Cheese'],'🐟 Fish':['Sardines in Oil','Smoked Salmon','Tinned Mackerel','Canned Tuna in Oil'],'🥚 Eggs':['Hard-Boiled Eggs','Fried Egg','Mini Egg Bites','Deviled Eggs'],'🧀 Dairy':['Hard Cheese Slices','String Cheese','Pork Rinds + Cream Cheese','Bone Broth (mug)']},
+  },
+  animalbased:{
+    breakfast:{'🥩 Meat & Eggs':['Ribeye + Fried Eggs + Mango','Ground Beef Patty + Eggs + Papaya','Steak + Eggs + Fresh OJ','Eggs + Bacon + Watermelon Slices'],'🐟 Fish':['Salmon + Scrambled Eggs + Avocado','Smoked Salmon + Cream Cheese + Orange Juice','Sardines + Boiled Eggs + Mango','Mackerel + Eggs + Blueberries'],'🍯 Fruit & Honey':['Eggs + Raw Honey + Banana + Butter','Eggs + Avocado + Papaya + Raw Milk','Boiled Eggs + Mango + Coconut Water','Scrambled Eggs + Squash Hash + Honey'],'🧀 Raw Dairy':['Raw Milk Kefir + Fruit Bowl','Yogurt + Honey + Banana + Eggs','Cottage Cheese + Berries + Pastured Eggs','Butter-Fried Eggs + Raw Cheese + Watermelon']},
+    lunch:{'🥩 Beef':['Ribeye + Parmigiano + Fresh OJ (Saladino daily)','80/20 Beef Patties + Raw Cheese + Fruit','Grass-Fed Beef Bowl + Avocado + Mango','Chuck Roast + Squash + Bone Broth'],'🍖 Organs':['Beef Liver + Bacon + Orange Juice','Heart Steak + Eggs + Papaya','Kidney + Ground Beef + Avocado','Mixed Organ Plate + Fresh Fruit'],'🐟 Fish & Shellfish':['Salmon + Avocado + Coconut Water','Oysters + Lemon + Raw Milk','Sardines + Avocado + Blueberries','Shrimp + Butter + Squash'],'🧀 Dairy':['Raw Cheese Plate + Fruit + Cold Cuts','Kefir + Banana + Beef Jerky','Butter-Basted Steak + Raw Cheese','Yogurt Bowl + Honey + Mixed Berries']},
+    dinner:{'🥩 Beef':['Grass-Fed Ribeye + Watermelon + Butter','Ground Beef + Avocado + Papaya','NY Strip + Bone Broth + Squash','Slow-Cooked Brisket + Fresh Fruit Plate'],'🍖 Lamb':['Lamb Chops + Honey Glaze + Fruit','Rack of Lamb + Avocado + OJ','Lamb Mince + Egg + Mango Salsa','Slow-Cooked Lamb + Squash Mash'],'🐟 Fish':['Salmon + Brown Butter + Blueberries','Baked Cod + Raw Dairy Sauce + Squash','Grilled Mackerel + Avocado + Citrus','Oysters + Lemon + Raw Milk Shot'],'🐷 Pork':['Pork Belly + Pineapple + Raw Honey','Bacon-Wrapped Tenderloin + Mango','Slow Pork Shoulder + Fruit Chutney','Pork Ribs + Honey Glaze + Watermelon']},
+    snack:{'🍯 Fruit & Honey':['Watermelon + Raw Honey','Mango Slices + Coconut Water','Banana + Raw Honey','Papaya + Lime + Honey'],'🥚 Eggs & Dairy':['Hard-Boiled Eggs + Raw Cheese','Kefir Drink','Raw Milk + Honey','Yogurt + Blueberries + Honey'],'🥩 Meat':['Beef Jerky (clean label)','Smoked Salmon Bites','Sardines + Avocado','Bone Broth (mug) + Honey'],'🍎 Low-Toxin Fruit':['Blueberries + Raw Cream','Avocado + Sea Salt + Lemon','Cucumber (peeled, no seeds) + Salt','Squash Bites (roasted, no skin)']},
   },
 };
 
@@ -2287,6 +2302,40 @@ const DIETS={
         lunch:{n:'Slow-Cooked Chuck Roast',cal:640,p:60,c:0,f:44,prep:['Season chuck roast all over with coarse salt. Place in slow cooker with ½ cup bone broth.','Cook on LOW 7–8 hours or HIGH 4–5 hours until meat falls apart completely with a fork.','Shred with two forks. Pour the rendered cooking juices over the top before serving.']},
         dinner:{n:'Pork Belly + Fried Eggs',cal:720,p:52,c:0,f:58,prep:['Slice pork belly into ½-inch pieces. Place in a cold cast iron pan and set heat to medium.','Cook 5–7 min per side until the fat is fully rendered and edges are deeply caramelized.','Fry 2 eggs in the rendered pork fat. Season with salt. Rich and filling.']},
         snack:{n:'Pork Rinds + Bone Broth',cal:220,p:24,c:0,f:12,prep:['Warm 1 cup bone broth in a small pot or mug. Season with salt if needed.','Serve alongside pork rinds. A zero-carb, high-collagen snack with no prep.']},
+      },
+    ]
+  },
+  animalbased:{
+    n:'Animal-Based',s:'Animal-Based',ic:'🍖',a:'#b85c10',
+    desc:'Dr. Saladino: meat + organs + fruit + honey + raw dairy. No plant toxins.',
+    tags:['Meat + organs daily','Fruit & honey for carbs','No grains/seeds/seed oils'],
+    goals:['inflammation','insulin'],
+    T:{cal:2200,p:160,c:180,f:120},
+    tip:'💡 <strong>Animal-Based tip:</strong> Liver is the cornerstone — 0.5oz daily covers B12, Vitamin A, copper, and folate. Add fruit and raw honey for carbs instead of grains. Avoid all seed oils, nuts, and leafy greens (oxalates).',
+    days:[
+      {
+        breakfast:{n:'Ribeye + Eggs + Mango',cal:680,p:54,c:28,f:42,prep:['Season ribeye with salt. Heat cast iron until very hot. Sear 3–4 min per side. Rest 4 min.','In the same pan, fry 3 eggs in the rendered beef fat until whites are set.','Serve with 1 cup fresh mango chunks on the side. The fruit carbs balance the protein-fat meal.']},
+        lunch:{n:'Ribeye + Parmigiano + Fresh OJ',cal:720,p:58,c:22,f:46,prep:['This is Dr. Saladino\'s own daily lunch. Season grass-fed ribeye with salt only.','Sear in a hot cast iron pan 3–4 min per side. Rest on a board 4 min before slicing.','Serve with 100g Parmigiano Reggiano and a glass of fresh-squeezed orange juice. Exactly as he eats it.']},
+        dinner:{n:'Lamb Chops + Avocado + Watermelon',cal:640,p:50,c:32,f:38,prep:['Season lamb chops generously with salt. Heat cast iron with butter over high heat.','Sear 3–4 min per side. Rest 3 min. Pour pan drippings over the top.','Serve with half an avocado (salt + lemon) and 2 cups fresh watermelon. High-quality animal fat + low-toxin fruit.']},
+        snack:{n:'Raw Honey + Blueberries + Kefir',cal:260,p:8,c:42,f:6,prep:['Pour 1 cup kefir into a glass or bowl.','Top with ½ cup fresh blueberries and 1 tbsp raw honey.','Stir gently and eat. A probiotic-rich, anti-inflammatory snack with natural carbs from fruit and honey.']},
+      },
+      {
+        breakfast:{n:'Scrambled Eggs + Bacon + Papaya',cal:620,p:42,c:30,f:36,prep:['Cook bacon in a pan until crispy. Remove and set aside. Keep 1 tbsp of bacon fat in the pan.','Whisk 4 eggs with a pinch of salt. Pour into the pan over medium-low heat, stirring gently until just set.','Serve scrambled eggs and bacon with 1 cup fresh papaya chunks. Papaya has digestive enzymes — great with a heavy protein meal.']},
+        lunch:{n:'Beef Liver + Onion + Orange Juice',cal:520,p:52,c:24,f:24,prep:['Slice beef liver thinly (⅓ inch). Season with salt. Saladino recommends 0.5oz daily minimum.','Melt butter in a pan over medium-high. Sear liver slices 2 min per side — do not overcook or it turns grainy.','Squeeze 1 large orange for fresh juice to sip alongside. Vitamin C in the OJ boosts iron absorption from liver dramatically.']},
+        dinner:{n:'Ground Beef Bowl + Avocado + Mango',cal:680,p:52,c:36,f:38,prep:['Season 80/20 ground beef with salt. Cook in a pan over medium-high heat, breaking into chunks, 7–8 min.','Slice avocado and season with sea salt and lemon juice.','Serve beef alongside avocado and 1 cup fresh mango. A complete animal-based bowl — protein, healthy animal fat, low-toxin fruit carbs.']},
+        snack:{n:'Watermelon + Raw Honey',cal:180,p:2,c:42,f:1,prep:['Cut 2–3 cups of fresh watermelon into chunks.','Drizzle with 1 tbsp raw local honey.','Eat immediately. Saladino uses watermelon as his primary post-workout or afternoon carb refuel. Hydrating and anti-inflammatory.']},
+      },
+      {
+        breakfast:{n:'Salmon + Eggs + Avocado + Blueberries',cal:660,p:52,c:24,f:42,prep:['Season salmon with salt. Melt butter in a pan over medium heat. Cook 4 min per side.','In remaining butter, scramble 3 eggs over low heat, stirring constantly until just set.','Serve with half an avocado and ½ cup blueberries. Omega-3 from salmon + liver-supporting avocado + antioxidant berries.']},
+        lunch:{n:'Oysters + Raw Milk + Fruit',cal:480,p:38,c:32,f:22,prep:['Open 6 oysters or use canned oysters in water. Squeeze lemon over each.','Eat raw or pan-fry in butter 2 min per side if preferred. Oysters are among the highest zinc foods on earth.','Follow with a glass of raw whole milk and a banana. Zinc + B12 + calcium + natural carbs from fruit.']},
+        dinner:{n:'Slow-Cooked Brisket + Squash + Bone Broth',cal:720,p:58,c:28,f:42,prep:['Place seasoned brisket in slow cooker with 1 cup bone broth. Cook LOW 8 hours until falling apart.','Cube butternut squash (peel and remove seeds — Saladino allows squash flesh, not skin/seeds). Roast at 400°F 25 min.','Serve brisket slices over squash with a mug of the slow cooker broth. Collagen-rich, anti-inflammatory meal.']},
+        snack:{n:'Banana + Raw Honey + Butter',cal:240,p:3,c:40,f:8,prep:['Slice a ripe banana into rounds.','Drizzle with 1 tsp raw honey and dot with small pieces of grass-fed butter.','Eat at room temp. Saladino uses banana + honey as a fast-acting carb source and pre-workout fuel.']},
+      },
+      {
+        breakfast:{n:'Pork Belly + Fried Eggs + Coconut Water',cal:640,p:44,c:18,f:46,prep:['Slice pork belly ½ inch thick. Place in a cold cast iron pan over medium heat.','Cook 5–6 min per side until fat is fully rendered and edges are caramelized. Remove.','Fry 3 eggs in the pork fat. Serve with a glass of fresh coconut water (electrolytes + natural carbs, no added sugar).']},
+        lunch:{n:'Mixed Organ Plate + Fresh Fruit',cal:560,p:56,c:26,f:28,prep:['Include a mix: 1oz beef liver, 1oz heart, and 1oz kidney if available. Season with salt.','Pan-fry each in butter over medium-high, 2–3 min per side. Organs cook fast — do not overcook.','Serve with sliced papaya or mango alongside. The fruit enzymes help digest the organ density. Nutrient profile is unmatched.']},
+        dinner:{n:'Grass-Fed NY Strip + Raw Cheese + Watermelon',cal:700,p:56,c:30,f:44,prep:['Season strip steak with coarse salt. Heat cast iron until smoking. Sear 3–4 min per side.','Rest on a board 5 min. Slice against the grain.','Serve with 100g raw Parmigiano or aged raw cheddar and 2 cups watermelon. Saladino\'s framework: quality animal protein + raw dairy + low-toxin fruit = optimal meal.']},
+        snack:{n:'Sardines + Avocado + Lemon',cal:320,p:28,c:10,f:20,prep:['Open a can of sardines packed in olive oil or water. Drain if preferred.','Halve an avocado. Season with sea salt and squeeze of lemon.','Eat sardines and avocado together. Fatty fish omega-3s + avocado monounsaturated fat — anti-inflammatory snack with no seed oils, no plant toxins.']},
       },
     ]
   },
