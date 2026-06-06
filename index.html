@@ -566,9 +566,16 @@ textarea{resize:none;min-height:110px}
     <!-- ─ KITCHEN ─────────────────────────────────────────────── -->
     <div class="panel" id="pk">
       <div class="sec-ttl">🥘 Kitchen</div>
-      <div class="sec-sub">Tag what's in your pantry, then scan for personalised meal ideas matched to your diet.</div>
+      <div class="sec-sub">Tag what's in your pantry, scan for meal ideas, or browse the Recipe Guide.</div>
 
-      <!-- Pantry -->
+      <!-- Kitchen sub-tabs -->
+      <div style="display:flex;gap:6px;margin-bottom:14px">
+        <button class="ptab on" id="ktpantry" onclick="swKT('pantry')" style="font-size:12px">🏷️ Pantry & Scan</button>
+        <button class="ptab" id="ktrecipe" onclick="swKT('recipe')" style="font-size:12px">📖 Recipe Guide</button>
+      </div>
+
+      <!-- PANTRY & SCAN section -->
+      <div id="kt-pantry">
       <div class="card" id="pantrycard">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
           <div style="font-size:11px;font-weight:700;color:var(--sub);text-transform:uppercase;letter-spacing:.8px">🏷️ My Pantry</div>
@@ -628,7 +635,15 @@ textarea{resize:none;min-height:110px}
         </div>
         <div class="rate-msg" id="crm">⏱ Give it a moment…</div>
       </div>
-    </div>
+    </div><!-- end kt-pantry -->
+
+      <!-- RECIPE GUIDE section -->
+      <div id="kt-recipe" style="display:none">
+        <div id="recipe-cats" style="display:flex;gap:6px;overflow-x:auto;padding-bottom:8px;margin-bottom:14px;scrollbar-width:none;-webkit-overflow-scrolling:touch"></div>
+        <div id="recipe-list"></div>
+      </div>
+
+    </div><!-- end pk -->
 
     <!-- ─ PROFILE ─────────────────────────────────────────────── -->
     <div class="panel" id="pp">
@@ -872,6 +887,7 @@ const COND={
   male_belly:    {lb:'Male Belly Fat / Metabolic',em:'🎯',c:'#b45309',bg:'#fffbeb'},
   stress_eating: {lb:'Stress Eating / Cortisol',em:'😤',c:'#dc2626',bg:'#fef2f2'},
   busy_schedule: {lb:'Busy Schedule / Meal Prep',em:'⏰',c:'#0369a1',bg:'#f0f9ff'},
+  family_meals:  {lb:'Family Meal Planning',em:'👨‍👩‍👧‍👦',c:'#16a34a',bg:'#f0fdf4'},
 };
 
 
@@ -1201,6 +1217,143 @@ const CONDITION_GUIDE={
     avoid:['Vending machine — always worse than any fast prep option you have at home','Skipping lunch (teacher\'s biggest mistake — cortisol crashes by 2pm, energy tanks during last period)','Drive-through out of desperation — the batch cooking system eliminates this','High-sugar energy drinks mid-day (crash by period 5)','Eating at your desk while grading (mindless eating — always overeats)','Heavy carb lunch (pasta, sandwiches) — causes afternoon brain fog during critical teaching hours'],
     tip:'Teachers have 22-minute lunches and no cooking facilities. The entire system must be built around COLD meals that require zero prep at school. Sunday: hard boil 12 eggs, batch cook chicken patties, portion 5 Greek yogurts. Monday-Friday: grab the bag, eat cold at your desk in 5 minutes. That\'s the entire system. Madelaine Rascan\'s Patties for Baddies are ideal — 55g protein, prep once on Sunday, eat cold all week.',
   },
+  family_meals:{
+    summary:'Feeding a family with different ages, preferences, and dietary needs is one of the hardest nutrition challenges. The solution is building a flexible base meal system — one protein, multiple toppings — so everyone eats the same dinner without a fight.',
+    eat:{
+      '👶 Kids — What They\'ll Actually Eat (Healthy)':['Scrambled eggs + cheese + fruit (15g protein, always accepted)','Chicken strips baked (not fried) + sweet potato + ketchup','Ground beef tacos — hard shell, cheese, tomato, no drama','Mac and cheese + hidden butternut squash puree (invisible nutrition)','Smoothies — banana + spinach + Greek yogurt (kids drink it, don\'t see the spinach)','Pancakes — add cottage cheese or Greek yogurt to the batter (2× protein)','Oatmeal + honey + berries + peanut butter (kids build their own)','Pizza on whole wheat pita — let kids add their own toppings'],
+      '👨‍👩‍👧 The "One Meal Everyone Eats" Framework':['Taco bar — protein in the middle, everyone builds their own (adults add salsa + guac, kids add cheese only — same meal)','Sheet pan chicken + roasted veg — adults eat the veg, kids eat the chicken, nobody complains','Pasta night — whole wheat pasta, ground beef bolognese, kids eat pasta, adults eat a smaller portion with salad','Stir-fry rice bowl — rice base, protein, everyone picks their veg + sauce','Burger night — lean beef patties, lettuce bun for adults, regular bun for kids'],
+      '⚡ Hidden Nutrition (kids won\'t notice)':['Butternut squash puree — blends into mac and cheese, pasta sauce, soups invisibly','Spinach — blends completely invisible in fruit smoothies','Cauliflower — mashed with butter, indistinguishable from mashed potato','Cottage cheese — blends into pancakes, scrambled eggs, pasta sauce (texture disappears)','Greek yogurt — replaces sour cream in tacos, dips, dressings','Lentils — blended into bolognese or chili, invisible protein + fiber boost','Zucchini shredded — disappears into muffins, pancakes, meatballs'],
+      '📦 Family Batch Cook Strategy':['Sunday protein prep: 2 lbs ground beef (tacos Mon + pasta Wed), whole roasted chicken (dinner Tue + wraps Thu)','Sheet pan veg: 3 trays roasted veg — lasts all week as sides','Big pot grains: brown rice or quinoa — reheat in 90 seconds all week','Overnight oats × 4 jars: breakfast sorted Mon–Thu before school','Hardboiled eggs × 12: snacks + salad toppers all week','Muffin tin egg cups: bake 12 Sunday, microwave 45 sec school mornings'],
+      '💰 Budget Family Meals (feeds 4 under $20)':['Ground beef chili — beef + beans + canned tomatoes + spices ($12 feeds 6)','Lentil soup + crusty bread — ($6 for a huge pot, freezes perfectly)','Chicken thighs + roasted potatoes + veg — whole tray, ($14, family of 4)','Egg fried rice — eggs + leftover rice + frozen veg + soy sauce ($5)','Black bean tacos — beans + cheese + salsa + tortillas ($8, 4 people)','Tuna pasta bake — canned tuna + pasta + cream of mushroom + cheese ($10)'],
+    },
+    avoid:['Cooking separate meals for every family member — creates lifelong picky eaters and exhausted parents','Ultra-processed kids meals (nuggets, hot pockets) — habituates children to hyper-palatable processed food','Short-order cooking — if adults are eating healthy and kids get nuggets, the system fails','Forcing children to eat food they hate — creates negative food associations','Bribing with dessert to eat vegetables — makes vegetables the enemy and dessert the prize','Buying different snacks for kids vs adults — doubles the grocery bill and the picky eating'],
+    tip:'The single most effective family nutrition strategy: involve children in food preparation from age 3. Children who help cook are dramatically more likely to eat the meal. Give them a job — washing vegetables, stirring, adding ingredients. It\'s not faster, but it transforms dinner from a battle into an activity. Studies show children who cook at home have significantly better diets into adulthood.',
+  },
+};
+
+const RECIPE_GUIDE={
+  categories:[
+    {k:'family',lb:'👨‍👩‍👧‍👦 Family',desc:'Everyone eats the same meal'},
+    {k:'quick',lb:'⚡ Quick (under 20 min)',desc:'Fast weeknight meals'},
+    {k:'batch',lb:'📦 Batch Cook',desc:'Cook once, eat all week'},
+    {k:'kids',lb:'👶 Kid-Friendly',desc:'Healthy meals kids love'},
+    {k:'highprotein',lb:'💪 High Protein',desc:'40g+ protein per serving'},
+    {k:'budget',lb:'💰 Budget',desc:'Feeds 4 under $20'},
+    {k:'mealprep',lb:'🗓️ Meal Prep',desc:'Sunday prep essentials'},
+  ],
+  recipes:[
+    // FAMILY
+    {id:'taco-bar',cat:'family',name:'Family Taco Bar',time:'25 min',serves:4,cal:480,p:38,c:32,f:18,
+     tags:['family','quick','kids'],difficulty:'Easy',
+     desc:'One protein, everyone builds their own. Adults go healthy, kids go cheese-only. No fighting, one meal.',
+     ingredients:['1.5 lbs lean ground beef (93/7)','1 packet taco seasoning (or 1 tsp each: cumin, chili powder, garlic powder, paprika)','8 hard taco shells or small flour tortillas','1 cup shredded cheddar or Mexican blend','1 cup salsa (jarred is fine)','1 avocado sliced or guacamole','1 cup shredded lettuce','1 cup diced tomatoes','1 lime quartered','Optional: sour cream or Greek yogurt (same thing, more protein)'],
+     steps:['Brown ground beef in a large pan over medium-high heat, breaking it apart, 6–8 minutes until no pink remains. Drain excess fat.','Add taco seasoning + ¼ cup water. Stir and simmer 3–4 minutes until sauce coats the meat and thickens.','Warm taco shells in the oven at 350°F for 3–4 minutes or microwave 30 seconds.','Set up the taco bar on the table — meat in the middle, all toppings in small bowls around it.','Let everyone build their own. Kids do cheese + meat. Adults add lettuce + tomato + avocado + salsa. Same dinner, zero complaints.'],
+     tip:'Double the beef batch and freeze half for tacos next week — zero extra effort. Greek yogurt in place of sour cream adds 10g protein per serving and tastes identical.',
+    },
+    {id:'sheet-pan-chicken',cat:'family',name:'Sheet Pan Chicken + Roasted Veg',time:'35 min',serves:4,cal:420,p:46,c:18,f:16,
+     tags:['family','batch','highprotein'],difficulty:'Easy',
+     desc:'One pan, one oven, 5 minutes of prep. Throw everything in at once. Adults eat the veg, kids eat the chicken — same sheet pan.',
+     ingredients:['4 chicken thighs bone-in skin-on (or 4 chicken breasts)','2 cups broccoli florets','2 medium sweet potatoes cubed','1 red bell pepper sliced','3 tbsp olive oil','1 tsp garlic powder','1 tsp paprika','1 tsp Italian seasoning','Salt and pepper','Optional: 1 lemon sliced for roasting'],
+     steps:['Preheat oven to 425°F. Line a large sheet pan with foil or parchment.','Toss sweet potato cubes and broccoli with 2 tbsp olive oil, garlic powder, salt, pepper. Spread on the sheet pan.','Rub chicken thighs with remaining 1 tbsp olive oil, paprika, Italian seasoning, salt. Place on top of or alongside vegetables.','Roast 28–32 minutes until chicken skin is crispy and golden — internal temperature 165°F. No flipping needed.','Rest chicken 3 minutes. Serve straight from the pan. One pan, zero drama, everyone eats.'],
+     tip:'Swap the vegetables based on what\'s in your fridge — zucchini, asparagus, carrots, green beans all work. Same timing, same method.',
+    },
+    {id:'pasta-bolognese',cat:'family',name:'Lean Beef Bolognese + Whole Wheat Pasta',time:'30 min',serves:6,cal:440,p:34,c:48,f:12,
+     tags:['family','batch','budget'],difficulty:'Easy',
+     desc:'The ultimate family crowd-pleaser. Sneak lentils or zucchini in the sauce — kids will never know. Makes enough for two dinners.',
+     ingredients:['1.5 lbs lean ground beef (93/7)','1 jar marinara sauce (24oz — look for no added sugar)','3 cloves garlic minced','1 medium onion diced','1 carrot diced fine (hidden nutrition)','½ cup red lentils (invisible protein boost — they dissolve completely)','1 zucchini grated (disappears in the sauce)','1 tbsp olive oil','12 oz whole wheat pasta','Salt + pepper + Italian seasoning','Parmesan for serving'],
+     steps:['Boil salted water for pasta. Cook pasta per package directions. Reserve ½ cup pasta water before draining.','Heat olive oil in a large pan. Add onion and carrot, cook 4–5 minutes until soft. Add garlic, cook 1 minute.','Add ground beef. Brown 6–8 minutes, breaking it apart. Drain excess fat.','Add grated zucchini and red lentils. Stir in marinara sauce + ¼ cup pasta water. Simmer 12–15 minutes until lentils dissolve completely.','Season with Italian seasoning, salt, pepper. Toss with pasta. Finish with parmesan. The sauce is now secretly full of hidden vegetables and extra protein — kids see none of it.'],
+     tip:'Double the bolognese sauce and freeze half. Pull it out on a busy Thursday — dinner is ready in the time it takes to boil pasta.',
+    },
+    // QUICK
+    {id:'buffalo-chicken-bowl',cat:'quick',name:'Buffalo Chicken Cottage Cheese Bowl',time:'15 min',serves:2,cal:400,p:59,c:9,f:16,
+     tags:['quick','highprotein'],difficulty:'Easy',
+     desc:'Madelaine Rascan\'s signature bowl. 59g protein in 15 minutes. The cottage cheese becomes the sauce.',
+     ingredients:['300g cooked chicken breast shredded (rotisserie works perfectly)','250g low-fat cottage cheese (2%)','2–3 tbsp hot sauce (Frank\'s RedHot or similar)','½ tsp garlic powder','1 stalk celery diced','¼ small onion diced fine','30g shredded cheddar','250g kabocha or butternut squash roasted (or microwave 5 min)','Optional: blue cheese crumbles + extra hot sauce to finish'],
+     steps:['If squash isn\'t pre-cooked: cube, toss with salt, microwave 5–6 minutes until tender. Or use leftover roasted squash.','In a mixing bowl combine shredded chicken, cottage cheese, hot sauce, garlic powder, diced onion, and celery. Mix well — the cottage cheese breaks down into a creamy buffalo sauce.','Taste and adjust hot sauce. Add more for heat, more cottage cheese if you want it milder.','Serve the buffalo chicken mixture over the roasted squash. Top with shredded cheddar.','Optional: finish with a drizzle of extra hot sauce and blue cheese crumbles. Better cold the next day — great meal prep.'],
+     tip:'Use a rotisserie chicken from the store — shred the whole thing on Sunday. Lasts all week in the fridge. The buffalo chicken mixture is perfect cold for lunch.',
+    },
+    {id:'big-sexy-scramble',cat:'quick',name:'Big Sexy Scramble',time:'12 min',serves:1,cal:380,p:42,c:22,f:12,
+     tags:['quick','highprotein','kids'],difficulty:'Easy',
+     desc:'Madelaine Rascan\'s fat loss breakfast. High volume, high protein, low calorie. The kabocha squash fills the plate without filling the calorie budget.',
+     ingredients:['3 whole eggs','150g liquid egg whites (carton)','350g kabocha squash peeled and cubed (or butternut squash)','3 tbsp salsa (jarred)','5g butter (about 1 tsp)','Salt to taste','Optional: hot sauce, fresh herbs'],
+     steps:['Peel and cube kabocha squash into ½ inch pieces. Place in a microwave-safe bowl with 1 tbsp water, cover, and microwave 4–5 minutes until just tender. Or cook in a pan 8–10 min.','Heat butter in a pan over medium. Add the cooked squash cubes. Let them sit 2–3 minutes to get lightly caramelized — don\'t stir too much.','Whisk 3 eggs + 150g egg whites together with a pinch of salt. Pour over the squash in the pan.','Stir gently over medium-low heat until just set — don\'t overcook. Remove from heat while still slightly wet — they finish in the pan.','Serve topped with salsa. This is a MASSIVE plate of food for 380 calories. That\'s the high volume strategy.'],
+     tip:'Kabocha squash can be batch-cooked and stored in the fridge for 4 days. Grab ½ cup and add it to any meal for volume without calories.',
+    },
+    {id:'salmon-lemon',cat:'quick',name:'Pan-Seared Salmon + Broccoli',time:'18 min',serves:2,cal:380,p:44,c:14,f:16,
+     tags:['quick','highprotein','family'],difficulty:'Easy',
+     desc:'The easiest high-protein weeknight dinner. 5 ingredients, one pan, 18 minutes start to finish.',
+     ingredients:['2 salmon fillets (6oz each, skin on)','3 cups broccoli florets','2 cloves garlic minced','2 tbsp olive oil','1 lemon (zest + juice)','Salt, pepper, garlic powder','Optional: 1 tsp butter to finish'],
+     steps:['Pat salmon fillets completely dry with paper towels — critical for a proper sear, not steaming.','Season flesh side with salt, pepper, garlic powder. Let sit 5 minutes.','Heat 1 tbsp olive oil in a pan over medium-high until shimmering. Place salmon skin-side UP. Cook 4 minutes without moving.','Flip to skin-side DOWN. Cook 3–4 more minutes until skin is crispy. The fish should flake at the thickest part.','In the same pan (or a second pan simultaneously), cook broccoli with remaining olive oil + garlic + salt, 5–6 minutes until bright green and tender-crisp.','Squeeze lemon over everything. Finish salmon with a small knob of butter if desired. The pan drippings mixed with lemon become the sauce.'],
+     tip:'Buy salmon in bulk and freeze individually. Defrost overnight in the fridge — dinner takes 18 minutes any night of the week.',
+    },
+    // BATCH COOK
+    {id:'chicken-patties-batch',cat:'batch',name:'Patties for Baddies — Batch Cook',time:'25 min',serves:8,cal:210,p:28,c:4,f:9,
+     tags:['batch','highprotein','quick','mealprep'],difficulty:'Easy',
+     desc:'Madelaine Rascan\'s signature 55g protein meal. Make 32 patties Sunday — breakfast, lunch, dinner all week. Freeze half.',
+     ingredients:['1kg (2.2 lbs) ground chicken breast','1 large onion diced fine','4 cloves garlic minced','Large handful fresh parsley or basil chopped','2 tsp salt','1 tsp black pepper','1 tsp garlic powder','Olive oil or cooking spray for the pan'],
+     steps:['Combine all ingredients in a large bowl. Mix with your hands until just combined — do not overwork or patties will be tough.','Form into 32 small flat patties (golf ball sized, pressed flat to ½ inch). They shrink when cooking — keep them wider than you think.','Heat a large pan over medium-high with a light coat of oil. Work in batches — don\'t crowd the pan or they steam instead of sear.','Cook patties 4–5 minutes per side until golden crust forms on each side. Internal temp 165°F.','Cool completely. Store: fridge 5 days, freezer 3 months. Reheat from frozen: microwave 90 seconds or pan 3 minutes per side from frozen.','Serve with any combination: avocado + salsa, kimchi + coconut aminos, eggs + hot sauce, mustard + pickles. 55g protein per 4-patty serving.'],
+     tip:'Freeze in portions of 4 on a baking sheet first (flash freeze 1 hour), then transfer to bags. This way you can grab exactly how many you need without them sticking together.',
+    },
+    {id:'overnight-oats-batch',cat:'batch',name:'Overnight Oats — 5 Jars',time:'10 min',serves:5,cal:340,p:18,c:48,f:8,
+     tags:['batch','kids','mealprep','budget'],difficulty:'Easy',
+     desc:'10 minutes Sunday night — breakfast is handled for the entire school week. Kids can customize their own jar.',
+     ingredients:['2.5 cups rolled oats (½ cup per jar)','2.5 cups Greek yogurt (½ cup per jar — doubles the protein)','2.5 cups milk of choice (½ cup per jar)','5 tbsp chia seeds (1 tbsp per jar)','5 tbsp honey or maple syrup (1 tbsp per jar)','Toppings per jar (choose): berries, banana slices, peanut butter, granola, cinnamon','5 mason jars or containers with lids'],
+     steps:['Line up 5 mason jars on the counter. Assembly-line style — do each ingredient across all 5 jars before moving to the next.','Add ½ cup oats to each jar. Add ½ cup Greek yogurt. Add ½ cup milk. Add 1 tbsp chia seeds. Add 1 tbsp honey. Stir each jar well.','Add toppings now if they hold up (banana, granola) or in the morning (fresh berries, nut butter).','Seal jars and refrigerate overnight — minimum 6 hours, up to 4 days.','Grab and go in the morning. Eat cold straight from the jar or microwave 90 seconds if preferred.'],
+     tip:'Let kids decorate their jar lid with a sticker or their name — they\'re more likely to eat something that\'s "theirs." Set up a topping station and let them add their own on weekend mornings — builds healthy food habits through ownership.',
+    },
+    {id:'egg-muffins-batch',cat:'batch',name:'Egg Muffin Cups — Batch 12',time:'28 min',serves:6,cal:160,p:18,c:3,f:8,
+     tags:['batch','kids','mealprep','highprotein'],difficulty:'Easy',
+     desc:'Make 12 on Sunday. Kids grab 2 before school. Adults grab 3 at the office. Microwave 45 seconds. Done.',
+     ingredients:['8 whole eggs','4 egg whites','½ cup low-fat cottage cheese (adds protein + keeps them fluffy)','½ cup diced bell peppers (any color)','½ cup baby spinach chopped','¼ cup diced onion','⅓ cup shredded cheddar','Salt, pepper, garlic powder','Cooking spray for the muffin tin'],
+     steps:['Preheat oven to 350°F. Spray a 12-cup muffin tin generously with cooking spray — or use silicone muffin cups (no spray needed and easy to clean).','Whisk eggs, egg whites, and cottage cheese together until smooth. Season with salt, pepper, garlic powder.','Divide diced peppers, spinach, and onion evenly among the 12 muffin cups.','Pour egg mixture over the vegetables in each cup — fill to about ¾ full. Top each with a pinch of shredded cheddar.','Bake 18–20 minutes until set in the center and lightly golden on top. Let cool 5 minutes before removing.','Store in the fridge 5 days or freeze up to 3 months. Reheat: microwave 45 seconds from fridge, 90 seconds from frozen.'],
+     tip:'Change the fillings every batch to avoid boredom: mushroom + feta, bacon + cheddar, tomato + basil, ham + Swiss. Same base recipe, infinite variations.',
+    },
+    // KIDS
+    {id:'hidden-veggie-smoothie',cat:'kids',name:'Hidden Veggie Smoothie',time:'5 min',serves:2,cal:220,p:16,c:34,f:3,
+     tags:['kids','quick','budget'],difficulty:'Easy',
+     desc:'Kids drink every drop. They have no idea there\'s spinach in it. The banana and berries completely mask any green flavor.',
+     ingredients:['2 large ripe bananas (frozen for thicker texture)','2 big handfuls baby spinach (about 2 cups — they will NOT taste it)','1 cup frozen mixed berries','1 cup Greek yogurt plain (16g protein)','1 cup milk of choice','1 tbsp peanut butter or almond butter','Optional: 1 tsp honey if extra sweetness needed'],
+     steps:['Add liquid first — milk goes into the blender first (prevents motor strain).','Add Greek yogurt, peanut butter, banana, and spinach. The spinach goes in BEFORE the berries — the berries go on top.','Add frozen berries last (on top of the spinach). The berries will mask any green color from the spinach.','Blend on high 60 seconds until completely smooth. No chunks, no green bits visible.','Pour into cups or reusable pouches. Color will be purple/pink from the berries — kids see no green.','Serve immediately or refrigerate up to 24 hours. Shake before drinking.'],
+     tip:'Pre-portion smoothie bags on Sunday: banana + spinach + berries in a zip bag, freeze. In the morning: dump bag into blender + yogurt + milk. 90 seconds total.',
+    },
+    {id:'hidden-veggie-mac',cat:'kids',name:'Mac & Cheese with Hidden Butternut Squash',time:'25 min',serves:4,cal:360,p:16,c:52,f:10,
+     tags:['kids','family','budget'],difficulty:'Easy',
+     desc:'The classic kid dinner — secretly upgraded. The butternut squash puree blends completely into the cheese sauce. They will eat every bite.',
+     ingredients:['12 oz whole wheat elbow pasta','1 cup butternut squash puree (steam + blend OR canned pumpkin puree — identical)','1 cup shredded sharp cheddar','½ cup Greek yogurt (replaces heavy cream — adds protein)','¼ cup milk','1 tsp garlic powder','½ tsp mustard powder (flavor enhancer, invisible)','Salt to taste','Optional: breadcrumbs on top for crunch'],
+     steps:['Cook pasta per package directions in salted water. Drain but reserve ½ cup pasta water.','While pasta cooks: steam butternut squash cubes 8–10 min, then blend until completely smooth. Or open a can of 100% pumpkin puree (shorter route, same result).','In the same pot (no heat): combine butternut squash puree, Greek yogurt, milk, garlic powder, mustard powder, and half the cheddar. Stir until smooth.','Add drained pasta to the sauce mixture. Stir over low heat 2–3 minutes. Add pasta water if too thick. Add remaining cheddar and stir until melted.','Serve immediately or pour into a baking dish, top with breadcrumbs + extra cheese, and bake at 375°F for 15 minutes for baked mac and cheese.'],
+     tip:'The color of the butternut squash actually makes the mac look MORE cheesy and yellow — kids often prefer it to the plain version. Their brain sees orange = cheese.',
+    },
+    // HIGH PROTEIN
+    {id:'ribeye-eggs',cat:'highprotein',name:'Ribeye + Fried Eggs (The Animal-Based Power Meal)',time:'15 min',serves:1,cal:720,p:62,c:0,f:52,
+     tags:['highprotein','quick'],difficulty:'Easy',
+     desc:'Dr. Saladino\'s framework. Grass-fed ribeye + eggs fried in beef fat. Zero carbs, maximum protein, maximum satiety.',
+     ingredients:['1 ribeye steak (10–12oz, grass-fed preferred)','3–4 eggs (pasture-raised preferred)','Coarse sea salt','Optional: butter for finishing'],
+     steps:['Take steak out of the fridge 10–15 minutes before cooking. Season both sides generously with coarse salt only — no other seasoning needed on a quality steak.','Heat a cast iron pan over high heat until it begins to smoke lightly. No oil needed — the ribeye has enough fat.','Place steak in the hot dry pan. Do not move it. Sear 3–4 minutes until a deep brown crust forms on the bottom.','Flip once. Cook 3 minutes more for medium-rare. The internal temp should be 130–135°F. Rest on a board 4 minutes.','In the same pan (now full of rendered beef fat), crack eggs directly into the fat over medium heat. Baste the tops with the hot fat using a spoon. Cook 2–3 minutes until whites are set.','Serve eggs alongside sliced steak. Pour any remaining pan drippings over both. Eat everything including the fat cap.'],
+     tip:'The resting period is non-negotiable — cutting immediately loses 30% of the juices. Use those 4 minutes to fry the eggs in the beef fat.',
+    },
+    {id:'organ-power-plate',cat:'highprotein',name:'Organ Power Plate (Liver + Heart + Eggs)',time:'20 min',serves:1,cal:520,p:58,c:4,f:28,
+     tags:['highprotein'],difficulty:'Medium',
+     desc:'The most nutrient-dense meal on earth. Dr. Saladino\'s organ protocol. 0.5oz liver daily covers B12, Vitamin A, copper, and folate.',
+     ingredients:['1.5oz beef liver sliced thin (⅓ inch)','1.5oz beef heart sliced thin','2 whole eggs','1 tbsp butter','Sea salt','Optional: 1 orange for fresh juice alongside (Vitamin C 3× the iron absorption)'],
+     steps:['Slice liver and heart very thin — ¼ to ⅓ inch. Pat completely dry with paper towels. Season with salt.','Heat butter in a cast iron pan over medium-high until foaming subsides.','Start with heart slices — they take slightly longer. Cook 2–3 minutes per side until lightly browned but still pink in the center. Remove.','Add liver slices to the same pan. Cook 1.5–2 minutes per side only — do not overcook. Liver should be slightly pink in the center. Overcooked liver is grainy and bitter.','In the same pan, fry 2 eggs in the remaining butter. Season with salt.','Serve all three together. If having OJ: squeeze 1 orange alongside — the Vitamin C boosts iron absorption from liver by 3×.'],
+     tip:'If the liver flavor is too strong at first, soak slices in cold milk for 30 minutes before cooking — this draws out some of the intense flavor without removing nutrition.',
+    },
+    // BUDGET
+    {id:'beef-chili',cat:'budget',name:'Family Beef + Bean Chili',time:'35 min',serves:6,cal:360,p:32,c:36,f:9,
+     tags:['budget','family','batch','kids'],difficulty:'Easy',
+     desc:'Feeds 6 for $12. High protein, high fiber, freezes perfectly. Makes the house smell incredible.',
+     ingredients:['1 lb lean ground beef (or 50/50 beef and turkey)','1 can black beans drained (15oz)','1 can kidney beans drained (15oz)','1 can diced tomatoes (28oz)','1 can tomato paste (6oz)','1 cup beef broth','1 medium onion diced','3 cloves garlic minced','1 bell pepper diced','2 tbsp chili powder','1 tsp cumin','1 tsp paprika','Salt + pepper','Optional toppings: cheddar, Greek yogurt (sour cream sub), green onions, jalapeño'],
+     steps:['Brown ground beef in a large pot over medium-high, breaking it apart, 6–8 minutes. Drain excess fat.','Add onion and bell pepper. Cook 4–5 minutes until softened. Add garlic and cook 1 minute more.','Add chili powder, cumin, paprika. Stir into the meat — toast the spices 1 minute.','Add diced tomatoes, tomato paste, both cans of beans, and beef broth. Stir well to combine.','Bring to a boil. Reduce heat to low and simmer uncovered 20–25 minutes, stirring occasionally, until slightly thickened.','Season with salt and pepper. Serve with toppings on the side. Freezes in portions for up to 4 months.'],
+     tip:'Kids version: serve over white rice or with cornbread — it becomes a completely different meal psychologically. Adults eat it straight or over cauliflower rice for lower carbs.',
+    },
+    {id:'egg-fried-rice',cat:'budget',name:'High-Protein Egg Fried Rice',time:'15 min',serves:4,cal:320,p:22,c:38,f:8,
+     tags:['budget','family','quick','kids'],difficulty:'Easy',
+     desc:'Best use of leftover rice. Under $8 for the whole family. Kids love it. Adults can add sriracha.',
+     ingredients:['3 cups cooked rice (day-old works best — freshly cooked is too wet)','4 whole eggs','1 cup frozen peas and carrots (no prep needed)','3 green onions sliced','3 cloves garlic minced','3 tbsp low-sodium soy sauce or tamari (gluten-free)','1 tbsp sesame oil (optional but makes it restaurant-quality)','1 tbsp avocado or coconut oil for cooking','Optional: add 1 cup cooked chicken or shrimp for extra protein'],
+     steps:['Heat oil in a large pan or wok over HIGH heat — this is critical. Fried rice needs very high heat to not become mushy.','Add garlic, cook 30 seconds. Add frozen peas and carrots — cook 2 minutes until heated through.','Push vegetables to the side. Crack eggs directly into the empty part of the pan. Scramble quickly — 60 seconds. Don\'t fully cook, mix into the vegetables.','Add cold rice. Break up any clumps with a spatula. Stir-fry everything together over high heat 3–4 minutes.','Add soy sauce and sesame oil. Toss everything together. Cook 1 more minute — the rice should be slightly crispy on the bottom.','Top with green onions. Serve immediately — fried rice waits for no one.'],
+     tip:'Day-old refrigerated rice is essential — freshly cooked rice has too much moisture and becomes clumpy. Make extra rice whenever you cook it, specifically for fried rice the next day.',
+    },
+  ],
 };
 
 const ALLERGENS={
@@ -3235,6 +3388,88 @@ function renderKitchenMeta(){
   if(inp)inp.oninput=()=>{document.getElementById('kcc').textContent=`${inp.value.length} / 400`};
   renderPantry();
   renderFoodGuide();
+}
+
+let curKT='pantry';
+let curRecipeCat='family';
+function swKT(t){
+  curKT=t;
+  ['pantry','recipe'].forEach(x=>{
+    const btn=document.getElementById('kt'+x);
+    const el=document.getElementById('kt-'+x);
+    if(btn)btn.classList.toggle('on',x===t);
+    if(el)el.style.display=x===t?'block':'none';
+  });
+  if(t==='recipe')renderRecipeGuide();
+}
+function renderRecipeGuide(){
+  // Category chips
+  const catEl=document.getElementById('recipe-cats');
+  if(!catEl)return;
+  catEl.innerHTML='';
+  RECIPE_GUIDE.categories.forEach(c=>{
+    const btn=document.createElement('button');
+    btn.className='pill'+(c.k===curRecipeCat?' sel':'');
+    btn.style.cssText=`padding:7px 14px;border-radius:20px;border:1.5px solid ${c.k===curRecipeCat?'var(--a)':'var(--border)'};background:${c.k===curRecipeCat?'var(--al)':'#fff'};color:${c.k===curRecipeCat?'var(--a)':'var(--sub)'};font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;flex-shrink:0`;
+    btn.textContent=c.lb;
+    btn.onclick=()=>{curRecipeCat=c.k;renderRecipeGuide();};
+    catEl.appendChild(btn);
+  });
+  // Recipe cards
+  const listEl=document.getElementById('recipe-list');
+  if(!listEl)return;
+  const filtered=RECIPE_GUIDE.recipes.filter(r=>r.tags.includes(curRecipeCat)||r.cat===curRecipeCat);
+  listEl.innerHTML='';
+  if(!filtered.length){listEl.innerHTML='<div style="text-align:center;color:var(--sub);padding:32px 0;font-size:14px">No recipes in this category yet.</div>';return;}
+  filtered.forEach(r=>{
+    const el=document.createElement('div');
+    el.className='card';
+    el.style.marginBottom='12px';
+    el.innerHTML=`
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px">
+        <div>
+          <div style="font-weight:700;font-size:16px;margin-bottom:3px">${r.name}</div>
+          <div style="font-size:12px;color:var(--sub)">${r.time} · Serves ${r.serves} · ${r.difficulty}</div>
+        </div>
+        <div style="text-align:right;flex-shrink:0;margin-left:12px">
+          <div style="font-size:11px;font-weight:700;color:var(--a)">${r.cal} cal</div>
+          <div style="font-size:11px;color:var(--sub)">${r.p}g protein</div>
+        </div>
+      </div>
+      <div style="font-size:13px;color:var(--sub);margin-bottom:10px">${r.desc}</div>
+      <div style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:12px">
+        ${r.tags.map(t=>{const cat=RECIPE_GUIDE.categories.find(c=>c.k===t);return cat?`<span style="background:var(--al);color:var(--a);border-radius:8px;padding:2px 8px;font-size:11px;font-weight:700">${cat.lb.split(' ').slice(0,2).join(' ')}</span>`:''}).filter(Boolean).join('')}
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;background:#f8f9fa;border-radius:10px;padding:10px;margin-bottom:12px;text-align:center">
+        <div><div style="font-size:15px;font-weight:700;color:var(--a)">${r.cal}</div><div style="font-size:10px;color:var(--sub);font-weight:600">KCAL</div></div>
+        <div><div style="font-size:15px;font-weight:700;color:#2ea860">${r.p}g</div><div style="font-size:10px;color:var(--sub);font-weight:600">PROTEIN</div></div>
+        <div><div style="font-size:15px;font-weight:700;color:#b08010">${r.c}g</div><div style="font-size:10px;color:var(--sub);font-weight:600">CARBS</div></div>
+        <div><div style="font-size:15px;font-weight:700;color:#1880c0">${r.f}g</div><div style="font-size:10px;color:var(--sub);font-weight:600">FAT</div></div>
+      </div>
+      <div id="rdetail-${r.id}" style="display:none">
+        <div style="font-size:12px;font-weight:700;color:var(--sub);text-transform:uppercase;letter-spacing:.7px;margin-bottom:8px">Ingredients</div>
+        <ul style="margin:0 0 14px;padding-left:18px">
+          ${r.ingredients.map(i=>`<li style="font-size:13px;color:var(--txt);margin-bottom:4px">${i}</li>`).join('')}
+        </ul>
+        <div style="font-size:12px;font-weight:700;color:var(--sub);text-transform:uppercase;letter-spacing:.7px;margin-bottom:8px">Steps</div>
+        <ol style="margin:0 0 14px;padding-left:18px">
+          ${r.steps.map(s=>`<li style="font-size:13px;color:var(--txt);margin-bottom:8px;line-height:1.5">${s}</li>`).join('')}
+        </ol>
+        <div style="background:var(--al);border-left:3px solid var(--a);border-radius:0 8px 8px 0;padding:10px 12px;font-size:13px;color:var(--txt)">
+          <strong>💡 Chef's Tip:</strong> ${r.tip}
+        </div>
+      </div>
+      <button onclick="toggleRecipe('${r.id}',this)" style="width:100%;background:var(--al);color:var(--a);border:1.5px solid var(--a);border-radius:10px;padding:9px;font-size:13px;font-weight:700;cursor:pointer;margin-top:4px">View Recipe ↓</button>
+    `;
+    listEl.appendChild(el);
+  });
+}
+function toggleRecipe(id,btn){
+  const el=document.getElementById('rdetail-'+id);
+  if(!el)return;
+  const open=el.style.display==='block';
+  el.style.display=open?'none':'block';
+  btn.textContent=open?'View Recipe ↓':'Hide Recipe ↑';
 }
 
 async function doScan(){
