@@ -656,6 +656,43 @@ textarea{resize:none;min-height:110px}
         <span class="flabel">Health Goals</span>
         <div id="pgo" style="margin-bottom:4px"></div>
 
+        <span class="flabel">Gender</span>
+        <div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap" id="pgender">
+          <button class="chip" onclick="setSex('female',this)" id="gsf">♀️ Female</button>
+          <button class="chip" onclick="setSex('male',this)" id="gsm">♂️ Male</button>
+          <button class="chip" onclick="setSex('other',this)" id="gso">⚧️ Other</button>
+        </div>
+
+        <span class="flabel">Age Range</span>
+        <div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap" id="page">
+          <button class="chip" onclick="setAge('18-25',this)">18–25</button>
+          <button class="chip" onclick="setAge('26-35',this)">26–35</button>
+          <button class="chip" onclick="setAge('36-45',this)">36–45</button>
+          <button class="chip" onclick="setAge('46-55',this)">46–55</button>
+          <button class="chip" onclick="setAge('56-65',this)">56–65</button>
+          <button class="chip" onclick="setAge('65+',this)">65+</button>
+        </div>
+
+        <span class="flabel">Menopause Stage <span style="font-weight:400;color:var(--sub)">(women — optional)</span></span>
+        <div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap" id="pmeno">
+          <button class="chip" onclick="setMeno('pre',this)">Pre-Menopause</button>
+          <button class="chip" onclick="setMeno('peri',this)">Perimenopause</button>
+          <button class="chip" onclick="setMeno('post',this)">Post-Menopause</button>
+          <button class="chip" onclick="setMeno('na',this)">N/A</button>
+        </div>
+
+        <span class="flabel">Occupation</span>
+        <div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap" id="pocc">
+          <button class="chip" onclick="setOcc('teacher',this)">👩‍🏫 Teacher</button>
+          <button class="chip" onclick="setOcc('healthcare',this)">🏥 Healthcare</button>
+          <button class="chip" onclick="setOcc('office',this)">💼 Office / Desk</button>
+          <button class="chip" onclick="setOcc('physical',this)">🔧 Physical / Trade</button>
+          <button class="chip" onclick="setOcc('remote',this)">💻 Remote / WFH</button>
+          <button class="chip" onclick="setOcc('parent',this)">👶 Stay-at-Home Parent</button>
+          <button class="chip" onclick="setOcc('athlete',this)">🏃 Athlete / Trainer</button>
+          <button class="chip" onclick="setOcc('other',this)">Other</button>
+        </div>
+
         <span class="flabel">Allergies & Intolerances <span style="font-weight:400;color:var(--sub)">(flags meals + suggests swaps)</span></span>
         <div id="pall" style="margin-bottom:12px"></div>
 
@@ -828,6 +865,13 @@ const COND={
   cancer_care:   {lb:'Cancer Care / Support',em:'🎗️',c:'#8b5cf6',bg:'#faf5ff'},
   pancreas:      {lb:'Pancreas / Pancreatitis',em:'🫁',c:'#0891b2',bg:'#f0f9ff'},
   parasites:     {lb:'Parasites / Gut Cleanse',em:'🦠',c:'#059669',bg:'#f0fdf4'},
+  menopause:     {lb:'Menopause / Perimenopause',em:'🌸',c:'#c026a0',bg:'#fdf4ff'},
+  hormonal_women:{lb:'Hormonal Weight Gain (Women)',em:'♀️',c:'#db2777',bg:'#fdf2f8'},
+  pcos:          {lb:'PCOS / Thyroid Issues',em:'🦋',c:'#7c3aed',bg:'#f5f3ff'},
+  testosterone:  {lb:'Low Testosterone (Men)',em:'♂️',c:'#1d4ed8',bg:'#eff6ff'},
+  male_belly:    {lb:'Male Belly Fat / Metabolic',em:'🎯',c:'#b45309',bg:'#fffbeb'},
+  stress_eating: {lb:'Stress Eating / Cortisol',em:'😤',c:'#dc2626',bg:'#fef2f2'},
+  busy_schedule: {lb:'Busy Schedule / Meal Prep',em:'⏰',c:'#0369a1',bg:'#f0f9ff'},
 };
 
 
@@ -1080,6 +1124,82 @@ const CONDITION_GUIDE={
     },
     avoid:['Sugar and all refined carbs (PRIMARY parasite food)','Pork (tapeworm and trichinosis risk if undercooked)','Raw shellfish (multiple parasite species)','Raw or undercooked meat','Unwashed produce (eggs on surface)','Alcohol (suppresses immune system during cleanse)','Dairy in excess (feeds certain parasites)'],
     tip:'Keto diet + intermittent fasting is Dr. Berg\'s foundational anti-parasite strategy. Eliminating sugar starves parasites of their primary fuel while fasting triggers autophagy — the body\'s cellular cleanup mechanism — which can help eliminate parasitic organisms.',
+  },
+  menopause:{
+    summary:'Estrogen decline during menopause shifts fat storage to the abdomen, slows metabolism by 10–15%, and disrupts sleep and mood. Diet is the most powerful tool for managing every symptom — from hot flashes to bone loss to brain fog.',
+    eat:{
+      '🌿 Phytoestrogens (natural estrogen support)':['Flaxseeds ground (lignans — most potent food phytoestrogen)','Edamame + tempeh + miso (isoflavones)','Sesame seeds (lignans)','Chickpeas and lentils','Alfalfa sprouts','Red clover (tea or supplement)'],
+      '🦴 Bone Protection':['Salmon + sardines (Vitamin D3 + omega-3)','Kale + broccoli + bok choy (calcium without dairy)','Greek yogurt + kefir (calcium + probiotics)','Almonds (calcium + magnesium)','Bone broth (collagen + minerals)','Pumpkin seeds (magnesium + zinc)'],
+      '🧠 Brain & Mood':['Fatty fish — salmon, mackerel, sardines (omega-3 reduces brain fog)','Eggs (choline — brain neurotransmitter support)','Avocado (healthy fat + B6 for mood)','Dark chocolate 85% (magnesium + serotonin)','Walnuts (omega-3 + melatonin)','Berries (antioxidants reduce cognitive decline)'],
+      '🌡️ Hot Flash Foods':['Flaxseeds (reduce hot flash frequency 50% in studies)','Soy foods — miso soup, edamame, tempeh','Cold water fish (omega-3 reduces inflammation triggering flashes)','Chickpeas','Sage tea (clinical evidence for reducing hot flashes)','Peppermint tea (cooling effect)'],
+      '💪 Muscle Preservation':['Chicken breast, turkey, eggs (protein — muscle loss accelerates in menopause)','Greek yogurt + cottage cheese (casein protein preserves overnight)','Salmon (protein + omega-3 reduces muscle inflammation)','Lentils + chickpeas (plant protein)','Collagen peptides (joint + skin + muscle)'],
+    },
+    avoid:['Sugar and refined carbs (accelerate belly fat accumulation post-menopause)','Alcohol (worsens hot flashes, disrupts sleep, increases breast cancer risk)','Caffeine in excess (triggers hot flashes and worsens sleep)','Spicy food (common hot flash trigger)','Processed and fried foods (increase inflammation)','High sodium (worsens bloating and water retention)','Seed oils (pro-inflammatory, worsen hormonal imbalance)'],
+    tip:'The menopause belly is driven by estrogen decline + cortisol rise + insulin resistance — all three happening simultaneously. Dr. Berg\'s strategy: intermittent fasting 16:8 (reduces cortisol + improves insulin), strength training (rebuilds metabolic rate), and high protein (preserves muscle mass). Flaxseeds ground daily is the single most evidence-backed food intervention for hot flashes.',
+  },
+  hormonal_women:{
+    summary:'Women\'s weight loss is fundamentally hormonal — estrogen, progesterone, cortisol, thyroid, and insulin all interact. What works for men rarely works the same way for women. The approach must account for the hormonal environment.',
+    eat:{
+      '🥚 Hormone-Building Foods':['Eggs (choline + fat-soluble vitamins for hormone production)','Avocado (cholesterol — the raw material for ALL sex hormones)','Salmon (omega-3 reduces estrogen dominance inflammation)','Beef liver (Vitamin A + B12 + folate for hormone metabolism)','Full-fat dairy (fat-soluble vitamin matrix)','Brazil nuts (selenium — thyroid hormone activation)'],
+      '🌿 Estrogen Detox (Liver Support)':['Broccoli + broccoli sprouts (DIM — removes excess estrogen via liver)','Cruciferous vegetables — cabbage, Brussels sprouts, kale','Beets (support liver Phase 2 detox)','Carrots (raw — binds excess estrogen in gut for removal)','Lemon water (liver bile stimulation)','Milk thistle (liver support for hormone detox)'],
+      '💙 Cortisol Management':['Magnesium-rich foods: dark leafy greens, pumpkin seeds, dark chocolate','Vitamin C: bell peppers, kiwi, strawberries, broccoli','Ashwagandha (adaptogen — clinical evidence for cortisol reduction)','Phosphatidylserine (supplement — blunts cortisol response)','Chamomile tea (reduces cortisol + aids sleep)','Turkey (tryptophan → serotonin → melatonin cascade)'],
+      '🦋 Thyroid Support':['Brazil nuts (2/day = daily selenium requirement)','Seaweed + iodine-rich foods (iodine for T3/T4 production)','Eggs (iodine + selenium in one food)','Pumpkin seeds (zinc — T3 conversion)','Fermented foods (gut health critical for thyroid hormone conversion)','Bone broth (amino acids for thyroid hormone transport proteins)'],
+    },
+    avoid:['Soy in excess — phytoestrogens can worsen estrogen dominance in some women','Flaxseeds in large amounts if estrogen dominant (discuss with doctor)','Alcohol — liver processes alcohol before estrogen — excess estrogen builds up','Plastics and BPA (xenoestrogens — mimic estrogen, disrupt balance)','Conventional dairy and meat (hormone residues)','Gluten if thyroid issues suspected (autoimmune thyroid and gluten linked)','All seed oils (inflammatory — worsen hormonal signaling)'],
+    tip:'Raw carrots daily is Dr. Berg\'s underrated hormone hack — raw carrot fiber specifically binds and removes excess estrogen from the intestines before it can be reabsorbed. One medium raw carrot with dinner is his top recommendation for women with estrogen dominance symptoms (weight gain, mood swings, breast tenderness, bloating).',
+  },
+  pcos:{
+    summary:'PCOS is primarily an insulin resistance condition — not just a reproductive one. Up to 70% of PCOS women have insulin resistance even at normal weight. Diet targeting insulin is the most effective intervention — more than most medications.',
+    eat:{
+      '🥑 Blood Sugar Stabilizers':['Avocado (fat slows glucose absorption)','Eggs (protein + fat — zero impact on blood sugar)','Salmon + sardines (omega-3 reduces insulin resistance)','Greek yogurt + cottage cheese (protein)','Nuts — almonds, walnuts (fat + protein, low glycemic)','Berries (low glycemic, high antioxidant)','Apple cider vinegar before meals (improves insulin sensitivity)'],
+      '🌿 Anti-Androgen Foods':['Spearmint tea (2 cups/day — reduces excess testosterone in women, clinically studied)','Green tea (EGCG reduces androgen levels)','Flaxseeds (lignans reduce testosterone)','Pumpkin seeds (zinc — balances androgens)','Broccoli sprouts (DIM — hormone detox)','Turmeric (anti-inflammatory, reduces androgen receptor sensitivity)'],
+      '💊 Inositol-Rich Foods':['Chickpeas + lentils (inositol — proven insulin sensitizer for PCOS)','Citrus fruits (inositol)','Cantaloupe + kiwi (inositol)','Brown rice (inositol — in small portions)','Nuts and seeds (inositol)'],
+    },
+    avoid:['All refined carbs and sugar (primary driver of insulin spikes)','White bread, pasta, white rice','Conventional dairy with hormones','Processed soy (phytoestrogens disrupt PCOS hormonal balance)','Caffeine excess (raises cortisol, worsens insulin resistance)','Alcohol (estrogen load, liver stress)','Inflammatory oils — canola, soybean, sunflower, corn'],
+    tip:'Myo-inositol + D-chiro-inositol (40:1 ratio) is the most evidence-backed supplement for PCOS — multiple RCTs show comparable efficacy to Metformin for insulin sensitivity and ovulation restoration. Berberine 500mg 3× daily is the natural Metformin alternative. Both are available OTC. Combine with low-carb eating for maximum impact.',
+  },
+  testosterone:{
+    summary:'Testosterone in men declines 1% per year after 30. By 50 many men have lost 20-30% of peak levels. Diet, sleep, and body fat are the three biggest controllable factors — more impactful than most men realize.',
+    eat:{
+      '🥩 Testosterone-Building Foods':['Grass-fed beef and lamb (zinc + saturated fat = testosterone precursors)','Eggs — whole eggs including yolk (cholesterol → testosterone)','Oysters (highest zinc food — 6 oysters = 3× daily zinc requirement)','Beef liver (Vitamin A + zinc + B12)','Salmon + sardines (omega-3 reduces SHBG — frees bound testosterone)','Brazil nuts (selenium — testicular function)','Pumpkin seeds (zinc + magnesium + healthy fat)'],
+      '🌿 Natural Testosterone Boosters':['Ashwagandha (KSM-66 — 15-17% testosterone increase in multiple RCTs)','Fenugreek (inhibits enzymes that convert testosterone to estrogen)','Ginger (reduces oxidative stress in testes)','Pomegranate juice (24% testosterone increase in one study — via nitric oxide)','Garlic (reduces cortisol — cortisol directly suppresses testosterone)','Onions (quercetin + anti-inflammatory)'],
+      '🫒 Essential Fats (Hormone Foundation)':['Avocado (monounsaturated fat — cholesterol backbone for testosterone)','Olive oil (reduces inflammation that suppresses testosterone)','Butter + ghee (saturated fat supports androgen production)','Coconut oil (MCT fats support hormone production)','Fatty fish (omega-3 reduces SHBG)'],
+      '🌙 Sleep & Recovery Foods':['Tart cherry juice (melatonin + anti-inflammatory — improves sleep quality)','Kiwi at night (serotonin → melatonin, proven to improve sleep onset)','Magnesium-rich: pumpkin seeds, dark leafy greens, dark chocolate (critical for testosterone production during sleep)','Honey + warm milk (glycine + tryptophan for deep sleep)'],
+    },
+    avoid:['Alcohol — even moderate intake reduces testosterone production 6-23% within hours','Beer specifically (phytoestrogens in hops)','Flaxseeds in excess (lignans convert testosterone to estrogen)','Soy in large amounts (isoflavones — weak estrogen effect)','Refined carbs and sugar (insulin spikes reduce testosterone)','Chronic calorie restriction (tells body to shut down reproduction)','Seed oils (omega-6 excess creates inflammation that suppresses testosterone)','Licorice (glycyrrhizin directly reduces testosterone — documented)','BPA plastics (xenoestrogen — especially heating food in plastic)'],
+    tip:'Body fat is the #1 controllable testosterone destroyer — fat tissue contains aromatase enzyme which converts testosterone directly into estrogen. Losing even 10-15 lbs of body fat in an overweight man typically raises testosterone more than any supplement. Dr. Berg\'s protocol: intermittent fasting + zinc + Vitamin D3 (5,000 IU/day) + sleep optimization. Sleep is when 95% of testosterone is produced — poor sleep is catastrophic for levels.',
+  },
+  male_belly:{
+    summary:'Male abdominal fat (visceral fat) is metabolically active — it produces estrogen, triggers insulin resistance, and releases inflammatory cytokines. It\'s not just cosmetic. The good news: visceral fat is the FIRST fat to respond to diet changes.',
+    eat:{
+      '🥩 High Protein (preserves muscle during fat loss)':['Eggs (complete amino acids, keeps you full 4-5 hours)','Chicken breast + turkey (high protein, low calorie)','Salmon (protein + omega-3 reduces cortisol belly fat)','Greek yogurt + cottage cheese (casein protein — slow release)','Ground beef 90/10 (protein without excess fat)','Lentils + chickpeas (plant protein + fiber — reduces visceral fat in studies)'],
+      '🌿 Visceral Fat Fighters':['Green tea (EGCG — specifically reduces visceral fat in RCTs)','Broccoli sprouts (sulforaphane reduces visceral fat)','Berries (anthocyanins reduce belly fat accumulation)','Apple cider vinegar (reduces visceral fat — 12-week Japanese study)','Olive oil (oleic acid switches off fat storage genes)','Cinnamon (blood sugar stability reduces cortisol belly fat)'],
+      '⚡ Metabolism Boosters':['Chili peppers (capsaicin increases metabolism 4-5% — reduces belly fat)','Coffee black (caffeine + chlorogenic acid — fat mobilization)','Cold water (thermogenesis — burns extra 50-100 calories/day)','Ginger (thermogenic + reduces inflammatory belly fat)'],
+    },
+    avoid:['Beer (liquid carbs + phytoestrogens = beer belly is real)','All liquid calories — juice, soda, sports drinks','Refined carbs — bread, pasta, white rice (insulin → fat storage → belly first)','Late night eating (cortisol rises at night — food converts more readily to visceral fat)','Chronic stress eating (cortisol is the belly fat hormone)','Trans fats (specifically accumulate in visceral fat)','Alcohol in general (liver processes alcohol before fat — fat storage increases)'],
+    tip:'Intermittent fasting 16:8 is the most effective single intervention for male belly fat — it reduces insulin for 16 hours straight, forcing the body to burn stored fat. Combine with resistance training (builds muscle that raises resting metabolism) and adequate sleep (poor sleep raises ghrelin + cortisol, both of which increase belly fat). Target protein at 1g per pound of bodyweight to preserve muscle while losing fat.',
+  },
+  stress_eating:{
+    summary:'Cortisol — the stress hormone — directly drives cravings for sugar and fat, slows metabolism, and causes belly fat storage. For teachers, healthcare workers, and other high-stress professions, cortisol management is as important as calories.',
+    eat:{
+      '🧠 Cortisol-Lowering Foods':['Magnesium: pumpkin seeds, dark leafy greens, dark chocolate 85%, almonds','Vitamin C: bell peppers (3× more than oranges), kiwi, strawberries, broccoli','Omega-3: salmon, sardines, walnuts (reduce stress hormone production)','Ashwagandha (adaptogen — 30% cortisol reduction in RCTs)','Phosphatidylserine (supplement — blocks cortisol from exercise and stress)','L-theanine: green tea (calms without sedating — pairs with caffeine)'],
+      '🍫 Healthy Craving Swaps':['Dark chocolate 85%+ (magnesium + serotonin — real craving satisfier)','Berries + Greek yogurt (sweet + protein — blunts sugar craving)','Cottage cheese + hot sauce (savory craving without processed food)','Apple + almond butter (sweet + fat + protein — stable blood sugar)','Boiled eggs + sea salt (savory + protein — the most satiating snack)','Pumpkin seeds roasted (crunchy + magnesium — satisfies stress crunch urge)'],
+      '🌙 Sleep (the cortisol reset)':['Tart cherry juice (melatonin — proven to improve sleep quality)','Kiwi at night (serotonin precursor)','Magnesium glycinate at bedtime (muscle relaxation + deeper sleep)','Chamomile tea (apigenin binds GABA receptors — natural anti-anxiety)','Turkey + warm milk (tryptophan → serotonin → melatonin)'],
+      '⏰ Meal Timing for Stress':['Never skip breakfast — cortisol peaks in the morning and is worsened by skipping meals','Protein at every meal — stabilizes blood sugar and reduces cortisol spikes','Eat before stressful events, not after — prevents overeating as emotional response','Meal prep Sunday — reduces decision fatigue during the week (a major cortisol trigger)'],
+    },
+    avoid:['Sugar and refined carbs (spike insulin → crash → cortisol rises → more cravings — the stress eating cycle)','Caffeine after 12pm (extends cortisol elevation into the evening)','Alcohol to relax (feels calming initially but raises cortisol 6-8 hours later, disrupting sleep)','Skipping meals (triggers cortisol spike + ghrelin surge = overeating at next meal)','Energy drinks (cortisol + adrenaline spike)','Ultra-processed comfort foods (reward pathway hijack — makes the cycle worse)'],
+    tip:'The stress eating cycle: cortisol → craving for sugar/fat → insulin spike → crash → more cortisol → repeat. Breaking it requires addressing cortisol FIRST — not willpower. Magnesium glycinate at night, Vitamin C with breakfast, and L-theanine with morning coffee are the three lowest-effort, highest-impact cortisol interventions. For teachers: batch-cook protein on Sunday and keep boiled eggs + cottage cheese ready — removes the 12pm vending machine decision entirely.',
+  },
+  busy_schedule:{
+    summary:'Teachers and other high-demand professionals face a unique challenge: knowledge of healthy eating but zero time or energy to execute it. The solution is not discipline — it\'s system design. Batch cooking + strategic snacking + simple protein anchors.',
+    eat:{
+      '⚡ 5-Minute Meals (no excuses)':['Cottage cheese + hot sauce + celery — zero cooking, 14g protein','Greek yogurt + berries + honey — 30 seconds, high protein','Boiled eggs (batch 12 at once Sunday) — grab and go all week','Canned sardines or tuna + avocado — no cooking, omega-3 + protein','Banana + almond butter + Greek yogurt — complete meal in 2 min','Cottage cheese flatbread (batch 4 at once) — eat all week'],
+      '📦 Sunday Batch Cook (teachers\' survival kit)':['Patties for Baddies — 250g ground chicken × 4 batches, freeze half','Hard boiled eggs × 12 — refrigerate, grab 2–3 daily','Ground turkey + sweet potato — cook 4 servings, reheat all week','Overnight oats × 5 jars — prep Friday, eat all week','Protein muffins (egg + cottage cheese) — batch 12, freeze','Rice + lentils + roasted veg — the ultimate batch cook base'],
+      '🍎 Desk Snacks (school-friendly)':['Boiled eggs + salt (no refrigeration needed for 2 hours)','Mixed nuts + dried fruit (portion in zip bags Sunday)','String cheese + apple','Greek yogurt pouches (no spoon needed)','Cottage cheese + crackers + hot sauce','Protein bars — RXBAR or Barebells (clean label)'],
+      '☕ Morning Routine (teacher 6am)':['Overnight oats — prep night before, grab from fridge','Egg muffin cups — batch baked Sunday, microwave 45 seconds','Greek yogurt + granola + berries — assemble in 60 seconds','Smoothie packet — pre-freeze ingredients, blend in 90 seconds','Peanut butter banana wrap — 60 seconds, 30g protein'],
+    },
+    avoid:['Vending machine — always worse than any fast prep option you have at home','Skipping lunch (teacher\'s biggest mistake — cortisol crashes by 2pm, energy tanks during last period)','Drive-through out of desperation — the batch cooking system eliminates this','High-sugar energy drinks mid-day (crash by period 5)','Eating at your desk while grading (mindless eating — always overeats)','Heavy carb lunch (pasta, sandwiches) — causes afternoon brain fog during critical teaching hours'],
+    tip:'Teachers have 22-minute lunches and no cooking facilities. The entire system must be built around COLD meals that require zero prep at school. Sunday: hard boil 12 eggs, batch cook chicken patties, portion 5 Greek yogurts. Monday-Friday: grab the bag, eat cold at your desk in 5 minutes. That\'s the entire system. Madelaine Rascan\'s Patties for Baddies are ideal — 55g protein, prep once on Sunday, eat cold all week.',
   },
 };
 
@@ -2398,6 +2518,12 @@ let CK={};  // checked meals
 let lastT=0;
 let sE='🧑',sD='mediterranean',sG=[];
 let pE='🧑',pD='mediterranean',pG=[];
+let pSex='',pAge='',pMeno='',pOcc='';
+
+function setSex(v,btn){pSex=v;document.querySelectorAll('#pgender .chip').forEach(b=>b.classList.remove('sel'));btn.classList.add('sel');}
+function setAge(v,btn){pAge=v;document.querySelectorAll('#page .chip').forEach(b=>b.classList.remove('sel'));btn.classList.add('sel');}
+function setMeno(v,btn){pMeno=v;document.querySelectorAll('#pmeno .chip').forEach(b=>b.classList.remove('sel'));btn.classList.add('sel');}
+function setOcc(v,btn){pOcc=v;document.querySelectorAll('#pocc .chip').forEach(b=>b.classList.remove('sel'));btn.classList.add('sel');}
 let chatHistory=[];
 
 // ── SECURITY ──────────────────────────────────────────────────────────────────
@@ -3198,6 +3324,7 @@ async function doChat(){
 // ── PROFILE EDITORS ───────────────────────────────────────────────────────────
 function buildProfileEditors(){
   pE=P.emoji;pD=P.diet;pG=[...(P.goals||[])];
+  pSex=P.sex||'';pAge=P.ageRange||'';pMeno=P.meno||'';pOcc=P.occ||'';
   document.getElementById('pname').value=P.name;
   document.getElementById('pavatar').textContent=P.emoji;
   if(P.apiKey)document.getElementById('pkey').value=P.apiKey;
@@ -3233,6 +3360,11 @@ function buildProfileEditors(){
     pall.appendChild(el);
   });
   renderDietInfo();
+  // Restore gender/age/meno/occ chips
+  if(pSex){const b=document.querySelector(`#pgender .chip[onclick*="'${pSex}'"]`);if(b)b.classList.add('sel');}
+  if(pAge){const b=document.querySelector(`#page .chip[onclick*="'${pAge}'"]`);if(b)b.classList.add('sel');}
+  if(pMeno){const b=document.querySelector(`#pmeno .chip[onclick*="'${pMeno}'"]`);if(b)b.classList.add('sel');}
+  if(pOcc){const b=document.querySelector(`#pocc .chip[onclick*="'${pOcc}'"]`);if(b)b.classList.add('sel');}
 }
 
 function toggleEP(){const ep=document.getElementById('pep');ep.style.display=ep.style.display==='none'?'block':'none'}
@@ -3260,7 +3392,7 @@ function savePro(){
     const lbl=el.querySelector('.goal-lbl').textContent;
     return Object.keys(ALLERGENS).find(k=>ALLERGENS[k].lb===lbl)||'';
   }).filter(Boolean);
-  P={name:nm,emoji:pE,diet:pD,goals:pG,apiKey:key,allergies};
+  P={name:nm,emoji:pE,diet:pD,goals:pG,apiKey:key,allergies,sex:pSex,ageRange:pAge,meno:pMeno,occ:pOcc};
   sP(P);
   applyTheme();renderHeader();renderToday();renderDietInfo();
   const ok=document.getElementById('sok');ok.style.display='block';setTimeout(()=>ok.style.display='none',2200);
