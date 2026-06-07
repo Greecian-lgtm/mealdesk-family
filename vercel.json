@@ -15,8 +15,5 @@
         { "key": "X-Robots-Tag", "value": "noindex, nofollow" }
       ]
     }
-  ],
-  "rewrites": [
-    { "source": "/robots.txt", "destination": "/public/robots.txt" }
   ]
 }
