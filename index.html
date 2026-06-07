@@ -908,6 +908,7 @@ const COND={
   family_meals:  {lb:'Family Meal Planning',em:'👨‍👩‍👧‍👦',c:'#16a34a',bg:'#f0fdf4'},
   cortisol_stress:{lb:'High Cortisol / Chronic Stress',em:'🧘',c:'#7c3aed',bg:'#f5f3ff'},
   lymphatic:     {lb:'Lymphatic Health / Drainage',em:'💧',c:'#0891b2',bg:'#f0f9ff'},
+  teacher_wellness:{lb:'Teacher Wellness System',em:'👩‍🏫',c:'#0369a1',bg:'#eff6ff'},
 };
 
 
@@ -1269,6 +1270,17 @@ const CONDITION_GUIDE={
     },
     avoid:['Tight restrictive clothing at groin, armpits, neck (compresses lymph vessels)','Conventional deodorant with aluminum (blocks underarm lymph drainage — largest cluster in the body)','Prolonged sitting without movement (lymph is gravity + movement dependent)','Processed foods daily (constant lymph filtration burden)','Chronic dehydration (lymph fluid requires adequate water to flow)','Dairy in excess (thickens lymph fluid — common congestion trigger)'],
     tip:'Three most powerful lymphatic interventions requiring no equipment: (1) Deep diaphragmatic breathing — 10 deep belly breaths every hour pumps the thoracic duct more than most manual techniques. (2) Walking — 20 minutes moves lymph more effectively than any supplement. (3) Cold-warm shower contrast — alternating 30 sec cold / 30 sec warm × 3 causes vessels to contract and dilate, actively pumping fluid. Done daily, visible results appear within 1–2 weeks.',
+  },
+  teacher_wellness:{
+    summary:'Teaching is one of the most stressful occupations in the US. Research shows 46% of teachers have excessive daytime sleepiness and 51% have poor sleep quality. The chronic cortisol load is real and cumulative. The good news: targeted strategies that fit a 22-minute lunch break and zero gym time can reverse this completely within 4–6 weeks.',
+    eat:{
+      '🎒 Desk Drawer Emergency Kit (always stocked)':['Mixed nuts — almonds, walnuts, cashews portioned in zip bags Sunday','Boiled eggs × 3 — prep Sunday, last 4 days unpeeled in a bag','Protein bars — RXBAR or Larabar (clean label, no artificial sweeteners)','Individual Greek yogurt cups — 15g protein, no prep','String cheese × 3 — protein + fat = 2-hour energy without sugar','Cottage cheese cups — single serve, hot sauce packet alongside','Apple + single-serve almond butter pack — blood sugar stabilizer','Sparkling water cans — prevents 2pm vending machine trip for soda'],
+      '🥡 Teacher Lunchbox System (cold meals, no microwave needed)':['Overnight oats in mason jar — shake and eat at desk (18g protein)','Mediterranean chickpea pasta salad — Ayat RD recipe, 35g protein, 5 days','Patties for Baddies × 4 cold — grab from fridge, eat cold, 55g protein','Hard boiled eggs × 3 + avocado + salt — complete meal, zero prep','Cottage cheese + hot sauce + celery — 14g protein, 1 min assembly','Greek yogurt + berries + granola layer — keep components separate','Turkey + cheese + apple roll-ups — no bread needed','Tuna packet + crackers + avocado — no can opener needed with tuna packets'],
+      '⚡ Blood Sugar Management (prevents 2pm crash)':['Protein + fat at every meal — never carbs alone','Never skip breakfast — cortisol peaks at 8am, food normalizes it fast','Eat lunch even if only 10 minutes — skipping spikes cortisol and ghrelin by 3pm','Cinnamon in oatmeal or yogurt — reduces blood sugar response by 20–30%','Apple cider vinegar 1 tbsp in water before lunch — reduces glucose spike','Avoid sugar-only snacks (crackers, chips, granola bars with no protein)','Drink water between classes — dehydration mimics hunger and fatigue'],
+      '🧘 Cortisol-Lowering Foods (evidence-backed)':['Magnesium glycinate 400mg at bedtime — sleep quality improves in 3 days','Vitamin C 1000mg with breakfast — adrenal glands burn through it under stress','L-theanine 200mg with morning coffee — removes anxiety edge, keeps focus','Ashwagandha KSM-66 300mg daily — 30% cortisol reduction in 8 weeks','Dark chocolate 85%+ — magnesium + serotonin, satisfies stress cravings without sugar spike','Chamomile tea at night — apigenin binds GABA receptors, natural anti-anxiety','Tart cherry juice at night — proven to improve sleep quality significantly'],
+    },
+    avoid:['Sugar-only snacks (crackers, pretzels, vending machine chips) — blood sugar crash worsens by period 4','Caffeine after 12pm — directly disrupts evening cortisol clearance and sleep quality','Eating lunch at your desk while grading — mindless eating always leads to overeating','Skipping meals — each missed meal triggers cortisol spike that lasts hours','Energy drinks — cortisol + adrenaline spike every time, addictive cycle','Checking phone during lunch break — cortisol-activating activity needs to stop during the only recovery window','Eating the same breakfast every day without protein — habituation to bad breakfast habits'],
+    tip:'The most common teacher health failure pattern: skip breakfast → coffee only → vending machine by period 3 → skip or rush lunch → exhausted by period 6 → overeat after school → poor sleep → repeat. Breaking this cycle requires ONE change: a high-protein breakfast (30g minimum) eaten before leaving the house every single day. That single habit breaks the cortisol-blood sugar-craving cascade that drives everything else.',
   },
 };
 
@@ -3214,6 +3226,28 @@ const RECIPES_DATA=[
    ing:['250g cabbage (about 2 cups shredded)','180g beetroot (about 1 cup shredded)','120g carrot (about 1 cup shredded)','1 medium apple (about 150g — cored, cut into thin matchstick strips)','1–2 tbsp fresh lemon juice (to taste)','2 tbsp olive oil (to taste)','Salt to taste','Optional: 1 spoon of yogurt or a sprinkle of raisins or nuts for extra flavor and texture'],
    steps:['Wash all vegetables and the apple thoroughly under cold running water.','Shred the cabbage, beetroot, and carrot into thin strips — a box grater, mandoline, or food processor shredding disc all work well.','Core the apple and cut it into thin matchstick strips. Keep the skin on for extra fiber and color.','In a large bowl, combine all the shredded vegetables and apple strips.','Add lemon juice, olive oil, and salt to taste. Start with 1 tbsp lemon juice and adjust.','Mix everything well until fully combined and evenly coated.','Serve immediately or chill in the refrigerator for a more refreshing taste. Gets better after 30 minutes as the lemon juice lightly softens the vegetables.'],
    tip:'Chef Zouheir\'s tips: use fresh, crisp vegetables for the best crunch and color. This salad pairs perfectly with grilled meats, sandwiches, or as a light meal on its own. Add a spoon of yogurt for creaminess or a sprinkle of raisins and walnuts for extra texture and flavor.'},
+
+  // ── TEACHER WELLNESS RECIPES ──
+  {id:'teacher-energy-balls',cats:['batch','kids','budget','mealprep'],creator:'Teacher Wellness',ccolor:'#0369a1',
+   name:'Desk Drawer Energy Balls',time:'15 min',serves:20,diff:'Easy',cal:95,p:4,c:10,f:5,
+   desc:'No bake, no refrigeration for 2 hours. Fits in a zip bag in your desk drawer. The vending machine replacement.',
+   ing:['1 cup rolled oats','½ cup peanut butter or almond butter','⅓ cup honey or maple syrup','½ cup dark chocolate chips','2 tbsp chia seeds','1 tsp vanilla extract','Pinch of salt'],
+   steps:['Combine all ingredients in a bowl. Stir until combined and sticky.','Refrigerate 30 min to firm up before rolling.','Roll into 20 small balls (~1 tbsp each). Wet hands prevent sticking.','Store: fridge 2 weeks, freezer 3 months.','Pack 3–4 in zip bag Sunday — keep in desk drawer. Holds at room temp 2–3 hours.'],
+   tip:'Oats + peanut butter + honey = 2–3 hours sustained energy without a crash. Batch make 40 on Sunday, freeze half. Better than every vending machine option combined.'},
+
+  {id:'teacher-lunchbox',cats:['quick','batch','mealprep','highprotein'],creator:'Teacher Wellness',ccolor:'#0369a1',
+   name:'5-Minute Teacher Lunchbox',time:'5 min',serves:1,diff:'Easy',cal:450,p:38,c:32,f:18,
+   desc:'Complete lunch in 5 minutes from Sunday batch components. No microwave. 38g protein. Eliminates the 3pm crash.',
+   ing:['4 cold Patties for Baddies (batch cooked Sunday)','1 cup Mediterranean chickpea pasta salad (batch cooked Sunday)','1 small apple','10 almonds','1 string cheese'],
+   steps:['Sunday: batch cook Patties for Baddies + chickpea pasta. Portion into individual containers.','Each morning: grab 1 patty container + 1 pasta container + fruit + nuts + cheese. 90 seconds.','Pack into lunch bag.','Eat cold anywhere — desk, hallway, car.','38g protein + fiber + fat = no 3pm crash, no vending machine.'],
+   tip:'Cold protein beats no lunch every time. Sunday setup takes 90 minutes. Daily assembly takes 90 seconds. The entire week handles itself.'},
+
+  {id:'teacher-10min-workout',cats:['quick'],creator:'Teacher Wellness',ccolor:'#0369a1',
+   name:'10-Minute After-School Workout',time:'10 min',serves:1,diff:'Easy',cal:120,p:0,c:0,f:0,
+   desc:'No gym, no equipment. Do it BEFORE sitting down. Shoes on, start immediately.',
+   ing:['Your bodyweight','Floor space','A chair for tricep dips'],
+   steps:['Shoes stay on. Start IMMEDIATELY — do not sit down first.','Round 1 (3 min): 15 squats → 10 push-ups → 10 reverse lunges each leg → 30 sec rest.','Round 2 (3 min): 30-sec plank → 15 glute bridges → 10 chair dips → 30 sec rest.','Round 3 (3 min): 20 jumping jacks → 15 squats → 10 push-ups → 30 sec rest.','Cool down (1 min): neck rolls, shoulder rolls, 5 deep breaths. Done.'],
+   tip:'The hardest part is the first 30 seconds. Research: 10 minutes of moderate exercise drops cortisol measurably within 30 minutes. Do not sit down first — ever.'},
 ];
 
 let rcpFilter='all';
@@ -3337,6 +3371,40 @@ function renderRT(){
 }
 
 const ROUTINES=[
+  {id:'teacher-wellness',icon:'👩‍🏫',title:'Complete Teacher Wellness System',color:'#0369a1',bg:'#eff6ff',
+   target:'K-12 teachers and educators — full daily system for energy, stress, weight, and health',
+   summary:'Built from research on teacher-specific stressors. 46% of teachers have excessive daytime sleepiness. 51% have poor sleep quality. This system works within a teacher schedule — 22-minute lunches, no gym access, standing all day, behavioral management load, administrative pressure.',
+   morning:[
+     {time:'6:00am — Non-negotiable',action:'High protein breakfast BEFORE leaving — minimum 30g protein. Overnight oats, egg muffins, Greek yogurt bowl, protein pancakes.',why:'Research shows teachers who skip breakfast have significantly higher cortisol by period 3, leading to the sugar craving cycle that drives vending machine visits and after-school overeating. This single habit changes the entire day.'},
+     {time:'6:15am',action:'Vitamin C 1000mg + L-theanine 200mg with breakfast',why:'Adrenal glands consume more Vitamin C than any other organ under stress. L-theanine removes the anxiety edge from morning coffee without reducing alertness. Together they prevent the 8am cortisol spike from being amplified by caffeine.'},
+     {time:'6:30am',action:'Pack the teacher lunchbox — cold meals only, no microwave required',why:'Decision fatigue is a major cortisol driver. A pre-packed lunch removes 20+ lunchtime decisions. Meal prep Sunday makes this a 2-minute grab, not a morning task.'},
+     {time:'While driving or commuting',action:'5-4-3-2-1 grounding or gratitude voice note — name 3 things you\'re looking forward to today',why:'The commute is the transition between home-self and teacher-self. Priming the brain for positive anticipation rather than dread reduces the cortisol load before the first bell rings.'},
+   ],
+   midday:[
+     {time:'Planning period (any)',action:'Write the 3 things that MUST get done today. Everything else moves to tomorrow.',why:'Decision fatigue is cumulative. Teachers make approximately 1,500 educational decisions per day. Limiting your written task list to 3 removes the mental overhead that drives 3pm exhaustion.'},
+     {time:'Lunch — protect it',action:'Eat actual food away from the desk. Even 10 minutes eating without screens counts.',why:'Research is unambiguous: mindless eating while stressed leads to 30%+ more calories consumed and zero satisfaction signal. 10 minutes of focused eating + no screens is the only real recovery window in a teacher\'s day.'},
+     {time:'Post-lunch (3 minutes)',action:'Walk the hallway or climb one flight of stairs twice',why:'3 minutes of stair climbing after a meal reduces blood sugar by up to 30% and clears the post-lunch energy dip. Prevents the period 5 and 6 fatigue crash.'},
+     {time:'Between classes',action:'4 deep belly breaths at your desk before the next group arrives',why:'Diaphragmatic breathing activates the parasympathetic nervous system within 60 seconds. Resets the nervous system between behavioral demands. Cumulative effect across 6 class transitions is significant.'},
+     {time:'Period 4 or afternoon',action:'Desk snack — protein + fat. No sugar alone.',why:'Blood sugar drops 4–5 hours after breakfast regardless of what you eat. A protein + fat snack (boiled egg, nuts, string cheese) bridges the gap without a sugar crash. Prevents the vending machine decision.'},
+   ],
+   evening:[
+     {time:'Commute home',action:'20-minute decompression window — no grading, no emails, no school content',why:'The commute home is not recovery time — it is transition time. The nervous system needs a hard boundary between teacher-mode and home-mode. Music, podcast, or silence only. School tasks resume after dinner if needed, never during this window.'},
+     {time:'After school workout — 10 minutes minimum',action:'10-minute home workout: 3 sets each of squats, push-ups, lunges, plank. No gym, no equipment.',why:'Physical exercise is the fastest cortisol clearance mechanism. Even 10 minutes raises endorphins and drops stress hormone levels measurably. The barrier is initiation — start with shoes on before you sit down.'},
+     {time:'Dinner',action:'High protein dinner + no refined carbs + magnesium-rich foods',why:'Evening is when cortisol should be lowest. Sugar or refined carbs at dinner spike insulin, then cortisol rises 2–3 hours later causing the 10pm second-wind that ruins sleep. Protein + vegetables + healthy fat keeps cortisol on its natural downward curve.'},
+     {time:'8:30pm',action:'Magnesium glycinate 400mg + phone face down + dim lighting',why:'Magnesium glycinate crosses the blood-brain barrier and activates GABA — the calming neurotransmitter. Phone notifications are micro-cortisol spikes. Blue light suppresses melatonin. All three together produce measurably better sleep within 3 days.'},
+     {time:'Bedtime',action:'5-4-3-2-1 grounding: 5 things you see, 4 sounds, 3 physical sensations, 2 smells, 1 taste',why:'Grounds the ruminating teacher brain into present-moment sensory experience. Interrupts the "did I handle that situation right?" replay loop that prevents sleep onset. Works within 3 minutes.'},
+   ],
+   techniques:[
+     {name:'The Sunday 90-Minute Teacher Prep System',how:'Every Sunday: (1) Hard boil 12 eggs — 10 min. (2) Batch Patties for Baddies × 32 — 25 min. (3) Assemble 5 overnight oat jars — 10 min. (4) Portion desk drawer snacks into zip bags — 5 min. (5) Cook one batch meal for dinners (chili, pasta bake, burrito filling) — 30 min. Total: 80 minutes. This covers breakfast, lunch, desk snacks, and dinner for the entire school week.'},
+     {name:'10-Minute Teacher Workout (no equipment, no gym)',how:'Do this BEFORE sitting down after school — initiation is the hardest part. Round 1: 15 squats + 10 push-ups + 10 lunges each leg. Round 2: 30-second plank + 15 glute bridges + 10 tricep dips on chair. Round 3: 20 jumping jacks + 15 squats + 10 push-ups. Total: 10 minutes. This hits every major muscle group, raises heart rate, clears cortisol, and is done before you have time to talk yourself out of it.'},
+     {name:'Desk Drawer Survival Kit (stock Sunday, replenish Friday)',how:'Keep in your desk at all times: 3 zip bags of mixed nuts (portioned Sunday), 2 protein bars (RXBAR or Larabar), 1 individual nut butter pack, sparkling water × 3, herbal tea bags, cinnamon packets for oatmeal or yogurt. This eliminates every vending machine decision for the entire week. One Sunday restocking = five days of automatic healthy choices.'},
+     {name:'The "Eat Real Food" Sugar Craving Reset',how:'From teacher wellness research: switching to whole unprocessed foods dramatically reduces sugar cravings within 2 weeks. Not through restriction — through crowding out. When meals contain adequate protein + fiber + fat, the brain stops demanding sugar as a quick fuel source. Start with one meal: replace the lunch sandwich with the chickpea pasta salad or chicken patties. Observe cravings in the afternoon. They diminish within days.'},
+     {name:'Mindful Transition Between Classes',how:'Before each new class enters: reset your physical space (papers to one side), take 4 deep breaths (inhale 4 counts, hold 2, exhale 6 — the 4-2-6 reset), drink water, and set one positive intention for this class. 60 seconds maximum. Over 6 transitions this becomes an unconscious cortisol management habit.'},
+     {name:'The After-School Recovery Protocol',how:'The 20 minutes between leaving school and arriving home is a cortisol transition window. Music at medium volume, no phone calls, no school podcasts. If driving: open window for fresh air. If walking: no headphones for the first 5 minutes. The goal is nervous system deactivation, not productivity. Teachers who protect this window report significantly lower evening fatigue and stress eating.'},
+   ],
+   supplements:['Magnesium glycinate 400mg at bedtime — most impactful single supplement for teacher wellness','Vitamin C 1000mg with breakfast — adrenal support','L-theanine 200mg with morning coffee — anxiety edge removal','Ashwagandha KSM-66 300–600mg daily — 8-week cortisol reduction protocol','Vitamin D3 5000 IU — most teachers are deficient, especially in Northern states'],
+   tip:'The most powerful teacher health intervention costs nothing: protect the 20 minutes after school as a non-negotiable decompression window. No grading. No parent emails. No school content. Everything else can wait 20 minutes. This single habit — combined with a high-protein breakfast — changes sleep quality, afternoon energy, evening eating patterns, and morning mood. Two habits. Everything else improves as a downstream effect.',
+  },
   {id:'madelaine-fatloss',icon:'🔥',title:'Madelaine\'s Fat Loss System',color:'#9b3060',bg:'#fdf0f5',
    target:'Women wanting fat loss without the gym or giving up normal food',
    summary:'Studio Era framework: eat more food, lose more fat, no gym needed. Fat loss is 80% food quality + NEAT movement. No extreme restriction.',
