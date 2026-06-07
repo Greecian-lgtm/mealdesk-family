@@ -3206,6 +3206,14 @@ const RECIPES_DATA=[
    ing:['1 oz (28g) Parmigiano-Reggiano wedge — off the block only, not pre-grated in a green canister','Optional: 1 apple or pear for a complete snack (protein + fiber)'],
    steps:['Buy a wedge of Parmigiano-Reggiano from the deli or cheese section — off the block.','Break or slice into 1oz portions (small wedge or ¼ cup grated).','Eat as a snack paired with apple — 10g protein + fiber, no artificial ingredients, tastes incredible.','Grate over any meal — pasta, salads, soups, eggs, roasted veg — 2 tbsp = 4g protein added invisibly.','Use as a natural protein booster in any recipe instead of reaching for protein powder.'],
    tip:'Off the block only. Pre-grated Parmesan in green canisters contains cellulose (powdered wood pulp as filler) — dilutes protein and flavor. Real Parmigiano-Reggiano: 110 cal, 10g protein, 0g carbs, 35% daily calcium. No additives, no fillers, better bioavailability than most protein bars.'},
+
+  // ── CHEF ZOUHEIR MOKALLALATI (@chef_zouheir) ──
+  {id:'colon-cleansing-salad',cats:['salads','quick','budget','family'],creator:'Chef Zouheir Mokallalati',ccolor:'#16a34a',
+   name:'Colon Cleansing Salad',time:'15 min',serves:4,diff:'Easy',cal:120,p:3,c:18,f:5,
+   desc:'Chef Zouheir\'s signature. Cabbage + beetroot + carrot + apple + lemon. Rich in fiber, removes toxins, supports liver and colon health. Simple. Healthy. Delicious.',
+   ing:['250g cabbage (about 2 cups shredded)','180g beetroot (about 1 cup shredded)','120g carrot (about 1 cup shredded)','1 medium apple (about 150g — cored, cut into thin matchstick strips)','1–2 tbsp fresh lemon juice (to taste)','2 tbsp olive oil (to taste)','Salt to taste','Optional: 1 spoon of yogurt or a sprinkle of raisins or nuts for extra flavor and texture'],
+   steps:['Wash all vegetables and the apple thoroughly under cold running water.','Shred the cabbage, beetroot, and carrot into thin strips — a box grater, mandoline, or food processor shredding disc all work well.','Core the apple and cut it into thin matchstick strips. Keep the skin on for extra fiber and color.','In a large bowl, combine all the shredded vegetables and apple strips.','Add lemon juice, olive oil, and salt to taste. Start with 1 tbsp lemon juice and adjust.','Mix everything well until fully combined and evenly coated.','Serve immediately or chill in the refrigerator for a more refreshing taste. Gets better after 30 minutes as the lemon juice lightly softens the vegetables.'],
+   tip:'Chef Zouheir\'s tips: use fresh, crisp vegetables for the best crunch and color. This salad pairs perfectly with grilled meats, sandwiches, or as a light meal on its own. Add a spoon of yogurt for creaminess or a sprinkle of raisins and walnuts for extra texture and flavor.'},
 ];
 
 let rcpFilter='all';
@@ -3243,7 +3251,7 @@ function renderRcpList(){
     groups[r.creator].push(r);
   });
 
-  const ORDER=['Family Kitchen','Madelaine Rascan','MacroMagicStef','Ayat Sleymann RD','MillennialMattD','Dr. Paul Saladino MD'];
+  const ORDER=['Family Kitchen','Madelaine Rascan','MacroMagicStef','Ayat Sleymann RD','MillennialMattD','Dr. Paul Saladino MD','Chef Zouheir Mokallalati'];
   const sorted=[...ORDER.filter(c=>groups[c]),...Object.keys(groups).filter(c=>!ORDER.includes(c))];
 
   let html='';
