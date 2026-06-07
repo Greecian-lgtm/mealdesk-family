@@ -4622,7 +4622,7 @@ async function aiSwap(slot,mealName){
   try{
     const res=await fetch('/api/chat',{
       method:'POST',
-      headers:{'Content-Type':'application/json'},
+      headers:{'Content-Type':'application/json','X-App-Token':'mdf-2026'},
       body:JSON.stringify({
         model:'claude-haiku-4-5-20251001',max_tokens:400,
         system:`You are a nutrition expert. Give a concise healthier alternative to a meal. Format: 1 sentence swap suggestion + 3 bullet point benefits. No preamble. Diet: ${d.n}. Allergies to avoid: ${allergies}. Goals: ${goals}.`,
@@ -4744,7 +4744,7 @@ async function askAIMeal(slot){
   try{
     const res=await fetch('/api/chat',{
       method:'POST',
-      headers:{'Content-Type':'application/json'},
+      headers:{'Content-Type':'application/json','X-App-Token':'mdf-2026'},
       body:JSON.stringify({
         model:'claude-haiku-4-5-20251001',
         max_tokens:300,
@@ -4882,7 +4882,7 @@ async function doScan(){
   try{
     const res=await fetch('/api/chat',{
       method:'POST',
-      headers:{'Content-Type':'application/json'},
+      headers:{'Content-Type':'application/json','X-App-Token':'mdf-2026'},
       body:JSON.stringify({
         model:'claude-haiku-4-5-20251001',
         max_tokens:1000,
@@ -4936,7 +4936,7 @@ async function doChat(){
   try{
     const res=await fetch('/api/chat',{
       method:'POST',
-      headers:{'Content-Type':'application/json'},
+      headers:{'Content-Type':'application/json','X-App-Token':'mdf-2026'},
       body:JSON.stringify({
         model:'claude-haiku-4-5-20251001',
         max_tokens:600,
