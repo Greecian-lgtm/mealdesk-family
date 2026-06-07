@@ -738,6 +738,17 @@ textarea{resize:none;min-height:110px}
       </div>
     </div>
 
+    <!-- ─ EXERCISE ─────────────────────────────────────────────── -->
+    <div class="panel" id="pex">
+      <div class="sec-ttl">🏋️ Exercise</div>
+      <div class="sec-sub">Routines matched to your diet, goals, age, and any injury limitations.</div>
+      <!-- Filter bar -->
+      <div id="ex-filters" style="margin-bottom:14px"></div>
+      <!-- Modality tabs -->
+      <div style="display:flex;gap:6px;margin-bottom:14px;overflow-x:auto;padding-bottom:4px" id="ex-modality-tabs"></div>
+      <!-- Routine cards -->
+      <div id="ex-cards"></div>
+    </div>
     <!-- ─ PROGRESS ────────────────────────────────────────────── -->
     <div class="panel" id="pw">
       <div id="prog50hero" style="margin-bottom:12px"></div>
@@ -881,6 +892,10 @@ textarea{resize:none;min-height:110px}
     <button class="nb" id="nr" onclick="sw('r')">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 000 20"/><path d="M12 2c2.5 4 4 7 4 10a10 10 0 01-4 8"/><path d="M2 12h20"/></svg>
       Remedies
+    </button>
+    <button class="nb" id="nex" onclick="sw('ex')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12,6 12,12 16,14"/><path d="M8 12h4"/></svg>
+      Exercise
     </button>
     <button class="nb" id="nw" onclick="sw('w')">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3h18v4H3z"/><path d="M12 7v14"/><path d="M8 11l4-4 4 4"/></svg>
@@ -3178,6 +3193,112 @@ const DIETS={
   },
 };
 
+
+const EXERCISE_DATA={
+  walking:[
+    {id:'walk-beginner',name:'Beginner Daily Walk',level:'beginner',duration:20,equipment:[],injury_safe:['bad_knees','lower_back','hip','shoulder','pregnant','osteoporosis','post_surgery'],diet_synergy:['all'],calories:80,
+     steps:['Wear supportive shoes — this is non-negotiable for joint safety.','Start at a comfortable pace. You should be able to hold a conversation.',`Walk 10 minutes out, turn around, walk 10 minutes back.`,'Swing arms naturally at 90 degrees — this increases calorie burn 10%.','Cool down: slow the pace for the final 2 minutes.'],
+     tip:'Thomas DeLauer: even 20 minutes of walking after a meal reduces blood sugar by 30% within 30 minutes. The most underrated fat loss tool.',
+     diet_note:'Best after meals. No food needed before walks under 30 min.'},
+    {id:'walk-power',name:'Power Walk — Fat Burn',level:'moderate',duration:35,equipment:[],injury_safe:['shoulder','osteoporosis'],diet_synergy:['fatloss','mediterranean','keto','animalbased'],calories:180,
+     steps:['Warm up: 5 min easy pace.','Pick up to brisk pace — you can speak in short sentences only.','Arms bent at 90°, drive them back with each step.','Every 10 minutes: 1 minute of uphill or stair climbing if available.','Cool down: 5 min easy + static calf and hip flexor stretch.'],
+     tip:'Madelaine Rascan: power walking with arm drive burns 25% more than casual walking. The single most time-efficient low-impact fat loss tool.',
+     diet_note:'Fasted morning walk: ideal for keto and fat loss diets. Fed walk: better for performance and energy.'},
+    {id:'walk-intervals',name:'Walk-Run Intervals',level:'moderate',duration:30,equipment:[],injury_safe:['shoulder'],diet_synergy:['fatloss','mediterranean','paleo'],calories:240,
+     steps:['Warm up 3 min easy walk.','Alternate: 2 min brisk walk + 1 min jog. Repeat 8 times.','Keep jog pace conversational — this is not a sprint.','Cool down: 3 min walk + quad and calf stretch.'],
+     tip:'Research: interval walking burns 40% more fat than steady-state walking at the same total time. Builds aerobic base without joint stress.',
+     diet_note:'Have 20g protein within 30 min after. Carb-containing meal works well beforehand.'},
+    {id:'walk-nordic',name:'Nordic Walking (Poles)',level:'moderate',duration:40,equipment:['walking_poles'],injury_safe:['bad_knees','hip','osteoporosis'],diet_synergy:['all'],calories:280,
+     steps:['Plant pole opposite to the forward foot — right pole with left foot forward.','Push back through the pole as you step forward.','Keep core engaged — slight forward lean from ankles, not waist.','Pace should feel like purposeful hiking.','Cool down: shoulder circles + hip flexor stretch.'],
+     tip:'Nordic walking engages 90% of muscles vs 70% for regular walking. Ideal for bad knees — the poles reduce knee load by 30%.'},
+    {id:'walk-age50',name:'Age 50+ Balance Walk',level:'beginner',duration:25,equipment:[],injury_safe:['bad_knees','lower_back','hip','shoulder','pregnant','osteoporosis','post_surgery'],diet_synergy:['all'],calories:90,
+     steps:['Every 10 min of walking: pause and do 10 heel-to-toe steps (tightrope walking).','Pause and do 5 single-leg stands: 10 seconds each leg. Hold a wall if needed.','Walk on varied terrain when possible — grass, slight slope.','Focus on heel-strike first, roll through to toe.','End with: ankle circles 10 each direction.'],
+     tip:'2025 JAMA: higher physical activity in midlife and late life = 40%+ lower dementia risk. Balance training during walks is more effective than separate sessions.',
+     age_focus:'56-65,65+'},
+  ],
+  weights:[
+    {id:'weights-bodyweight-beginner',name:'Bodyweight Foundation',level:'beginner',duration:20,equipment:[],injury_safe:['shoulder','osteoporosis'],diet_synergy:['all'],calories:120,
+     steps:['Wall sit 30 seconds × 3. Rest 30 sec between sets.','Modified push-up (knees) 8 reps × 3.','Glute bridge 12 reps × 3 — squeeze at the top for 1 second.','Standing calf raise 15 reps × 3.','Bird-dog: opposite arm and leg 8 reps each side × 2.'],
+     tip:'These 5 movements target all major muscle groups with zero equipment and zero joint risk. Beginner baseline for all ages.',
+     diet_note:'Protein within 30-60 min after: minimum 25g. Greek yogurt, eggs, or cottage cheese.'},
+    {id:'weights-dumbbell-home',name:'Home Dumbbell Circuit',level:'moderate',duration:30,equipment:['dumbbells'],injury_safe:['lower_back'],diet_synergy:['fatloss','paleo','animalbased','carnivore'],calories:220,
+     steps:['Goblet squat 12 reps × 3 — dumbbell at chest, elbows point down.','Dumbbell row 10 reps each arm × 3 — back flat, pull to hip.','Dumbbell press 10 reps × 3 — lying on floor if no bench.','Romanian deadlift 12 reps × 3 — hinge at hips, soft knee.','Farmers carry: walk 30 steps with heaviest dumbbells you have × 3.'],
+     tip:'MacroMagicStef: compound movements first. 5 movements, 30 min, total body. Progressive overload — add reps or weight each week.',
+     diet_note:'Pre-workout: 20g carb + protein 1 hour before. Post-workout: 30-40g protein within 2 hours.'},
+    {id:'weights-resistance-bands',name:'Resistance Band Full Body',level:'beginner',duration:25,equipment:['bands'],injury_safe:['bad_knees','lower_back','hip','shoulder','post_surgery'],diet_synergy:['all'],calories:140,
+     steps:['Banded squat 15 reps × 3 — band above knees, sit back into squat.','Banded row 12 reps × 3 — anchor band at waist height, pull elbows back.','Banded glute kickback 12 reps each leg × 3.','Banded chest press 12 reps × 3 — anchor behind you.','Banded lateral walk 15 steps each direction × 3 — band at ankles.'],
+     tip:'Resistance bands are uniquely safe post-injury and post-surgery — constant tension without joint compression. Equal effectiveness to dumbbells for muscle activation.',
+     injury_note:'Safe for most injury types. Use light band until movement is pain-free.'},
+    {id:'weights-hiit-10min',name:'10-Min HIIT (Time-Limited)',level:'advanced',duration:10,equipment:[],injury_safe:[],diet_synergy:['fatloss','keto','paleo','carnivore','animalbased'],calories:160,
+     steps:['20 sec burpees / 10 sec rest × 4.','20 sec jump squats / 10 sec rest × 4.','20 sec push-ups / 10 sec rest × 4.','20 sec mountain climbers / 10 sec rest × 4.'],
+     tip:'Research: ten 3-minute exercise bouts lowered blood lipids as much as one 30-minute bout. MacroMagicStef: maximum metabolic impact, minimum time.',
+     diet_note:'Eat nothing 30 min before. Post-workout: 30-40g protein immediately.'},
+    {id:'weights-menopause',name:'Menopause Strength Protocol',level:'moderate',duration:30,equipment:['dumbbells'],injury_safe:['lower_back','shoulder'],diet_synergy:['all'],calories:180,gender:'female',age_focus:'46-55,56-65',
+     steps:['Squat to chair (sit-to-stand) 12 reps × 3 — builds bone density at hip.','Dumbbell chest press (floor) 10 reps × 3 — preserves upper body strength.','Dumbbell Romanian deadlift 10 reps × 3 — posterior chain + bone loading.','Lateral lunge 10 reps each leg × 3 — hip abductor strength.','Plank hold 30 seconds × 3 — core stability prevents osteoporotic fractures.'],
+     tip:'Menopause drops metabolic rate 10-15% via muscle loss. Strength training 2-3x per week is the only evidence-backed way to rebuild it. Walking alone is insufficient.',
+     diet_note:'Ground flaxseed in post-workout meal. High protein: minimum 30g per meal.'},
+    {id:'weights-testosterone',name:'Male Testosterone Protocol',level:'moderate',duration:35,equipment:['dumbbells','barbell'],injury_safe:['shoulder'],diet_synergy:['carnivore','animalbased','paleo','keto'],calories:280,gender:'male',
+     steps:['Barbell or goblet squat 8 reps × 4 — heaviest compound movement, highest testosterone response.','Dumbbell deadlift 8 reps × 4 — full posterior chain activation.','Push-up or bench press 10 reps × 3.','Dumbbell row 10 reps each arm × 3.','10 bodyweight squats immediately before workout — activates posterior chain, stimulates testosterone.'],
+     tip:'Compound movements (squat, deadlift) produce the highest testosterone response of any exercise. Visceral belly fat converts testosterone to estrogen — this protocol attacks both simultaneously.',
+     diet_note:'Pre-workout: black coffee (stimulates testosterone). Post-workout: 40g protein within 30 min — ribeye, eggs, or Greek yogurt.'},
+  ],
+  stretch:[
+    {id:'stretch-morning-5min',name:'5-Min Morning Mobility',level:'beginner',duration:5,equipment:[],injury_safe:['bad_knees','lower_back','hip','shoulder','pregnant','osteoporosis','post_surgery'],diet_synergy:['all'],calories:10,
+     steps:['Cat-cow: on hands and knees, 10 slow reps. Inhale arch, exhale round.','Child\'s pose: hold 30 seconds. Breathe into your lower back.','Lying hip flexor stretch: on back, pull one knee to chest 30 sec each.','Seated spinal twist: cross leg over, hold 30 sec each side.','Neck half-circles: chin to chest, roll to each shoulder slowly. Never full circles.'],
+     tip:'ACSM: static stretching is most effective after exercise or morning when muscles are warm from sleep. 60 seconds per muscle group = optimal flexibility gains.'},
+    {id:'stretch-full-body',name:'Full Body Stretch (Post-Workout)',level:'beginner',duration:15,equipment:[],injury_safe:['bad_knees','lower_back','hip','shoulder','pregnant','osteoporosis','post_surgery'],diet_synergy:['all'],calories:20,
+     steps:['Hip flexor kneeling lunge: 60 sec each side. Push hips forward gently.','Standing hamstring: foot on chair, hinge forward from hips 60 sec each.','Doorway chest stretch: arms at 90°, lean through doorframe 60 sec.','Figure-4 hip stretch: lie on back, ankle over knee, pull both toward chest 60 sec each.','Calf stretch: step back, heel down, press into wall 60 sec each.','Child\'s pose: 60 sec hold. Final decompression.'],
+     tip:'Harvard Health/ACSM: hold each stretch 30-60 seconds total. Less than 30 seconds has minimal flexibility benefit. Post-exercise is the optimal window.'},
+    {id:'stretch-desk-worker',name:'Desk Worker Reset (10 Min)',level:'beginner',duration:10,equipment:[],injury_safe:['bad_knees','lower_back','hip','shoulder','pregnant','osteoporosis','post_surgery'],diet_synergy:['all'],calories:15,
+     steps:['Chest opener: interlace hands behind back, squeeze shoulder blades, hold 30 sec x 3.','Neck tilt: ear to shoulder 30 sec each side. No rotation.','Seated hip flexor stretch: sit at edge of chair, one leg behind you 45 sec each.','Thoracic extension over chair back: gently arch over backrest 30 sec x 2.','Wrist circles: 10 each direction. Essential for keyboard users.','Standing side stretch: arm overhead, lean opposite direction 30 sec each.'],
+     tip:'Desk workers develop shortened hip flexors and pectorals — the two biggest injury risks. This 10-minute routine counteracts 8 hours of sitting.',
+     best_time:'Every 90 min at desk or after work'},
+    {id:'stretch-yoga-flow',name:'Yoga Sun Salutation Flow',level:'moderate',duration:20,equipment:['yoga_mat'],injury_safe:['bad_knees','osteoporosis'],diet_synergy:['all'],calories:80,
+     steps:['Mountain pose: stand tall, breathe 5 deep breaths.','Upward salute: arms overhead, slight backbend.','Forward fold: hinge at hips, soft knees. Hold 5 breaths.','Plank: step or jump back. Hold 5 breaths.','Cobra or upward dog: lower, press chest up. Hold 3 breaths.','Downward dog: hips high, press heels toward floor. 5 breaths.','Walk or jump to hands. Forward fold. Rise to standing.','Repeat 4-6 rounds — increase pace with each round.'],
+     tip:'12 weeks of yoga reduces perceived stress significantly (2025 research). Yin and restorative styles specifically reduce cortisol. Morning practice has greatest HPA axis benefit.'},
+    {id:'stretch-lymphatic',name:'Lymphatic Stretch & Flow',level:'beginner',duration:12,equipment:[],injury_safe:['bad_knees','lower_back','hip','shoulder','pregnant','osteoporosis','post_surgery'],diet_synergy:['all'],calories:15,
+     steps:['Deep diaphragmatic breathing: 10 slow belly breaths. This directly pumps lymph through the thoracic duct.','Neck lymph self-massage: light circular strokes downward from jaw to collarbone. 1 min each side.','Arm lymph drainage: stroke from wrist to armpit 10 times each arm.','Leg lymph drainage: lie on back, elevate legs 90°. Gentle ankle circles 1 min.','Ankle pumps: flex and point feet 20 times — pumps lymph from lower extremities.','Gentle rebounding if available: 5 min light bouncing.'],
+     tip:'UCLA Health: lymphatic massage on the neck temporarily slows heart rate and reduces blood pressure — direct parasympathetic activation. Combines with diaphragmatic breathing for maximum cortisol clearance.'},
+  ],
+  cardio:[
+    {id:'cardio-cycling-easy',name:'Easy Cycling (Outdoors or Bike)',level:'beginner',duration:30,equipment:['bicycle'],injury_safe:['bad_knees','lower_back','hip','osteoporosis'],diet_synergy:['all'],calories:200,
+     steps:['Adjust seat height: leg should be almost straight at bottom of pedal stroke.','Warm up: 5 min easy spinning, low resistance.','Maintain 70-90 RPM cadence — faster cadence, lower resistance is easier on knees.','Heart rate target: 50-60% max (220 - age × 0.55 = target).','Cool down: 5 min easy spinning + seated hamstring stretch.'],
+     tip:'Cycling reduces knee load vs running while burning same calories. Ideal for bad knees and hip issues. Harvard: cardiovascular exercise 150 min/week minimum reduces heart disease risk 35%.'},
+    {id:'cardio-cycling-intervals',name:'Cycling Intervals — Fat Burn',level:'moderate',duration:25,equipment:['bicycle','stationary_bike'],injury_safe:['bad_knees','lower_back','hip'],diet_synergy:['fatloss','keto','paleo','animalbased'],calories:320,
+     steps:['Warm up 5 min easy.','Hard effort 30 sec (80-90% effort) then easy 90 sec recovery. Repeat 8 times.','Cool down 5 min easy + stretch.','Heart rate during hard intervals: 80-90% max.'],
+     tip:'HIIT cycling burns 40% more fat post-workout (afterburn effect) vs steady state for the same duration. The most time-efficient cardio for fat loss.',
+     diet_note:'Eat carbs 1-2 hours before. Post: 30g protein + some carbs to replenish.'},
+    {id:'cardio-swimming',name:'Swimming — Full Body Low Impact',level:'moderate',duration:30,equipment:['pool'],injury_safe:['bad_knees','lower_back','hip','shoulder','osteoporosis','pregnant','post_surgery'],diet_synergy:['all'],calories:280,
+     steps:['Warm up: 2 easy laps any stroke.','Main set: freestyle 4 laps, rest 30 sec. Repeat 4 times.','Optional: backstroke 2 laps between sets (back decompression).','Cool down: 2 easy laps breaststroke.','Post: shower immediately — chlorine disrupts skin microbiome.'],
+     tip:'Swimming burns fat DURING exercise more efficiently than most land cardio. Female metabolic advantage: women burn fat during exercise at higher rate than men. Lowest injury risk of all cardio.'},
+    {id:'cardio-jump-rope',name:'Jump Rope HIIT',level:'advanced',duration:15,equipment:['jump_rope'],injury_safe:[],diet_synergy:['fatloss','paleo','animalbased','carnivore'],calories:200,
+     steps:['Warm up: 2 min easy jumping, both feet.','20 sec fast + 10 sec rest × 8 rounds.','Rest 1 min. Second set: 20 sec single leg alternating + 10 sec rest × 6.','Cool down: 2 min easy.','Stretch: calves 60 sec each + hip flexors.'],
+     tip:'Jump rope burns 10-15 calories per minute — more than running. Builds ankle stability and bone density. Not for bad knees or ankles.'},
+    {id:'cardio-dance',name:'Dance Cardio (Home)',level:'moderate',duration:25,equipment:[],injury_safe:['shoulder','osteoporosis'],diet_synergy:['all'],calories:220,
+     steps:['Choose any upbeat music — 120+ BPM.','2 min: basic step side to side with arm movements.','3 min: add grapevine steps, turning, hip movement.','Repeat and improvise — there is no wrong way.','Aim to stay moving the entire 25 minutes.','Cool down: slow music, gentle swaying, deep breathing.'],
+     tip:'Dance cardio has the highest adherence rate of any home exercise — people actually do it consistently. The social and emotional component reduces cortisol while burning 200+ calories.'},
+  ],
+  recovery:[
+    {id:'recovery-massage-shoulders',name:'Neck & Shoulder Self-Massage',level:'beginner',duration:8,equipment:[],injury_safe:['bad_knees','lower_back','hip','pregnant','osteoporosis','post_surgery'],diet_synergy:['all'],calories:5,
+     steps:['Sit comfortably. Drop right ear to right shoulder — light neck traction 30 sec.','Use left hand: knead the top of right shoulder trapezius with fingers and thumb. 60 sec each side.','Pinch and roll the trapezius muscle between fingers. Work from neck out to shoulder. 90 sec each.','Two fingers at base of skull: apply gentle pressure in small circles. 60 sec.','Cross-body arm stretch: pull right arm across chest, hold 30 sec each.'],
+     tip:'The trapezius is called "the stress muscle" — it contracts under psychological stress and is the last to release. 3 min of focused trapezius massage daily produces measurable cortisol reduction over 4 weeks.'},
+    {id:'recovery-foam-roll',name:'Foam Rolling Full Body',level:'beginner',duration:15,equipment:['foam_roller'],injury_safe:['shoulder','osteoporosis'],diet_synergy:['all'],calories:20,
+     steps:['IT band: lie on side, roller under outer thigh. Slow roll knee to hip. 60 sec each.','Upper back: roller perpendicular to spine, support head, roll thoracic spine. 90 sec.','Calves: roller under calves, cross one leg over other for more pressure. 60 sec each.','Glutes: sit on roller, cross ankle over knee, roll. 60 sec each side.','Lats: roller under armpit, arm overhead. Roll down to waist. 60 sec each.'],
+     tip:'Foam rolling increases range of motion 20-30% within one session — equivalent to several weeks of static stretching. Best performed after exercise or separately from strength training.'},
+    {id:'recovery-cold-contrast',name:'Contrast Shower Protocol',level:'moderate',duration:10,equipment:['shower'],injury_safe:['bad_knees','lower_back','hip','shoulder','osteoporosis','post_surgery'],diet_synergy:['all'],calories:20,
+     steps:['Finish normal shower.','Turn to cold: 30 sec. Cold as tolerable — face the stream.','Turn back to warm/hot: 30 sec.','Repeat cold/warm 5 times total.','End on cold.','Dry off vigorously — the friction continues the circulation effect.'],
+     tip:'Contrast shower causes alternating contraction and relaxation of lymphatic vessels — mechanical lymph pumping. Reduces muscle soreness 35% vs no recovery. Increases norepinephrine 300% — immediate alertness boost.'},
+    {id:'recovery-breathwork',name:'Box Breathing & HRV Reset',level:'beginner',duration:10,equipment:[],injury_safe:['bad_knees','lower_back','hip','shoulder','pregnant','osteoporosis','post_surgery'],diet_synergy:['all'],calories:5,
+     steps:['Sit or lie comfortably. Close eyes.','Inhale through nose: 4 slow counts.','Hold: 4 counts.','Exhale through mouth: 4 counts.','Hold empty: 4 counts. This is box breathing.','Repeat 10-15 cycles. Takes about 5-7 minutes.','Finish: 3 normal breaths. Notice the calm.'],
+     tip:'2025 research: single 2-5 min box breathing session measurably reduces cortisol. 58 clinical trials confirm. Activates vagus nerve → parasympathetic NS → HPA axis suppression. Most effective recovery tool with no equipment.'},
+    {id:'recovery-sleep-protocol',name:'Sleep & Recovery Protocol',level:'beginner',duration:30,equipment:[],injury_safe:['bad_knees','lower_back','hip','shoulder','pregnant','osteoporosis','post_surgery'],diet_synergy:['all'],calories:0,
+     steps:['7pm: no caffeine from this point. Caffeine half-life is 5-6 hours.','8pm: magnesium glycinate 400mg with dinner or after.','9pm: dim lights, phone night mode or no screen. Blue light suppresses melatonin.','9:30pm: 5 min progressive muscle relaxation: tense and release from feet to face.','Bedroom: 65-68°F, blackout curtains, white noise if needed.','Pre-sleep: write 3 things you are grateful for. Reduces cortisol 20% in 4-week studies.'],
+     tip:'Sleep is the highest-ROI recovery intervention. One night of poor sleep drops testosterone 10-15% in men, raises ghrelin 24% and drops leptin 18% in women. Magnesium glycinate + cool room = most evidence-backed sleep intervention stack.'},
+    {id:'recovery-active-rest',name:'Active Rest Day Walk & Stretch',level:'beginner',duration:25,equipment:[],injury_safe:['bad_knees','lower_back','hip','shoulder','pregnant','osteoporosis','post_surgery'],diet_synergy:['all'],calories:80,
+     steps:['15 min easy walk — keep heart rate below 50% max. This is recovery, not exercise.','5 min full body stretch: cat-cow, hip flexor, chest, hamstring.','5 min box breathing: 4 in, 4 hold, 4 out, 4 hold.'],
+     tip:'Active rest days accelerate recovery faster than complete rest. Light movement increases blood flow to muscles, clearing lactic acid and delivering nutrients without adding training stress.'},
+  ],
+};
 const SLOTS=[{k:'breakfast',lb:'Breakfast',ic:'🌅'},{k:'lunch',lb:'Lunch',ic:'☀️'},{k:'dinner',lb:'Dinner',ic:'🌙'},{k:'snack',lb:'Snack',ic:'🍎'}];
 let P=null; // profile: {name,emoji,diet,goals,apiKey}
 let CK={};  // checked meals
@@ -3301,6 +3422,7 @@ function sw(t){
   if(t==='w'){initProgressTab()}
   if(t==='r'){initRemediesTab()}
   if(t==='rcp'){initRecipesTab()}
+  if(t==='ex'){renderExercise()}
 }
 
 // ── RECIPES TAB ───────────────────────────────────────────────────────────────
@@ -5056,6 +5178,195 @@ function savePro(){
 }
 
 function doReset(){if(confirm('Reset your profile and start over? This clears all your data.')){['mdf_p','mdf_c','mdf_w','mdf_e','mdf_s','mdf_sel','mdf_pantry'].forEach(k=>localStorage.removeItem(k));location.reload()}}
+
+// ── EXERCISE TAB ──────────────────────────────────────────────────────────────
+let exMod='walking'; // current modality
+const EX_MODS=[
+  {k:'walking',lb:'🚶 Walking',col:'#4a7c59'},
+  {k:'weights',lb:'💪 Weights',col:'#c4621a'},
+  {k:'stretch',lb:'🧘 Stretch',col:'#7c3aed'},
+  {k:'cardio',lb:'🚴 Cardio',col:'#1880c0'},
+  {k:'recovery',lb:'💆 Recovery',col:'#0891b2'},
+];
+const INJURY_OPTS=[
+  {k:'bad_knees',lb:'Bad Knees'},
+  {k:'lower_back',lb:'Lower Back'},
+  {k:'shoulder',lb:'Shoulder'},
+  {k:'hip',lb:'Hip'},
+  {k:'post_surgery',lb:'Post-Surgery'},
+  {k:'pregnant',lb:'Pregnant'},
+  {k:'osteoporosis',lb:'Osteoporosis'},
+];
+const EQUIP_OPTS=[
+  {k:'dumbbells',lb:'Dumbbells'},
+  {k:'bands',lb:'Bands'},
+  {k:'barbell',lb:'Barbell'},
+  {k:'foam_roller',lb:'Foam Roller'},
+  {k:'yoga_mat',lb:'Yoga Mat'},
+  {k:'bicycle',lb:'Bicycle'},
+  {k:'stationary_bike',lb:'Stationary Bike'},
+  {k:'pool',lb:'Pool'},
+  {k:'jump_rope',lb:'Jump Rope'},
+  {k:'walking_poles',lb:'Walking Poles'},
+];
+
+function lExPref(){try{return JSON.parse(localStorage.getItem('mdf_ex'))||{injuries:[],equipment:[],level:'all'}}catch{return{injuries:[],equipment:[],level:'all'}}}
+function sExPref(p){try{localStorage.setItem('mdf_ex',JSON.stringify(p))}catch{}}
+
+function renderExercise(){
+  renderExModality();
+  renderExFilters();
+  renderExCards();
+}
+
+function renderExModality(){
+  const el=document.getElementById('ex-modality-tabs');
+  if(!el)return;
+  el.innerHTML=EX_MODS.map(m=>`
+    <button onclick="setExMod('${m.k}')" id="exmod-${m.k}" style="
+      flex-shrink:0;padding:8px 14px;border-radius:20px;border:1.5px solid ${exMod===m.k?m.col:'var(--border)'};
+      background:${exMod===m.k?m.col+'18':'var(--bg)'};color:${exMod===m.k?m.col:'var(--sub)'};
+      font-size:13px;font-weight:${exMod===m.k?'700':'500'};cursor:pointer;white-space:nowrap">
+      ${m.lb}
+    </button>`).join('');
+}
+
+function setExMod(k){exMod=k;renderExModality();renderExCards();}
+
+function renderExFilters(){
+  const el=document.getElementById('ex-filters');
+  if(!el)return;
+  const pref=lExPref();
+  el.innerHTML=`
+    <div class="card" style="padding:14px 16px">
+      <div style="font-size:11px;font-weight:700;color:var(--sub);text-transform:uppercase;letter-spacing:.8px;margin-bottom:10px">Your filters</div>
+      <div style="font-size:12px;font-weight:700;color:var(--sub);margin-bottom:6px">Intensity</div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px">
+        ${['all','beginner','moderate','advanced'].map(l=>`
+          <button onclick="setExLevel('${l}')" style="padding:5px 12px;border-radius:16px;border:1.5px solid ${pref.level===l?'var(--a)':'var(--border)'};
+            background:${pref.level===l?'var(--al)':'var(--bg)'};color:${pref.level===l?'var(--a)':'var(--sub)'};
+            font-size:12px;font-weight:600;cursor:pointer">
+            ${l==='all'?'All levels':l.charAt(0).toUpperCase()+l.slice(1)}
+          </button>`).join('')}
+      </div>
+      <div style="font-size:12px;font-weight:700;color:var(--sub);margin-bottom:6px">Injury / Limitations <span style="font-weight:400">(tap to flag — routines will adapt)</span></div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px">
+        ${INJURY_OPTS.map(o=>`
+          <button onclick="toggleExInjury('${o.k}')" style="padding:5px 12px;border-radius:16px;border:1.5px solid ${pref.injuries.includes(o.k)?'#dc2626':'var(--border)'};
+            background:${pref.injuries.includes(o.k)?'#fef2f2':'var(--bg)'};color:${pref.injuries.includes(o.k)?'#dc2626':'var(--sub)'};
+            font-size:12px;font-weight:600;cursor:pointer">
+            ${pref.injuries.includes(o.k)?'✕ ':'+'}${o.lb}
+          </button>`).join('')}
+      </div>
+      <div style="font-size:12px;font-weight:700;color:var(--sub);margin-bottom:6px">Equipment I have</div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap">
+        ${EQUIP_OPTS.map(o=>`
+          <button onclick="toggleExEquip('${o.k}')" style="padding:5px 12px;border-radius:16px;border:1.5px solid ${pref.equipment.includes(o.k)?'var(--a)':'var(--border)'};
+            background:${pref.equipment.includes(o.k)?'var(--al)':'var(--bg)'};color:${pref.equipment.includes(o.k)?'var(--a)':'var(--sub)'};
+            font-size:12px;font-weight:600;cursor:pointer">
+            ${pref.equipment.includes(o.k)?'✓ ':'+'}${o.lb}
+          </button>`).join('')}
+      </div>
+    </div>`;
+}
+
+function setExLevel(l){const p=lExPref();p.level=l;sExPref(p);renderExFilters();renderExCards();}
+function toggleExInjury(k){const p=lExPref();const i=p.injuries.indexOf(k);i>=0?p.injuries.splice(i,1):p.injuries.push(k);sExPref(p);renderExFilters();renderExCards();}
+function toggleExEquip(k){const p=lExPref();const i=p.equipment.indexOf(k);i>=0?p.equipment.splice(i,1):p.equipment.push(k);sExPref(p);renderExFilters();renderExCards();}
+
+function renderExCards(){
+  const el=document.getElementById('ex-cards');
+  if(!el)return;
+  const pref=lExPref();
+  const mod=EXERCISE_DATA[exMod]||[];
+  const modInfo=EX_MODS.find(m=>m.k===exMod)||{col:'var(--a)'};
+
+  // Filter routines
+  let routines=mod.filter(r=>{
+    // Level filter
+    if(pref.level!=='all'&&r.level!==pref.level)return false;
+    // Injury filter — exclude routines not safe for user's injuries
+    if(pref.injuries.length){
+      for(const inj of pref.injuries){
+        if(!r.injury_safe.includes(inj))return false;
+      }
+    }
+    // Equipment filter — only show if user has required equipment (or routine needs none)
+    if(r.equipment.length){
+      const hasAll=r.equipment.every(eq=>pref.equipment.includes(eq));
+      if(!hasAll)return false;
+    }
+    // Gender filter
+    if(r.gender&&P.sex&&r.gender!==P.sex&&P.sex!=='other')return false;
+    return true;
+  });
+
+  if(!routines.length){
+    el.innerHTML=`<div class="card" style="text-align:center;padding:28px 20px">
+      <div style="font-size:32px;margin-bottom:8px">🔍</div>
+      <div style="font-weight:700;font-size:15px;margin-bottom:6px">No routines match your filters</div>
+      <div style="font-size:13px;color:var(--sub)">Try removing an injury flag or adding more equipment, or change the intensity level.</div>
+    </div>`;
+    return;
+  }
+
+  el.innerHTML=routines.map(r=>{
+    const levelColors={beginner:'#2ea860',moderate:'#d97706',advanced:'#dc2626'};
+    const lc=levelColors[r.level]||'var(--sub)';
+    const dietMatch=r.diet_synergy.includes('all')||r.diet_synergy.includes(P.diet);
+    return`<div class="card" style="margin-bottom:12px;border-left:3px solid ${modInfo.col}">
+      <div onclick="toggleExRoutine('${r.id}')" style="cursor:pointer">
+        <div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:6px">
+          <div style="flex:1">
+            <div style="font-weight:700;font-size:15px;color:var(--text);margin-bottom:4px">${r.name}</div>
+            <div style="display:flex;flex-wrap:wrap;gap:6px">
+              <span style="background:${lc}18;color:${lc};border-radius:12px;padding:2px 10px;font-size:11px;font-weight:700">${r.level}</span>
+              <span style="background:var(--al);color:var(--a);border-radius:12px;padding:2px 10px;font-size:11px;font-weight:700">⏱ ${r.duration} min</span>
+              <span style="background:var(--al);color:var(--a);border-radius:12px;padding:2px 10px;font-size:11px;font-weight:700">🔥 ~${r.calories} cal</span>
+              ${dietMatch?`<span style="background:#f0fdf4;color:#166534;border-radius:12px;padding:2px 10px;font-size:11px;font-weight:700">✓ Matches your diet</span>`:''}
+              ${r.equipment.length===0?`<span style="background:#f0fdf4;color:#166534;border-radius:12px;padding:2px 10px;font-size:11px;font-weight:700">No equipment</span>`:''}
+            </div>
+          </div>
+          <span id="exarr-${r.id}" style="color:var(--sub);font-size:12px;flex-shrink:0">▼</span>
+        </div>
+      </div>
+      <div id="exbody-${r.id}" style="display:none;margin-top:12px">
+        <div style="font-size:11px;font-weight:700;color:var(--sub);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px">Steps</div>
+        ${r.steps.map((s,i)=>`<div style="display:flex;gap:10px;margin-bottom:8px;align-items:flex-start">
+          <span style="background:${modInfo.col};color:#fff;border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0">${i+1}</span>
+          <div style="font-size:13px;color:var(--text);line-height:1.5">${s}</div>
+        </div>`).join('')}
+        ${r.tip?`<div style="background:var(--al);border-left:3px solid ${modInfo.col};border-radius:0 8px 8px 0;padding:10px 12px;margin-top:10px;font-size:13px;color:var(--text);line-height:1.5">💡 ${r.tip}</div>`:''}
+        ${r.diet_note?`<div style="background:#f0fdf4;border-left:3px solid #2ea860;border-radius:0 8px 8px 0;padding:10px 12px;margin-top:8px;font-size:13px;color:#166534;line-height:1.5">🥗 <strong>Diet tip:</strong> ${r.diet_note}</div>`:''}
+        <div style="display:flex;gap:8px;margin-top:12px">
+          <button onclick="logExFromExerciseTab('${r.name}','${r.duration}')" style="flex:1;background:${modInfo.col};color:#fff;border:none;border-radius:10px;padding:10px;font-size:13px;font-weight:700;cursor:pointer">✓ Log this workout</button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function toggleExRoutine(id){
+  const body=document.getElementById('exbody-'+id);
+  const arr=document.getElementById('exarr-'+id);
+  if(!body)return;
+  const open=body.style.display==='block';
+  body.style.display=open?'none':'block';
+  if(arr)arr.textContent=open?'▼':'▲';
+}
+
+function logExFromExerciseTab(name,duration){
+  // Save to exercise log and redirect to Progress → Exercise tab
+  const ed=JSON.parse(localStorage.getItem('mdf_e')||'[]');
+  ed.push({date:new Date().toDateString(),type:name,duration:parseInt(duration)||30,cal:0});
+  if(ed.length>60)ed.shift();
+  localStorage.setItem('mdf_e',JSON.stringify(ed));
+  sw('w');
+  setTimeout(()=>swPTab('e'),100);
+  const ok=document.getElementById('sok');
+  if(ok){ok.style.display='block';ok.textContent='✓ Workout logged!';setTimeout(()=>{ok.style.display='none';ok.textContent='✓ Saved!'},2200);}
+}
+
 
 // ── 50 LB PROGRAM ─────────────────────────────────────────────────────────────
 const PROGRAM=[
