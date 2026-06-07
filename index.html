@@ -149,12 +149,15 @@ textarea{resize:none;min-height:110px}
   width:100%;max-width:520px;background:#fff;
   border-top:1px solid var(--border);display:flex;
   z-index:200;padding-bottom:env(safe-area-inset-bottom,0px);
+  overflow-x:auto;-webkit-overflow-scrolling:touch;
+  scrollbar-width:none;-ms-overflow-style:none;
 }
+#nav::-webkit-scrollbar{display:none}
 .nb{
-  flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;
-  padding:10px 6px;background:none;border:none;cursor:pointer;
-  font-family:'DM Sans',sans-serif;font-size:11px;color:var(--sub);
-  font-weight:500;transition:color .2s;
+  flex-shrink:0;flex:0 0 auto;display:flex;flex-direction:column;align-items:center;gap:3px;
+  padding:10px 12px;min-width:64px;background:none;border:none;cursor:pointer;
+  font-family:'DM Sans',sans-serif;font-size:10px;color:var(--sub);
+  font-weight:500;transition:color .2s;white-space:nowrap;
 }
 .nb.on{color:var(--a)}
 .nb svg{width:22px;height:22px}
@@ -711,8 +714,10 @@ textarea{resize:none;min-height:110px}
         <span class="flabel">Allergies & Intolerances <span style="font-weight:400;color:var(--sub)">(flags meals + suggests swaps)</span></span>
         <div id="pall" style="margin-bottom:12px"></div>
 
-        <span class="flabel">Anthropic API Key <span style="font-weight:400;color:var(--sub)">(optional — enables AI Kitchen Scan)</span></span>
-        <input type="password" id="pkey" placeholder="sk-ant-… get yours at console.anthropic.com" style="margin-bottom:6px" autocomplete="off" spellcheck="false">
+        <span class="flabel">Allergies &amp; Intolerances <span style="font-weight:400;color:var(--sub)">(flags meals + suggests swaps)</span></span>
+        <div id="pall" style="margin-bottom:12px"></div>
+        <!-- API key hidden — managed server-side via Vercel -->
+        <input type="hidden" id="pkey" value="">
         <div style="font-size:12px;color:var(--sub);margin-bottom:16px">Your key stays on this device — only sent to Anthropic's servers.</div>
 
         <button class="btn btn-p" onclick="savePro()">Save Profile</button>
@@ -4632,7 +4637,7 @@ function buildProfileEditors(){
   pSex=P.sex||'';pAge=P.ageRange||'';pMeno=P.meno||'';pOcc=P.occ||'';
   document.getElementById('pname').value=P.name;
   document.getElementById('pavatar').textContent=P.emoji;
-  if(P.apiKey)document.getElementById('pkey').value=P.apiKey;
+  // pkey is hidden — managed server-side, not shown to family
   // Emoji grid
   const pg=document.getElementById('peg');pg.innerHTML='';
   EM.forEach(e=>{const b=document.createElement('button');b.className='ebtn'+(e===pE?' sel':'');b.textContent=e;b.onclick=()=>{document.querySelectorAll('#peg .ebtn').forEach(x=>x.classList.remove('sel'));b.classList.add('sel');pE=e;document.getElementById('pavatar').textContent=e};pg.appendChild(b)});
@@ -4692,12 +4697,13 @@ function renderDietInfo(){
 
 function savePro(){
   const nm=san(document.getElementById('pname').value,24)||P.name;
-  const key=san(document.getElementById('pkey').value,220);
   const allergies=[...document.querySelectorAll('#pall .goal-opt.sel')].map(el=>{
     const lbl=el.querySelector('.goal-lbl').textContent;
     return Object.keys(ALLERGENS).find(k=>ALLERGENS[k].lb===lbl)||'';
   }).filter(Boolean);
-  P={name:nm,emoji:pE,diet:pD,goals:pG,apiKey:key,allergies,sex:pSex,ageRange:pAge,meno:pMeno,occ:pOcc};
+  // Keep existing apiKey — field is hidden, key managed server-side
+  const existingKey=P.apiKey||'';
+  P={name:nm,emoji:pE,diet:pD,goals:pG,apiKey:existingKey,allergies,sex:pSex,ageRange:pAge,meno:pMeno,occ:pOcc};
   sP(P);
   applyTheme();renderHeader();renderToday();renderDietInfo();
   const ok=document.getElementById('sok');ok.style.display='block';setTimeout(()=>ok.style.display='none',2200);
