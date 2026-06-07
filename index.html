@@ -911,12 +911,13 @@ const COND={
   teacher_wellness:{lb:'Teacher Wellness System',em:'👩‍🏫',c:'#0369a1',bg:'#eff6ff'},
   male_weight:   {lb:'Male Weight Loss System',em:'♂️',c:'#1d4ed8',bg:'#eff6ff'},
   female_weight: {lb:'Female Weight Loss System',em:'♀️',c:'#be185d',bg:'#fdf2f8'},
-  organ_liver:   {lb:'Liver Health & Detox',em:'🫁',c:'#b45309',bg:'#fffbeb'},
+  organ_liver:   {lb:'Liver Health & Detox',em:'🟤',c:'#b45309',bg:'#fffbeb'},
   organ_gut:     {lb:'Gut Health & Microbiome',em:'🌿',c:'#15803d',bg:'#f0fdf4'},
   organ_heart:   {lb:'Heart & Cardiovascular',em:'❤️',c:'#dc2626',bg:'#fef2f2'},
+  organ_lung:    {lb:'Lung & Respiratory Health',em:'🫁',c:'#0891b2',bg:'#f0f9ff'},
   organ_thyroid: {lb:'Thyroid & Metabolism',em:'🦋',c:'#7c3aed',bg:'#f5f3ff'},
   organ_brain:   {lb:'Brain & Cognitive Health',em:'🧠',c:'#1d4ed8',bg:'#eff6ff'},
-  organ_kidney:  {lb:'Kidney Health',em:'💧',c:'#0891b2',bg:'#f0f9ff'},
+  organ_kidney:  {lb:'Kidney Health',em:'💧',c:'#06b6d4',bg:'#ecfeff'},
   plan_9030:     {lb:'90-30-50 Daily Plan',em:'📊',c:'#059669',bg:'#f0fdf4'},
 };
 
@@ -1370,6 +1371,19 @@ const CONDITION_GUIDE={
     },
     avoid:['Chronic dehydration — single biggest kidney stressor for most people','Excess sodium (processed foods) — directly strains kidney filtration capacity','High sugar and fructose — drives kidney inflammation through uric acid pathway (same as gout)','NSAIDs chronically — direct kidney toxicity with regular use; paracetamol preferred','Excess animal protein (for people with existing kidney disease only) — increased filtration load','Energy drinks — high sodium + stimulants + B vitamin megadoses stress kidneys','Artificial sweeteners — some studies suggest kidney tissue damage with chronic high-dose use'],
     tip:'Lemon water is the most evidence-backed kidney stone prevention strategy — citrate in lemons binds calcium oxalate crystals and prevents them from aggregating into stones. One lemon squeezed into water daily reduces recurrent kidney stone risk by 50%+ in studies. It costs pennies and takes 30 seconds. If you have a history of kidney stones, this is non-negotiable.',
+  },
+
+  // ── LUNG HEALTH ──
+  organ_lung:{
+    summary:'The lungs process 11,000 liters of air daily — every breath delivers oxygen and removes carbon dioxide. Lung tissue has remarkable regenerative capacity when given the right nutritional and environmental support. The three primary nutritional threats to lung health are: chronic inflammation, oxidative damage from pollutants, and mucus overproduction driven by diet. All three are highly responsive to food choices.',
+    eat:{
+      '🫁 Top Lung Foods':['Apples daily — quercetin + vitamin C; Harvard study: people eating 5+ apples/week had measurably better lung function','Tomatoes — lycopene reduces airway inflammation; cooked tomatoes release more lycopene than raw','Fatty fish (salmon, mackerel, sardines) 3×/week — omega-3 reduces airway hyper-responsiveness in asthma by up to 50%','Broccoli + broccoli sprouts — sulforaphane activates Nrf2 pathway, the master lung antioxidant defense gene','Ginger — gingerols relax bronchial smooth muscle; natural bronchodilator + anti-inflammatory','Turmeric + black pepper — curcumin reduces inflammatory cytokines that drive COPD and asthma','Garlic raw — allicin reduces lung infection risk and acts as natural expectorant (clears mucus)','Leafy greens — folate + Vitamin K2 + antioxidants protect lung cell DNA from oxidative damage','Beets + beet juice — nitrates improve oxygen efficiency; athletes use it for lung performance','Cayenne pepper — capsaicin thins mucus and acts as natural decongestant + bronchodilator'],
+      '☕ Lung Clearing Beverages':['Warm water with lemon + honey — the simplest lung mucus thinning protocol, used in every culture','Ginger + turmeric + honey tea — triple anti-inflammatory, natural expectorant','Licorice root tea (short-term) — glycyrrhizin soothes bronchial tubes and reduces spasms','Peppermint tea — menthol relaxes bronchial muscles and acts as decongestant','Thyme tea — thymol and carvacrol proven to treat bronchitis in multiple European clinical trials','Green tea 3+ cups/day — EGCG reduces lung cancer risk in studies; anti-inflammatory for airways'],
+      '💨 Breathing Support Supplements':['Vitamin C 1000mg+ — lungs use more Vitamin C than most organs; low C linked to lower FEV1 (lung capacity)','Vitamin D3 5000 IU — lung tissue dense with Vitamin D receptors; deficiency worsens asthma and respiratory infections','Magnesium glycinate — relaxes bronchial smooth muscle; IV magnesium used in acute asthma attacks','N-Acetyl Cysteine (NAC) 600mg — precursor to glutathione, the lung\'s primary antioxidant; FDA approved for COPD','Quercetin 500mg — natural antihistamine + anti-inflammatory; reduces mast cell activation in airways','Omega-3 fish oil 2–3g — reduces prostaglandin production driving airway inflammation'],
+      '🫧 Mucus Reduction Protocol':['Remove dairy — milk proteins (casein) are the most common dietary driver of excess mucus production','Remove refined sugar — sugar feeds bacteria and yeast that increase mucus and infection susceptibility','Steam inhalation: 2× daily — 10 min over bowl of hot water + 2 drops eucalyptus oil — most effective non-pharmacological mucus clearance','Apple cider vinegar 1 tbsp in water — changes mucus pH, thins and loosens it for easier clearance','Hydration: 2–3L water daily — mucus viscosity is directly controlled by hydration status'],
+    },
+    avoid:['Smoking and second-hand smoke — destroys 3,000+ cilia (mucus-clearing cells) per cigarette; single greatest lung toxin','Conventional dairy in excess — casein proteins directly stimulate mucus production in the respiratory tract','Processed meats — nitrites convert to nitrosamines in the airways; linked to COPD progression','Refined sugar — impairs neutrophil function (the white blood cells that fight lung infections) for up to 5 hours after consumption','Indoor air pollutants: scented candles, aerosol sprays, chemical cleaning products, mold','All seed oils — omega-6 excess promotes the arachidonic acid pathway driving airway inflammation','Alcohol — dehydrates mucus membranes; impairs the ciliary beating that clears debris from airways','Cold + dry air without protection — triggers bronchospasm; breathe through nose (warms air) or wear a scarf in cold weather'],
+    tip:'The most underutilized lung intervention is diaphragmatic (belly) breathing. Most adults breathe shallowly into the chest — using only 60–70% of lung capacity. Diaphragmatic breathing expands the lower lobes, where most gas exchange occurs. Practice: one hand on chest, one on belly. Only the belly hand should move on the inhale. 10 minutes daily measurably increases FEV1 (lung capacity) within 4 weeks and activates the parasympathetic nervous system simultaneously. Free, always available, most people never do it.',
   },
 
   // ── DR. TAZ 90-30-50 PLAN (viral TikTok) ──
@@ -3070,6 +3084,7 @@ const RCP_CATS=[
   {k:'budget',lb:'💰 Budget'},
   {k:'salads',lb:'🥗 Salads'},
   {k:'mealprep',lb:'🗓️ Meal Prep'},
+  {k:'organcare',lb:'🫀 Organ Care'},
 ];
 
 const RCP_COLORS={
@@ -3350,6 +3365,42 @@ const RECIPES_DATA=[
    ing:['Your bodyweight','Floor space','A chair for tricep dips'],
    steps:['Shoes stay on. Start IMMEDIATELY — do not sit down first.','Round 1 (3 min): 15 squats → 10 push-ups → 10 reverse lunges each leg → 30 sec rest.','Round 2 (3 min): 30-sec plank → 15 glute bridges → 10 chair dips → 30 sec rest.','Round 3 (3 min): 20 jumping jacks → 15 squats → 10 push-ups → 30 sec rest.','Cool down (1 min): neck rolls, shoulder rolls, 5 deep breaths. Done.'],
    tip:'The hardest part is the first 30 seconds. Research: 10 minutes of moderate exercise drops cortisol measurably within 30 minutes. Do not sit down first — ever.'},
+
+  // ── ORGAN CARE RECIPES ──
+  {id:'liver-detox-salad',cats:['salads','quick','budget','organcare'],creator:'Organ Care Kitchen',ccolor:'#b45309',
+   name:'Liver Detox Power Salad',time:'10 min',serves:2,diff:'Easy',cal:280,p:8,c:22,f:18,
+   desc:'Every ingredient specifically chosen for liver health. Beets + broccoli sprouts + walnuts + lemon — the four most powerful liver foods in one bowl.',
+   ing:['2 cups arugula or mixed greens','1 medium beet cooked and cubed (or 1 cup pre-cooked beet)','½ cup broccoli sprouts (or regular broccoli florets)','¼ cup walnuts roughly chopped','1 avocado sliced','2 tbsp pumpkin seeds','Dressing: 3 tbsp olive oil + juice of 1 lemon + 1 tsp Dijon + 1 clove garlic minced + salt'],
+   steps:['Cook beet if not pre-cooked: roast whole at 400°F for 45–60 min or boil 30–40 min until fork-tender. Cool and cube.','Wash and dry greens. Arrange on a large plate or in a bowl.','Add cubed beets, broccoli sprouts, avocado slices, walnuts, and pumpkin seeds.','Make dressing: whisk olive oil + lemon + Dijon + garlic + salt until emulsified.','Drizzle dressing over salad. Eat immediately for maximum enzyme activity.'],
+   tip:'Broccoli sprouts contain 50–100× more sulforaphane than mature broccoli. Even a small handful (½ cup) activates the Nrf2 liver detox gene more powerfully than a full head of broccoli. Find them in the produce section near other sprouts.'},
+
+  {id:'gut-healing-bowl',cats:['batch','highprotein','quick','organcare'],creator:'Organ Care Kitchen',ccolor:'#15803d',
+   name:'Gut Healing Kefir Smoothie Bowl',time:'5 min',serves:1,diff:'Easy',cal:320,p:22,c:38,f:8,
+   desc:'30+ live bacterial strains in one bowl. Kefir base + prebiotic fiber from banana + antioxidants from berries. The most practical daily gut health meal.',
+   ing:['200ml plain kefir (full-fat — live cultures only, refrigerated section)','½ cup frozen mixed berries','½ ripe banana','1 tbsp chia seeds','1 tbsp ground flaxseeds','1 tsp raw honey','Toppings: ¼ cup granola + fresh berries + 1 tbsp pumpkin seeds'],
+   steps:['Pour kefir into a wide bowl as the base.','Add frozen berries and banana — do not blend. Let berries sit 2 minutes to thaw slightly.','Sprinkle chia seeds and ground flaxseeds directly over the kefir.','Drizzle honey. Top with granola, fresh berries, and pumpkin seeds.','Eat immediately. The live cultures in kefir are at maximum potency when not heated or blended.'],
+   tip:'Do not blend kefir in a smoothie — high-speed blending kills live cultures. Drink kefir straight or use it as a base like this bowl. The live bacteria need to reach the gut intact.'},
+
+  {id:'heart-omega3-bowl',cats:['highprotein','quick','salads','organcare'],creator:'Organ Care Kitchen',ccolor:'#dc2626',
+   name:'Heart Health Salmon + Avocado Bowl',time:'20 min',serves:2,diff:'Easy',cal:480,p:42,c:18,f:28,
+   desc:'Every ingredient specifically targets cardiovascular health. Omega-3 salmon + avocado (HDL) + walnuts + olive oil + garlic. PREDIMED diet in a bowl.',
+   ing:['2 salmon fillets (6oz each)','1 avocado sliced','2 cups baby spinach','½ cup cherry tomatoes halved','¼ cup walnuts','2 cloves garlic minced','3 tbsp extra virgin olive oil','1 tbsp fresh lemon juice','Salt, pepper, herbs','Optional: 2 tbsp pumpkin seeds'],
+   steps:['Pat salmon completely dry. Season with salt, pepper, and herbs. Heat 1 tbsp olive oil in a pan over medium-high.','Cook salmon 4 min per side until golden and cooked through. Rest 2 minutes.','Meanwhile, toss spinach + cherry tomatoes + walnuts in a bowl with remaining olive oil + lemon juice + garlic + salt.','Plate salad, add sliced avocado, top with salmon fillet.','Finish with pumpkin seeds. Drizzle any remaining pan juices over the salmon.'],
+   tip:'This single meal delivers 3g omega-3 (the cardiovascular therapeutic dose), oleic acid from avocado (raises HDL), polyphenols from olive oil (prevents LDL oxidation), and allicin from garlic (reduces total cholesterol). Better than any heart supplement stack.'},
+
+  {id:'lung-clearing-tea',cats:['drinks','quick','organcare'],creator:'Organ Care Kitchen',ccolor:'#0891b2',
+   name:'Lung Clearing Ginger Turmeric Tea',time:'8 min',serves:2,diff:'Easy',cal:35,p:0,c:9,f:0,
+   desc:'Traditional respiratory support backed by modern mechanism research. Gingerols (bronchodilator) + curcumin (airway anti-inflammatory) + honey (antimicrobial mucus soother).',
+   ing:['1 inch fresh ginger root sliced thin (or ½ tsp ground ginger)','½ tsp ground turmeric (or ½ inch fresh turmeric)','¼ tsp black pepper (activates curcumin 2000%)','1 tbsp raw honey','Juice of ½ lemon','2 cups water','Optional: 2 drops food-grade eucalyptus oil or 3 fresh mint leaves'],
+   steps:['Bring 2 cups water to a gentle boil in a small saucepan.','Add sliced ginger and turmeric. Reduce heat, simmer 5 minutes.','Remove from heat. Add black pepper and lemon juice. Steep 2 more minutes.','Strain into mugs. Add raw honey and stir until dissolved.','Sip slowly while still warm. Best drunk morning and evening for lung support.'],
+   tip:'Black pepper is non-negotiable with turmeric — piperine increases curcumin bioavailability by 2,000%. Without it the curcumin passes through mostly unabsorbed. This is the most important cooking fact about turmeric.'},
+
+  {id:'kidney-flush-water',cats:['drinks','quick','budget','organcare'],creator:'Organ Care Kitchen',ccolor:'#06b6d4',
+   name:'Daily Kidney Flush Water',time:'2 min',serves:1,diff:'Easy',cal:15,p:0,c:4,f:0,
+   desc:'Lemon + cucumber + mint — the kidney\'s daily flush. Citrate prevents stones, cucumber supports filtration, mint cools and soothes urinary tract. Drink before coffee every morning.',
+   ing:['500ml filtered water (room temperature or warm)','Juice of ½ lemon (fresh, not bottled)','4–5 slices cucumber','3–4 fresh mint leaves','Optional: 1 tbsp apple cider vinegar for enhanced kidney pH support','Optional: pinch of Himalayan salt for electrolyte balance'],
+   steps:['Fill a glass or mason jar with 500ml water — room temperature or slightly warm.','Squeeze ½ fresh lemon directly into the water. Do not use bottled lemon juice.','Add cucumber slices and mint leaves.','Optional: add apple cider vinegar and pinch of salt.','Drink the entire 500ml before coffee or breakfast. This is the kidney\'s morning reset.'],
+   tip:'Citrate from fresh lemon is the most evidence-backed kidney stone prevention food. It binds calcium oxalate crystals and prevents them forming stones — reducing recurrence by 50%+ in studies. The key is FRESH lemon — bottled lemon juice has significantly less citrate activity.'},
 ];
 
 let rcpFilter='all';
@@ -3675,6 +3726,35 @@ const ROUTINES=[
    ],
    supplements:['Cleavers herb tea 2–3 cups daily','Astragalus 500mg 2× daily','Quercetin 500mg 2× daily','Vitamin D3 5000 IU daily','Selenium 200mcg daily'],
    tip:'Lymphatic massage should be so gentle it surprises you. The lymph capillaries are just 1–2 cells thick and sit directly under the skin. Heavy deep tissue pressure collapses them. Use the weight of your hand only — no more pressure than you would use to stroke a cat. If you\'re pressing hard, you\'re doing deep tissue massage, not lymphatic drainage.',
+  },
+  {id:'organ-care-daily',icon:'🫀',title:'Daily Organ Care Protocol',color:'#b45309',bg:'#fffbeb',
+   target:'Anyone wanting to proactively support liver, gut, heart, lung, and kidney health daily',
+   summary:'Five organs. One daily routine. Most people never think about organ health until there is a problem. This protocol uses food, water, and breathing to keep all five running at peak capacity — 30 minutes total spread across the day.',
+   morning:[
+     {time:'On waking — Liver',action:'Warm lemon water: juice of ½ lemon in 300ml warm water. Drink before coffee.',why:'Warm lemon water stimulates bile production and liver enzyme activity within minutes. Citrate alkalizes urine preventing kidney stones. This one habit serves both liver and kidney simultaneously.'},
+     {time:'Breakfast — Gut',action:'Include one fermented food daily: kefir, plain Greek yogurt, kimchi, or sauerkraut (refrigerated, raw).',why:'Fermented foods deliver 30+ live bacterial strains to the gut. Daily consistency matters more than occasional large doses. Kefir is the most potent — 30+ strains vs yogurt\'s 2–7.'},
+     {time:'Morning supplement — Lung + Heart',action:'Vitamin C 1000mg + Vitamin D3 5000 IU + Omega-3 2g',why:'Lungs and heart share the same supplement stack. Vitamin C protects lung tissue and supports endothelial function. D3 reduces cardiovascular events and lung infection risk. Omega-3 reduces triglycerides and airway inflammation.'},
+     {time:'Breathing — Lung',action:'5 minutes diaphragmatic breathing: belly rises on inhale, chest stays still. Inhale 4 counts, hold 2, exhale 6.',why:'Diaphragmatic breathing expands the lower lung lobes where most gas exchange occurs. Most adults use only 60–70% of lung capacity. 5 minutes daily measurably increases FEV1 within 4 weeks.'},
+   ],
+   midday:[
+     {time:'Lunch — Liver + Gut',action:'Include cruciferous vegetables 5× per week: broccoli, cauliflower, Brussels sprouts, cabbage, kale.',why:'Cruciferous vegetables contain DIM and sulforaphane — the two most potent food-based liver detox activators. They also feed gut bacteria directly through glucosinolate compounds.'},
+     {time:'After lunch — Heart + Kidney',action:'10-minute walk. Every day without exception.',why:'Post-meal walking reduces the blood sugar spike by 30% (protecting kidney filtration function), activates the lymphatic system, and counts toward the 150 min/week heart health target. One habit, four organs.'},
+     {time:'Hydration check — Kidney',action:'Urine should be pale yellow — not clear, not dark. Adjust water intake accordingly.',why:'Kidney health is 80% hydration. The urine color test is the most accurate, most accessible, real-time kidney health marker available. Clear = over-hydrated (loses electrolytes). Dark yellow = dehydrated (concentrated waste). Pale yellow = optimal.'},
+   ],
+   evening:[
+     {time:'Dinner — Heart',action:'Primary fat source must be olive oil, avocado, or fatty fish. Eliminate all seed oils from cooking.',why:'Seed oils (canola, soybean, corn, sunflower) create oxidized LDL — the form that deposits in artery walls. Olive oil prevents LDL oxidation and raises HDL. This swap alone changes cardiovascular risk profile within weeks.'},
+     {time:'Evening tea — Lung',action:'Ginger + turmeric + honey tea: ½ inch fresh ginger, ½ tsp turmeric, 1 tsp raw honey in hot water.',why:'This tea provides gingerols (natural bronchodilator), curcumin (reduces lung inflammatory cytokines), and honey (antimicrobial + mucus soothing). Traditional lung support backed by modern mechanism research.'},
+     {time:'Before bed — Liver + Gut',action:'Magnesium glycinate 400mg — the most important bedtime supplement for organ health.',why:'Liver detoxification is most active during deep sleep (1–3am). Magnesium glycinate enables deeper sleep, activates Phase 2 liver detox pathways, and feeds the gut microbiome directly (magnesium-dependent bacteria).'},
+   ],
+   techniques:[
+     {name:'🟤 Liver — Weekly Protocol',how:'Monday: beets + leafy greens. Tuesday: artichoke (cooked). Wednesday: garlic (raw, crushed, 2 cloves) + cruciferous. Thursday: turmeric golden milk at night. Friday: green tea 3+ cups. Saturday: milk thistle 250mg (liver cell regeneration). Sunday: intermittent fast 14–16 hours (depletes liver glycogen). This 7-day rotation covers every liver support mechanism without supplementation overload.'},
+     {name:'🌿 Gut — The 30 Plants/Week Challenge',how:'British Gut Project: eating 30 different plant foods per week produces the most beneficial microbiome diversity of any dietary pattern. Count every different plant: an apple is 1, spinach is 1, walnuts are 1, oats are 1, garlic is 1. Herbs and spices count (rosemary, turmeric, cinnamon each = 1). Most people eat 8–12 different plants/week. The gap between 12 and 30 is the difference between average and exceptional gut health.'},
+     {name:'❤️ Heart — The 150 Minutes Rule',how:'150 minutes of moderate cardio per week is the evidence-based minimum for cardiovascular health improvement. This can be broken into any increment: 10×15 min, 5×30 min, or 3×50 min — the total is what matters. A brisk 20-minute walk after dinner plus a 30-minute walk on weekend = 170 minutes. Most people are one habit change from meeting the guideline entirely.'},
+     {name:'🫁 Lung — Steam + Percussion',how:'Weekly lung clearing: boil water, add 2 drops eucalyptus oil, tent a towel over your head, breathe steam for 10 minutes. Follow with percussion (tap your upper back or chest firmly with cupped hands 30 times) — this loosens mucus from the bronchial walls. Used in respiratory therapy. Especially valuable after illness, air travel, or exposure to pollution.'},
+     {name:'💧 Kidney — The Morning Flush',how:'On waking, before coffee: 500ml water + juice of ½ lemon. This rehydrates after overnight fasting, starts the kidney filtration cycle, provides citrate for stone prevention, and stimulates bile flow (liver bonus). Replace this one habit with morning coffee on an empty stomach and kidney health improves within weeks. Coffee can follow — never replace the water first.'},
+   ],
+   supplements:['Magnesium glycinate 400mg at bedtime — liver + gut + heart + muscle simultaneously','Vitamin D3 5000 IU + K2 200mcg — lung + heart + kidney + bone','Omega-3 fish oil 2–3g — heart + lung + brain + anti-inflammatory','Vitamin C 1000mg with breakfast — lung + adrenal + immune + liver antioxidant','NAC (N-Acetyl Cysteine) 600mg — liver glutathione precursor + lung mucus thinning + kidney protection'],
+   tip:'The compounding organ health principle: every organ supports every other organ. Healthy gut bacteria produce vitamins that support the liver. Liver detox pathways protect kidney filtration. Heart pump efficiency determines oxygen delivery to every other organ. Lung capacity determines how much oxygen reaches the liver. None of these organs operates in isolation. The daily protocol above targets all five simultaneously through overlapping interventions — which is why doing it consistently produces results that feel disproportionate to the effort.',
   },
   {id:'stress-massage',icon:'💆',title:'Stress Relief & Recovery Massage',color:'#9b3060',bg:'#fdf0f5',
    target:'Anyone carrying physical tension from stress, desk work, or teaching',
