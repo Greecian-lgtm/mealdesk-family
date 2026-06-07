@@ -562,7 +562,10 @@ textarea{resize:none;min-height:110px}
       <div id="wdaycard" style="display:none;margin-bottom:14px"></div>
 
       <!-- Section title -->
-      <div style="font-family:'Fraunces',serif;font-size:18px;color:var(--text);margin-bottom:10px">Today's Meals</div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+        <div style="font-family:'Fraunces',serif;font-size:18px;color:var(--text)">Today's Meals</div>
+        <button onclick="resetSwaps()" style="background:none;border:1px solid var(--border);border-radius:20px;padding:4px 12px;font-size:11px;color:var(--sub);cursor:pointer;font-weight:600">↺ Reset swaps</button>
+      </div>
       <div id="mcards"></div>
 
       <!-- Health tip -->
@@ -4091,8 +4094,10 @@ function renderToday(){
   let cal=0,p=0,c=0,f=0;
   SLOTS.forEach(s=>{
     if(CK[s.k]){
+      const mDk=selForMacros[s.k+'_dk']||P.diet;
+      const mD=DIETS[mDk]||d;
       const idx=selForMacros[s.k]!==undefined?selForMacros[s.k]:defIdxM;
-      const m=d.days[idx][s.k];cal+=m.cal;p+=m.p;c+=m.c;f+=m.f;
+      const m=(mD.days[idx]&&mD.days[idx][s.k])||d.days[defIdxM][s.k];cal+=m.cal;p+=m.p;c+=m.c;f+=m.f;
     }
   });
   // Macro bars
@@ -4137,9 +4142,11 @@ function renderToday(){
     }
 
     // ── NORMAL MEAL CARD ──
+    const slotDk=sel[s.k+'_dk']||P.diet;
+    const slotD=DIETS[slotDk]||d;
     const idx=sel[s.k]!==undefined?sel[s.k]:defIdx;
-    const opts=d.days.map(day=>day[s.k]);
-    const m=opts[idx];
+    const opts=slotD.days.map(day=>day[s.k]);
+    const m=opts[idx]||d.days[defIdx][s.k];
     const risks=getMealRisks(m);
     const allergens=getMealAllergens(m,P.allergies||[]);
     const hasTip=risks.length||allergens.length;
@@ -4173,7 +4180,7 @@ function renderToday(){
           <div class="mnm">${m.n}</div>
           <div class="mmac">${m.cal} kcal · ${m.p}g protein · ${m.c}g carbs · ${m.f}g fat</div>
           <div style="display:flex;align-items:center;gap:8px;margin-top:4px;flex-wrap:wrap">
-            <div style="font-size:10px;color:var(--sub)">Option ${idx+1} of ${opts.length}${hasTip?' · <span style="color:#d97706">tap badge for tips</span>':''}</div>
+            <div style="font-size:10px;color:var(--sub)">Option ${(sel[s.k+"_seen"]||0)+1}${sel[s.k+"_dk"]&&sel[s.k+"_dk"]!==P.diet?" · "+DIETS[sel[s.k+"_dk"]].n+" style":""} · ${hasTip?' · <span style="color:#d97706">tap badge for tips</span>':''}</div>
             ${m.prep?`<button class="prep-btn" onclick="event.stopPropagation();togglePrep('${s.k}')">📋 Prep</button>`:''}
             <button class="prep-btn" onclick="event.stopPropagation();openFGPanel('${s.k}')" style="color:#5060b8">📂 Food Groups</button>
             <button class="prep-btn" onclick="event.stopPropagation();toggleAIM('${s.k}')" style="color:#7c3aed">✨ AI for my conditions</button>
@@ -4234,17 +4241,62 @@ function toggleHGuide(g){
 function tog(k){CK[k]=!CK[k];sC();renderToday()}
 
 function swapMeal(slot){
-  const d=DIETS[P.diet];
+  // Build a pool of all meals across all diets for this slot
+  // Each entry: {dietKey, dayIdx, meal}
+  const pool=[];
+  Object.entries(DIETS).forEach(([dk,dv])=>{
+    dv.days.forEach((day,di)=>{
+      if(day[slot])pool.push({dk,di,meal:day[slot]});
+    });
+  });
+  // Current selection state
   const sel=lSel();
-  const defIdx=new Date().getDay()%4;
-  const cur=sel[slot]!==undefined?sel[slot]:defIdx;
-  sel[slot]=(cur+1)%4;
+  const swapKey='sw_'+slot;
+  const swapPool='swp_'+slot;
+  // Get or init the swap pool for this slot (stores indices into pool, shuffled)
+  let poolOrder=[];
+  try{poolOrder=JSON.parse(localStorage.getItem(swapPool))||[];}catch{}
+  // If pool exhausted or first time, build a fresh shuffled order excluding current diet day 0
+  if(!poolOrder.length){
+    const defIdx=new Date().getDay()%4;
+    // Put current diet options first (days 1-3), then other diets
+    const curDietOthers=[];
+    const otherDiets=[];
+    pool.forEach((entry,i)=>{
+      if(entry.dk===P.diet&&entry.di!==defIdx)curDietOthers.push(i);
+      else if(entry.dk!==P.diet)otherDiets.push(i);
+    });
+    // Shuffle other diets
+    for(let i=otherDiets.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[otherDiets[i],otherDiets[j]]=[otherDiets[j],otherDiets[i]];}
+    poolOrder=[...curDietOthers,...otherDiets];
+    localStorage.setItem(swapPool,JSON.stringify(poolOrder));
+  }
+  // Pop next index from pool
+  const nextIdx=poolOrder.shift();
+  localStorage.setItem(swapPool,JSON.stringify(poolOrder));
+  // Store the selected pool entry
+  const entry=pool[nextIdx];
+  sel[slot]=entry.di;
+  sel[slot+'_dk']=entry.dk;
+  sel[slot+'_total']=pool.length;
+  sel[slot+'_seen']=(sel[slot+'_seen']||0)+1;
   sSel(sel);
   CK[slot]=false;
   sC();
   renderToday();
 }
 
+function resetSwaps(){
+  ["breakfast","lunch","dinner","snack"].forEach(s=>{
+    localStorage.removeItem("swp_"+s);
+  });
+  const sel=lSel();
+  ["breakfast","lunch","dinner","snack"].forEach(s=>{
+    delete sel[s];delete sel[s+"_dk"];delete sel[s+"_seen"];delete sel[s+"_total"];
+  });
+  sSel(sel);
+  renderToday();
+}
 function togglePrep(slot){
   const el=document.getElementById('prep_'+slot);
   if(el)el.classList.toggle('on');
