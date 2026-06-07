@@ -837,6 +837,18 @@ textarea{resize:none;min-height:110px}
   </div><!-- #content -->
 
   <!-- Bottom Nav -->
+    <!-- ─ RECIPES ─────────────────────────────────────────────── -->
+    <div class="panel" id="prcp">
+      <div class="sec-ttl">📖 Recipe Guide</div>
+      <div class="sec-sub">Step-by-step how-to guides from Madelaine Rascan, MacroMagicStef, Mom Nutritionist, MillennialMattD, Dr. Saladino, and more.</div>
+
+      <!-- Recipe filter chips -->
+      <div id="rcp-cats" style="display:flex;gap:6px;overflow-x:auto;padding-bottom:10px;margin-bottom:12px;scrollbar-width:none;-webkit-overflow-scrolling:touch"></div>
+
+      <!-- Recipe list -->
+      <div id="rcp-list"></div>
+    </div>
+
   <nav id="nav">
     <button class="nb on" id="nt" onclick="sw('t')">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/></svg>
@@ -845,6 +857,10 @@ textarea{resize:none;min-height:110px}
     <button class="nb" id="nk" onclick="sw('k')">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 002-2V2M7 2v20M21 15V2s-5 2-5 6v8"/><circle cx="21" cy="17" r="2"/><path d="M19 17H3"/></svg>
       Kitchen
+    </button>
+    <button class="nb" id="nrcp" onclick="sw('rcp')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/><line x1="9" y1="7" x2="15" y2="7"/><line x1="9" y1="11" x2="15" y2="11"/></svg>
+      Recipes
     </button>
     <button class="nb" id="np" onclick="sw('p')">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
@@ -2867,6 +2883,312 @@ function sw(t){
   if(t==='k'){renderKitchenMeta()}
   if(t==='w'){initProgressTab()}
   if(t==='r'){initRemediesTab()}
+  if(t==='rcp'){initRecipesTab()}
+}
+
+// ── RECIPES TAB ───────────────────────────────────────────────────────────────
+const RCP_CATS=[
+  {k:'all',lb:'⭐ All'},
+  {k:'family',lb:'👨‍👩‍👧‍👦 Family'},
+  {k:'quick',lb:'⚡ Quick'},
+  {k:'batch',lb:'📦 Batch Cook'},
+  {k:'highprotein',lb:'💪 High Protein'},
+  {k:'kids',lb:'👶 Kids'},
+  {k:'desserts',lb:'🍫 Desserts'},
+  {k:'drinks',lb:'🥤 Drinks'},
+  {k:'budget',lb:'💰 Budget'},
+  {k:'salads',lb:'🥗 Salads'},
+];
+
+const RCP_COLORS={
+  family:'#5c2d91',quick:'#c4621a',batch:'#1a4f8a',highprotein:'#2a6b3a',
+  kids:'#9b3060',desserts:'#8b4513',drinks:'#1a4f8a',budget:'#2a6b3a',
+  salads:'#2a6b3a',mealprep:'#5c2d91',
+};
+
+const RECIPES_DATA=[
+  {id:'taco-bar',cats:['family','quick','kids'],creator:'Family Kitchen',ccolor:'#5c2d91',
+   name:'Family Taco Bar',time:'25 min',serves:4,diff:'Easy',cal:480,p:38,c:32,f:18,
+   desc:'One protein, everyone builds their own. Same dinner, zero complaints.',
+   ing:['1.5 lbs lean ground beef (93/7)','1 packet taco seasoning','8 taco shells or tortillas','1 cup shredded cheddar','1 cup salsa','1 avocado sliced','1 cup shredded lettuce','1 cup diced tomatoes','1 lime quartered','Optional: Greek yogurt (sub for sour cream)'],
+   steps:['Brown ground beef 6–8 min over medium-high, breaking apart. Drain fat.','Add seasoning + ¼ cup water. Simmer 3–4 min until sauce thickens.','Warm taco shells in oven 350°F for 3–4 min.','Set up taco bar — meat in the middle, all toppings in small bowls around it.','Everyone builds their own. Kids: cheese + meat. Adults: everything. Same meal.'],
+   tip:'Double the beef and freeze half. Greek yogurt replaces sour cream with 10g extra protein per serving.'},
+
+  {id:'sheet-pan',cats:['family','batch','highprotein'],creator:'Family Kitchen',ccolor:'#5c2d91',
+   name:'Sheet Pan Chicken + Roasted Veg',time:'35 min',serves:4,diff:'Easy',cal:420,p:46,c:18,f:16,
+   desc:'One pan, one oven, 5 min prep. Zero dishes, everyone eats.',
+   ing:['4 bone-in skin-on chicken thighs','2 cups broccoli florets','2 sweet potatoes cubed','1 red bell pepper sliced','3 tbsp olive oil','1 tsp each: garlic powder, paprika, Italian seasoning','Salt and pepper'],
+   steps:['Preheat oven to 425°F. Line a large sheet pan with foil.','Toss sweet potato + broccoli with 2 tbsp olive oil, garlic powder, salt. Spread on pan.','Rub chicken with 1 tbsp oil, paprika, Italian seasoning, salt. Place on pan.','Roast 28–32 min until chicken is 165°F and skin is crispy. No flipping needed.','Rest 3 min. Serve straight from the pan.'],
+   tip:'Swap vegetables freely — zucchini, asparagus, carrots all work at the same time and temperature.'},
+
+  {id:'pasta-bolognese',cats:['family','batch','budget'],creator:'Family Kitchen',ccolor:'#5c2d91',
+   name:'Lean Beef Bolognese',time:'30 min',serves:6,diff:'Easy',cal:440,p:34,c:48,f:12,
+   desc:'Hidden lentils + zucchini in the sauce. Kids see nothing. Makes two dinners.',
+   ing:['1.5 lbs lean ground beef','1 jar marinara sauce (24oz)','3 cloves garlic minced','1 onion diced','1 carrot diced fine','½ cup red lentils (dissolve completely)','1 zucchini grated','1 tbsp olive oil','12 oz whole wheat pasta','Parmesan to serve'],
+   steps:['Cook pasta per package. Reserve ½ cup pasta water before draining.','Heat oil. Cook onion + carrot 4–5 min. Add garlic 1 min.','Brown ground beef 6–8 min. Drain fat.','Add grated zucchini, lentils, marinara + ¼ cup pasta water. Simmer 12–15 min until lentils dissolve.','Toss with pasta. Finish with Parmesan.'],
+   tip:'Double the sauce and freeze half. Lentils add invisible protein and fiber — kids will never notice.'},
+
+  {id:'big-sexy-scramble',cats:['quick','highprotein'],creator:'Madelaine Rascan',ccolor:'#9b3060',
+   name:'Big Sexy Scramble',time:'12 min',serves:1,diff:'Easy',cal:380,p:42,c:22,f:12,
+   desc:'High volume, high protein, low calorie. A massive plate for 380 calories.',
+   ing:['3 whole eggs','150g liquid egg whites','350g kabocha squash cubed','3 tbsp salsa','5g butter','Salt','Optional: hot sauce'],
+   steps:['Microwave squash cubes covered with 1 tbsp water 4–5 min until tender.','Heat butter in pan over medium. Add squash, cook 2–3 min to lightly caramelize.','Whisk eggs + egg whites with salt. Pour over squash.','Stir gently over medium-low until just set — slightly wet. Remove from heat.','Top with salsa and eat immediately.'],
+   tip:'Batch-cook the squash Sunday — grab ½ cup any morning and add to eggs instantly.'},
+
+  {id:'patties-baddies',cats:['batch','highprotein','quick','mealprep'],creator:'Madelaine Rascan',ccolor:'#9b3060',
+   name:'Patties for Baddies',time:'25 min',serves:8,diff:'Easy',cal:210,p:28,c:4,f:9,
+   desc:'32 patties, 55g protein per 4-patty serving. Cook Sunday, eat all week.',
+   ing:['1kg (2.2 lbs) ground chicken breast','1 large onion diced fine','4 cloves garlic minced','Large handful fresh herbs (parsley or basil)','2 tsp salt, 1 tsp pepper, 1 tsp garlic powder','Oil for cooking'],
+   steps:['Mix all ingredients just until combined — do not overwork.','Form 32 flat patties (golf ball size, ½ inch thick). Wider than you think.','Cook in batches over medium-high 4–5 min per side until golden, 165°F internal.','Cool completely. Fridge 5 days, freeze 3 months.','Reheat from frozen: microwave 90 sec or pan 3 min per side.'],
+   tip:'Flash freeze on a tray 1 hour before bagging — grab exactly the number you need without sticking.'},
+
+  {id:'buffalo-chicken',cats:['quick','highprotein'],creator:'Madelaine Rascan',ccolor:'#9b3060',
+   name:'Buffalo Chicken Cottage Cheese Bowl',time:'15 min',serves:2,diff:'Easy',cal:400,p:59,c:9,f:16,
+   desc:'59g protein in 15 minutes. Cottage cheese becomes the creamy buffalo sauce.',
+   ing:['300g shredded cooked chicken (rotisserie is perfect)','250g low-fat cottage cheese','2–3 tbsp hot sauce','½ tsp garlic powder','1 stalk celery diced','¼ onion diced','30g shredded cheddar','250g kabocha squash roasted'],
+   steps:['Microwave squash cubes 5–6 min if not already cooked.','Mix chicken + cottage cheese + hot sauce + garlic powder + onion + celery together. The cottage cheese becomes creamy sauce.','Taste and adjust hot sauce to your preference.','Serve over squash. Top with cheddar.','Better cold the next day — perfect meal prep.'],
+   tip:'Shred a whole rotisserie chicken Sunday. The buffalo mixture keeps 4 days cold in the fridge.'},
+
+  {id:'cottage-flatbread',cats:['quick','highprotein','batch'],creator:'Madelaine Rascan',ccolor:'#9b3060',
+   name:'Cottage Cheese Flatbread',time:'35 min',serves:2,diff:'Easy',cal:350,p:37,c:12,f:14,
+   desc:'The flatbread IS the protein. Bake Sunday, stuff all week.',
+   ing:['225g low-fat cottage cheese','2 whole eggs','Seasonings: garlic powder, Italian herbs, salt','Fillings of choice: turkey bacon, pesto, tomatoes, avocado'],
+   steps:['Blend cottage cheese + eggs + seasonings until completely smooth.','Spread thin (¼ inch) on a parchment-lined tray.','Bake 350°F for 30 min until golden and firm.','Cool 5 min, peel off parchment.','Stuff with fillings, fold or roll, eat. Keeps 4 days in the fridge.'],
+   tip:'Make two trays Sunday — different seasonings each. Use one as pizza base, one as a wrap.'},
+
+  {id:'squash-pizza',cats:['quick','highprotein','family'],creator:'Madelaine Rascan',ccolor:'#9b3060',
+   name:'Squash Turkey Pizza',time:'30 min',serves:1,diff:'Medium',cal:500,p:59,c:28,f:14,
+   desc:'500 cal, 59g protein — the whole pizza. Delicata squash ring crust.',
+   ing:['1 delicata squash (½ inch rings, seeds removed)','300g lean ground turkey','Italian seasoning + salt + garlic powder','Low-fat mozzarella shredded','Roasted veg of choice','Drizzle of raw honey + hot sauce','Microgreens or basil'],
+   steps:['Slice squash ½ inch thick. Remove seeds. Arrange on a baking tray.','Season turkey. Press thin layer over each squash ring to form crusts.','Bake 400°F for 20 min until turkey is cooked and browning.','Top with roasted veg + mozzarella. Return to oven 3–5 min until cheese melts.','Drizzle honey + hot sauce. Top with microgreens.'],
+   tip:'The honey drizzle balances the heat and makes this feel like a treat, not diet food. Do not skip it.'},
+
+  {id:'protein-brownies',cats:['desserts','kids','batch'],creator:'MacroMagicStef',ccolor:'#c4621a',
+   name:'Chocolate Banana Protein Brownies',time:'25 min',serves:8,diff:'Easy',cal:150,p:8,c:20,f:4,
+   desc:'"Does Susan approve?" — she does. 150 cal, 8g protein per brownie square.',
+   ing:['3 very ripe bananas','2 whole eggs','½ cup plain Greek yogurt','3 tbsp unsweetened cocoa powder','1 tbsp honey (optional)','Pinch of salt','Optional: dark chocolate chips, sea salt flakes'],
+   steps:['Preheat oven 350°F. Line 8×8 pan with parchment.','Mash bananas completely smooth — no chunks.','Add eggs, yogurt, honey. Whisk until frothy.','Sift cocoa over wet mix. Fold in until no dry spots remain.','Pour into pan. Bake 18–20 min. Toothpick comes out with moist crumbs. Cool 10 min, cut into 8 squares.'],
+   tip:'Black-spotted bananas make the sweetest, fudgiest brownies. Freeze overripe bananas and use straight from frozen.'},
+
+  {id:'egg-white-cheesecake',cats:['desserts','highprotein'],creator:'MacroMagicStef',ccolor:'#c4621a',
+   name:'High Protein Egg White Cheesecake',time:'30 min',serves:6,diff:'Medium',cal:180,p:22,c:12,f:4,
+   desc:'"Susan Approved." Cottage cheese + yogurt + egg whites. Creamy high-protein cheesecake.',
+   ing:['400g low-fat cottage cheese (blended smooth)','200g plain Greek yogurt','4 egg whites','2 tbsp cornstarch','3 tbsp honey or maple syrup','1 tsp vanilla extract','Zest of 1 lemon','Pinch of salt','Optional base: 6 crushed crackers + 1 tbsp butter'],
+   steps:['Preheat oven 325°F. Blend cottage cheese 60 sec until silky smooth — critical step.','Mix blended cottage cheese + yogurt + egg whites + cornstarch + honey + vanilla + lemon zest + salt until smooth.','Press optional cracker base into springform pan. Pour filling on top.','Bake 25–30 min. Edges set, center still wobbles slightly. Do not overbake.','Cool 30 min room temp, then fridge 2+ hours. Top with berries or honey.'],
+   tip:'60 seconds in a high-speed blender transforms cottage cheese to cream cheese texture. This single step makes or breaks the cheesecake.'},
+
+  {id:'macro-pancakes',cats:['desserts','highprotein','kids','quick'],creator:'MacroMagicStef',ccolor:'#c4621a',
+   name:'Macro Protein Pancakes',time:'15 min',serves:2,diff:'Easy',cal:240,p:28,c:24,f:4,
+   desc:'No protein powder. Oats + cottage cheese + eggs. 28g protein, actual pancake taste.',
+   ing:['½ cup rolled oats','½ cup low-fat cottage cheese','2 whole eggs','½ tsp baking powder','¼ tsp cinnamon','Pinch of salt','1 tsp butter for cooking','Toppings: Greek yogurt + berries + drizzle of honey'],
+   steps:['Blend all ingredients 30–45 sec until smooth. Rest 2 min to thicken.','Heat pan to medium. Butter lightly.','Pour ¼ cup rounds. Cook 2–3 min until bubbles form on surface.','Flip, cook 1–2 min more until golden.','Stack and top with Greek yogurt + berries + honey instead of syrup.'],
+   tip:'Greek yogurt + honey instead of butter + syrup = same sweetness, 3× the protein, half the sugar.'},
+
+  {id:'beetroot-shots',cats:['drinks','batch','kids'],creator:'Ayat Sleymann RD',ccolor:'#2a6b3a',
+   name:'Beetroot Juice Shots',time:'10 min',serves:4,diff:'Easy',cal:60,p:1,c:14,f:0,
+   desc:'Ayat\'s Sunday prep shot. Beets, ginger, apple, carrot. Prep 4 shots, drink all week.',
+   ing:['2 medium beets peeled + chopped','1 green apple cored + chopped','1 large cucumber chopped','Juice of 1 lemon','2 medium carrots peeled + chopped','1-inch piece fresh ginger peeled','½ cup water if blending'],
+   steps:['Prep and chop all produce.','Juicer: feed everything through. Store in glass jars up to 5 days.','Blender: add all + ½ cup water. Blend 60 sec. Strain through fine mesh or nut milk bag.','Refrigerate up to 5 days in sealed glass jars.','Drink 4oz as morning shot or full glass over ice. Best before breakfast.'],
+   tip:'Vitamin C from lemon multiplies iron absorption from beets. Never skip the lemon — it\'s not just for flavor.'},
+
+  {id:'chia-pudding',cats:['batch','kids','mealprep'],creator:'Ayat Sleymann RD',ccolor:'#2a6b3a',
+   name:'Peaches & Cream Chia Pudding',time:'10 min + overnight',serves:4,diff:'Easy',cal:180,p:10,c:18,f:6,
+   desc:'4 jars Sunday = breakfast all week. No added sugar. Protein + fiber + omega-3 in every jar.',
+   ing:['2 ripe peaches pitted and chopped (or frozen)','1 cup plain Greek yogurt','1 cup milk (Fairlife 2% for extra protein)','8 tbsp chia seeds (2 per jar)','4 mason jars','Toppings: peach slices, coconut, cinnamon'],
+   steps:['Blend peaches + yogurt + milk until smooth.','Divide evenly into 4 jars (~½ cup each).','Add 2 tbsp chia seeds to each jar. Stir well — no clumping.','Seal and refrigerate overnight (min 4 hours).','Stir before eating. Add toppings. Keeps 4 days.'],
+   tip:'Any fruit works — frozen mango, strawberries, blueberries. Canned peaches in juice (not syrup) are a perfect out-of-season substitute.'},
+
+  {id:'chickpea-pasta',cats:['batch','salads','family','mealprep','highprotein'],creator:'Ayat Sleymann RD',ccolor:'#2a6b3a',
+   name:'Mediterranean Chickpea Pasta Salad',time:'25 min',serves:6,diff:'Easy',cal:350,p:35,c:23,f:14,
+   desc:'35g protein per serving — no meat. Barilla Protein+ pasta + chickpeas + black beans + feta. Keeps 5 days.',
+   ing:['8oz Barilla Protein+ penne','1 cup cherry tomatoes halved','1 cup cucumber diced','¼ cup red onion finely diced','1 can chickpeas drained (15oz)','1 can black beans drained (15oz)','6oz crumbled feta','Dressing: ⅓ cup olive oil, 3 tbsp red wine vinegar, 1 garlic clove minced, 1 tsp Dijon, 1 tsp oregano, salt + pepper'],
+   steps:['Cook pasta in salted water. Drain and cool completely.','In a large bowl: pasta + tomatoes + cucumber + onion + chickpeas + black beans + feta.','Whisk dressing ingredients together until emulsified.','Pour dressing over salad and toss well.','Serve now or chill 30 min. Keeps 5 days — gets better on day 2.'],
+   tip:'Barilla Protein+ is made from chickpeas, lentils, and peas — same taste as regular pasta with significantly more protein and fiber per serving.'},
+
+  {id:'protein-burritos',cats:['family','batch','mealprep','highprotein'],creator:'Ayat Sleymann RD',ccolor:'#2a6b3a',
+   name:'High Protein Burritos + Pickle Sauce',time:'25 min',serves:4,diff:'Easy',cal:480,p:42,c:38,f:16,
+   desc:'Ayat\'s family dinner hero. Greek yogurt pickle sauce has Big Mac energy. Reheats perfectly.',
+   ing:['1 lb lean ground beef (93/7)','4–5 large tortillas (whole wheat)','1 cup shredded cheddar','2 cups romaine lettuce','½ onion finely diced','Taco seasoning','PICKLE SAUCE: ½ cup Greek yogurt, ¼ cup ketchup, 2 tbsp honey mustard, 2 dill pickles chopped, splash sweet pickle juice, garlic powder, salt'],
+   steps:['Make pickle sauce first: mix all sauce ingredients. Refrigerate while cooking — improves as it sits.','Brown ground beef with onion 6–8 min. Add seasoning. Cook 2 more min.','Warm tortillas 20 sec in microwave.','Layer: meat + cheese + lettuce + generous drizzle of pickle sauce.','Roll tight. Wrap extras in foil. Fridge 4 days. Reheat oven 350°F 10 min or air fryer 5 min.'],
+   tip:'Pickle juice is the secret ingredient — it adds flavor depth that makes people ask "what\'s in this sauce?"'},
+
+  {id:'chocolate-muffins',cats:['batch','kids','desserts'],creator:'Ayat Sleymann RD',ccolor:'#2a6b3a',
+   name:'Chocolate Banana Protein Muffins',time:'30 min',serves:12,diff:'Easy',cal:145,p:8,c:18,f:4,
+   desc:'No protein powder. Kids eat as snacks, adults eat as breakfast.',
+   ing:['3 ripe bananas mashed','2 eggs','½ cup plain Greek yogurt','¼ cup honey or maple syrup','1 tsp vanilla extract','1½ cups whole wheat flour','¼ cup unsweetened cocoa powder','1 tsp baking soda, ½ tsp baking powder, pinch of salt','Optional: ½ cup dark chocolate chips'],
+   steps:['Preheat oven 350°F. Line 12-cup muffin tin.','Mash bananas. Add eggs, yogurt, honey, vanilla. Whisk together.','Add flour, cocoa, baking soda, baking powder, salt. Fold gently until just combined — do not overmix.','Fold in chocolate chips. Fill cups ¾ full.','Bake 18–22 min until toothpick clean. Freeze up to 3 months.'],
+   tip:'Whole wheat flour adds fiber, Greek yogurt adds protein — these actually keep kids full instead of causing a sugar spike.'},
+
+  {id:'homemade-sprite',cats:['drinks','kids','quick','budget'],creator:'MillennialMattD',ccolor:'#1a4f8a',
+   name:'Homemade Sprite',time:'5 min',serves:2,diff:'Easy',cal:35,p:0,c:9,f:0,
+   desc:'Viral healthy soda. No corn syrup, no artificial anything. Kids prefer it to the real thing.',
+   ing:['Juice of 2 limes (about 3 tbsp)','Juice of 1 lemon (about 2 tbsp)','1–2 tbsp honey, agave, or maple syrup','2 cups cold sparkling water','Ice','Optional: fresh mint, cucumber, frozen fruit'],
+   steps:['Juice limes and lemon fresh — bottled juice won\'t give the same bright flavor.','Mix citrus juice + sweetener until dissolved. This is your concentrate.','Add ice to glasses. Pour 2 tbsp concentrate into each glass.','Top with ice-cold sparkling water. Stir gently — don\'t over-stir.','Taste and adjust. Drink immediately. Concentrate keeps in fridge 3–4 days.'],
+   tip:'Make the concentrate Sunday and keep it in a jar. Mix individual glasses all week — healthier, cheaper, and fresher than any store-bought soda.'},
+
+  {id:'simple-salad',cats:['salads','quick','budget','family'],creator:'MillennialMattD',ccolor:'#1a4f8a',
+   name:'The Simple Salad That Actually Slaps',time:'10 min',serves:2,diff:'Easy',cal:220,p:8,c:14,f:16,
+   desc:'Viral 56K likes. The Dijon dressing technique is what makes it "life-changing."',
+   ing:['1 large head romaine lettuce chopped big','½ cup cherry tomatoes halved','¼ red onion thinly sliced','½ cucumber sliced','¼ cup Parmesan shaved or grated','DRESSING: 3 tbsp extra virgin olive oil, juice of 1 lemon, 1 tsp Dijon mustard, 1 garlic clove minced, salt + pepper','Optional: grilled chicken, tuna, boiled eggs, or chickpeas'],
+   steps:['Wash and dry romaine thoroughly — wet lettuce = watery dressing.','Chop into big pieces. Big chunks give satisfying crunch.','Add tomatoes, red onion, cucumber. Toss gently.','Shake dressing ingredients in a jar until emulsified.','Pour over salad. Toss from the bottom up. Top with Parmesan and protein.'],
+   tip:'Dijon mustard acts as an emulsifier — keeps oil and lemon juice blended so every leaf gets coated evenly. This is the entire secret of the recipe.'},
+
+  {id:'ribeye-eggs',cats:['highprotein','quick'],creator:'Dr. Paul Saladino MD',ccolor:'#b8820a',
+   name:'Ribeye + Fried Eggs',time:'15 min',serves:1,diff:'Easy',cal:720,p:62,c:0,f:52,
+   desc:'Animal-based power meal. Grass-fed ribeye + eggs fried in beef fat.',
+   ing:['1 ribeye steak (10–12oz, grass-fed)','3–4 pasture-raised eggs','Coarse sea salt only'],
+   steps:['Take steak out of fridge 10–15 min before cooking. Season generously with coarse salt only.','Heat cast iron over high until smoking. No oil — ribeye has enough fat.','Sear steak without moving 3–4 min until deep brown crust forms.','Flip once. Cook 3 min for medium-rare (130–135°F). Rest on board 4 min.','Fry eggs in the rendered beef fat. Baste tops with a spoon. Cook until whites set. Serve together.'],
+   tip:'The 4-minute rest is non-negotiable. Cutting immediately loses 30% of the juices. Use those 4 minutes to fry the eggs.'},
+
+  {id:'saladino-lunch',cats:['highprotein','quick'],creator:'Dr. Paul Saladino MD',ccolor:'#b8820a',
+   name:'Saladino\'s Daily Lunch',time:'15 min',serves:1,diff:'Easy',cal:720,p:58,c:22,f:46,
+   desc:'His actual daily lunch, every day — ribeye + Parmigiano + fresh OJ.',
+   ing:['1 ribeye steak (10–12oz, grass-fed)','100g Parmigiano Reggiano','2 large oranges for fresh juice','Coarse sea salt'],
+   steps:['Season ribeye with coarse salt. Heat cast iron to very high heat.','Sear 3–4 min per side for medium-rare. Rest 4 min.','While steak rests, break Parmigiano into chunks. Squeeze oranges fresh.','Slice steak against the grain. Plate with Parmigiano chunks and a glass of fresh OJ.','The OJ provides fruit carbs. The Parmigiano provides calcium + extra protein.'],
+   tip:'This is genuinely what Saladino eats every day. The OJ after meat helps digestion and replaces grains as the carb source.'},
+
+  {id:'overnight-oats',cats:['batch','kids','mealprep','budget'],creator:'Family Kitchen',ccolor:'#5c2d91',
+   name:'Overnight Oats — 5 Jars',time:'10 min',serves:5,diff:'Easy',cal:340,p:18,c:48,f:8,
+   desc:'10 minutes Sunday. Breakfast handled for the entire school week.',
+   ing:['2.5 cups rolled oats (½ cup per jar)','2.5 cups Greek yogurt (½ cup per jar)','2.5 cups milk of choice (½ cup per jar)','5 tbsp chia seeds (1 per jar)','5 tbsp honey (1 per jar)','5 mason jars','Toppings: berries, banana, peanut butter, granola'],
+   steps:['Line up 5 mason jars. Assembly line — do one ingredient across all 5 before the next.','Layer in each jar: ½ cup oats → ½ cup yogurt → ½ cup milk → 1 tbsp chia → 1 tbsp honey. Stir each.','Add sturdy toppings now (granola, banana) or fresh toppings in the morning (berries, nut butter).','Seal and refrigerate overnight minimum. Keeps up to 4 days.','Grab and go cold, or microwave 90 seconds.'],
+   tip:'Let kids put their name on their jar — they\'re far more likely to eat something that\'s "theirs."'},
+
+  {id:'egg-muffins',cats:['batch','kids','mealprep','highprotein'],creator:'Family Kitchen',ccolor:'#5c2d91',
+   name:'Egg Muffin Cups — Batch 12',time:'28 min',serves:6,diff:'Easy',cal:160,p:18,c:3,f:8,
+   desc:'Make 12 Sunday. Microwave 45 seconds. Grab and go all week.',
+   ing:['8 whole eggs','4 egg whites','½ cup cottage cheese (adds fluffiness + protein)','½ cup diced bell peppers','½ cup spinach chopped','¼ cup diced onion','⅓ cup shredded cheddar','Salt, pepper, garlic powder','Cooking spray'],
+   steps:['Preheat oven 350°F. Spray 12-cup muffin tin generously.','Whisk eggs + egg whites + cottage cheese until smooth. Season.','Divide peppers, spinach, onion among 12 cups.','Pour egg mixture over veg, fill ¾ full. Top each with cheddar.','Bake 18–20 min until set. Cool 5 min. Fridge 5 days, freeze 3 months.'],
+   tip:'Change fillings every batch: mushroom + feta, bacon + cheddar, tomato + basil, ham + Swiss. Same method, infinite variety.'},
+
+  {id:'hidden-smoothie',cats:['kids','quick','budget'],creator:'Family Kitchen',ccolor:'#5c2d91',
+   name:'Hidden Veggie Smoothie',time:'5 min',serves:2,diff:'Easy',cal:220,p:16,c:34,f:3,
+   desc:'2 cups of spinach. They have no idea. The berries hide everything.',
+   ing:['2 frozen ripe bananas','2 cups baby spinach','1 cup frozen mixed berries','1 cup plain Greek yogurt','1 cup milk','1 tbsp peanut butter','Optional: 1 tsp honey'],
+   steps:['Add milk to blender first — prevents motor strain.','Add yogurt, peanut butter, banana, and spinach.','Add frozen berries on top of the spinach — they hide the color.','Blend on high 60 sec until completely smooth.','Pour into cups. Color will be purple-pink. No green visible.'],
+   tip:'Pre-portion bags Sunday: banana + spinach + berries in a zip bag, freeze. Morning = dump + yogurt + milk = 90 seconds.'},
+
+  {id:'mac-cheese',cats:['kids','family','budget'],creator:'Family Kitchen',ccolor:'#5c2d91',
+   name:'Mac & Cheese with Hidden Squash',time:'25 min',serves:4,diff:'Easy',cal:360,p:16,c:52,f:10,
+   desc:'Butternut squash puree is completely invisible in the cheese sauce.',
+   ing:['12 oz whole wheat elbow pasta','1 cup butternut squash puree (or canned pumpkin)','1 cup shredded sharp cheddar','½ cup Greek yogurt','¼ cup milk','1 tsp garlic powder','½ tsp mustard powder','Salt'],
+   steps:['Cook pasta in salted water. Drain, reserve ½ cup pasta water.','Steam squash 8–10 min and blend smooth. Or use canned pumpkin puree.','Combine squash, yogurt, milk, garlic powder, mustard, half the cheddar. Stir smooth.','Add pasta over low heat 2–3 min. Add pasta water if too thick. Add remaining cheddar.','Serve or bake at 375°F with breadcrumbs + extra cheese for 15 min.'],
+   tip:'Butternut squash makes the mac MORE yellow-orange, so kids think it\'s extra cheesy. Psychological win.'},
+
+  {id:'beef-chili',cats:['budget','family','batch','kids'],creator:'Family Kitchen',ccolor:'#5c2d91',
+   name:'Family Beef + Bean Chili',time:'35 min',serves:6,diff:'Easy',cal:360,p:32,c:36,f:9,
+   desc:'Feeds 6 for $12. Freezes for 4 months. Makes the house smell incredible.',
+   ing:['1 lb lean ground beef','1 can black beans drained','1 can kidney beans drained','1 can diced tomatoes (28oz)','1 can tomato paste (6oz)','1 cup beef broth','1 onion diced','3 cloves garlic','1 bell pepper','2 tbsp chili powder, 1 tsp each cumin + paprika','Salt + pepper'],
+   steps:['Brown beef 6–8 min, break apart, drain fat.','Add onion + pepper, cook 4–5 min. Add garlic 1 min.','Add chili powder, cumin, paprika — toast 1 min.','Add tomatoes, paste, beans, broth. Bring to boil.','Simmer uncovered 20–25 min until thickened.'],
+   tip:'Kids: serve over rice or with cornbread. Adults: eat straight or over cauliflower rice. One pot, two presentations.'},
+
+  {id:'egg-fried-rice',cats:['budget','family','quick','kids'],creator:'Family Kitchen',ccolor:'#5c2d91',
+   name:'High-Protein Egg Fried Rice',time:'15 min',serves:4,diff:'Easy',cal:320,p:22,c:38,f:8,
+   desc:'Best use of leftover rice. Under $8 for the whole family.',
+   ing:['3 cups day-old cold rice','4 whole eggs','1 cup frozen peas and carrots','3 green onions sliced','3 cloves garlic minced','3 tbsp soy sauce or tamari','1 tbsp sesame oil','1 tbsp cooking oil','Optional: 1 cup cooked chicken or shrimp'],
+   steps:['Heat oil in pan or wok over HIGH heat — critical for non-mushy fried rice.','Cook garlic 30 sec. Add frozen veg, cook 2 min.','Push veg to side. Crack eggs in empty part of pan, scramble 60 sec, mix into veg.','Add cold rice. Break up clumps. Stir-fry 3–4 min over high heat.','Add soy sauce + sesame oil. Toss 1 more min. Top with green onions. Serve immediately.'],
+   tip:'Day-old refrigerated rice is essential. Make extra rice whenever you cook — specifically for fried rice the next day.'},
+];
+
+let rcpFilter='all';
+
+function initRecipesTab(){
+  if(document.getElementById('rcp-cats').children.length===0){
+    renderRcpCats();
+    renderRcpList();
+  }
+}
+
+function renderRcpCats(){
+  const el=document.getElementById('rcp-cats');
+  if(!el)return;
+  el.innerHTML='';
+  RCP_CATS.forEach(c=>{
+    const btn=document.createElement('button');
+    btn.className='ptab'+(c.k===rcpFilter?' on':'');
+    btn.style.cssText='font-size:12px;white-space:nowrap;flex-shrink:0;padding:7px 12px';
+    btn.textContent=c.lb;
+    btn.onclick=()=>{rcpFilter=c.k;renderRcpCats();renderRcpList();};
+    el.appendChild(btn);
+  });
+}
+
+function renderRcpList(){
+  const el=document.getElementById('rcp-list');
+  if(!el)return;
+  const filtered=rcpFilter==='all'?RECIPES_DATA:RECIPES_DATA.filter(r=>r.cats.includes(rcpFilter));
+  if(!filtered.length){el.innerHTML='<div style="text-align:center;padding:40px 0;color:var(--sub)">No recipes in this category yet.</div>';return;}
+
+  const groups={};
+  filtered.forEach(r=>{
+    if(!groups[r.creator])groups[r.creator]=[];
+    groups[r.creator].push(r);
+  });
+
+  const ORDER=['Family Kitchen','Madelaine Rascan','MacroMagicStef','Ayat Sleymann RD','MillennialMattD','Dr. Paul Saladino MD'];
+  const sorted=[...ORDER.filter(c=>groups[c]),...Object.keys(groups).filter(c=>!ORDER.includes(c))];
+
+  let html='';
+  sorted.forEach(creator=>{
+    if(!groups[creator])return;
+    const c=groups[creator][0].ccolor;
+    html+=`<div style="border-left:3px solid ${c};padding-left:10px;margin:24px 0 12px">
+      <div style="font-size:15px;font-weight:700;color:${c}">${creator}</div>
+      <div style="font-size:12px;color:var(--sub)">${groups[creator].length} recipe${groups[creator].length!==1?'s':''}</div>
+    </div>`;
+
+    groups[creator].forEach(r=>{
+      const catPills=r.cats.slice(0,3).map(k=>{
+        const col=RCP_COLORS[k]||'var(--sub)';
+        const cat=RCP_CATS.find(c=>c.k===k);
+        return cat?`<span style="background:#f3f3f3;color:${col};border-radius:6px;padding:2px 7px;font-size:10px;font-weight:700">${cat.lb}</span>`:'';
+      }).join('');
+
+      html+=`<div class="card" style="margin-bottom:12px">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px">
+          <div style="flex:1">
+            <div style="font-weight:700;font-size:15px;margin-bottom:4px">${r.name}</div>
+            <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:6px">
+              <span style="background:var(--al);color:var(--a);border-radius:6px;padding:2px 8px;font-size:11px;font-weight:700">⏱ ${r.time}</span>
+              <span style="background:#edf7f0;color:#2a6b3a;border-radius:6px;padding:2px 8px;font-size:11px;font-weight:700">👥 ${r.serves}</span>
+              <span style="background:#f3f3f3;color:var(--sub);border-radius:6px;padding:2px 8px;font-size:11px;font-weight:700">${r.diff}</span>
+            </div>
+            <div style="font-size:12px;color:var(--sub);margin-bottom:8px">${r.desc}</div>
+            <div style="display:flex;gap:4px;flex-wrap:wrap">${catPills}</div>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border-radius:10px;overflow:hidden;margin:10px 0">
+          <div style="background:var(--bg);padding:8px 4px;text-align:center"><div style="font-size:16px;font-weight:700;color:var(--a)">${r.cal}</div><div style="font-size:9px;text-transform:uppercase;letter-spacing:.7px;color:var(--sub);font-weight:700">Cal</div></div>
+          <div style="background:var(--bg);padding:8px 4px;text-align:center"><div style="font-size:16px;font-weight:700;color:#2a6b3a">${r.p}g</div><div style="font-size:9px;text-transform:uppercase;letter-spacing:.7px;color:var(--sub);font-weight:700">Protein</div></div>
+          <div style="background:var(--bg);padding:8px 4px;text-align:center"><div style="font-size:16px;font-weight:700;color:#b08010">${r.c}g</div><div style="font-size:9px;text-transform:uppercase;letter-spacing:.7px;color:var(--sub);font-weight:700">Carbs</div></div>
+          <div style="background:var(--bg);padding:8px 4px;text-align:center"><div style="font-size:16px;font-weight:700;color:#1880c0">${r.f}g</div><div style="font-size:9px;text-transform:uppercase;letter-spacing:.7px;color:var(--sub);font-weight:700">Fat</div></div>
+        </div>
+        <button onclick="toggleRcp('${r.id}',this)" style="width:100%;background:var(--al);color:var(--a);border:1.5px solid var(--a);border-radius:10px;padding:9px;font-size:13px;font-weight:700;cursor:pointer;margin-top:4px">📖 View How-To Guide ↓</button>
+        <div id="rcp-${r.id}" style="display:none;margin-top:12px">
+          <div style="font-size:11px;font-weight:700;color:var(--sub);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px">Ingredients</div>
+          <div style="display:flex;flex-direction:column;gap:5px;margin-bottom:14px">
+            ${r.ing.map(i=>`<div style="font-size:13px;padding:6px 10px;background:var(--al);border-radius:8px;border-left:3px solid var(--a)">• ${i}</div>`).join('')}
+          </div>
+          <div style="font-size:11px;font-weight:700;color:var(--sub);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px">Step-by-Step</div>
+          <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:14px">
+            ${r.steps.map((s,i)=>`<div style="display:flex;gap:10px;align-items:flex-start"><div style="width:24px;height:24px;border-radius:50%;background:var(--a);color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px">${i+1}</div><div style="font-size:13px;line-height:1.5;color:var(--txt)">${s}</div></div>`).join('')}
+          </div>
+          <div style="background:var(--al);border-left:3px solid var(--a);border-radius:0 10px 10px 0;padding:10px 12px;font-size:13px;color:var(--txt)">
+            <strong style="color:var(--a)">💡 Chef's Tip:</strong> ${r.tip}
+          </div>
+        </div>
+      </div>`;
+    });
+  });
+  el.innerHTML=html;
+}
+
+function toggleRcp(id,btn){
+  const el=document.getElementById('rcp-'+id);
+  if(!el)return;
+  const open=el.style.display==='block';
+  el.style.display=open?'none':'block';
+  btn.textContent=open?'📖 View How-To Guide ↓':'📖 Hide Guide ↑';
 }
 
 // ── REMEDIES TAB ──────────────────────────────────────────────────────────────
