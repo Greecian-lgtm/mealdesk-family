@@ -823,15 +823,17 @@ textarea{resize:none;min-height:110px}
     <!-- ─ REMEDIES ────────────────────────────────────────── -->
     <div class="panel" id="pr">
       <div class="sec-ttl">🌿 Natural Remedies</div>
-      <div class="sec-sub">From the Natural Remedies Encyclopedia — conditions, protocols, and herbs.</div>
+      <div class="sec-sub">From the Natural Remedies Encyclopedia — conditions, protocols, herbs, and routines.</div>
       <div style="display:flex;gap:6px;margin-bottom:14px;overflow-x:auto;padding-bottom:2px;scrollbar-width:none">
         <button class="ptab on" id="rty" onclick="swRT('y')">⭐ For You</button>
         <button class="ptab" id="rtc" onclick="swRT('c')">🫀 Conditions</button>
         <button class="ptab" id="rth" onclick="swRT('h')">🌿 Herbs</button>
+        <button class="ptab" id="rtm" onclick="swRT('m')">💆 Routines</button>
       </div>
       <div id="rt-y"></div>
       <div id="rt-c" style="display:none"></div>
       <div id="rt-h" style="display:none"></div>
+      <div id="rt-m" style="display:none"></div>
     </div>
 
   </div><!-- #content -->
@@ -904,6 +906,8 @@ const COND={
   stress_eating: {lb:'Stress Eating / Cortisol',em:'😤',c:'#dc2626',bg:'#fef2f2'},
   busy_schedule: {lb:'Busy Schedule / Meal Prep',em:'⏰',c:'#0369a1',bg:'#f0f9ff'},
   family_meals:  {lb:'Family Meal Planning',em:'👨‍👩‍👧‍👦',c:'#16a34a',bg:'#f0fdf4'},
+  cortisol_stress:{lb:'High Cortisol / Chronic Stress',em:'🧘',c:'#7c3aed',bg:'#f5f3ff'},
+  lymphatic:     {lb:'Lymphatic Health / Drainage',em:'💧',c:'#0891b2',bg:'#f0f9ff'},
 };
 
 
@@ -1244,6 +1248,27 @@ const CONDITION_GUIDE={
     },
     avoid:['Cooking separate meals for every family member — creates lifelong picky eaters and exhausted parents','Ultra-processed kids meals (nuggets, hot pockets) — habituates children to hyper-palatable processed food','Short-order cooking — if adults are eating healthy and kids get nuggets, the system fails','Forcing children to eat food they hate — creates negative food associations','Bribing with dessert to eat vegetables — makes vegetables the enemy and dessert the prize','Buying different snacks for kids vs adults — doubles the grocery bill and the picky eating'],
     tip:'The single most effective family nutrition strategy: involve children in food preparation from age 3. Children who help cook are dramatically more likely to eat the meal. Give them a job — washing vegetables, stirring, adding ingredients. It\'s not faster, but it transforms dinner from a battle into an activity. Studies show children who cook at home have significantly better diets into adulthood.',
+  },
+  cortisol_stress:{
+    summary:'Chronic stress keeps cortisol elevated 24/7 — causing belly fat, immune suppression, poor sleep, brain fog, and accelerated aging. For teachers and high-demand professionals, cortisol management is as critical as diet. The approach is three-pronged: food, routine, and physical reset.',
+    eat:{
+      '🌿 Cortisol-Lowering Foods':['Magnesium: pumpkin seeds, dark leafy greens, dark chocolate 85%, almonds (most people are deficient)','Vitamin C: bell peppers, kiwi, strawberries, broccoli (adrenal glands consume more Vitamin C than any other organ)','Omega-3: salmon, sardines, walnuts (reduce inflammatory stress hormone production)','Ashwagandha KSM-66: 300–600mg daily (30% cortisol reduction in multiple RCTs)','Phosphatidylserine 400mg: clinically blocks cortisol response to stress and exercise','L-theanine 200mg: calms without sedating — pairs perfectly with morning coffee'],
+      '🍫 Healthy Craving Swaps':['Dark chocolate 85%+ (magnesium + serotonin — real craving satisfier)','Berries + Greek yogurt (sweet + protein — blunts sugar craving at the source)','Cottage cheese + hot sauce (savory craving without processed food)','Apple + almond butter (sweet + fat + protein — stable blood sugar = lower cortisol)','Boiled eggs + sea salt (most satiating snack — no cortisol spike)','Pumpkin seeds roasted (crunchy + magnesium — satisfies the stress crunch urge)'],
+      '🌙 Sleep Foods (cortisol resets during deep sleep)':['Tart cherry juice at night (melatonin — proven to improve sleep quality)','Kiwi at night (serotonin precursor — 35% faster sleep onset in studies)','Magnesium glycinate at bedtime (muscle relaxation + GABA activation = deeper sleep)','Chamomile tea (apigenin binds GABA receptors — natural anti-anxiety before bed)','Honey 1 tsp at night (refuels liver overnight — prevents 3am cortisol spike)'],
+      '⏰ Routine for Teachers':['Eat breakfast within 60 minutes of waking — cortisol peaks at 8am, food normalizes it','Protein at every meal — blood sugar stability is the foundation of cortisol control','Never skip lunch — cortisol crashes by 2pm without food, energy tanks last period','Sunday batch cook: removes 25+ daily food decisions — each decision is a micro cortisol spike','5-minute walk after lunch (even hallway laps) — drops cortisol immediately'],
+    },
+    avoid:['Sugar and refined carbs (spike insulin → crash → cortisol rises → cravings — the stress eating loop)','Caffeine after 12pm (blocks natural afternoon cortisol decline, destroys sleep)','Alcohol to relax (feels calming — raises cortisol 6–8 hours later, ruins sleep quality)','Skipping meals (each missed meal triggers cortisol spike + ghrelin surge)','Energy drinks (cortisol + adrenaline spike back to back — addictive cycle)','Checking phone first thing in the morning (immediate stress activation before the day starts)'],
+    tip:'Three lowest-effort highest-impact cortisol interventions for teachers: (1) Magnesium glycinate 400mg every night — sleep quality improves within 3 days. (2) Vitamin C 1000mg with breakfast — adrenal glands burn through it under stress. (3) L-theanine 200mg with morning coffee — removes the anxiety edge of caffeine while keeping the focus. These three alone measurably shift how the school day feels.',
+  },
+  lymphatic:{
+    summary:'The lymphatic system is the body\'s waste drainage network — removes toxins, dead cells, and immune waste from every tissue. Unlike the circulatory system, it has NO pump. It depends entirely on movement, breathing, and manual stimulation to flow. When it stagnates from sedentary work, stress, or illness — fatigue, brain fog, swollen glands, and immune suppression follow.',
+    eat:{
+      '💧 Lymph-Supporting Foods':['Leafy greens — chlorophyll is the most powerful lymph cleanser (spinach, kale, parsley, cilantro)','Citrus fruits — Vitamin C + bioflavonoids strengthen lymph vessel walls','Beets — betaine moves lymphatic fluid and supports liver drainage','Turmeric + black pepper — anti-inflammatory, reduces lymph node swelling','Ginger tea — stimulates lymphatic circulation and reduces inflammation','Garlic (raw, crushed) — antimicrobial, prevents lymph node infection','Berries — anthocyanins strengthen lymph capillary integrity','Flaxseeds + chia seeds — omega-3 reduces lymphatic inflammation','Seaweed + spirulina — binds heavy metals before they enter the lymph'],
+      '💊 Key Supplements':['Astragalus (immune + lymphatic tonic — Chinese medicine staple)','Red clover (moves stagnant lymph fluid — most specific lymph herb)','Cleavers herb tea (cools and drains swollen lymph nodes — traditional use)','Selenium 200mcg (antioxidant protection for lymph tissue)','Vitamin D3 (lymph nodes are dense in Vitamin D receptors)','Quercetin 500mg (reduces lymph node inflammation)'],
+      '🏃 Movement Protocols':['Walking 20 min daily — calf muscles act as secondary lymph pump','Rebounding (mini trampoline) 10 min — most effective lymph movement exercise','Yoga inversions — legs up the wall 5–10 min drains lower body lymph','Swimming — hydrostatic pressure actively squeezes lymph vessels','Deep breathing 10× per hour — diaphragm pumps the thoracic duct (main lymph vessel)'],
+    },
+    avoid:['Tight restrictive clothing at groin, armpits, neck (compresses lymph vessels)','Conventional deodorant with aluminum (blocks underarm lymph drainage — largest cluster in the body)','Prolonged sitting without movement (lymph is gravity + movement dependent)','Processed foods daily (constant lymph filtration burden)','Chronic dehydration (lymph fluid requires adequate water to flow)','Dairy in excess (thickens lymph fluid — common congestion trigger)'],
+    tip:'Three most powerful lymphatic interventions requiring no equipment: (1) Deep diaphragmatic breathing — 10 deep belly breaths every hour pumps the thoracic duct more than most manual techniques. (2) Walking — 20 minutes moves lymph more effectively than any supplement. (3) Cold-warm shower contrast — alternating 30 sec cold / 30 sec warm × 3 causes vessels to contract and dilate, actively pumping fluid. Done daily, visible results appear within 1–2 weeks.',
   },
 };
 
@@ -2363,6 +2388,38 @@ const HERBS_DATA=[
     prep:'Fresh: 1 cup chopped parsley daily in juices or salads. Tea: steep 2 tsp dried parsley in boiling water 10 min. 3 cups/day for kidney flushing.',
     cautions:['Avoid large medicinal doses during pregnancy (uterine stimulant)','Seeds are much stronger than leaves — avoid seed use without guidance','Normal food amounts are completely safe'],
     source:'Natural Remedies Encyclopedia, p.172'},
+  {id:'ashwagandha',name:'Ashwagandha',icon:'🌿',latin:'Withania somnifera',
+    parts:'Root',
+    properties:['Adaptogen','Anxiolytic','Anti-inflammatory','Immunomodulatory','Nervine tonic'],
+    affects:['Adrenal glands','Thyroid','Brain','Immune system','Hormonal system'],
+    uses:['Reduces cortisol by 27–30% in clinical trials — most studied adaptogen','Reduces anxiety and chronic stress without sedation','Improves thyroid function (T3 and T4 levels) in hypothyroidism','Increases testosterone by 15–17% in men (KSM-66 extract)','Improves sleep quality and sleep onset — comparable to sleep medications in some studies','Reduces inflammation markers (CRP, IL-6)','Increases VO2 max and athletic endurance','Supports cognitive function and reduces brain fog under stress'],
+    prep:'KSM-66 or Sensoril extract: 300–600mg once or twice daily with meals. Effects build over 4–8 weeks — take consistently. Works better with food to reduce GI upset.',
+    cautions:['Avoid during pregnancy — uterine stimulant','Can interact with thyroid medications — monitor levels if hypothyroid','Avoid with autoimmune conditions — immunomodulatory effect can be unpredictable','Start low (300mg) and increase gradually'],
+    source:'Clinical research — Dr. Berg, FLCCC integrative protocols'},
+  {id:'lavender',name:'Lavender',icon:'💜',latin:'Lavandula angustifolia',
+    parts:'Flowers and essential oil',
+    properties:['Anxiolytic','Sedative','Antispasmodic','Analgesic','Antimicrobial'],
+    affects:['Nervous system','Adrenal glands','Respiratory','Skin','Digestive system'],
+    uses:['Reduces anxiety — clinical trial showed equivalent to lorazepam for generalized anxiety','Improves sleep quality and reduces sleep onset time','Reduces cortisol levels when inhaled (aromatherapy)','Relieves headaches and migraines topically','Antispasmodic — reduces muscle tension and cramping','Antimicrobial — treats minor wounds and burns topically','Reduces stress-driven heart rate and blood pressure','Calms the nervous system after high-stress periods (teacher recovery protocol)'],
+    prep:'Aromatherapy: 3–5 drops in diffuser at bedtime or after work. Topical: 2 drops neat on temples or wrists for headache/anxiety. Tea: steep 1 tsp dried flowers in boiling water 10 min. Oral supplement: Silexan 80mg (European clinical formulation).','Massage: 5–10 drops lavender in carrier oil (coconut or almond) for stress and lymph massage.',
+    cautions:['Generally very safe — one of the safest essential oils','Oral use of essential oil not recommended except Silexan formulation','Some people sensitive to topical application — test on small area first'],
+    source:'Natural Remedies Encyclopedia + European clinical trials'},
+  {id:'passionflower',name:'Passionflower',icon:'🌺',latin:'Passiflora incarnata',
+    parts:'Aerial parts (leaves, stems, flowers)',
+    properties:['Anxiolytic','Sedative','Antispasmodic','Hypnotic','Nervine'],
+    affects:['Nervous system','Brain (GABA receptors)','Cardiovascular','Digestive system'],
+    uses:['Reduces anxiety — comparable to oxazepam in clinical trials without drowsiness or dependence','Improves sleep quality without morning grogginess','Reduces rumination and mental chatter — ideal for high-stress professionals','Lowers blood pressure driven by anxiety and stress','Reduces muscle tension and spasms from chronic stress','Calms digestive upset caused by nervous system stress','Addresses teacher burnout and nervous system exhaustion','Non-habit-forming unlike pharmaceutical anxiolytics'],
+    prep:'Tea: steep 1–2 tsp dried herb in boiling water 10 min. Drink 1 cup 2–3× daily or 1 cup 30–60 min before bed. Tincture: 1–2 ml 3× daily. Capsule: 400–500mg 2–3× daily.',
+    cautions:['Avoid during pregnancy','May enhance sedative effects of medications — space from sleep aids','Do not drive after large doses','Very safe for most people at standard doses'],
+    source:'Natural Remedies Encyclopedia + Phytomedicine clinical research'},
+  {id:'cleavers',name:'Cleavers',icon:'🌱',latin:'Galium aparine',
+    parts:'Aerial parts (fresh preferred)',
+    properties:['Lymphatic tonic','Diuretic','Alterative','Anti-inflammatory','Refrigerant'],
+    affects:['Lymphatic system','Kidneys','Skin','Immune system'],
+    uses:['Most specific herb for lymphatic congestion — moves stagnant lymph fluid directly','Reduces swollen and tender lymph nodes — the primary clinical use','Clears skin conditions driven by lymphatic congestion (acne, eczema, psoriasis)','Natural diuretic — reduces water retention without depleting potassium','Cools inflammatory conditions (hot, swollen lymph nodes, tonsillitis)','Supports kidney function and urinary tract health','Used traditionally for any glandular swelling or neck nodes','Combines well with red clover and burdock for full lymph cleansing protocol'],
+    prep:'Cold infusion (best): soak 2–3 tbsp fresh or 1 tbsp dried herb in cold water overnight. Strain and drink 2–3 cups daily. Fresh juice: blend fresh plant and strain — most potent form. Tincture: 2–4ml 3× daily.',
+    cautions:['Very safe — no significant drug interactions','Fresh herb far more effective than dried','Cold infusion preserves the active compounds better than hot tea'],
+    source:'Natural Remedies Encyclopedia + Matthew Wood Herbalism'},
 ];
 
 const FOOD_GUIDE={
@@ -3196,7 +3253,7 @@ let curRT='y';
 function initRemediesTab(){renderRT();}
 function swRT(t){
   curRT=t;
-  ['y','c','h'].forEach(x=>{
+  ['y','c','h','m'].forEach(x=>{
     const btn=document.getElementById('rt'+x);const el=document.getElementById('rt-'+x);
     if(btn)btn.classList.toggle('on',x===t);
     if(el){el.style.display=x===t?'block':'none';if(x!==t)el.innerHTML='';}
@@ -3207,6 +3264,177 @@ function renderRT(){
   if(curRT==='y')renderRT_ForYou();
   if(curRT==='c')renderRT_Conditions();
   if(curRT==='h')renderRT_Herbs();
+  if(curRT==='m')renderRoutines();
+}
+
+const ROUTINES=[
+  {id:'cortisol-teacher',icon:'🧘',title:'Teacher Cortisol Reset',color:'#7c3aed',bg:'#f5f3ff',
+   target:'High-stress professionals — teachers, healthcare, caregivers',
+   summary:'A daily micro-routine system designed to lower chronic cortisol without adding more to your schedule. Each step takes under 5 minutes.',
+   morning:[
+     {time:'On waking',action:'2 minutes deep belly breathing before looking at your phone',why:'Cortisol peaks at 8am naturally. Breathing activates parasympathetic nervous system before stress begins.'},
+     {time:'With breakfast',action:'Vitamin C 1000mg + L-theanine 200mg + protein-rich meal',why:'Adrenal glands use more Vitamin C than any organ. L-theanine removes anxiety edge from caffeine. Protein stabilizes blood sugar and prevents cortisol spikes.'},
+     {time:'Before leaving',action:'3 minutes — write one thing you\'re grateful for + one intention for the day',why:'Gratitude practice measurably reduces cortisol in 4-week studies. Sets proactive mindset instead of reactive.'},
+   ],
+   midday:[
+     {time:'Lunch break',action:'Eat actual food — not at your desk, not while grading',why:'Mindless eating while stressed keeps cortisol elevated. Even 10 minutes of focused eating triggers the parasympathetic reset.'},
+     {time:'After lunch',action:'5-minute walk — even hallway laps count',why:'Physical movement is the fastest cortisol clearance mechanism. Calf muscles pump lymph and blood, accelerating stress hormone clearance.'},
+     {time:'Planning period',action:'Write the 3 things that MUST get done today. Ignore the rest until tomorrow.',why:'Decision fatigue is a major cortisol driver. Limiting your task list to 3 removes the mental overhead of an infinite to-do list.'},
+   ],
+   evening:[
+     {time:'After school',action:'20-minute decompression window — no grading, no emails',why:'Cortisol needs time to clear. The commute home doesn\'t count as recovery. The nervous system needs a true transition.'},
+     {time:'Dinner',action:'Magnesium-rich meal + no caffeine + limit alcohol',why:'Magnesium is the mineral most depleted by chronic stress. Replenish it at dinner through food or supplement.'},
+     {time:'1 hour before bed',action:'Magnesium glycinate 400mg + chamomile tea + phone face down',why:'Magnesium glycinate is the most bioavailable form and crosses the blood-brain barrier. Chamomile binds GABA receptors. Phone face down prevents cortisol spikes from notifications.'},
+     {time:'Bedtime',action:'5-4-3-2-1 grounding technique: name 5 things you see, 4 you hear, 3 you feel, 2 you smell, 1 you taste',why:'Grounds the racing mind into sensory present-moment experience. Interrupts rumination cycles that prevent sleep and elevate night-time cortisol.'},
+   ],
+   supplements:['Ashwagandha KSM-66 300–600mg daily (4–8 week build-up)','Magnesium glycinate 400mg at bedtime','Vitamin C 1000mg with breakfast','L-theanine 200mg with morning coffee','Phosphatidylserine 400mg if cortisol very high (teacher burnout)'],
+   tip:'The most powerful cortisol intervention for teachers is not a supplement — it is protecting the 20 minutes after school as a non-negotiable decompression window. Don\'t bring grading to the car. Don\'t answer parent emails until you\'ve had that window. Everything else builds on that foundation.',
+  },
+  {id:'lymph-drainage',icon:'💧',title:'Lymphatic Drainage Protocol',color:'#0891b2',bg:'#f0f9ff',
+   target:'Anyone with fatigue, brain fog, swollen glands, chronic illness, or post-illness recovery',
+   summary:'The lymphatic system has no pump — it needs YOU to move it. This protocol combines breathing, movement, and manual massage to drain toxins and reduce inflammation.',
+   morning:[
+     {time:'On waking',action:'Legs up the wall — 5–10 minutes',why:'Gravity drains lymph from the lower body back toward the heart. Overnight, lymph pools in legs and feet. This clears it before you start your day.'},
+     {time:'In shower',action:'Cold-warm contrast: 30 sec warm → 30 sec cold → repeat 3×. End cold.',why:'Temperature contrast causes lymph vessels to contract (cold) and dilate (warm), creating a pumping action. This is the most time-efficient lymph stimulation technique available.'},
+     {time:'After shower',action:'Dry brushing — 3–5 minutes before moisturizing',why:'Long strokes toward the heart on dry skin stimulate superficial lymph vessels. Always brush toward the heart, never away from it.'},
+   ],
+   midday:[
+     {time:'Mid-morning',action:'10 minutes rebounding (mini trampoline) or jumping jacks',why:'Rebounding creates an up-down gravitational shift that mechanically pumps every lymph vessel in the body simultaneously. More effective than any massage for full-body lymph movement.'},
+     {time:'Lunch',action:'Cleavers herb tea or green juice with leafy greens',why:'Cleavers is the most specific herb for lymphatic drainage. Leafy greens provide chlorophyll which supports lymphatic flow at the cellular level.'},
+     {time:'Every hour',action:'10 deep belly breaths — breathe into your stomach, not your chest',why:'The diaphragm directly pumps the thoracic duct — the body\'s largest lymph vessel. This alone moves more lymph than most manual techniques.'},
+   ],
+   evening:[
+     {time:'After dinner',action:'20-minute walk',why:'Calf muscles are a secondary lymph pump. Walking activates them rhythmically, draining leg and pelvic lymph toward the heart.'},
+     {time:'Before bed',action:'Self-lymph massage — neck and armpits (5 minutes)',why:'The cervical (neck) and axillary (armpit) lymph nodes are the most accessible and most important drainage points in the body.'},
+   ],
+   massage_guide:[
+     {area:'Neck (cervical nodes)',steps:['Place 4 fingers on the side of your neck below the ear','Use gentle J-stroke downward — light pressure only (lymph vessels are just under the skin)','10 strokes each side. Never press hard — lymph massage is lighter than you think.']},
+     {area:'Armpits (axillary nodes)',steps:['Reach across your chest with one hand','Place fingers in the opposite armpit','Gently pump — 10 times each side','Then make small circles in the armpit pocket','This drains the entire arm, breast, and upper back lymph drainage area']},
+     {area:'Groin (inguinal nodes)',steps:['Lie on your back','Place hands in the crease where leg meets hip','Gentle J-stroke toward the belly — 10 times each side','This drains the entire lower body lymph']},
+     {area:'Abdomen',steps:['Lying down, place hands flat on belly','Make clockwise circles with medium pressure — follow the colon path','This stimulates the mesenteric lymph nodes (largest cluster in the body)','10–15 slow circles before bed']},
+   ],
+   supplements:['Cleavers herb tea 2–3 cups daily','Astragalus 500mg 2× daily','Quercetin 500mg 2× daily','Vitamin D3 5000 IU daily','Selenium 200mcg daily'],
+   tip:'Lymphatic massage should be so gentle it surprises you. The lymph capillaries are just 1–2 cells thick and sit directly under the skin. Heavy deep tissue pressure collapses them. Use the weight of your hand only — no more pressure than you would use to stroke a cat. If you\'re pressing hard, you\'re doing deep tissue massage, not lymphatic drainage.',
+  },
+  {id:'stress-massage',icon:'💆',title:'Stress Relief & Recovery Massage',color:'#9b3060',bg:'#fdf0f5',
+   target:'Anyone carrying physical tension from stress, desk work, or teaching',
+   summary:'Targeted self-massage protocol for stress-stored tension. The body holds cortisol stress in predictable locations — neck, shoulders, jaw, and scalp. This protocol addresses all four.',
+   morning:[
+     {time:'Shower',action:'Scalp massage — 2 minutes under warm water',why:'The scalp has a high density of nerve endings connected to the vagus nerve. Scalp stimulation activates the parasympathetic "rest and digest" response within 60 seconds.'},
+   ],
+   midday:[
+     {time:'Planning period or lunch',action:'Neck and shoulder self-massage — 3 minutes',why:'Trapezius and SCM muscles are the primary tension storage muscles for stress and cortisol. Releasing them reduces pain and nervous system arousal simultaneously.'},
+     {time:'During class',action:'Jaw and temple release — 30 seconds',why:'Jaw clenching is unconscious stress storage. Teachers clench their jaw constantly while managing classrooms. 30 seconds of jaw massage and conscious relaxation resets the whole facial tension pattern.'},
+   ],
+   evening:[
+     {time:'After school',action:'Full shoulder + neck release with lavender oil — 5 minutes',why:'Lavender essential oil in a carrier (coconut or almond oil) absorbs through the skin and reduces cortisol measurably. The combination of massage + lavender is more effective than either alone.'},
+   ],
+   techniques:[
+     {name:'Scalp massage',how:'Spread fingers across scalp. Press with fingertips — not nails. Make small circles, slowly moving across the scalp. Apply moderate pressure — you should feel the scalp move against the skull. Spend 30 seconds on temples, 30 seconds above ears, 30 seconds back of head, 30 seconds crown.'},
+     {name:'Neck — SCM release',how:'Place fingers behind the ear on the groove between the SCM muscle and the spine. Press gently and hold for 5 seconds. Release. Move fingers down the neck groove 1cm at a time, repeating. This releases the most common headache-causing tension point in teachers.'},
+     {name:'Shoulder trapezius squeeze',how:'Reach your right hand to your left shoulder. Grip the trapezius muscle (the mound between neck and shoulder). Squeeze and hold 5 seconds. Release. Move slightly toward the neck. Repeat 5× each side. This is where most people carry their stress physically.'},
+     {name:'Jaw release',how:'Place index and middle fingers on the masseter muscle (jaw, just in front of the ear). Make small circles with moderate pressure. Open your mouth slightly while pressing. Feel for tender spots — stay on them with gentle sustained pressure until they soften (30–60 seconds).'},
+     {name:'Foot reflexology (teacher survival)',how:'After a day standing: roll a tennis ball or frozen water bottle under your foot. Apply weight gradually. Focus 30 seconds each on: heel, arch, ball of foot, each toe joint. Teachers spend 6+ hours on their feet — foot massage reduces full-body tension via reflexology points.'},
+   ],
+   oil_blend:'Stress Relief Massage Oil: 10 drops lavender + 5 drops chamomile + 5 drops frankincense in 2 tbsp coconut oil. Apply to neck and shoulders. The combination of the three oils addresses cortisol (lavender), inflammation (chamomile), and nervous system (frankincense) simultaneously.',
+   tip:'The shoulder trapezius muscle is called "the stress muscle" in anatomy because it is the first muscle to contract under psychological stress and the last to fully release. Teachers carry years of accumulated tension there. Even 3 minutes of focused trapezius massage daily produces measurable reductions in cortisol markers over a 4-week period.',
+  },
+];
+
+function renderRoutines(){
+  const el=document.getElementById('rt-m');
+  if(!el)return;
+  if(el.innerHTML)return;
+  let html='<div style="font-size:13px;color:var(--sub);margin-bottom:16px">Daily protocols for stress, cortisol, lymphatic drainage, and massage — built for teachers and high-demand professionals.</div>';
+
+  ROUTINES.forEach(r=>{
+    html+=`<div class="card" style="margin-bottom:14px;border-left:4px solid ${r.color}">
+      <div onclick="toggleRoutine('${r.id}',this)" style="cursor:pointer">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px">
+          <div style="width:38px;height:38px;border-radius:10px;background:${r.bg};display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0">${r.icon}</div>
+          <div>
+            <div style="font-weight:700;font-size:15px;color:${r.color}">${r.title}</div>
+            <div style="font-size:12px;color:var(--sub)">${r.target}</div>
+          </div>
+          <div style="margin-left:auto;font-size:12px;color:${r.color};font-weight:700" id="rtarrow-${r.id}">▼</div>
+        </div>
+        <div style="font-size:13px;color:var(--sub);line-height:1.5">${r.summary}</div>
+      </div>
+      <div id="rtbody-${r.id}" style="display:none;margin-top:14px">`;
+
+    // Time sections
+    const sections=[
+      {key:'morning',label:'🌅 Morning'},
+      {key:'midday',label:'☀️ Midday'},
+      {key:'evening',label:'🌙 Evening'},
+    ];
+    sections.forEach(s=>{
+      if(!r[s.key])return;
+      html+=`<div style="font-size:11px;font-weight:700;color:var(--sub);text-transform:uppercase;letter-spacing:.8px;margin:12px 0 8px">${s.label}</div>`;
+      r[s.key].forEach(step=>{
+        html+=`<div style="background:var(--al);border-radius:10px;padding:10px 12px;margin-bottom:8px;border-left:3px solid ${r.color}">
+          <div style="font-size:11px;font-weight:700;color:${r.color};margin-bottom:3px">${step.time}</div>
+          <div style="font-size:13px;font-weight:600;color:var(--txt);margin-bottom:4px">${step.action}</div>
+          <div style="font-size:12px;color:var(--sub);line-height:1.4">${step.why}</div>
+        </div>`;
+      });
+    });
+
+    // Massage techniques
+    if(r.techniques){
+      html+=`<div style="font-size:11px;font-weight:700;color:var(--sub);text-transform:uppercase;letter-spacing:.8px;margin:14px 0 8px">💆 Techniques</div>`;
+      r.techniques.forEach(t=>{
+        html+=`<div style="background:#f8f8f8;border-radius:10px;padding:10px 12px;margin-bottom:8px">
+          <div style="font-size:13px;font-weight:700;color:var(--txt);margin-bottom:4px">${t.name}</div>
+          <div style="font-size:12px;color:var(--sub);line-height:1.5">${t.how}</div>
+        </div>`;
+      });
+    }
+
+    // Lymph massage guide
+    if(r.massage_guide){
+      html+=`<div style="font-size:11px;font-weight:700;color:var(--sub);text-transform:uppercase;letter-spacing:.8px;margin:14px 0 8px">👐 Self-Massage Guide</div>`;
+      r.massage_guide.forEach(g=>{
+        html+=`<div style="background:#f0f9ff;border-radius:10px;padding:10px 12px;margin-bottom:8px;border-left:3px solid #0891b2">
+          <div style="font-size:13px;font-weight:700;color:#0891b2;margin-bottom:6px">${g.area}</div>
+          ${g.steps.map(s=>`<div style="font-size:12px;color:var(--sub);padding:2px 0 2px 10px;border-left:2px solid #bae6fd;margin-bottom:3px;line-height:1.4">${s}</div>`).join('')}
+        </div>`;
+      });
+    }
+
+    // Oil blend
+    if(r.oil_blend){
+      html+=`<div style="background:#fdf0f5;border-left:3px solid #9b3060;border-radius:0 10px 10px 0;padding:10px 12px;margin-top:10px;font-size:13px;color:var(--txt)">
+        <strong style="color:#9b3060">🌸 Essential Oil Blend:</strong> ${r.oil_blend}
+      </div>`;
+    }
+
+    // Supplements
+    if(r.supplements){
+      html+=`<div style="font-size:11px;font-weight:700;color:var(--sub);text-transform:uppercase;letter-spacing:.8px;margin:14px 0 8px">💊 Support Supplements</div>
+      <div style="display:flex;flex-direction:column;gap:4px">
+        ${r.supplements.map(s=>`<div style="font-size:13px;padding:5px 10px;background:var(--al);border-radius:7px;border-left:2px solid ${r.color}">• ${s}</div>`).join('')}
+      </div>`;
+    }
+
+    // Tip
+    html+=`<div style="background:var(--al);border-left:3px solid var(--a);border-radius:0 10px 10px 0;padding:10px 12px;margin-top:14px;font-size:13px;color:var(--txt)">
+      <strong style="color:var(--a)">💡 Key Insight:</strong> ${r.tip}
+    </div>`;
+
+    html+=`</div></div>`;
+  });
+
+  el.innerHTML=html;
+}
+
+function toggleRoutine(id,parent){
+  const body=document.getElementById('rtbody-'+id);
+  const arrow=document.getElementById('rtarrow-'+id);
+  if(!body)return;
+  const open=body.style.display==='block';
+  body.style.display=open?'none':'block';
+  if(arrow)arrow.textContent=open?'▼':'▲';
 }
 
 function remCard(key,rd,open){
