@@ -151,15 +151,17 @@ textarea{resize:none;min-height:110px}
   z-index:200;padding-bottom:env(safe-area-inset-bottom,0px);
   overflow-x:auto;-webkit-overflow-scrolling:touch;
   scrollbar-width:none;-ms-overflow-style:none;
+  -webkit-overflow-scrolling:touch;
 }
 #nav::-webkit-scrollbar{display:none}
 .nb{
-  flex-shrink:0;flex:0 0 auto;display:flex;flex-direction:column;align-items:center;gap:3px;
-  padding:10px 12px;min-width:64px;background:none;border:none;cursor:pointer;
-  font-family:'DM Sans',sans-serif;font-size:10px;color:var(--sub);
-  font-weight:500;transition:color .2s;white-space:nowrap;
+  flex-shrink:0;flex:0 0 auto;display:flex;flex-direction:column;align-items:center;gap:2px;
+  padding:8px 10px 10px;min-width:56px;background:none;border:none;cursor:pointer;
+  font-family:'DM Sans',sans-serif;font-size:9px;color:var(--sub);
+  font-weight:600;transition:color .2s;white-space:nowrap;
 }
 .nb.on{color:var(--a)}
+.nb svg{width:20px;height:20px;flex-shrink:0}
 .nb svg{width:22px;height:22px}
 
 /* ── CARDS ──────────────────────────────────────────────────────── */
@@ -2534,7 +2536,7 @@ const HERBS_DATA=[
     properties:['Anxiolytic','Sedative','Antispasmodic','Analgesic','Antimicrobial'],
     affects:['Nervous system','Adrenal glands','Respiratory','Skin','Digestive system'],
     uses:['Reduces anxiety — clinical trial showed equivalent to lorazepam for generalized anxiety','Improves sleep quality and reduces sleep onset time','Reduces cortisol levels when inhaled (aromatherapy)','Relieves headaches and migraines topically','Antispasmodic — reduces muscle tension and cramping','Antimicrobial — treats minor wounds and burns topically','Reduces stress-driven heart rate and blood pressure','Calms the nervous system after high-stress periods (teacher recovery protocol)'],
-    prep:'Aromatherapy: 3–5 drops in diffuser at bedtime or after work. Topical: 2 drops neat on temples or wrists for headache/anxiety. Tea: steep 1 tsp dried flowers in boiling water 10 min. Oral supplement: Silexan 80mg (European clinical formulation).','Massage: 5–10 drops lavender in carrier oil (coconut or almond) for stress and lymph massage.',
+    prep:'Aromatherapy: 3–5 drops in diffuser at bedtime or after work. Topical: 2 drops neat on temples or wrists for headache/anxiety. Tea: steep 1 tsp dried flowers in boiling water 10 min. Oral supplement: Silexan 80mg (European clinical formulation). Massage: 5–10 drops lavender in carrier oil (coconut or almond) for stress and lymph massage.',
     cautions:['Generally very safe — one of the safest essential oils','Oral use of essential oil not recommended except Silexan formulation','Some people sensitive to topical application — test on small area first'],
     source:'Natural Remedies Encyclopedia + European clinical trials'},
   {id:'passionflower',name:'Passionflower',icon:'🌺',latin:'Passiflora incarnata',
