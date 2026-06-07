@@ -1192,7 +1192,7 @@ const CONDITION_GUIDE={
       '💪 Muscle Preservation':['Chicken breast, turkey, eggs (protein — muscle loss accelerates in menopause)','Greek yogurt + cottage cheese (casein protein preserves overnight)','Salmon (protein + omega-3 reduces muscle inflammation)','Lentils + chickpeas (plant protein)','Collagen peptides (joint + skin + muscle)'],
     },
     avoid:['Sugar and refined carbs (accelerate belly fat accumulation post-menopause)','Alcohol (worsens hot flashes, disrupts sleep, increases breast cancer risk)','Caffeine in excess (triggers hot flashes and worsens sleep)','Spicy food (common hot flash trigger)','Processed and fried foods (increase inflammation)','High sodium (worsens bloating and water retention)','Seed oils (pro-inflammatory, worsen hormonal imbalance)'],
-    tip:'The menopause belly is driven by estrogen decline + cortisol rise + insulin resistance — all three happening simultaneously. Dr. Berg\'s strategy: intermittent fasting 16:8 (reduces cortisol + improves insulin), strength training (rebuilds metabolic rate), and high protein (preserves muscle mass). Flaxseeds ground daily is the single most evidence-backed food intervention for hot flashes.',
+    tip:'The menopause belly is driven by estrogen decline + cortisol rise + insulin resistance — all three happening simultaneously. Dr. Berg\'s strategy: intermittent fasting 16:8 (reduces cortisol + improves insulin), strength training (rebuilds metabolic rate), and high protein (preserves muscle mass). 2025 evidence: soy isoflavones 30–80mg/day reduce hot flash frequency 21% and severity 26% (meta-analysis of 36 RCTs). Ground flaxseed (1–2 tbsp daily) is the most evidence-backed lignan phytoestrogen — 2024 RCT showed reduction in hot flashes, night sweats, and sleep difficulty. Mediterranean diet adherence is directly correlated with reduced symptom severity in perimenopausal and menopausal women (Eur J Nutr 2024). Korean red ginseng shows promising menopausal symptom relief per 2024 review.',
   },
   hormonal_women:{
     summary:'Women\'s weight loss is fundamentally hormonal — estrogen, progesterone, cortisol, thyroid, and insulin all interact. What works for men rarely works the same way for women. The approach must account for the hormonal environment.',
@@ -2955,8 +2955,6 @@ const DIETS={
 };
 
 const SLOTS=[{k:'breakfast',lb:'Breakfast',ic:'🌅'},{k:'lunch',lb:'Lunch',ic:'☀️'},{k:'dinner',lb:'Dinner',ic:'🌙'},{k:'snack',lb:'Snack',ic:'🍎'}];
-
-// ── STATE ─────────────────────────────────────────────────────────────────────
 let P=null; // profile: {name,emoji,diet,goals,apiKey}
 let CK={};  // checked meals
 let lastT=0;
@@ -3789,6 +3787,52 @@ const ROUTINES=[
    oil_blend:'Stress Relief Massage Oil: 10 drops lavender + 5 drops chamomile + 5 drops frankincense in 2 tbsp coconut oil. Apply to neck and shoulders. The combination of the three oils addresses cortisol (lavender), inflammation (chamomile), and nervous system (frankincense) simultaneously.',
    tip:'The shoulder trapezius muscle is called "the stress muscle" in anatomy because it is the first muscle to contract under psychological stress and the last to fully release. Teachers carry years of accumulated tension there. Even 3 minutes of focused trapezius massage daily produces measurable reductions in cortisol markers over a 4-week period.',
   },
+  {name:'Menopause Daily Reset Protocol',
+   who:'Women: peri, post-menopause',
+   steps:[
+    {time:'Wake up',action:'Morning light — go outside or sit by window for 10 min within 30 min of waking',why:'Resets circadian cortisol rhythm. Estrogen decline disrupts circadian clock — light exposure is the most powerful non-hormonal reset available.'},
+    {time:'Breakfast',action:'1–2 tbsp ground flaxseed in oatmeal, smoothie, or yogurt',why:'Lignan phytoestrogens — 2024 RCT shows reduction in hot flashes, night sweats, and sleep difficulty. Must be ground (not whole) to absorb lignans.'},
+    {time:'Breakfast',action:'Add soy foods 1 serving: edamame, tofu, tempeh, or soy milk',why:'Soy isoflavones 30–80mg/day = 21% fewer hot flashes, 26% less severity per meta-analysis of 36 RCTs. Phytoestrogens bind estrogen receptors when estrogen is low.'},
+    {time:'Morning',action:'10-min resistance training or body weight exercise',why:'Menopause accelerates muscle loss (sarcopenia) and drops metabolic rate 10–15%. Strength training is the single most effective tool to rebuild it — walking alone is insufficient.'},
+    {time:'Midday',action:'Mediterranean lunch: olive oil, vegetables, fatty fish or legumes',why:'2024 Australian study: Mediterranean diet adherence directly reduces menopausal symptom severity in peri and postmenopausal women.'},
+    {time:'Afternoon',action:'5-min box breathing if hot flash occurs: inhale 4 — hold 4 — exhale 4 — hold 4',why:'Activates parasympathetic NS within 2 min. Cortisol rise triggers hot flashes — breathwork interrupts the HPA axis cascade. Proven in 58 clinical trials.'},
+    {time:'Dinner',action:'Avoid alcohol completely — or limit to 1 drink maximum',why:'Alcohol worsens hot flashes, disrupts sleep architecture, and increases breast cancer risk post-menopause. It is the #1 avoidable hot flash trigger.'},
+    {time:'Bedtime',action:'Magnesium glycinate 400mg + reduce room temp to 65–68°F',why:'Magnesium reduces HPA axis overactivation causing night sweats. Cool room temperature is the most evidence-backed intervention for night sweat severity.'},
+  ]},
+  {name:'Cortisol Reset — 5 Techniques (Science-Ranked)',
+   who:'Anyone with chronic stress, high cortisol, stress eating, belly fat',
+   steps:[
+    {time:'Wake up — 10 min',action:'Morning light exposure: go outside immediately, no sunglasses',why:'Resets the HPA axis cortisol awakening response. Early light signals the brain that cortisol should peak now and decline through the day — without this, cortisol stays elevated. Free, zero equipment, zero time.'},
+    {time:'Any time — 2 min',action:'Box breathing: inhale 4 sec — hold 4 — exhale 4 — hold 4. Repeat 4–6 cycles',why:'Single 2–5 min session measurably reduces cortisol. Activates vagus nerve → parasympathetic NS → HPA axis suppression. Proven across 58 RCTs. Use during stress spikes, before meals, or before sleep.'},
+    {time:'Any time — 20 min',action:'Nature walk or forest bathing (shinrin-yoku) — trees, park, or any green space',why:'20 minutes in nature reduces cortisol more than urban walking per research. Called shinrin-yoku (Japanese forest bathing). Green space views alone have measurable cortisol effect — even hospital windows with trees speed recovery.'},
+    {time:'Daily supplement',action:'Ashwagandha KSM-66 300mg with breakfast',why:'Only adaptogen with 25–32% cortisol reduction in 8-week clinical trials. KSM-66 is the standardized extract used in all major research. Do not use if pregnant or on thyroid medication.'},
+    {time:'Evening — 10 min',action:'Progressive muscle relaxation: tense and release each muscle group from feet to head',why:'Trains the body to recognize and release physical tension. Addresses the cortisol-muscle tension feedback loop — chronic cortisol causes chronic muscle tension which signals more cortisol.'},
+    {time:'Bedtime',action:'Magnesium glycinate 400mg + L-Theanine 200mg',why:'Magnesium reduces HPA axis overactivation. L-Theanine from green tea promotes alpha brain waves (relaxed alertness) without sedation — 200–400mg dose, proven for stress response reduction without impairing function.'},
+  ]},
+  {name:'Age-Smart Walking Protocol (by decade)',
+   who:'All ages — walking optimized for age, gender, injury prevention',
+   steps:[
+    {time:'Ages 30–39 — pace',action:'Brisk walk 30 min, 5×/week. Add 2 min jog intervals every 5 min if tolerated',why:'Metabolic rate begins declining at 30. Interval walking burns 20% more calories than steady pace and builds cardiovascular base. Lowest injury risk of any aerobic exercise.'},
+    {time:'Ages 40–49 — form',action:'Power walk 30–45 min: arms bent 90°, heel-to-toe stride, core engaged. 4–5×/week',why:'Bone density begins declining at 40 (faster in women). Power walking with proper form loads bone beneficially — slouching forward eliminates this effect. Women: add 1 lb wrist weights to protect wrist bone density.'},
+    {time:'Ages 50–59 — terrain',action:'Walk on varied terrain (grass, slight incline) 30 min. Add hills 1–2×/week',why:'Varied terrain activates more muscle groups and challenges balance — prevents the fall risk that accelerates at 55+. Incline walking activates glutes and calves far more than flat walking, preserving lower body muscle.'},
+    {time:'Ages 60+ — balance',action:'Walk 20–30 min. Every 10 min: pause and do 10 heel-to-toe steps (tightrope walking)',why:'Balance training during walks is more effective than separate sessions. 2025 JAMA study: higher physical activity in midlife and late life = 40%+ lower dementia risk. Heel-to-toe walking is the simplest evidence-backed fall prevention exercise.'},
+    {time:'Before walk — 5 min',action:'Dynamic warm-up: leg swings (10 each leg), hip circles (10), ankle rolls (10)',why:'ACSM recommends dynamic stretching before cardio — NOT static stretching. Dynamic movement warms tendons and synovial fluid. Static stretching before walking actually increases injury risk by overstretching cold tendons.'},
+    {time:'After walk — 5 min',action:'Static stretching: hold each 30–60 sec total — hip flexor, calf, hamstring, quad',why:'Harvard Health/ACSM: static stretching is most effective after exercise when muscles are warm. 60 seconds per muscle group = optimal flexibility gains. Post-walk is the best time for all major tendon groups.'},
+    {time:'Women 40+',action:'Add 2 resistance exercises after each walk: wall sit 30 sec + 10 glute bridges',why:'Estrogen decline from 40 accelerates muscle loss at double the rate of men. Walking alone cannot prevent it. Adding 2 basic resistance moves after each walk prevents the metabolic slowdown.'},
+    {time:'Men 50+',action:'Add 10 bodyweight squats before each walk',why:'Testosterone declines 1–2%/year from age 30 in men — compound movements like squats stimulate testosterone production. Squats also activate the posterior chain, reducing lower back injury risk that increases with desk work in 50s.'},
+  ]},
+  {name:'Stretch Protocol — Age & Gender Specific',
+   who:'All ages — ACSM evidence-based flexibility for injury prevention',
+   steps:[
+    {time:'RULE 1',action:'Never static stretch cold muscles — always dynamic first OR stretch after workout/walk',why:'ACSM guideline: static stretching of cold muscles increases injury risk. Tendons and fascia need warmth to safely lengthen. The old "stretch before exercise" advice is outdated and increases strain risk.'},
+    {time:'RULE 2',action:'Hold each stretch 30–60 seconds total (e.g. 15 sec × 4 reps or 30 sec × 2 reps)',why:'Harvard Health panel of experts: 60 seconds total per muscle group is optimal. Less than 30 seconds total has minimal flexibility benefit.'},
+    {time:'Women 30–45 — hips',action:'Figure-4 hip stretch: lie on back, cross ankle over knee, pull both legs toward chest. 60 sec each side',why:'Estrogen supports hip joint lubrication — as levels fluctuate in 30s and 40s, hip tightness becomes a primary injury site. Hip flexibility also reduces lower back pain.'},
+    {time:'Women 45+ — spine',action:'Cat-cow stretch: on hands and knees, alternate arching and rounding spine, 10 slow reps daily',why:'Post-menopausal bone loss affects vertebrae first. Cat-cow maintains spinal mobility, stimulates intervertebral discs, and reduces the spinal compression that increases fracture risk.'},
+    {time:'Men 30–45 — chest/shoulders',action:'Doorway chest stretch: arms at 90°, press forearms into doorframe, lean through. 60 sec',why:'Desk work and testosterone-driven upper body muscle development both shorten pectoral fascia. Tight chest = forward head posture = chronic neck and shoulder injury. Most overlooked stretch for men.'},
+    {time:'Men 45+ — hip flexors',action:'Kneeling lunge stretch: knee on floor, push hips forward gently. 60 sec each side',why:'Hip flexors shorten from prolonged sitting and testosterone decline reduces connective tissue elasticity after 45. Tight hip flexors = anterior pelvic tilt = lower back injury — the #1 male musculoskeletal complaint.'},
+    {time:'All ages 50+ — ankles',action:'Seated ankle circles: 10 clockwise + 10 counterclockwise each foot, daily',why:'Ankle mobility is the primary predictor of fall risk in adults 55+. Ankle dorsiflexion (pulling toes up) declines with age — limited ankle mobility forces compensatory knee and hip movement patterns that cause joint injury.'},
+    {time:'All ages — neck',action:'Neck half-circles: slowly drop chin to chest, roll to right shoulder, back to center, left shoulder. No full circles. 5 reps',why:'Full neck circles compress cervical vertebrae and are contraindicated by physical therapists. Half-circles only. 60% of adults have some cervical disc degeneration by 50 — gentle half-circles maintain mobility without compression.'},
+  ]},
 ];
 
 function renderRoutines(){
