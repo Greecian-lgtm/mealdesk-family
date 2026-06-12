@@ -4433,15 +4433,18 @@ function renderRT_ForYou(){
             (REMEDIES_DATA.cancer_strategies?remCard('cancer_strategies',REMEDIES_DATA.cancer_strategies,false):'')+
             (REMEDIES_DATA.cancer_rotation?remCard('cancer_rotation',REMEDIES_DATA.cancer_rotation,false):'')+
             (REMEDIES_DATA.cancer_pancreas?remCard('cancer_pancreas',REMEDIES_DATA.cancer_pancreas,false):'')+
-            (REMEDIES_DATA.ivermectin_mebendazole?remCard('ivermectin_mebendazole',REMEDIES_DATA.ivermectin_mebendazole,false):'')
+            (REMEDIES_DATA.ivermectin_mebendazole?remCard('ivermectin_mebendazole',REMEDIES_DATA.ivermectin_mebendazole,false):'')+
+            (REMEDIES_DATA.constipation?remCard('constipation',REMEDIES_DATA.constipation,false):'')
           :'')
           +(g==='pancreas'?
             (REMEDIES_DATA.pancreas_health?remCard('pancreas_health',REMEDIES_DATA.pancreas_health,false):'')+
-            (REMEDIES_DATA.ivermectin_pancreas?remCard('ivermectin_pancreas',REMEDIES_DATA.ivermectin_pancreas,false):'')
+            (REMEDIES_DATA.ivermectin_pancreas?remCard('ivermectin_pancreas',REMEDIES_DATA.ivermectin_pancreas,false):'')+
+            (REMEDIES_DATA.constipation?remCard('constipation',REMEDIES_DATA.constipation,false):'')
           :'')
           +(g==='parasites'?
             (REMEDIES_DATA.parasite_cleanse?remCard('parasite_cleanse',REMEDIES_DATA.parasite_cleanse,false):'')+
-            (REMEDIES_DATA.herxheimer_reaction?remCard('herxheimer_reaction',REMEDIES_DATA.herxheimer_reaction,false):'')
+            (REMEDIES_DATA.herxheimer_reaction?remCard('herxheimer_reaction',REMEDIES_DATA.herxheimer_reaction,false):'')+
+            (REMEDIES_DATA.constipation?remCard('constipation',REMEDIES_DATA.constipation,false):'')
           :'');
         return (rd?remCard(g,rd,true):'')+extra;
       }catch(e){
