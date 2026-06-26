@@ -943,6 +943,7 @@ const COND={
   organ_thyroid: {lb:'Thyroid & Metabolism',em:'🦋',c:'#7c3aed',bg:'#f5f3ff'},
   organ_brain:   {lb:'Brain & Cognitive Health',em:'🧠',c:'#1d4ed8',bg:'#eff6ff'},
   organ_kidney:  {lb:'Kidney Health',em:'💧',c:'#06b6d4',bg:'#ecfeff'},
+  eye_health:    {lb:'Eye Health / Screen Fatigue',em:'👁️',c:'#0ea5e9',bg:'#f0f9ff'},
   plan_9030:     {lb:'90-30-50 Daily Plan',em:'📊',c:'#059669',bg:'#f0fdf4'},
 };
 
@@ -1250,6 +1251,21 @@ const CONDITION_GUIDE={
     },
     avoid:['Beer (liquid carbs + phytoestrogens = beer belly is real)','All liquid calories — juice, soda, sports drinks','Refined carbs — bread, pasta, white rice (insulin → fat storage → belly first)','Late night eating (cortisol rises at night — food converts more readily to visceral fat)','Chronic stress eating (cortisol is the belly fat hormone)','Trans fats (specifically accumulate in visceral fat)','Alcohol in general (liver processes alcohol before fat — fat storage increases)'],
     tip:'Intermittent fasting 16:8 is the most effective single intervention for male belly fat — it reduces insulin for 16 hours straight, forcing the body to burn stored fat. Combine with resistance training (builds muscle that raises resting metabolism) and adequate sleep (poor sleep raises ghrelin + cortisol, both of which increase belly fat). Target protein at 1g per pound of bodyweight to preserve muscle while losing fat.',
+  },
+  eye_health:{
+    summary:'Digital eye strain (Computer Vision Syndrome) affects 65% of screen users. Prolonged monitor use depletes macular pigment, disrupts tear film, and strains ciliary muscles. Targeted nutrition can rebuild the eye\'s protective pigment layer, improve tear quality, and reduce inflammation in the optic pathway.',
+    eat:{
+      'Lutein & Zeaxanthin (Macular Pigment)':['Egg yolks (highest bioavailable lutein source — yolk fat increases absorption 3×)','Kale and collard greens cooked with fat','Spinach — 2 cups provides 20mg lutein','Corn — yellow corn has high zeaxanthin','Orange bell peppers — highest zeaxanthin of any vegetable','Goji berries — exceptionally high zeaxanthin','Avocado — lutein + healthy fat for absorption'],
+      'Omega-3 (Tear Film & Retina)':['Wild salmon 3-4×/week — DHA is structural fat of retina (60% of photoreceptor membrane)','Sardines — DHA + EPA highest concentration per gram','Walnuts — ALA omega-3 for tear film','Flaxseed ground 1 tbsp daily — reduces dry eye severity','Chia seeds — omega-3 + anti-inflammatory'],
+      'Vitamin A & Beta-Carotene (Night Vision)':['Sweet potato — highest beta-carotene of any vegetable','Carrots — beta-carotene converts to retinal (night vision pigment)','Butternut squash — high beta-carotene','Liver and organ meats — preformed Vitamin A (retinol)','Mango — Vitamin A + antioxidants'],
+      'Vitamin C (Lens Protection)':['Bell peppers (red highest — 190mg Vitamin C per cup)','Kiwi fruit','Broccoli — Vitamin C + sulforaphane protection','Strawberries','Citrus — orange, grapefruit (not juice — eat whole fruit)'],
+      'Zinc (Retinal Function)':['Oysters — highest zinc food','Pumpkin seeds — 2 tbsp = 20% daily zinc','Beef — zinc bioavailability highest from animal sources','Cashews','Chickpeas'],
+      'Anthocyanins (Eye Blood Flow)':['Blueberries — improves night vision and reduces eye fatigue in studies','Bilberry — most studied berry for eye health, improves microcirculation to retina','Black currants','Purple sweet potato','Dark cherries'],
+      'Anti-inflammatory (Optic Nerve)':['Turmeric with black pepper — curcumin reduces ocular inflammation','Ginger — anti-inflammatory for eye blood vessels','Green tea 2-3 cups — EGCG protects retinal cells from oxidative stress','Dark chocolate 85%+ — flavanols improve retinal blood flow']
+    },
+    avoid:['Refined sugar — glycates lens proteins, accelerates cataract formation and macular degeneration','Seed oils (canola, sunflower, vegetable) — oxidized omega-6 promotes retinal inflammation','Excessive alcohol — depletes zinc, riboflavin, Vitamin A all critical for eye health','Trans fats — reduce omega-3 DHA levels in retinal membranes','Excessive caffeine — raises intraocular pressure temporarily (glaucoma risk)','Processed foods with high sodium — associated with increased risk of macular degeneration','Smoking or secondhand smoke — single biggest modifiable risk factor for macular degeneration'],
+    tip:'The 20-20-20 rule is the minimum: every 20 minutes, look at something 20 feet away for 20 seconds. But nutrition is what rebuilds the eye — lutein and zeaxanthin from eggs and dark greens directly replenish macular pigment that screens deplete. DHA from fatty fish is structural fat of the retina — low DHA = blurry vision, dry eyes, and poor night vision. Take these seriously for screen workers.',
+    protocols:['20-20-20 rule: every 20 min look at something 20 feet away for 20 seconds — resets ciliary muscle tension','Reduce blue light: warm screen color after sunset, use Night Shift/f.lux, dim brightness 30% from default','Blink consciously: screen users blink 5× less than normal — blink fully 10 times per hour','Cold water eye splash: 3× daily reduces inflammation and refreshes tear film','Palming: rub hands warm, cup over closed eyes 2 minutes — dark rest restores photoreceptors','Eye yoga: look far-near-far alternating every 30 min — maintains ciliary muscle flexibility','Screen distance: monitor at arm\'s length minimum (24-28 inches) — too close = maximum strain','Monitor height: top of screen at or slightly below eye level — reduces lid opening and tear evaporation'],
   },
   stress_eating:{
     summary:'Cortisol — the stress hormone — directly drives cravings for sugar and fat, slows metabolism, and causes belly fat storage. For teachers, healthcare workers, and other high-stress professions, cortisol management is as important as calories.',
@@ -3285,6 +3301,85 @@ PRE-MADE TRIO COMBOS (all 3 herbs together): "Para-Cleanse" by Nature's Sunshine
     ],
     tip:'The four markers that need to drop — AST/ALT (liver enzymes), triglycerides, LDL, and fasting glucose — all share one root cause: insulin resistance from metabolic syndrome. This means a single targeted intervention fixes everything at once. Berberine + eliminating sugar and seed oils + daily post-dinner walk + Milk Thistle is the minimum effective protocol. Expect meaningful improvement across all labs within 8 weeks. Alcohol elimination is non-negotiable and produces the fastest visible results.',
     source:'Metabolic syndrome clinical guidelines 2025 | Berberine vs metformin clinical trials | NAFLD dietary intervention studies | PREDIMED Mediterranean diet trial | Artichoke cynarin liver enzyme studies'},
+
+  eye_care_screen:{icon:'👁️',title:'Digital Eye Care — Screen Worker Recovery Protocol',cat:'Eye & Vision Health',
+    subtitle:'Reduce blurry vision, dry eyes, and eye fatigue from daily monitor and PC use',
+    symptoms:['Blurry vision after screen time — ciliary muscle fatigue','Dry eyes — reduced blink rate on screens (5x less than normal)','Eye strain and headaches behind the eyes','Difficulty refocusing from screen to distance','Redness and burning sensation','Light sensitivity after long screen sessions','Poor night vision — depleted macular pigment','Eye fatigue by mid-afternoon — peak screen strain window'],
+    protocols:[
+      '20-20-20 RULE (mandatory every session) — every 20 minutes, stop and look at something at least 20 feet away for 20 seconds. This relaxes the ciliary muscle, which stays contracted during close focus. Set a timer if needed. This single habit reduces eye strain more than any supplement.',
+      'INCREASE BLINK RATE — screen users blink 5-7 times per minute versus the normal 15-20. Post a reminder note at your monitor: BLINK. Do 10 full, deliberate blinks every hour. Full blinks (not partial) spread tear film across the entire cornea.',
+      'COLD WATER EYE SPLASH 3x DAILY — splash cold water on closed eyes morning, midday, and evening. Reduces inflammation, stimulates tear production, and refreshes the ocular surface. Takes 30 seconds.',
+      'SCREEN SETTINGS: drop brightness 30% below default. Enable Night Shift or f.lux after 6pm to reduce blue light. Set screen color temperature to 3500-4500K in evenings. Most monitors are set far too bright.',
+      'MONITOR DISTANCE AND HEIGHT — position monitor at arm\'s length (24-28 inches minimum). Top of screen at or slightly below eye level — this reduces how wide the eyes open and slows tear evaporation by 40%.',
+      'LUTEIN AND ZEAXANTHIN — the two carotenoids that form macular pigment and filter blue light before it reaches the retina. Food first: 2 eggs daily (yolk), cooked spinach, kale. Supplement: Now Foods Lutein 20mg with zeaxanthin 1mg. Take with fat.',
+      'OMEGA-3 (DHA) DAILY — DHA makes up 60% of the photoreceptor membrane in the retina. Low DHA = blurry vision, dry eyes, and slow dark adaptation. Wild salmon 3x/week or fish oil 1-2g DHA daily. Critical for screen workers.',
+      'PALMING FOR 2 MINUTES — rub hands together until warm. Cup palms over closed eyes without pressing. Hold 2 minutes in complete darkness. The warmth and dark stimulates retinal recovery and reduces eye muscle tension. Do after every 2 hours of screen work.',
+      'VITAMIN A DAILY — the direct precursor to rhodopsin (the visual pigment). Deficiency = night blindness and dry eyes. Sweet potato half daily (14,000 IU beta-carotene), or liver once per week, or Vitamin A supplement 2500-5000 IU with fat.',
+      'EYE YOGA EVERY 30 MINUTES — look up, down, left, right, diagonally × 3. Then focus near (finger tip) then far (across room) alternating 10 times. Maintains ciliary muscle flexibility that desk work progressively degrades.',
+    ],
+    healingFoods:[
+      'Egg yolks (2 daily) — highest bioavailable lutein and zeaxanthin. Yolk fat increases absorption 3x vs supplements without fat. Most important single food for screen workers.',
+      'Wild salmon 3-4x/week — DHA is structural fat of the retina. Low DHA = persistent blurry vision that no glasses prescription fixes.',
+      'Cooked spinach and kale with olive oil — cooking concentrates lutein. Olive oil fat increases absorption. 2 cups cooked spinach = 20mg lutein.',
+      'Blueberries daily — anthocyanins improve retinal microcirculation and reduce eye fatigue. Studies show improved night vision after 4 weeks daily use.',
+      'Bilberry — more potent than regular blueberry for eye health. Used by WWII RAF pilots to improve night vision. Standard supplement: 160mg twice daily.',
+      'Sweet potato half daily — 14,000 IU beta-carotene = Vitamin A precursor for rhodopsin (night vision and tear production).',
+      'Carrots raw — beta-carotene + the act of chewing reduces jaw tension that contributes to eye strain headaches.',
+      'Orange bell peppers — highest zeaxanthin content of any vegetable. Zeaxanthin concentrates specifically in the macula (central vision area).',
+      'Dark chocolate 85%+ (1 square) — flavanols increase blood flow to retina within 2 hours. Studies show improved visual contrast sensitivity.',
+      'Green tea 2-3 cups — EGCG catechins concentrate in retinal tissue and protect photoreceptors from blue light oxidative damage.',
+      'Sardines or mackerel — omega-3 DHA + EPA highest per gram. EPA reduces inflammation in tear glands (meibomian glands).',
+      'Goji berries 1 tbsp — highest zeaxanthin concentration of any food. Traditional Chinese eye medicine for centuries, now confirmed by research.',
+      'Walnuts 8-10 daily — ALA omega-3 + Vitamin E protect lens proteins from oxidative damage (cataract prevention).',
+      'Pumpkin seeds 2 tbsp — zinc for retinal function. Zinc deficiency causes night blindness and accelerates macular degeneration.',
+    ],
+    supplements:[
+      'Lutein 20mg + Zeaxanthin 1mg — macular pigment rebuilding. Take with fat. Now Foods brand. 3 months for measurable improvement.',
+      'Fish Oil 1-2g DHA — retinal membrane structural fat. Take with dinner. Reduces dry eye severity within 4-6 weeks.',
+      'Vitamin A 2500-5000 IU (as retinol or beta-carotene) — tear production and night vision. Take with fat. Do not exceed 10,000 IU long-term.',
+      'Bilberry 160mg 2x daily — retinal microcirculation. Studies: improved dark adaptation and reduced eye fatigue.',
+      'Vitamin C 500mg — lens antioxidant protection. Lowers cataract risk 33% in long-term supplementation studies.',
+      'Zinc 15-30mg with copper — retinal function. Take with food. Pair with 2mg copper to prevent copper deficiency from zinc.',
+      'Astaxanthin 6-12mg — the most powerful carotenoid antioxidant for eyes. Crosses blood-retinal barrier. Reduces eye strain and improves accommodative ability.',
+      'Magnesium glycinate 400mg bedtime — relaxes ciliary muscles and reduces tension headaches from eye strain. Improves sleep quality which is essential for eye recovery.',
+    ],
+    weeklyMealPlan:[
+      {day:'Monday',breakfast:'2 eggs scrambled with spinach + sweet potato hash',lunch:'Salmon salad with avocado + orange bell pepper',dinner:'Baked salmon + steamed kale with garlic and olive oil'},
+      {day:'Tuesday',breakfast:'Smoothie: blueberries + spinach + flaxseed + almond milk',lunch:'Chickpea bowl + goji berries + pumpkin seeds',dinner:'Stir-fry: broccoli + orange peppers + chicken + turmeric'},
+      {day:'Wednesday',breakfast:'2 eggs + carrot sticks + whole grain toast',lunch:'Sardines + arugula salad + walnuts + lemon olive oil',dinner:'Sweet potato + baked chicken + cooked collard greens'},
+      {day:'Thursday',breakfast:'Oatmeal + blueberries + chia seeds + walnuts',lunch:'Salmon + quinoa + roasted orange peppers',dinner:'Turkey + beet + kale bowl + olive oil drizzle'},
+      {day:'Friday',breakfast:'2 egg omelette + kale + orange bell pepper',lunch:'Tuna + avocado + pumpkin seeds + greens',dinner:'Mackerel or sardines + roasted sweet potato + steamed broccoli'},
+      {day:'Saturday',breakfast:'Blueberry pancakes + goji berries topping',lunch:'Chicken liver stir-fry with onions (Vitamin A powerhouse)',dinner:'Salmon + asparagus + brown rice + lemon'},
+      {day:'Sunday',breakfast:'2 eggs + sweet potato + spinach scramble',lunch:'Bilberry smoothie bowl + walnuts + dark chocolate shavings',dinner:'Slow-cooked beef + carrots + sweet potato (Vitamin A day)'},
+    ],
+    teas:[
+      'Green tea 2-3 cups daily — EGCG protects retinal cells. No sugar.',
+      'Eyebright herb tea — traditionally used for eye strain and irritation. Steep 1 tsp dried herb 10 min.',
+      'Fennel seed tea — historically used for tired, irritated eyes. Simmer ½ tsp seeds 10 min. Can also cool and use as eye compress.',
+      'Chamomile tea cooled — soak cotton pads in cooled chamomile tea and rest on closed eyes 10 min. Reduces inflammation and puffiness.',
+      'Ginkgo biloba tea or supplement — improves ocular blood flow. 120mg twice daily is the studied dose for eye circulation.',
+    ],
+    homeRemedies:[
+      'Palming 2 min every 2 hours: warm hands, cup over closed eyes. Most effective technique for immediate eye fatigue relief.',
+      'Cold cucumber slices on closed eyes 10 min: anti-inflammatory, reduces puffiness and soothes surface irritation.',
+      'Warm compress for dry eyes: warm damp cloth over closed eyes 5 min — melts blocked meibomian gland secretions, restores tear film oil layer.',
+      'Eye massage: with eyes closed, very gently massage eyebrows and orbital bone (not the eyeball) in circular motions. Improves local circulation.',
+      'Total darkness rest: after a long screen day, sit in a completely dark room with eyes open for 5 minutes. Allows photoreceptors to regenerate rhodopsin.',
+      'Castor oil eye drops: 1 drop of pharmaceutical-grade castor oil in each eye at bedtime — proven to reduce dry eye symptoms and improve tear film stability. Must be pure castor oil, not with other ingredients.',
+    ],
+    avoid:[
+      'Skipping the 20-20-20 rule — no supplement compensates for continuous ciliary muscle overwork.',
+      'Refined sugar — glycates lens proteins and accelerates macular degeneration. The biggest dietary risk factor for vision loss.',
+      'Seed oils — oxidized omega-6 promotes retinal inflammation and competes with DHA in cell membranes.',
+      'Smoking — the single biggest modifiable risk factor for macular degeneration. 5x higher risk vs non-smokers.',
+      'Excessive caffeine — temporarily raises intraocular pressure (glaucoma risk with daily high intake).',
+      'Sleeping with contacts — corneal oxygen deprivation accelerates long-term damage.',
+      'Screen use in total darkness — maximum pupil dilation + maximum blue light = maximum retinal stress.',
+      'High sodium diet — associated with increased macular degeneration risk in population studies.',
+      'No sunglasses outdoors — UV exposure without protection is a direct cataract and macular degeneration risk.',
+    ],
+    tip:'Screen-induced blur is mostly ciliary muscle fatigue — the muscle that adjusts lens focus stays contracted during screen use and cramps like any other muscle. The 20-20-20 rule is the cure. Nutritionally, the two most important interventions for screen workers are: 1) Eat 2 egg yolks daily — lutein and zeaxanthin from egg yolk have the highest bioavailability of any source and directly rebuild the macular pigment layer that screens degrade. 2) Omega-3 DHA from fatty fish or supplements — DHA is structural fat of retinal cell membranes and the most important nutrient for sustained visual clarity. Most screen workers are severely deficient in both.',
+    source:'American Optometric Association — Computer Vision Syndrome guidelines | Age-Related Eye Disease Study (AREDS2) — lutein/zeaxanthin supplementation | Omega-3 and dry eye clinical trials | Bilberry and night vision research | Blue light and retinal damage studies'},
 
   stress_eating:{icon:'😤',title:'Stress Eating / Cortisol',cat:'Hormonal',
     subtitle:'Break the cortisol-hunger loop — evidence-based protocols',
@@ -5346,6 +5441,9 @@ function renderRT_ForYou(){
           :'')
           +(g==='cholesterol'?
             (REMEDIES_DATA.liver_insulin_reset?remCard('liver_insulin_reset',REMEDIES_DATA.liver_insulin_reset,false):'')
+          :'')
+          +(g==='eye_health'?
+            (REMEDIES_DATA.eye_care_screen?remCard('eye_care_screen',REMEDIES_DATA.eye_care_screen,false):'')
           :'')
           +(g==='cancer_care'||g==='parasites'||g==='pancreas'?
             (REMEDIES_DATA.cancer_protocol_timeline?remCard('cancer_protocol_timeline',REMEDIES_DATA.cancer_protocol_timeline,false):'')+
