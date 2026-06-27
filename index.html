@@ -97,6 +97,8 @@ textarea{resize:none;min-height:110px}
   cursor:pointer;margin-bottom:10px;transition:border-color .2s,background .2s;
 }
 .diet-opt.sel{border-color:var(--a);background:var(--al)}
+.diet-opt.multi-sel{border-color:#7c3aed;background:#f5f3ff;position:relative}
+.diet-opt.multi-sel::after{content:'✓';position:absolute;top:6px;right:8px;font-size:11px;font-weight:700;color:#7c3aed;background:#ede9fe;border-radius:50%;width:18px;height:18px;display:flex;align-items:center;justify-content:center;line-height:18px;text-align:center}
 .diet-opt-icon{font-size:28px;flex-shrink:0}
 .diet-opt-name{font-weight:700;font-size:15px}
 .diet-opt-desc{font-size:13px;color:var(--sub);margin-top:2px}
@@ -4319,7 +4321,7 @@ const SLOTS=[{k:'breakfast',lb:'Breakfast',ic:'🌅'},{k:'lunch',lb:'Lunch',ic:'
 let P=null; // profile: {name,emoji,diet,goals,apiKey}
 let CK={};  // checked meals
 let lastT=0;
-let sE='🧑',sD='mediterranean',sG=[];
+let sE='🧑',sD='mediterranean',sDs=['mediterranean'],sG=[];
 let pE='🧑',pD='mediterranean',pG=[];
 let pSex='',pAge='',pMeno='',pOcc='';
 
@@ -4390,7 +4392,12 @@ function buildSetup(){
   EM.forEach((e,i)=>{const b=document.createElement('button');b.className='ebtn'+(i===0?' sel':'');b.textContent=e;b.onclick=()=>{document.querySelectorAll('#seg .ebtn').forEach(x=>x.classList.remove('sel'));b.classList.add('sel');sE=e};g.appendChild(b)});
   // Diet options
   const d=document.getElementById('sdo');
-  Object.entries(DIETS).forEach(([k,v])=>{const el=document.createElement('div');el.className='diet-opt'+(k==='mediterranean'?' sel':'');el.innerHTML=`<div class="diet-opt-icon">${v.ic}</div><div><div class="diet-opt-name">${v.n}</div><div class="diet-opt-desc">${v.desc}</div></div>`;el.onclick=()=>{document.querySelectorAll('#sdo .diet-opt').forEach(x=>x.classList.remove('sel'));el.classList.add('sel');sD=k};d.appendChild(el)});
+  // Multi-select hint
+  const sdoHint=document.createElement('div');
+  sdoHint.style.cssText='font-size:12px;color:#7c3aed;background:#f5f3ff;border:1px solid #c4b5fd;border-radius:8px;padding:8px 12px;margin-bottom:10px;font-weight:600';
+  sdoHint.textContent='💡 Pick one — or tap multiple for a combo plan (Keto + Vegan, Fat Loss + Mediterranean, etc.)';
+  d.parentElement.insertBefore(sdoHint,d);
+  Object.entries(DIETS).forEach(([k,v])=>{const el=document.createElement('div');el.className='diet-opt'+(sDs.includes(k)?'multi-sel':'');el.innerHTML=`<div class="diet-opt-icon">${v.ic}</div><div><div class="diet-opt-name">${v.n}</div><div class="diet-opt-desc">${v.desc}</div></div>`;el.onclick=()=>{const i=sDs.indexOf(k);if(i>=0&&sDs.length>1){sDs.splice(i,1);el.classList.remove('multi-sel');}else if(i<0){sDs.push(k);el.classList.add('multi-sel');}sD=sDs[0];};d.appendChild(el)});
   // Goal options
   const go=document.getElementById('sgo');
   Object.entries(COND).forEach(([k,v])=>{const el=document.createElement('div');el.className='goal-opt';el.dataset.k=k;el.innerHTML=`<span class="goal-ic">${v.em}</span><span class="goal-lbl">${v.lb}</span><div class="goal-chk"></div>`;el.onclick=()=>{el.classList.toggle('sel');const i=sG.indexOf(k);i>=0?sG.splice(i,1):sG.push(k);el.querySelector('.goal-chk').textContent=el.classList.contains('sel')?'✓':''};go.appendChild(el)});
@@ -4405,7 +4412,7 @@ function ps(from){document.getElementById('s'+from).classList.remove('on');docum
 
 function finish(){
   const nm=san(document.getElementById('sname').value,24)||'Member';
-  P={name:nm,emoji:sE,diet:sD,goals:sG,apiKey:''};
+  P={name:nm,emoji:sE,diet:sD,diets:sDs.length?[...sDs]:[sD],goals:sG,apiKey:''};
   sP(P);
   launch();
 }
@@ -4422,7 +4429,7 @@ function launch(){
 
 // ── THEME ─────────────────────────────────────────────────────────────────────
 function applyTheme(){
-  const a=DIETS[P.diet].a;
+  const a=(DIETS[P.diet]||DIETS[Object.keys(DIETS)[0]]).a;
   document.documentElement.style.setProperty('--a',a);
   const r=parseInt(a.slice(1,3),16),gg=parseInt(a.slice(3,5),16),b=parseInt(a.slice(5,7),16);
   document.documentElement.style.setProperty('--al',`rgba(${r},${gg},${b},0.13)`);
@@ -5701,14 +5708,24 @@ function toggleHC(id){
 // ── HEADER ────────────────────────────────────────────────────────────────────
 function renderHeader(){
   const d=DIETS[P.diet];
-  document.getElementById('hbadge').textContent=`${d.ic} ${d.s}`;
+  const activeDietsH=P.diets&&P.diets.length>1?P.diets:[P.diet];
+  document.getElementById('hbadge').textContent=activeDietsH.length>1
+    ?activeDietsH.map(k=>DIETS[k]?.ic||'').join('')+' Combo'
+    :`${d.ic} ${d.s}`;
 }
 
 // ── TODAY ─────────────────────────────────────────────────────────────────────
 function renderToday(){
+  const activeDietsAll=P.diets&&P.diets.length>1?P.diets:[P.diet];
   const d=DIETS[P.diet];
   const td=new Date();
-  const T=d.T;
+  // Blend macro targets across selected diets
+  const T=activeDietsAll.length>1?{
+    cal:Math.round(activeDietsAll.reduce((s,k)=>s+(DIETS[k]?.T.cal||2000),0)/activeDietsAll.length),
+    p:Math.round(activeDietsAll.reduce((s,k)=>s+(DIETS[k]?.T.p||120),0)/activeDietsAll.length),
+    c:Math.round(activeDietsAll.reduce((s,k)=>s+(DIETS[k]?.T.c||150),0)/activeDietsAll.length),
+    f:Math.round(activeDietsAll.reduce((s,k)=>s+(DIETS[k]?.T.f||65),0)/activeDietsAll.length),
+  }:d.T;
   // Greeting
   const h=td.getHours();
   const gr=h<12?'Good morning':h<17?'Good afternoon':'Good evening';
@@ -5753,7 +5770,10 @@ function renderToday(){
   let cal=0,p=0,c=0,f=0;
   SLOTS.forEach(s=>{
     if(CK[s.k]){
-      const mDk=selForMacros[s.k+'_dk']||P.diet;
+      const activeDietsM=P.diets&&P.diets.length>1?P.diets:[P.diet];
+      const slotOrderM={breakfast:0,lunch:1,dinner:2,snack:3};
+      const defaultDkM=selForMacros[s.k+'_dk']||(activeDietsM[slotOrderM[s.k]%activeDietsM.length]||P.diet);
+      const mDk=defaultDkM;
       const mD=DIETS[mDk]||d;
       const idx=selForMacros[s.k]!==undefined?selForMacros[s.k]:defIdxM;
       const m=(mD.days[idx]&&mD.days[idx][s.k])||d.days[defIdxM][s.k];cal+=m.cal;p+=m.p;c+=m.c;f+=m.f;
@@ -5801,7 +5821,11 @@ function renderToday(){
     }
 
     // ── NORMAL MEAL CARD ──
-    const slotDk=sel[s.k+'_dk']||P.diet;
+    // Multi-diet: rotate slots across selected diets
+    const activeDiets=P.diets&&P.diets.length>1?P.diets:[P.diet];
+    const slotOrder={breakfast:0,lunch:1,dinner:2,snack:3};
+    const defaultDk=sel[s.k+'_dk']||(activeDiets[slotOrder[s.k]%activeDiets.length]||P.diet);
+    const slotDk=defaultDk;
     const slotD=DIETS[slotDk]||d;
     const idx=sel[s.k]!==undefined?sel[s.k]:defIdx;
     const opts=slotD.days.map(day=>day[s.k]);
@@ -5835,7 +5859,7 @@ function renderToday(){
       <div class="meal-card${done?' done':''}" onclick="tog('${s.k}')">
         <div class="mic">${s.ic}</div>
         <div class="minfo">
-          <div class="mlbl">${s.lb}</div>
+          <div class="mlbl">${s.lb}${activeDiets.length>1?' · <span style="font-size:10px;color:#7c3aed;font-weight:700">${DIETS[slotDk]?.ic||""} ${DIETS[slotDk]?.s||""}</span>':''}</div>
           <div class="mnm">${m.n}</div>
           <div class="mmac">${m.cal} kcal · ${m.p}g protein · ${m.c}g carbs · ${m.f}g fat</div>
           <div style="display:flex;align-items:center;gap:8px;margin-top:4px;flex-wrap:wrap">
@@ -5919,15 +5943,20 @@ function swapMeal(slot){
   if(!poolOrder.length){
     const defIdx=new Date().getDay()%4;
     // Put current diet options first (days 1-3), then other diets
+    const activeDietsS=P.diets&&P.diets.length>1?P.diets:[P.diet];
     const curDietOthers=[];
+    const activeDietOthers=[];
     const otherDiets=[];
     pool.forEach((entry,i)=>{
       if(entry.dk===P.diet&&entry.di!==defIdx)curDietOthers.push(i);
+      else if(entry.dk!==P.diet&&activeDietsS.includes(entry.dk))activeDietOthers.push(i);
       else if(entry.dk!==P.diet)otherDiets.push(i);
     });
-    // Shuffle other diets
+    // Shuffle within each group
+    for(let i=activeDietOthers.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[activeDietOthers[i],activeDietOthers[j]]=[activeDietOthers[j],activeDietOthers[i]];}
     for(let i=otherDiets.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[otherDiets[i],otherDiets[j]]=[otherDiets[j],otherDiets[i]];}
-    poolOrder=[...curDietOthers,...otherDiets];
+    // Active diets first, then current diet variants, then everything else
+    poolOrder=[...curDietOthers,...activeDietOthers,...otherDiets];
     localStorage.setItem(swapPool,JSON.stringify(poolOrder));
   }
   // Pop next index from pool
@@ -6346,7 +6375,7 @@ async function doChat(){
 
 // ── PROFILE EDITORS ───────────────────────────────────────────────────────────
 function buildProfileEditors(){
-  pE=P.emoji;pD=P.diet;pG=[...(P.goals||[])];
+  pE=P.emoji;pD=P.diet;pDs=[...(P.diets||[P.diet])];pG=[...(P.goals||[])];
   pSex=P.sex||'';pAge=P.ageRange||'';pMeno=P.meno||'';pOcc=P.occ||'';
   document.getElementById('pname').value=P.name;
   document.getElementById('pavatar').textContent=P.emoji;
@@ -6355,8 +6384,14 @@ function buildProfileEditors(){
   const pg=document.getElementById('peg');pg.innerHTML='';
   EM.forEach(e=>{const b=document.createElement('button');b.className='ebtn'+(e===pE?' sel':'');b.textContent=e;b.onclick=()=>{document.querySelectorAll('#peg .ebtn').forEach(x=>x.classList.remove('sel'));b.classList.add('sel');pE=e;document.getElementById('pavatar').textContent=e};pg.appendChild(b)});
   // Diet
-  const pd=document.getElementById('pdo');pd.innerHTML='';
-  Object.entries(DIETS).forEach(([k,v])=>{const el=document.createElement('div');el.className='diet-opt'+(k===pD?' sel':'');el.innerHTML=`<div class="diet-opt-icon">${v.ic}</div><div><div class="diet-opt-name">${v.n}</div><div class="diet-opt-desc">${v.desc}</div></div>`;el.onclick=()=>{document.querySelectorAll('#pdo .diet-opt').forEach(x=>x.classList.remove('sel'));el.classList.add('sel');pD=k};pd.appendChild(el)});
+  const pd=document.getElementById('pdo');
+  pd.innerHTML='';
+  // Add multi-select hint above diet picker
+  const dietHint=document.createElement('div');
+  dietHint.style.cssText='font-size:12px;color:#7c3aed;background:#f5f3ff;border:1px solid #c4b5fd;border-radius:8px;padding:8px 12px;margin-bottom:10px;font-weight:600';
+  dietHint.textContent='💡 Tap multiple diets to create a combo — Keto breakfast + Vegan lunch + Fat Loss dinner';
+  pd.parentElement.insertBefore(dietHint,pd);
+  Object.entries(DIETS).forEach(([k,v])=>{const el=document.createElement('div');el.className='diet-opt'+(pDs.includes(k)?'multi-sel':'');el.innerHTML=`<div class="diet-opt-icon">${v.ic}</div><div><div class="diet-opt-name">${v.n}</div><div class="diet-opt-desc">${v.desc}</div></div>`;el.onclick=()=>{const i=pDs.indexOf(k);if(i>=0&&pDs.length>1){pDs.splice(i,1);el.classList.remove('multi-sel');}else if(i<0){pDs.push(k);el.classList.add('multi-sel');}pD=pDs[0];};pd.appendChild(el)});
   // Health Goals
   const pgo=document.getElementById('pgo');pgo.innerHTML='';
   Object.entries(COND).forEach(([k,v])=>{const sel=pG.includes(k);const el=document.createElement('div');el.className='goal-opt'+(sel?' sel':'');el.innerHTML=`<span class="goal-ic">${v.em}</span><span class="goal-lbl">${v.lb}</span><div class="goal-chk">${sel?'✓':''}</div>`;el.onclick=()=>{el.classList.toggle('sel');const i=pG.indexOf(k);i>=0?pG.splice(i,1):pG.push(k);el.querySelector('.goal-chk').textContent=el.classList.contains('sel')?'✓':''};pgo.appendChild(el)});
@@ -6416,7 +6451,7 @@ function savePro(){
   }).filter(Boolean);
   // Keep existing apiKey — field is hidden, key managed server-side
   const existingKey=P.apiKey||'';
-  P={name:nm,emoji:pE,diet:pD,goals:pG,apiKey:existingKey,allergies,sex:pSex,ageRange:pAge,meno:pMeno,occ:pOcc};
+  P={name:nm,emoji:pE,diet:pD,diets:pDs.length?[...pDs]:[pD],goals:pG,apiKey:existingKey,allergies,sex:pSex,ageRange:pAge,meno:pMeno,occ:pOcc};
   sP(P);
   applyTheme();renderHeader();renderToday();renderDietInfo();
   const ok=document.getElementById('sok');ok.style.display='block';setTimeout(()=>ok.style.display='none',2200);
