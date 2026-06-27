@@ -4443,6 +4443,7 @@ function sw(t){
 
 // ── RECIPES TAB ───────────────────────────────────────────────────────────────
 const RCP_CATS=[
+  {k:'foryou',lb:'🎯 For You'},
   {k:'all',lb:'⭐ All'},
   {k:'family',lb:'👨‍👩‍👧‍👦 Family'},
   {k:'quick',lb:'⚡ Quick'},
@@ -4469,7 +4470,16 @@ const RECIPES_DATA=[
    desc:'One protein, everyone builds their own. Same dinner, zero complaints.',
    ing:['1.5 lbs lean ground beef (93/7)','1 packet taco seasoning','8 taco shells or tortillas','1 cup shredded cheddar','1 cup salsa','1 avocado sliced','1 cup shredded lettuce','1 cup diced tomatoes','1 lime quartered','Optional: Greek yogurt (sub for sour cream)'],
    steps:['Brown ground beef 6–8 min over medium-high, breaking apart. Drain fat.','Add seasoning + ¼ cup water. Simmer 3–4 min until sauce thickens.','Warm taco shells in oven 350°F for 3–4 min.','Set up taco bar — meat in the middle, all toppings in small bowls around it.','Everyone builds their own. Kids: cheese + meat. Adults: everything. Same meal.'],
-   tip:'Double the beef and freeze half. Greek yogurt replaces sour cream with 10g extra protein per serving.'},
+   tip:'Double the beef and freeze half. Greek yogurt replaces sour cream with 10g extra protein per serving.',
+   health:['organ_liver','organ_heart','cholesterol','eye_health','insulin']},
+
+  {id:'sheet-pan',cats:['family','batch','highprotein'],creator:'Family Kitchen',ccolor:'#5c2d91',
+   name:'Sheet Pan Chicken + Roasted Veg',time:'35 min',serves:4,diff:'Easy',cal:420,p:46,c:18,f:16,
+   desc:'One pan, one oven, 5 min prep. Zero dishes, everyone eats.',
+   ing:['4 bone-in skin-on chicken thighs','2 cups broccoli florets','2 sweet potatoes cubed','1 red bell pepper sliced','3 tbsp olive oil','1 tsp each: garlic powder, paprika, Italian seasoning','Salt and pepper'],
+   steps:['Preheat oven to 425°F. Line a large sheet pan with foil.','Toss sweet potato + broccoli with 2 tbsp olive oil, garlic powder, salt. Spread on pan.','Rub chicken with 1 tbsp oil, paprika, Italian seasoning, salt. Place on pan.','Roast 28–32 min until chicken is 165°F and skin is crispy. No flipping needed.','Rest 3 min. Serve straight from the pan.'],
+   tip:'Swap vegetables freely — zucchini, asparagus, carrots all work at the same time and temperature.',
+   health:['weight_loss','family_meals','organ_liver']},
 
   {id:'sheet-pan',cats:['family','batch','highprotein'],creator:'Family Kitchen',ccolor:'#5c2d91',
    name:'Sheet Pan Chicken + Roasted Veg',time:'35 min',serves:4,diff:'Easy',cal:420,p:46,c:18,f:16,
@@ -4497,7 +4507,23 @@ const RECIPES_DATA=[
    desc:'32 patties, 55g protein per 4-patty serving. Cook Sunday, eat all week.',
    ing:['1kg (2.2 lbs) ground chicken breast','1 large onion diced fine','4 cloves garlic minced','Large handful fresh herbs (parsley or basil)','2 tsp salt, 1 tsp pepper, 1 tsp garlic powder','Oil for cooking'],
    steps:['Mix all ingredients just until combined — do not overwork.','Form 32 flat patties (golf ball size, ½ inch thick). Wider than you think.','Cook in batches over medium-high 4–5 min per side until golden, 165°F internal.','Cool completely. Fridge 5 days, freeze 3 months.','Reheat from frozen: microwave 90 sec or pan 3 min per side.'],
+   tip:'Flash freeze on a tray 1 hour before bagging — grab exactly the number you need without sticking.',
+   health:['weight_loss','female_weight']},
+
+  {id:'patties-baddies',cats:['batch','highprotein','quick','mealprep'],creator:'Madelaine Rascan',ccolor:'#9b3060',
+   name:'Patties for Baddies',time:'25 min',serves:8,diff:'Easy',cal:210,p:28,c:4,f:9,
+   desc:'32 patties, 55g protein per 4-patty serving. Cook Sunday, eat all week.',
+   ing:['1kg (2.2 lbs) ground chicken breast','1 large onion diced fine','4 cloves garlic minced','Large handful fresh herbs (parsley or basil)','2 tsp salt, 1 tsp pepper, 1 tsp garlic powder','Oil for cooking'],
+   steps:['Mix all ingredients just until combined — do not overwork.','Form 32 flat patties (golf ball size, ½ inch thick). Wider than you think.','Cook in batches over medium-high 4–5 min per side until golden, 165°F internal.','Cool completely. Fridge 5 days, freeze 3 months.','Reheat from frozen: microwave 90 sec or pan 3 min per side.'],
    tip:'Flash freeze on a tray 1 hour before bagging — grab exactly the number you need without sticking.'},
+
+  {id:'buffalo-chicken',cats:['quick','highprotein'],creator:'Madelaine Rascan',ccolor:'#9b3060',
+   name:'Buffalo Chicken Cottage Cheese Bowl',time:'15 min',serves:2,diff:'Easy',cal:400,p:59,c:9,f:16,
+   desc:'59g protein in 15 minutes. Cottage cheese becomes the creamy buffalo sauce.',
+   ing:['300g shredded cooked chicken (rotisserie is perfect)','250g low-fat cottage cheese','2–3 tbsp hot sauce','½ tsp garlic powder','1 stalk celery diced','¼ onion diced','30g shredded cheddar','250g kabocha squash roasted'],
+   steps:['Microwave squash cubes 5–6 min if not already cooked.','Mix chicken + cottage cheese + hot sauce + garlic powder + onion + celery together. The cottage cheese becomes creamy sauce.','Taste and adjust hot sauce to your preference.','Serve over squash. Top with cheddar.','Better cold the next day — perfect meal prep.'],
+   tip:'Shred a whole rotisserie chicken Sunday. The buffalo mixture keeps 4 days cold in the fridge.',
+   health:['weight_loss']},
 
   {id:'buffalo-chicken',cats:['quick','highprotein'],creator:'Madelaine Rascan',ccolor:'#9b3060',
    name:'Buffalo Chicken Cottage Cheese Bowl',time:'15 min',serves:2,diff:'Easy',cal:400,p:59,c:9,f:16,
@@ -4511,6 +4537,14 @@ const RECIPES_DATA=[
    desc:'The flatbread IS the protein. Bake Sunday, stuff all week.',
    ing:['225g low-fat cottage cheese','2 whole eggs','Seasonings: garlic powder, Italian herbs, salt','Fillings of choice: turkey bacon, pesto, tomatoes, avocado'],
    steps:['Blend cottage cheese + eggs + seasonings until completely smooth.','Spread thin (¼ inch) on a parchment-lined tray.','Bake 350°F for 30 min until golden and firm.','Cool 5 min, peel off parchment.','Stuff with fillings, fold or roll, eat. Keeps 4 days in the fridge.'],
+   tip:'Make two trays Sunday — different seasonings each. Use one as pizza base, one as a wrap.',
+   health:['weight_loss']},
+
+  {id:'cottage-flatbread',cats:['quick','highprotein','batch'],creator:'Madelaine Rascan',ccolor:'#9b3060',
+   name:'Cottage Cheese Flatbread',time:'35 min',serves:2,diff:'Easy',cal:350,p:37,c:12,f:14,
+   desc:'The flatbread IS the protein. Bake Sunday, stuff all week.',
+   ing:['225g low-fat cottage cheese','2 whole eggs','Seasonings: garlic powder, Italian herbs, salt','Fillings of choice: turkey bacon, pesto, tomatoes, avocado'],
+   steps:['Blend cottage cheese + eggs + seasonings until completely smooth.','Spread thin (¼ inch) on a parchment-lined tray.','Bake 350°F for 30 min until golden and firm.','Cool 5 min, peel off parchment.','Stuff with fillings, fold or roll, eat. Keeps 4 days in the fridge.'],
    tip:'Make two trays Sunday — different seasonings each. Use one as pizza base, one as a wrap.'},
 
   {id:'squash-pizza',cats:['quick','highprotein','family'],creator:'Madelaine Rascan',ccolor:'#9b3060',
@@ -4518,7 +4552,23 @@ const RECIPES_DATA=[
    desc:'500 cal, 59g protein — the whole pizza. Delicata squash ring crust.',
    ing:['1 delicata squash (½ inch rings, seeds removed)','300g lean ground turkey','Italian seasoning + salt + garlic powder','Low-fat mozzarella shredded','Roasted veg of choice','Drizzle of raw honey + hot sauce','Microgreens or basil'],
    steps:['Slice squash ½ inch thick. Remove seeds. Arrange on a baking tray.','Season turkey. Press thin layer over each squash ring to form crusts.','Bake 400°F for 20 min until turkey is cooked and browning.','Top with roasted veg + mozzarella. Return to oven 3–5 min until cheese melts.','Drizzle honey + hot sauce. Top with microgreens.'],
+   tip:'The honey drizzle balances the heat and makes this feel like a treat, not diet food. Do not skip it.',
+   health:['weight_loss']},
+
+  {id:'squash-pizza',cats:['quick','highprotein','family'],creator:'Madelaine Rascan',ccolor:'#9b3060',
+   name:'Squash Turkey Pizza',time:'30 min',serves:1,diff:'Medium',cal:500,p:59,c:28,f:14,
+   desc:'500 cal, 59g protein — the whole pizza. Delicata squash ring crust.',
+   ing:['1 delicata squash (½ inch rings, seeds removed)','300g lean ground turkey','Italian seasoning + salt + garlic powder','Low-fat mozzarella shredded','Roasted veg of choice','Drizzle of raw honey + hot sauce','Microgreens or basil'],
+   steps:['Slice squash ½ inch thick. Remove seeds. Arrange on a baking tray.','Season turkey. Press thin layer over each squash ring to form crusts.','Bake 400°F for 20 min until turkey is cooked and browning.','Top with roasted veg + mozzarella. Return to oven 3–5 min until cheese melts.','Drizzle honey + hot sauce. Top with microgreens.'],
    tip:'The honey drizzle balances the heat and makes this feel like a treat, not diet food. Do not skip it.'},
+
+  {id:'protein-brownies',cats:['desserts','kids','batch'],creator:'MacroMagicStef',ccolor:'#c4621a',
+   name:'Chocolate Banana Protein Brownies',time:'25 min',serves:8,diff:'Easy',cal:150,p:8,c:20,f:4,
+   desc:'"Does Susan approve?" — she does. 150 cal, 8g protein per brownie square.',
+   ing:['3 very ripe bananas','2 whole eggs','½ cup plain Greek yogurt','3 tbsp unsweetened cocoa powder','1 tbsp honey (optional)','Pinch of salt','Optional: dark chocolate chips, sea salt flakes'],
+   steps:['Preheat oven 350°F. Line 8×8 pan with parchment.','Mash bananas completely smooth — no chunks.','Add eggs, yogurt, honey. Whisk until frothy.','Sift cocoa over wet mix. Fold in until no dry spots remain.','Pour into pan. Bake 18–20 min. Toothpick comes out with moist crumbs. Cool 10 min, cut into 8 squares.'],
+   tip:'Black-spotted bananas make the sweetest, fudgiest brownies. Freeze overripe bananas and use straight from frozen.',
+   health:['weight_loss','family_meals']},
 
   {id:'protein-brownies',cats:['desserts','kids','batch'],creator:'MacroMagicStef',ccolor:'#c4621a',
    name:'Chocolate Banana Protein Brownies',time:'25 min',serves:8,diff:'Easy',cal:150,p:8,c:20,f:4,
@@ -4547,6 +4597,14 @@ const RECIPES_DATA=[
    ing:['2 medium beets peeled + chopped','1 green apple cored + chopped','1 large cucumber chopped','Juice of 1 lemon','2 medium carrots peeled + chopped','1-inch piece fresh ginger peeled','½ cup water if blending'],
    steps:['Prep and chop all produce.','Juicer: feed everything through. Store in glass jars up to 5 days.','Blender: add all + ½ cup water. Blend 60 sec. Strain through fine mesh or nut milk bag.','Refrigerate up to 5 days in sealed glass jars.','Drink 4oz as morning shot or full glass over ice. Best before breakfast.'],
    tip:'Vitamin C from lemon multiplies iron absorption from beets. Never skip the lemon — it\'s not just for flavor.'},
+
+  {id:'chia-pudding',cats:['batch','kids','mealprep'],creator:'Ayat Sleymann RD',ccolor:'#2a6b3a',
+   name:'Peaches & Cream Chia Pudding',time:'10 min + overnight',serves:4,diff:'Easy',cal:180,p:10,c:18,f:6,
+   desc:'4 jars Sunday = breakfast all week. No added sugar. Protein + fiber + omega-3 in every jar.',
+   ing:['2 ripe peaches pitted and chopped (or frozen)','1 cup plain Greek yogurt','1 cup milk (Fairlife 2% for extra protein)','8 tbsp chia seeds (2 per jar)','4 mason jars','Toppings: peach slices, coconut, cinnamon'],
+   steps:['Blend peaches + yogurt + milk until smooth.','Divide evenly into 4 jars (~½ cup each).','Add 2 tbsp chia seeds to each jar. Stir well — no clumping.','Seal and refrigerate overnight (min 4 hours).','Stir before eating. Add toppings. Keeps 4 days.'],
+   tip:'Any fruit works — frozen mango, strawberries, blueberries. Canned peaches in juice (not syrup) are a perfect out-of-season substitute.',
+   health:['digestion','organ_gut']},
 
   {id:'chia-pudding',cats:['batch','kids','mealprep'],creator:'Ayat Sleymann RD',ccolor:'#2a6b3a',
    name:'Peaches & Cream Chia Pudding',time:'10 min + overnight',serves:4,diff:'Easy',cal:180,p:10,c:18,f:6,
@@ -4609,7 +4667,8 @@ const RECIPES_DATA=[
    desc:'10 minutes Sunday. Breakfast handled for the entire school week.',
    ing:['2.5 cups rolled oats (½ cup per jar)','2.5 cups Greek yogurt (½ cup per jar)','2.5 cups milk of choice (½ cup per jar)','5 tbsp chia seeds (1 per jar)','5 tbsp honey (1 per jar)','5 mason jars','Toppings: berries, banana, peanut butter, granola'],
    steps:['Line up 5 mason jars. Assembly line — do one ingredient across all 5 before the next.','Layer in each jar: ½ cup oats → ½ cup yogurt → ½ cup milk → 1 tbsp chia → 1 tbsp honey. Stir each.','Add sturdy toppings now (granola, banana) or fresh toppings in the morning (berries, nut butter).','Seal and refrigerate overnight minimum. Keeps up to 4 days.','Grab and go cold, or microwave 90 seconds.'],
-   tip:'Let kids put their name on their jar — they\'re far more likely to eat something that\'s "theirs."'},
+   tip:'Let kids put their name on their jar — they\'re far more likely to eat something that\'s "theirs."',
+   health:['cholesterol','insulin','digestion']},
 
   {id:'egg-muffins',cats:['batch','kids','mealprep','highprotein'],creator:'Family Kitchen',ccolor:'#5c2d91',
    name:'Egg Muffin Cups — Batch 12',time:'28 min',serves:6,diff:'Easy',cal:160,p:18,c:3,f:8,
@@ -4771,6 +4830,125 @@ const RECIPES_DATA=[
    ing:['500ml filtered water (room temperature or warm)','Juice of ½ lemon (fresh, not bottled)','4–5 slices cucumber','3–4 fresh mint leaves','Optional: 1 tbsp apple cider vinegar for enhanced kidney pH support','Optional: pinch of Himalayan salt for electrolyte balance'],
    steps:['Fill a glass or mason jar with 500ml water — room temperature or slightly warm.','Squeeze ½ fresh lemon directly into the water. Do not use bottled lemon juice.','Add cucumber slices and mint leaves.','Optional: add apple cider vinegar and pinch of salt.','Drink the entire 500ml before coffee or breakfast. This is the kidney\'s morning reset.'],
    tip:'Citrate from fresh lemon is the most evidence-backed kidney stone prevention food. It binds calcium oxalate crystals and prevents them forming stones — reducing recurrence by 50%+ in studies. The key is FRESH lemon — bottled lemon juice has significantly less citrate activity.'},
+,
+
+  // ── LIVER HEALTH RECIPES ───────────────────────────────────
+  {id:'liver-artichoke-quinoa',cats:['quick','organcare'],creator:'MealDesk Health',ccolor:'#4A7C59',
+   name:'Artichoke + Quinoa + Lemon Olive Oil Bowl',time:'20 min',serves:2,diff:'Easy',cal:360,p:14,c:52,f:12,
+   health:['organ_liver','cholesterol','organ_heart','insulin'],
+   desc:'Artichoke cynarin is the most studied food for lowering AST/ALT liver enzymes. A liver-repair meal.',
+   ing:['1 cup quinoa','1 can artichoke hearts (14oz) rinsed','2 tbsp extra virgin olive oil','1 lemon (juice + zest)','3 garlic cloves minced','Fresh parsley','Salt and pepper'],
+   steps:['Cook quinoa per package in lightly salted water 15 min, then fluff with fork.','Warm olive oil in a pan over medium heat. Add minced garlic and cook 1 min.','Add artichoke hearts and saute 4 min until lightly golden on edges.','Combine quinoa and artichoke in a bowl. Add lemon juice and zest generously.','Top with fresh parsley and a final drizzle of olive oil.'],
+   tip:'Artichoke cynarin is the single most studied food compound for reducing AST and ALT liver enzymes. Eat this 3 times per week for 8 weeks and retest your liver enzymes.'},
+
+  {id:'liver-salmon-beet',cats:['quick','organcare'],creator:'MealDesk Health',ccolor:'#4A7C59',
+   name:'Salmon + Roasted Beets + Spinach',time:'35 min',serves:2,diff:'Easy',cal:480,p:38,c:22,f:22,
+   health:['organ_liver','cholesterol','organ_heart','eye_health','insulin'],
+   desc:'Beet betaine is the liver\'s primary detox co-factor. Omega-3 from salmon drops triglycerides 20-30%.',
+   ing:['2 salmon fillets (5oz each)','3 medium beets cubed','4 cups baby spinach','2 garlic cloves minced','2 tbsp extra virgin olive oil','1 lemon','Salt, pepper, dried oregano'],
+   steps:['Preheat oven to 400°F. Toss cubed beets with 1 tbsp olive oil and salt. Roast 30 min.','Season salmon with salt, pepper, lemon, and oregano. Bake last 15-18 min or pan-sear 4 min per side.','Saute minced garlic in remaining oil 1 min. Add spinach and toss 2 min until wilted.','Plate: bed of spinach, roasted beets alongside, salmon on top.','Squeeze remaining lemon over everything.'],
+   tip:'Betaine in beets drives the liver\'s methylation cycle — the most important detox pathway. Eat beets 3x/week minimum for liver recovery.'},
+
+  {id:'liver-green-smoothie',cats:['quick','drinks','organcare'],creator:'MealDesk Health',ccolor:'#4A7C59',
+   name:'Liver Flush Green Smoothie (No Fruit Juice)',time:'5 min',serves:1,diff:'Easy',cal:180,p:6,c:22,f:8,
+   health:['organ_liver','cholesterol','insulin','cancer_care'],
+   desc:'Zero sugar. Spinach, cucumber, celery, and flaxseed directly support liver detox pathways.',
+   ing:['2 large handfuls spinach','1 cucumber sliced','2 celery stalks','Juice of 1 lemon','1 tbsp ground flaxseed','1 cup cold water','4-5 ice cubes','1 Brazil nut (on the side)'],
+   steps:['Add spinach to blender first for smooth blending.','Add cucumber, celery, lemon juice, flaxseed, water, and ice.','Blend on high 45-60 seconds until completely smooth.','Pour and drink slowly. Eat the Brazil nut alongside for daily selenium.','Best on empty stomach or as a mid-morning reset.'],
+   tip:'No fruit juice — fructose is processed exclusively by the liver and is the primary driver of elevated triglycerides. This does the liver work without the sugar load.'},
+
+  {id:'liver-lentil-soup',cats:['batch','budget','organcare'],creator:'MealDesk Health',ccolor:'#4A7C59',
+   name:'Liver-Healing Lentil Soup + Turmeric',time:'35 min',serves:4,diff:'Easy',cal:340,p:18,c:52,f:8,
+   health:['organ_liver','cholesterol','insulin','organ_heart'],
+   desc:'Lentil soluble fiber binds LDL in the gut. Turmeric curcumin reduces liver inflammation directly.',
+   ing:['1.5 cups green or red lentils rinsed','1 large onion diced','3 carrots diced','3 celery stalks','4 garlic cloves minced','1 tsp turmeric','1 tsp cumin','6 cups low-sodium broth','2 tbsp extra virgin olive oil','Juice of 1 lemon','Fresh parsley'],
+   steps:['Heat olive oil in a large pot over medium. Add onion, carrot, celery. Cook 7 min.','Add garlic, turmeric, cumin. Stir 1 min.','Add lentils and broth. Boil then simmer 25 min until lentils are tender.','Partially blend with immersion blender — leave some texture.','Stir in lemon juice and parsley. Drizzle olive oil over each bowl.'],
+   tip:'Red lentils dissolve completely for a thick soup. Green lentils hold shape. Both are equally liver-supportive. Double batch and freeze — you always want this on hand.'},
+
+  // ── CHOLESTEROL RECIPES ────────────────────────────────────
+  {id:'chol-oat-blueberry',cats:['quick','organcare'],creator:'MealDesk Health',ccolor:'#1A6B72',
+   name:'Cholesterol-Busting Oatmeal + Blueberries + Walnuts',time:'10 min',serves:1,diff:'Easy',cal:340,p:11,c:52,f:13,
+   health:['cholesterol','organ_heart','insulin','organ_liver'],
+   desc:'Beta-glucan in oats + flaxseed lignans + walnut omega-3 = the most evidence-backed LDL-lowering breakfast.',
+   ing:['½ cup rolled oats (not instant)','1 cup unsweetened almond milk or water','1 tsp Ceylon cinnamon','1 tbsp ground flaxseed','½ cup blueberries','8-10 walnut halves'],
+   steps:['Bring almond milk to a gentle boil. Add oats and a pinch of salt.','Reduce heat and stir occasionally for 5 min until thick and creamy.','Remove from heat. Stir in cinnamon and ground flaxseed.','Transfer to bowl. Top with blueberries and walnuts.','Eat immediately. The cinnamon lowers fasting glucose 10-29%.'],
+   tip:'Beta-glucan in oats is the most studied single food for LDL reduction — 3g daily lowers LDL 5-10%. Half a cup of oats provides 2g. Add 1 tbsp chia seeds to hit the full 3g target.'},
+
+  {id:'chol-sardine-salad',cats:['quick','organcare','salads'],creator:'MealDesk Health',ccolor:'#1A6B72',
+   name:'Sardine + Arugula + Lemon + Olive Oil',time:'10 min',serves:1,diff:'Easy',cal:380,p:32,c:8,f:24,
+   health:['cholesterol','organ_heart','organ_liver','eye_health'],
+   desc:'Sardines have more omega-3 per gram than salmon. Raises HDL and lowers triglycerides within 8 weeks.',
+   ing:['1 can sardines in olive oil drained','3 cups arugula','½ cup cherry tomatoes halved','2 tbsp extra virgin olive oil','Juice of 1 lemon','1 tbsp capers (optional)','Salt, black pepper, red pepper flakes'],
+   steps:['Arrange arugula and cherry tomatoes in a wide bowl.','Drain sardines and lay over the greens. Break apart slightly with a fork.','Add capers if using.','Drizzle olive oil and squeeze full lemon over everything.','Season with salt, pepper, and red pepper flakes. Eat immediately.'],
+   tip:'One can of sardines provides the full daily DHA and EPA target for both cardiovascular and eye health. If the taste is new, start with sardines packed in lemon-flavored olive oil — much milder.'},
+
+  {id:'chol-chickpea-stew',cats:['batch','budget','organcare'],creator:'MealDesk Health',ccolor:'#1A6B72',
+   name:'Cholesterol-Lowering Chickpea Stew',time:'30 min',serves:4,diff:'Easy',cal:400,p:18,c:58,f:12,
+   health:['cholesterol','organ_heart','insulin','organ_liver'],
+   desc:'Chickpeas have the highest studied soluble fiber content for LDL reduction of any legume.',
+   ing:['2 cans chickpeas (15oz) rinsed','1 can crushed tomatoes (28oz)','1 large onion diced','4 garlic cloves minced','1 tsp cumin','1 tsp smoked paprika','½ tsp turmeric','3 tbsp extra virgin olive oil','Juice of 1 large lemon','Fresh parsley','½ cup low-sodium broth'],
+   steps:['Heat olive oil in a wide pan over medium. Add onion and cook 7 min until golden.','Add garlic, cumin, paprika, and turmeric. Stir 1 min.','Add chickpeas, crushed tomatoes, and broth. Stir well.','Simmer uncovered 20 min until sauce thickens and coats the chickpeas.','Finish with lemon juice and fresh parsley. Serve with whole grain bread.'],
+   tip:'The soluble fiber in chickpeas physically traps LDL in the gut and escorts it out before absorption. Even people eating mixed diets see 5-10% LDL reduction from regular chickpea consumption.'},
+
+  // ── EYE HEALTH RECIPES ────────────────────────────────────
+  {id:'eye-egg-spinach',cats:['quick','organcare'],creator:'MealDesk Health',ccolor:'#0ea5e9',
+   name:'Eye Health Scramble — Eggs + Spinach + Turmeric',time:'10 min',serves:1,diff:'Easy',cal:310,p:20,c:10,f:22,
+   health:['eye_health','organ_brain','energy'],
+   desc:'Egg yolks + cooked spinach = the highest bioavailable lutein combination for macular pigment.',
+   ing:['3 whole eggs (yolks essential)','2 large handfuls spinach','2 garlic cloves minced','½ tsp turmeric','Pinch black pepper (required — increases curcumin absorption 2000%)','1 tbsp extra virgin olive oil','Salt'],
+   steps:['Heat olive oil in a pan over medium. Add minced garlic and cook 1 min.','Add spinach and toss until wilted 2 min. Cooking spinach concentrates lutein vs raw.','Whisk eggs with turmeric, black pepper, and salt.','Pour eggs over spinach and scramble gently over low-medium heat until just set.','Serve immediately. Olive oil fat maximizes lutein absorption from eggs and spinach.'],
+   tip:'Egg yolk lutein is 3x more bioavailable than supplements or greens without fat. Never use egg whites only for eye health — the yolk is the medicine. Cook spinach rather than eating it raw for maximum lutein concentration.'},
+
+  {id:'eye-blueberry-smoothie',cats:['quick','drinks','organcare'],creator:'MealDesk Health',ccolor:'#0ea5e9',
+   name:'Eye Care Smoothie — Blueberry + Spinach + Goji',time:'5 min',serves:1,diff:'Easy',cal:240,p:8,c:38,f:8,
+   health:['eye_health','organ_brain','cholesterol'],
+   desc:'Blueberry anthocyanins improve retinal blood flow. Goji berries have the highest zeaxanthin of any food.',
+   ing:['1 cup frozen blueberries','2 handfuls spinach','1 tbsp ground flaxseed','1 tbsp goji berries','1 cup unsweetened almond milk','½ cup water','4 ice cubes'],
+   steps:['Add spinach to blender first for smooth blending.','Add frozen blueberries, goji berries, flaxseed, almond milk, and water.','Blend 45 seconds until completely smooth.','Pour and drink immediately or keep covered in fridge up to 4 hours.','Eat a walnut on the side for additional omega-3.'],
+   tip:'Goji berries have the highest zeaxanthin concentration of any food — zeaxanthin concentrates specifically in the macula (central vision area). Even 1 tablespoon daily makes a measurable difference in macular pigment density over 90 days.'},
+
+  {id:'eye-salmon-sweet-potato',cats:['quick','organcare'],creator:'MealDesk Health',ccolor:'#0ea5e9',
+   name:'Salmon + Sweet Potato + Kale — Complete Eye Plate',time:'25 min',serves:2,diff:'Easy',cal:460,p:38,c:32,f:16,
+   health:['eye_health','organ_liver','organ_heart','cholesterol'],
+   desc:'DHA from salmon + beta-carotene from sweet potato + lutein from kale = complete eye nutrition in one plate.',
+   ing:['2 salmon fillets (5oz each)','1 medium sweet potato cubed','3 cups kale leaves torn','2 garlic cloves minced','2 tbsp extra virgin olive oil','1 lemon','Salt, pepper, smoked paprika'],
+   steps:['Preheat oven to 400°F. Toss sweet potato with 1 tbsp olive oil, paprika, and salt. Roast 20 min.','Season salmon with salt, pepper, and lemon. Bake alongside sweet potato last 15-18 min.','Saute garlic in remaining oil 1 min. Add kale and toss 3-4 min until wilted and slightly crispy at edges.','Plate kale as base, sweet potato alongside, salmon on top.','Squeeze lemon over everything and serve immediately.'],
+   tip:'DHA in salmon makes up 60% of the photoreceptor membrane in your retina. After years of screen work, DHA depletion is one of the most common causes of persistent blurry vision that no glasses prescription fixes.'},
+
+  // ── INSULIN / BLOOD SUGAR RECIPES ────────────────────────
+  {id:'insulin-turkey-cauli',cats:['quick','organcare'],creator:'MealDesk Health',ccolor:'#059669',
+   name:'Ground Turkey + Cauliflower Rice + Garlic',time:'20 min',serves:2,diff:'Easy',cal:360,p:40,c:14,f:14,
+   health:['insulin','cholesterol','organ_liver','weight_loss'],
+   desc:'Zero blood sugar spike. High lean protein + cauliflower low-carb base = ideal for prediabetes.',
+   ing:['350g lean ground turkey','1 medium cauliflower riced (or 2 cups frozen)','4 garlic cloves minced','1 onion diced','1 tsp cumin','½ tsp turmeric','2 tbsp extra virgin olive oil','Fresh parsley','Salt, pepper, lemon'],
+   steps:['Pulse raw cauliflower in a food processor until rice-sized. Or use pre-riced frozen.','Heat olive oil in a large pan. Add onion and cook 4 min.','Add garlic, cumin, turmeric — stir 1 min until fragrant.','Add ground turkey. Break apart and cook 7-8 min until fully browned.','Add cauliflower rice and stir-fry together 4-5 min. Season and finish with lemon and fresh herbs.'],
+   tip:'Cauliflower has a glycemic index of 15 vs white rice at 73. This plate will not spike blood glucose. Combine with a 20-minute walk afterward and glucose stays below 110 even in prediabetic ranges.'},
+
+  {id:'insulin-egg-sweet-potato',cats:['quick','organcare'],creator:'MealDesk Health',ccolor:'#059669',
+   name:'Eggs + Sweet Potato Hash + Spinach',time:'20 min',serves:2,diff:'Easy',cal:350,p:20,c:28,f:16,
+   health:['insulin','organ_liver','eye_health','cholesterol'],
+   desc:'Sweet potato + fat lowers its glycemic index significantly. Cinnamon mimics insulin.',
+   ing:['4 whole eggs','1 medium sweet potato diced small','2 cups spinach','1 red bell pepper diced','2 garlic cloves minced','2 tbsp extra virgin olive oil','1 tsp smoked paprika','Salt and pepper'],
+   steps:['Heat olive oil in a wide pan over medium. Add sweet potato and cook 10-12 min, stirring, until golden and tender.','Add bell pepper and garlic — cook 3 min more.','Add spinach and toss 1 min until wilted. Push vegetables to the side.','Crack 4 eggs into the pan. Cover and cook 3-4 min for set whites, runny yolks.','Serve directly from pan. Season with paprika, salt, and pepper.'],
+   tip:'Sweet potato with fat (olive oil) significantly lowers its glycemic index vs eating it plain or baked without fat. This is why it belongs in insulin-management meals when prepared correctly.'},
+
+  // ── HEART HEALTH RECIPES ──────────────────────────────────
+  {id:'heart-mediterranean-bowl',cats:['quick','organcare','salads'],creator:'MealDesk Health',ccolor:'#dc2626',
+   name:'Mediterranean Heart Bowl — Chicken + Hummus + Greens',time:'20 min',serves:2,diff:'Easy',cal:440,p:40,c:28,f:18,
+   health:['organ_heart','cholesterol','organ_liver','inflammation'],
+   desc:'The Mediterranean diet reduces cardiovascular events 30% (PREDIMED trial). This bowl is its core.',
+   ing:['2 chicken breasts (4oz each)','3 cups mixed greens or arugula','½ cup hummus','1 cup cherry tomatoes halved','½ cucumber sliced','¼ red onion sliced','Kalamata olives handful','3 tbsp extra virgin olive oil','1 lemon','Dried oregano, salt, pepper'],
+   steps:['Season chicken with olive oil, oregano, salt, and pepper. Pan-cook 6 min per side or bake 400°F 22 min.','Slice chicken and let rest 3 min.','Build bowls: greens as base, sliced chicken, tomatoes, cucumber, red onion, olives.','Spoon hummus on the side.','Drizzle with olive oil and squeeze lemon over everything generously.'],
+   tip:'The PREDIMED trial (7,500 participants, 5 years) found 30% fewer cardiovascular events on the Mediterranean diet vs low-fat. The key variable was olive oil — not calorie restriction.'},
+
+  {id:'heart-fasolakia',cats:['batch','budget','organcare'],creator:'MealDesk Health',ccolor:'#dc2626',
+   name:'Fasolakia — Green Bean Stew in Olive Oil',time:'55 min',serves:4,diff:'Easy',cal:280,p:7,c:32,f:14,
+   health:['organ_heart','organ_liver','cholesterol','inflammation'],
+   desc:'Traditional Greek dish — anti-inflammatory, high fiber, cooked entirely in extra virgin olive oil.',
+   ing:['600g green beans trimmed','1 large onion diced','3 garlic cloves minced','1 can crushed tomatoes (14oz)','½ cup water','4 tbsp extra virgin olive oil','Fresh dill or parsley','Salt, pepper, pinch of sugar'],
+   steps:['Heat olive oil in a wide heavy pan over medium. Add onion and cook 8 min until golden.','Add garlic and cook 1 min.','Add green beans, crushed tomatoes, water, salt, pepper, and pinch of sugar.','Stir well, bring to a simmer, cover and cook on low 40-45 min until beans are very tender.','Stir in fresh dill. Serve warm or room temperature with whole grain bread.'],
+   tip:'In Greek villages, this dish is eaten 2-3 times per week. The olive oil is not a condiment — it is an ingredient. Use the full 4 tablespoons. This is exactly what the Mediterranean diet research is based on.'}
+
 ];
 
 let rcpFilter='all';
@@ -4799,8 +4977,17 @@ function renderRcpCats(){
 function renderRcpList(){
   const el=document.getElementById('rcp-list');
   if(!el)return;
-  const filtered=rcpFilter==='all'?RECIPES_DATA:RECIPES_DATA.filter(r=>r.cats.includes(rcpFilter));
-  if(!filtered.length){el.innerHTML='<div style="text-align:center;padding:40px 0;color:var(--sub)">No recipes in this category yet.</div>';return;}
+  const userGoals=P.goals||[];
+  const filtered=rcpFilter==='all'?RECIPES_DATA
+    :rcpFilter==='foryou'
+      ?(userGoals.length?RECIPES_DATA.filter(r=>(r.health||[]).some(h=>userGoals.includes(h))):RECIPES_DATA)
+      :RECIPES_DATA.filter(r=>r.cats.includes(rcpFilter));
+  if(!filtered.length){
+    el.innerHTML=rcpFilter==='foryou'&&!userGoals.length
+      ?'<div style="text-align:center;padding:40px 0;color:var(--sub)">Select health goals in Profile to see matched recipes.</div>'
+      :'<div style="text-align:center;padding:40px 0;color:var(--sub)">No recipes in this category yet.</div>';
+    return;
+  }
 
   const groups={};
   filtered.forEach(r=>{
