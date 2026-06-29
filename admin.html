@@ -356,6 +356,7 @@ function checkStrength(input,barId,lblId){
 window.addEventListener('DOMContentLoaded',()=>{
   const params=new URLSearchParams(window.location.search);
   if(params.has('reset')){window.resetToken=params.get('reset');showView('reset');}
+  else if(sessionToken&&sessionToken.startsWith('demo-')){enterDash({kvConfigured:false,mockData:true});}
   else if(sessionToken){enterDash();}
 });
 
@@ -374,8 +375,15 @@ async function doLogin(){
     enterDash(d);
   }catch(e){
     // Fallback demo mode
-    if(pass==='stavros2026'){sessionToken='demo-'+Date.now();sessionStorage.setItem('mdf_admin_token',sessionToken);enterDash({kvConfigured:false,mockData:true});}
-    else{showMsg('login-msg','Incorrect password.');}
+    // API unreachable — accept the default password locally
+    const defaultPass = 'stavros2026';
+    if(pass===defaultPass){
+      sessionToken='demo-'+Date.now();
+      sessionStorage.setItem('mdf_admin_token',sessionToken);
+      enterDash({kvConfigured:false,mockData:true});
+    } else {
+      showMsg('login-msg','Incorrect password. Default password is: stavros2026');
+    }
   }
   btn.textContent='Sign in';btn.disabled=false;
 }
@@ -431,12 +439,24 @@ async function doSetup(){
   btn.textContent='Create admin account';btn.disabled=false;
 }
 
+let demoMode = false;
+
 function enterDash(d){
   document.getElementById('screen-login').style.display='none';
   document.getElementById('screen-dash').style.display='block';
-  if(d)renderData(d.kvConfigured===false?{ok:true,kvConfigured:false,stats:DEMO}:d);
-  loadData();
-  refreshTimer=setInterval(loadData,30000);
+  demoMode = !d || d.kvConfigured===false || d.mockData===true;
+  if(demoMode){
+    renderData({ok:true,kvConfigured:false,stats:DEMO});
+    document.getElementById('live-txt').textContent='demo';
+    document.getElementById('tb-sub').textContent='Demo mode · '+new Date().toLocaleTimeString();
+    // Still try a real load in case API works
+    loadData();
+    refreshTimer=setInterval(loadData,30000);
+  } else {
+    if(d)renderData(d);
+    loadData();
+    refreshTimer=setInterval(loadData,30000);
+  }
 }
 
 async function doLogout(){
@@ -450,12 +470,33 @@ async function doLogout(){
 }
 
 async function loadData(){
+  if(!sessionToken) return;
   try{
     const r=await fetch(`${BASE}/api/admin`,{headers:{'Authorization':`Bearer ${sessionToken}`}});
-    if(r.status===401){doLogout();return;}
+    if(r.status===401){
+      // If we're already in demo mode (demo- token), don't logout — just keep showing demo data
+      if(demoMode || sessionToken.startsWith('demo-')){
+        renderData({ok:true,kvConfigured:false,stats:DEMO});
+        return;
+      }
+      // Real session expired — logout
+      doLogout();
+      return;
+    }
     const d=await r.json();
-    renderData(d.kvConfigured===false?{ok:true,kvConfigured:false,stats:DEMO}:d);
-  }catch(e){}
+    if(d.kvConfigured===false||d.mockData){
+      demoMode=true;
+      renderData({ok:true,kvConfigured:false,stats:DEMO});
+    } else {
+      demoMode=false;
+      renderData(d);
+    }
+  }catch(e){
+    // Network error — if in demo mode keep showing demo, otherwise just wait
+    if(demoMode||!sessionToken||sessionToken.startsWith('demo-')){
+      renderData({ok:true,kvConfigured:false,stats:DEMO});
+    }
+  }
 }
 
 // ── DRAWER ────────────────────────────────────────────────────────────────────
