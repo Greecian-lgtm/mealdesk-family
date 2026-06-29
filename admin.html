@@ -444,19 +444,14 @@ let demoMode = false;
 function enterDash(d){
   document.getElementById('screen-login').style.display='none';
   document.getElementById('screen-dash').style.display='block';
-  demoMode = !d || d.kvConfigured===false || d.mockData===true;
-  if(demoMode){
-    renderData({ok:true,kvConfigured:false,stats:DEMO});
-    document.getElementById('live-txt').textContent='demo';
-    document.getElementById('tb-sub').textContent='Demo mode · '+new Date().toLocaleTimeString();
-    // Still try a real load in case API works
-    loadData();
-    refreshTimer=setInterval(loadData,30000);
-  } else {
-    if(d)renderData(d);
-    loadData();
-    refreshTimer=setInterval(loadData,30000);
-  }
+  clearInterval(refreshTimer);
+  demoMode = !d || d.kvConfigured===false || d.mockData===true || (sessionToken&&sessionToken.startsWith('demo-'));
+  // Always render immediately — never wait
+  renderData(demoMode ? {ok:true,kvConfigured:false,stats:DEMO} : d);
+  // Start refresh timer — loadData handles demo gracefully
+  refreshTimer = setInterval(loadData, 30000);
+  // Only hit API if we have a real session token
+  if(!demoMode) loadData();
 }
 
 async function doLogout(){
