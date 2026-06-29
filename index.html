@@ -945,6 +945,8 @@ const COND={
   organ_thyroid: {lb:'Thyroid & Metabolism',em:'🦋',c:'#7c3aed',bg:'#f5f3ff'},
   organ_brain:   {lb:'Brain & Cognitive Health',em:'🧠',c:'#1d4ed8',bg:'#eff6ff'},
   organ_kidney:  {lb:'Kidney Health',em:'💧',c:'#06b6d4',bg:'#ecfeff'},
+  hidden_sugar:  {lb:'Hidden Sugars / Insulin Spikes',em:'🩸',c:'#dc2626',bg:'#fef2f2'},
+  post_menopause:{lb:'Post-Menopause Nutrition',em:'🌺',c:'#c026a0',bg:'#fdf4ff'},
   eye_health:    {lb:'Eye Health / Screen Fatigue',em:'👁️',c:'#0ea5e9',bg:'#f0f9ff'},
   plan_9030:     {lb:'90-30-50 Daily Plan',em:'📊',c:'#059669',bg:'#f0fdf4'},
 };
@@ -1253,6 +1255,29 @@ const CONDITION_GUIDE={
     },
     avoid:['Beer (liquid carbs + phytoestrogens = beer belly is real)','All liquid calories — juice, soda, sports drinks','Refined carbs — bread, pasta, white rice (insulin → fat storage → belly first)','Late night eating (cortisol rises at night — food converts more readily to visceral fat)','Chronic stress eating (cortisol is the belly fat hormone)','Trans fats (specifically accumulate in visceral fat)','Alcohol in general (liver processes alcohol before fat — fat storage increases)'],
     tip:'Intermittent fasting 16:8 is the most effective single intervention for male belly fat — it reduces insulin for 16 hours straight, forcing the body to burn stored fat. Combine with resistance training (builds muscle that raises resting metabolism) and adequate sleep (poor sleep raises ghrelin + cortisol, both of which increase belly fat). Target protein at 1g per pound of bodyweight to preserve muscle while losing fat.',
+  },
+  hidden_sugar:{
+    summary:'Hidden sugars in processed foods trigger insulin spikes that store fat, drive inflammation, and cause energy crashes — even in foods marketed as healthy. The average American eats 77g of added sugar daily without knowing it. Learning to identify glycemic load is more important than counting calories.',
+    eat:{
+      '🥬 Zero-Spike Foods (Glycemic Index 0-15)':['Leafy greens (spinach, kale, arugula, romaine)','Broccoli, cauliflower, Brussels sprouts','Avocado — fat slows all glucose absorption','Eggs — zero carbs, maximum satiety','Wild salmon and fatty fish','Nuts and seeds (almonds, walnuts, pumpkin seeds)','Olive oil and avocado oil','Bone broth','Fermented foods (kimchi, sauerkraut, kefir)'],
+      '🍓 Low-Spike Foods (GI 15-35)':['Blueberries, strawberries, raspberries (fiber slows sugar)','Greek yogurt plain (protein + fat buffer)','Chickpeas and lentils (resistant starch)','Sweet potato with fat and protein (lowers GI significantly)','Quinoa (protein content lowers GI vs white rice)','Steel-cut oats (intact structure = slower digestion)','Dark chocolate 85%+ (minimal sugar, magnesium)'],
+      '🌿 Insulin Sensitizers':['Apple cider vinegar 1 tbsp before meals — reduces glucose response 20-30%','Cinnamon (Ceylon) — mimics insulin, reduces fasting glucose 10-29%','Berberine 500mg with meals — natural Metformin equivalent','Ground flaxseed — fiber slows glucose absorption','Green tea EGCG — improves insulin receptor sensitivity','Magnesium glycinate — 45% of diabetics are deficient'],
+    },
+    avoid:['Fruit juice (same sugar as soda — no fiber to slow it)','Granola and granola bars (40-60g sugar per serving)','Flavored yogurt (20-25g sugar — same as candy bar)','Protein bars — most have 20-30g sugar','Salad dressings (most have corn syrup)','Sauces: ketchup, BBQ sauce, teriyaki (high fructose corn syrup)','Instant oatmeal packets (pre-sweetened)','Dried fruit (sugar is concentrated without water)','Flavored almond or oat milk (added sugar)','Canned soups (high sodium AND hidden sugar)','Bread including whole wheat (glycemic index 70 — same as white)'],
+    tip:'The glycemic INDEX tells you how fast a food spikes blood sugar. The glycemic LOAD tells you how much total spike. A watermelon has a high index but low load because a serving is mostly water. An apple has moderate index but you eat the whole thing — higher load. Focus on: fiber content (slows spike), fat content (slows spike), protein content (slows spike), and portion size. The fat+protein+fiber trio converts any moderate-GI food into a low-spike meal.',
+  },
+  post_menopause:{
+    summary:'Post-menopause (12 months after last period) brings permanent hormonal shifts that require a different nutritional strategy than perimenopause. Bone density, heart health, insulin sensitivity, and muscle preservation become the four primary targets. Starvation diets fail completely — the metabolism is already slower and severe restriction causes muscle loss not fat loss.',
+    eat:{
+      '🦴 Bone Density (Priority 1)':['Salmon with bones + sardines (calcium + Vitamin D3 + omega-3 together)','Kale + bok choy + collard greens (calcium without oxalates)','Greek yogurt and kefir (calcium + probiotics + protein)','Almonds (calcium + magnesium + healthy fat)','Sesame seeds and tahini (highest calcium density of any food)','Bone broth (collagen + minerals for bone matrix)','Tofu made with calcium sulfate (300mg calcium per half cup)'],
+      '❤️ Heart Protection (Estrogen Gone)':['Extra virgin olive oil daily (PREDIMED: 30% fewer cardiovascular events)','Fatty fish 4×/week — DHA + EPA for triglycerides and arterial health','Walnuts — ALA omega-3 + L-arginine for arterial flexibility','Berries — anthocyanins reduce arterial stiffness','Dark chocolate 85% — flavanols improve blood flow','Garlic 2 raw cloves daily — allicin lowers LDL and blood pressure','Oatmeal — beta-glucan fiber reduces LDL cholesterol'],
+      '💪 Muscle Preservation (Metabolic Rate)':['Protein 1g per lb of body weight daily — muscle loss accelerates without estrogen','Eggs at breakfast — leucine triggers muscle protein synthesis','Cottage cheese before bed — casein protein feeds muscles overnight','Wild salmon — protein + omega-3 reduces muscle inflammation','Chicken breast, turkey — lean complete protein','Greek yogurt — whey protein hits bloodstream fast post-exercise'],
+      '🧠 Brain + Mood':['Fatty fish — DHA is the structural fat of brain cell membranes','Blueberries — anthocyanins cross blood-brain barrier, reduce cognitive decline','Dark leafy greens — folate for neurotransmitter production','Avocado — monounsaturated fat + Vitamin E for brain protection','Walnuts — only nut with melatonin + omega-3','Fermented foods — gut-brain axis, serotonin production','Turmeric + black pepper — curcumin reduces neuroinflammation'],
+      '⚖️ Weight Without Starvation':['High protein 30% of calories — preserves muscle, burns more calories digesting','Volume eating: 2-3 cups leafy greens fills plate and stomach for 30 calories','Strategic carbs only around exercise — muscles absorb glucose better post-movement','Healthy fats are not the enemy — they slow insulin response and keep you full','Intermittent fasting 12-14h (not 16+) — enough to improve insulin without cortisol spike','Strength training 2×/week is mandatory — the ONLY way to rebuild declining metabolic rate'],
+    },
+    avoid:['Severe caloric restriction below 1400 cal — causes muscle loss not fat loss at this stage','Alcohol — increases breast cancer risk post-menopause, worsens sleep and hot flashes','Refined carbs and sugar — insulin resistance worsens without estrogen','High sodium — accelerates bone calcium loss through urine','Processed soy in excess — fermented soy (miso, tempeh) is fine; soy protein isolate is not','Trans fats — increase LDL, heart disease risk doubles post-menopause','Seed oils — omega-6 inflammation promotes joint pain and weight resistance'],
+    tip:'Post-menopausal weight gain is NOT about eating less — it is about hormonal shifts that changed how your body processes everything. Estrogen helped regulate insulin sensitivity, fat distribution, and metabolic rate. Without it, the body needs different signals: MORE protein (not less), MORE resistance training (not more cardio), and strategic timing of carbs (not elimination). Women who cut calories to 1200 at this stage lose muscle, slow their metabolism further, and gain the weight back faster. 1400-1700 calories with 90-100g protein is the correct zone.',
+    source:'Menopause Society 2025 guidelines | PREDIMED trial | Harvard bone health research | Dr. Mary Claire Haver — The New Menopause 2024',
   },
   eye_health:{
     summary:'Digital eye strain (Computer Vision Syndrome) affects 65% of screen users. Prolonged monitor use depletes macular pigment, disrupts tear film, and strains ciliary muscles. Targeted nutrition can rebuild the eye\'s protective pigment layer, improve tear quality, and reduce inflammation in the optic pathway.',
@@ -3513,6 +3538,132 @@ PRE-MADE TRIO COMBOS (all 3 herbs together): "Para-Cleanse" by Nature's Sunshine
     tip:'Meal prepping 5 portions at once on Sunday is the single habit that separates people who succeed at fat loss from those who don\'t. When food is ready — you eat it. When it requires cooking — you order pizza.',
     source:'MealDesk Health | High-volume eating research | Budget nutrition planning'},
 
+  hidden_sugar_protocol:{icon:'🩸',title:'Hidden Sugar & Insulin Spike Protocol',cat:'Metabolic',
+    subtitle:'Identify hidden sugars, prevent insulin spikes, stabilize blood sugar for energy and weight control',
+    symptoms:['Energy crash 1-2 hours after meals','Constant hunger despite eating enough','Belly fat that won\'t move despite dieting','Afternoon brain fog or fatigue','Sugar and carb cravings especially afternoon','Difficulty losing weight even on low-calorie diets','Frequent urination or thirst','Skin tags (sign of chronic insulin elevation)'],
+    protocols:[
+      'GLYCEMIC LOAD RULE: pair every carb with fat + protein + fiber. A potato alone spikes insulin. A potato with olive oil + Greek yogurt + broccoli barely moves it. The trio is the intervention — not carb elimination.',
+      'APPLE CIDER VINEGAR 1 tbsp in 8oz water before every meal — reduces glucose response 20-30% by slowing gastric emptying. Most underused glucose intervention.',
+      'BERBERINE 500mg with every meal — reduces insulin resistance same mechanism as Metformin without prescription. Most studied natural blood sugar compound. Stack with meals not on empty stomach.',
+      'PROTEIN AT BREAKFAST MANDATORY — 30g within 60 min of waking sets blood sugar stability for the entire day. People who do this eat 400 fewer calories without trying.',
+      'WALK 10-20 MIN AFTER EVERY MEAL — muscle contraction acts like insulin, pulling glucose from blood into cells without requiring insulin hormone. Post-meal walking is more powerful than any supplement.',
+      'IDENTIFY THE 11 HIDDEN SUGAR SOURCES: fruit juice, flavored yogurt, granola, protein bars, salad dressings, ketchup/sauces, instant oatmeal, bread (all types), dried fruit, flavored nut milks, canned soups. Read every label.',
+      'CINNAMON (CEYLON) 1/2 tsp daily — mimics insulin at the receptor level. Reduces fasting glucose 10-29% in studies. Add to coffee, oatmeal, or yogurt. Must be Ceylon not Cassia (supermarket cinnamon).',
+      'MAGNESIUM GLYCINATE 400mg at bedtime — 45% of insulin-resistant people are magnesium deficient. Magnesium is the co-factor for insulin receptor function. Without it, insulin cannot work properly.',
+      'FIBER FIRST EATING ORDER — eat vegetables first, then protein, then fat, then carbs last. This sequence flattens the glucose curve by 75% compared to eating in reverse order (Glucose Goddess 2024 research).',
+      'FASTING WINDOW 12-14 HOURS minimum — allows insulin to drop completely overnight. Insulin cannot fall while food is being digested. The fast is when fat burning happens.',
+    ],
+    hiddenSugars:[
+      'Fruit juice: 26g sugar per cup — same as soda, zero fiber, absorbed immediately',
+      'Flavored yogurt: 20-25g sugar — more than a candy bar. Buy plain, add berries yourself',
+      'Granola bars: 20-30g sugar. Most are candy bars with oats on top',
+      'Whole wheat bread: glycemic index 71 — same as white bread. Spikes insulin identically',
+      'Protein bars: most have 20-25g sugar. Check: sugar must be under 5g',
+      'Salad dressings: most bottled dressings have corn syrup as ingredient 2 or 3',
+      'BBQ sauce / ketchup / teriyaki: 10-15g sugar per 2 tbsp serving',
+      'Dried fruit: raisins have 60g sugar per half cup. Concentrated without water',
+      'Instant oatmeal packets: 12-18g added sugar. Buy plain rolled oats',
+      'Flavored almond milk / oat milk: 7-12g added sugar per cup. Buy unsweetened',
+      'Canned soup: usually 8-12g sugar and 900mg sodium',
+      'Sauces labeled "reduced fat": fat removed, sugar added to compensate',
+    ],
+    insulinSafeSwaps:[
+      'White rice → cauliflower rice (GI 15 vs 73)',
+      'Fruit juice → whole fruit + water (fiber slows absorption)',
+      'Flavored yogurt → plain Greek yogurt + fresh berries',
+      'White bread → lettuce wraps or cloud bread',
+      'Pasta → zucchini noodles or chickpea pasta (higher protein)',
+      'Potato → sweet potato with olive oil + protein (lower GI + slower absorption)',
+      'Granola → steel-cut oats + nuts + cinnamon',
+      'Salad dressing → olive oil + lemon + ACV (homemade)',
+      'Candy bar → 85% dark chocolate (2 squares) + walnuts',
+      'Soda / juice → sparkling water + lemon + ACV + stevia',
+    ],
+    weeklyMealPlan:[
+      {day:'Monday',breakfast:'3 eggs + avocado + spinach scramble',lunch:'Salmon salad + olive oil + greens + walnuts',dinner:'Chicken + cauliflower mash + roasted broccoli'},
+      {day:'Tuesday',breakfast:'Plain Greek yogurt + blueberries + chia + cinnamon',lunch:'Lentil soup + olive oil + lemon',dinner:'Ground turkey + zucchini noodles + tomato sauce'},
+      {day:'Wednesday',breakfast:'Overnight oats (plain) + almond butter + cinnamon',lunch:'Chickpea bowl + cucumber + olive oil + herbs',dinner:'Baked salmon + asparagus + sweet potato (small with fat)'},
+      {day:'Thursday',breakfast:'Smoothie: spinach + protein + almond butter + berries (no juice)',lunch:'Tuna + avocado + lettuce wrap',dinner:'Chicken stir-fry + cauliflower rice + vegetables'},
+      {day:'Friday',breakfast:'Eggs + cottage cheese + flaxseed',lunch:'Greek salad + grilled chicken + olive oil',dinner:'Shrimp + roasted vegetables + quinoa (small portion)'},
+      {day:'Saturday',breakfast:'Veggie omelette + avocado',lunch:'Large salad + salmon + olive oil + ACV dressing',dinner:'Steak + roasted broccoli + small baked sweet potato with butter'},
+      {day:'Sunday',breakfast:'Greek yogurt + walnuts + cinnamon + fresh berries',lunch:'Lentil and vegetable soup',dinner:'Slow-cooked chicken + roasted root vegetables + olive oil'},
+    ],
+    supplements:[
+      'Berberine 500mg — 3× daily with meals. Most evidence-based natural glucose regulator',
+      'Magnesium glycinate 400mg — bedtime. Co-factor for insulin receptor function',
+      'Ceylon cinnamon 500mg — with meals or in food daily',
+      'Apple cider vinegar 1 tbsp — before every meal in water',
+      'Chromium picolinate 200mcg — insulin receptor sensitizer',
+      'Alpha lipoic acid 600mg — antioxidant that improves glucose uptake',
+      'Vitamin D3 2000-4000 IU — low D3 strongly linked to insulin resistance',
+    ],
+    tip:'The order you eat food in changes your glucose response by up to 75%. Eat: vegetables first → protein second → fat third → carbs last. Doing this alone — no diet change — can flatten the glucose curve dramatically. Combine with ACV before meals and a 10-minute walk after and you have a complete insulin management system without any calorie counting.',
+    source:'Glucose Goddess 2024 research | Berberine clinical trials vs Metformin | ACV glucose studies | Glycemic index/load research | Dr. Jason Fung insulin work'},
+
+  post_menopause_protocol:{icon:'🌺',title:'Post-Menopause Nutrition Protocol — Not Starvation',cat:'Hormonal',
+    subtitle:'Evidence-based eating for after menopause — bone, heart, muscle, brain, and healthy weight without deprivation',
+    symptoms:['Weight gain especially around midsection despite no diet change','Difficulty losing weight even at 1200 calories','Bone density declining','Sleep disruption','Joint pain and stiffness','Low energy and motivation','Brain fog','Increased cardiovascular risk','Dry skin and hair changes','Mood fluctuations'],
+    protocols:[
+      'PROTEIN 30-35% OF CALORIES MANDATORY — without estrogen, muscle breakdown accelerates. Protein is the primary signal to build and maintain muscle. Target 90-100g daily minimum. Every 10g reduction in protein = accelerated metabolic decline.',
+      'STRENGTH TRAINING 2-3× PER WEEK NON-NEGOTIABLE — this is the only intervention that rebuilds post-menopausal metabolic rate. Walking burns calories but does not rebuild the metabolic engine. Squats, rows, deadlifts, presses — even bodyweight.',
+      'CALORIE FLOOR 1400-1600 — eating below 1200 triggers the starvation response which LOWERS metabolism and causes the body to eat muscle not fat. Women who eat 1400-1600 calories lose more body fat over 12 months than those eating 1200.',
+      'CALCIUM 1200mg DAILY (bone density priority) — sardines with bones, kale, sesame seeds, Greek yogurt, almonds, fortified foods. Vitamin D3 2000-4000 IU + K2 100mcg required for calcium to reach bone not arteries.',
+      'OMEGA-3 DAILY (heart protection) — estrogen was protecting the heart. Without it, cardiovascular risk doubles in the first 5-10 years. Salmon or sardines 4×/week or fish oil 2-4g daily minimum.',
+      'PHYTOESTROGENS DAILY — ground flaxseed (1-2 tbsp), fermented soy (miso, tempeh, edamame), sesame seeds. Lignans and isoflavones partially compensate for lost estrogen signaling in bone and brain.',
+      'INTERMITTENT FASTING 12-14 HOURS ONLY — enough to improve insulin sensitivity without triggering cortisol elevation. Longer fasts (16+ hours) raise cortisol which promotes belly fat at this stage.',
+      'SLEEP MUST BE PRIORITIZED — growth hormone peaks during sleep and is the primary driver of muscle maintenance post-menopause. Poor sleep = muscle loss and fat gain even with perfect nutrition. 7-8 hours minimum.',
+      'VOLUME EATING STRATEGY — large plates of low-calorie-density foods (2-3 cups leafy greens, cucumber, celery, zucchini) fill the stomach with fiber and water before the calorie-dense foods. Eat less total calories without feeling deprived.',
+      'ELIMINATE SEED OILS COMPLETELY — oxidized omega-6 from canola, vegetable, sunflower, corn oils promotes the inflammation that drives joint pain and metabolic resistance post-menopause. Replace 100% with olive oil.',
+    ],
+    boneProtocolFoods:[
+      'Sardines with bones — 350mg calcium per can + Vitamin D + omega-3 in one food',
+      'Kale — 90mg calcium per cup cooked + Vitamin K for bone matrix',
+      'Sesame seeds and tahini — 280mg calcium per 2 tbsp (highest non-dairy source)',
+      'Greek yogurt plain — 200mg calcium per cup + protein + probiotics',
+      'Almonds — 75mg calcium per oz + magnesium + Vitamin E',
+      'Bok choy — 160mg calcium per cup cooked + high absorption rate',
+      'Miso — calcium + isoflavones + probiotics (fermented soy — best soy form)',
+    ],
+    heartProtocolFoods:[
+      'Extra virgin olive oil 2-3 tbsp daily — PREDIMED study: 30% fewer cardiovascular events',
+      'Wild salmon 4×/week — DHA/EPA reduce triglycerides and arterial inflammation',
+      'Walnuts 8-10 daily — ALA omega-3 + L-arginine for arterial elasticity',
+      'Garlic 2 raw cloves — allicin reduces LDL 9-12% and lowers blood pressure',
+      'Oatmeal — beta-glucan fiber removes LDL physically from the gut',
+      'Blueberries daily — anthocyanins reduce arterial stiffness within 6 weeks',
+      'Dark chocolate 85% — flavanols improve endothelial function and blood flow',
+    ],
+    weeklyMealPlan:[
+      {day:'Monday',breakfast:'Plain Greek yogurt + ground flaxseed + blueberries + almonds',lunch:'Sardine salad + kale + olive oil + lemon',dinner:'Salmon + roasted bok choy + quinoa'},
+      {day:'Tuesday',breakfast:'3 eggs + spinach + avocado + kefir',lunch:'Miso soup + tofu + edamame + broccoli',dinner:'Chicken + roasted broccoli + sweet potato'},
+      {day:'Wednesday',breakfast:'Smoothie: spinach + Greek yogurt + berries + flaxseed + almond milk',lunch:'Lentil soup + olive oil + tahini drizzle',dinner:'Ground turkey + cauliflower rice + garlic + olive oil'},
+      {day:'Thursday',breakfast:'Oatmeal + cinnamon + walnuts + blueberries',lunch:'Large salad + salmon + sesame seeds + olive oil',dinner:'Chicken stir-fry + lots of vegetables + small portion brown rice'},
+      {day:'Friday',breakfast:'Cottage cheese + berries + chia seeds',lunch:'Chickpea bowl + cucumber + tahini + lemon',dinner:'Baked salmon + asparagus + roasted garlic + olive oil'},
+      {day:'Saturday',breakfast:'Veggie omelette + avocado + kefir',lunch:'Miso soup + sardines on salad with olive oil',dinner:'Grilled chicken + roasted vegetables + hummus + olive oil'},
+      {day:'Sunday',breakfast:'Greek yogurt + granola (low sugar) + fresh fruit + ground flaxseed',lunch:'Slow-cooked lentils + spinach + tahini',dinner:'Salmon + bone broth soup + roasted bok choy'},
+    ],
+    supplements:[
+      'Calcium 600mg × 2 daily (not 1200mg at once — absorption limit is 600mg) taken with Vitamin D3 and K2',
+      'Vitamin D3 2000-4000 IU with fat — critical for calcium absorption and bone density',
+      'K2 100mcg — directs calcium to bones, not arteries (critical post-menopause)',
+      'Fish oil 2-4g DHA/EPA — replaces cardiac protection previously provided by estrogen',
+      'Magnesium glycinate 400mg bedtime — bone health + sleep + insulin sensitivity',
+      'Collagen peptides 15-20g — Type I collagen for bone matrix, joints, and skin',
+      'Creatine monohydrate 3-5g daily — proven to preserve post-menopausal muscle mass',
+      'Myo-inositol 2g + D-chiro-inositol 50mg — insulin sensitivity (especially if PCOS history)',
+    ],
+    avoid:[
+      'Caloric restriction below 1400 — causes muscle loss, slows metabolism further, fails at this stage',
+      'Alcohol — increases breast cancer risk post-menopause, disrupts sleep (where muscle is repaired)',
+      'Refined carbs and sugar — insulin resistance is already worse without estrogen',
+      'Seed oils — inflammatory, worsen joint pain and metabolic resistance',
+      'High sodium — accelerates calcium loss through urine (bone density impact)',
+      'Skipping meals — raises cortisol which promotes belly fat post-menopause',
+      'Cardio only without weights — burns calories but accelerates metabolic decline',
+    ],
+    tip:'Post-menopausal weight gain is a hormonal problem that requires a hormonal solution — not a calorie problem that requires starvation. The three tools that work: MORE protein (90-100g/day), strength training 2-3×/week, and strategic phytoestrogens (flaxseed + miso + edamame). The three things that fail: below 1200 calories, cardio-only exercise, and complete carb elimination. The research on women 50+ consistently shows that the women who eat the most protein and lift weights have the best body composition regardless of total calories.',
+    source:'Menopause Society 2025 | PREDIMED trial | Harvard T.H. Chan bone health | Dr. Mary Claire Haver The New Menopause 2024 | Journal of Gerontology muscle protein research'},
+
   stress_eating:{icon:'😤',title:'Stress Eating / Cortisol',cat:'Hormonal',
     subtitle:'Break the cortisol-hunger loop — evidence-based protocols',
     symptoms:['Cravings for sugar and salt when stressed','Eating past fullness during emotional moments','Eating not triggered by physical hunger','Post-eating guilt or shame cycles','Weight gain concentrated in abdomen (cortisol belly)','Energy crashes followed by intense hunger'],
@@ -4984,7 +5135,7 @@ const RECIPES_DATA=[
   // ── LIVER HEALTH RECIPES ───────────────────────────────────
   {id:'liver-artichoke-quinoa',cats:['quick','organcare'],creator:'MealDesk Health',ccolor:'#4A7C59',
    name:'Artichoke + Quinoa + Lemon Olive Oil Bowl',time:'20 min',serves:2,diff:'Easy',cal:360,p:14,c:52,f:12,
-   health:['organ_liver','cholesterol','organ_heart','insulin'],
+   health:['organ_liver','cholesterol','organ_heart','insulin','hidden_sugar'],
    desc:'Artichoke cynarin is the most studied food for lowering AST/ALT liver enzymes. A liver-repair meal.',
    ing:['1 cup quinoa','1 can artichoke hearts (14oz) rinsed','2 tbsp extra virgin olive oil','1 lemon (juice + zest)','3 garlic cloves minced','Fresh parsley','Salt and pepper'],
    steps:['Cook quinoa per package in lightly salted water 15 min, then fluff with fork.','Warm olive oil in a pan over medium heat. Add minced garlic and cook 1 min.','Add artichoke hearts and saute 4 min until lightly golden on edges.','Combine quinoa and artichoke in a bowl. Add lemon juice and zest generously.','Top with fresh parsley and a final drizzle of olive oil.'],
@@ -5017,7 +5168,7 @@ const RECIPES_DATA=[
   // ── CHOLESTEROL RECIPES ────────────────────────────────────
   {id:'chol-oat-blueberry',cats:['quick','organcare'],creator:'MealDesk Health',ccolor:'#1A6B72',
    name:'Cholesterol-Busting Oatmeal + Blueberries + Walnuts',time:'10 min',serves:1,diff:'Easy',cal:340,p:11,c:52,f:13,
-   health:['cholesterol','organ_heart','insulin','organ_liver'],
+   health:['cholesterol','organ_heart','insulin','hidden_sugar','menopause','post_menopause'],
    desc:'Beta-glucan in oats + flaxseed lignans + walnut omega-3 = the most evidence-backed LDL-lowering breakfast.',
    ing:['½ cup rolled oats (not instant)','1 cup unsweetened almond milk or water','1 tsp Ceylon cinnamon','1 tbsp ground flaxseed','½ cup blueberries','8-10 walnut halves'],
    steps:['Bring almond milk to a gentle boil. Add oats and a pinch of salt.','Reduce heat and stir occasionally for 5 min until thick and creamy.','Remove from heat. Stir in cinnamon and ground flaxseed.','Transfer to bowl. Top with blueberries and walnuts.','Eat immediately. The cinnamon lowers fasting glucose 10-29%.'],
@@ -5042,11 +5193,11 @@ const RECIPES_DATA=[
   // ── EYE HEALTH RECIPES ────────────────────────────────────
   {id:'eye-egg-spinach',cats:['quick','organcare'],creator:'MealDesk Health',ccolor:'#0ea5e9',
    name:'Eye Health Scramble — Eggs + Spinach + Turmeric',time:'10 min',serves:1,diff:'Easy',cal:310,p:20,c:10,f:22,
-   health:['eye_health','organ_brain','energy'],
+   health:['eye_health','organ_brain','energy','hidden_sugar','insulin'],
    desc:'Egg yolks + cooked spinach = the highest bioavailable lutein combination for macular pigment.',
    ing:['3 whole eggs (yolks essential)','2 large handfuls spinach','2 garlic cloves minced','½ tsp turmeric','Pinch black pepper (required — increases curcumin absorption 2000%)','1 tbsp extra virgin olive oil','Salt'],
    steps:['Heat olive oil in a pan over medium. Add minced garlic and cook 1 min.','Add spinach and toss until wilted 2 min. Cooking spinach concentrates lutein vs raw.','Whisk eggs with turmeric, black pepper, and salt.','Pour eggs over spinach and scramble gently over low-medium heat until just set.','Serve immediately. Olive oil fat maximizes lutein absorption from eggs and spinach.'],
-   tip:'Egg yolk lutein is 3x more bioavailable than supplements or greens without fat. Never use egg whites only for eye health — the yolk is the medicine. Cook spinach rather than eating it raw for maximum lutein concentration.'},
+   tip:'Egg yolk lutein is 3x more bioavailable than supplements or greens without fat. Never use egg whites only for eye health — the yolk is the medicine. Cook spinach rather than eating it raw for maximum lutein concentration.}'},
 
   {id:'eye-blueberry-smoothie',cats:['quick','drinks','organcare'],creator:'MealDesk Health',ccolor:'#0ea5e9',
    name:'Eye Care Smoothie — Blueberry + Spinach + Goji',time:'5 min',serves:1,diff:'Easy',cal:240,p:8,c:38,f:8,
@@ -5067,13 +5218,13 @@ const RECIPES_DATA=[
   // ── INSULIN / BLOOD SUGAR RECIPES ────────────────────────
   {id:'insulin-turkey-cauli',cats:['quick','organcare'],creator:'MealDesk Health',ccolor:'#059669',
    name:'Ground Turkey + Cauliflower Rice + Garlic',time:'20 min',serves:2,diff:'Easy',cal:360,p:40,c:14,f:14,
-   health:['insulin','cholesterol','organ_liver','weight_loss'],
+   health:['insulin','cholesterol','organ_liver','weight_loss','hidden_sugar','post_menopause'],
    desc:'Zero blood sugar spike. High lean protein + cauliflower low-carb base = ideal for prediabetes.',
    ing:['350g lean ground turkey','1 medium cauliflower riced (or 2 cups frozen)','4 garlic cloves minced','1 onion diced','1 tsp cumin','½ tsp turmeric','2 tbsp extra virgin olive oil','Fresh parsley','Salt, pepper, lemon'],
    steps:['Pulse raw cauliflower in a food processor until rice-sized. Or use pre-riced frozen.','Heat olive oil in a large pan. Add onion and cook 4 min.','Add garlic, cumin, turmeric — stir 1 min until fragrant.','Add ground turkey. Break apart and cook 7-8 min until fully browned.','Add cauliflower rice and stir-fry together 4-5 min. Season and finish with lemon and fresh herbs.'],
    tip:'Cauliflower has a glycemic index of 15 vs white rice at 73. This plate will not spike blood glucose. Combine with a 20-minute walk afterward and glucose stays below 110 even in prediabetic ranges.'},
 
-  {id:'insulin-egg-sweet-potato',cats:['quick','organcare'],creator:'MealDesk Health',ccolor:'#059669',
+  {id:'o',cats:['quick','organcare'],creator:'MealDesk Health',ccolor:'#059669',
    name:'Eggs + Sweet Potato Hash + Spinach',time:'20 min',serves:2,diff:'Easy',cal:350,p:20,c:28,f:16,
    health:['insulin','organ_liver','eye_health','cholesterol'],
    desc:'Sweet potato + fat lowers its glycemic index significantly. Cinnamon mimics insulin.',
@@ -5084,19 +5235,77 @@ const RECIPES_DATA=[
   // ── HEART HEALTH RECIPES ──────────────────────────────────
   {id:'heart-mediterranean-bowl',cats:['quick','organcare','salads'],creator:'MealDesk Health',ccolor:'#dc2626',
    name:'Mediterranean Heart Bowl — Chicken + Hummus + Greens',time:'20 min',serves:2,diff:'Easy',cal:440,p:40,c:28,f:18,
-   health:['organ_heart','cholesterol','organ_liver','inflammation'],
+   health:['organ_heart','cholesterol','organ_liver','inflammation','post_menopause'],
    desc:'The Mediterranean diet reduces cardiovascular events 30% (PREDIMED trial). This bowl is its core.',
    ing:['2 chicken breasts (4oz each)','3 cups mixed greens or arugula','½ cup hummus','1 cup cherry tomatoes halved','½ cucumber sliced','¼ red onion sliced','Kalamata olives handful','3 tbsp extra virgin olive oil','1 lemon','Dried oregano, salt, pepper'],
    steps:['Season chicken with olive oil, oregano, salt, and pepper. Pan-cook 6 min per side or bake 400°F 22 min.','Slice chicken and let rest 3 min.','Build bowls: greens as base, sliced chicken, tomatoes, cucumber, red onion, olives.','Spoon hummus on the side.','Drizzle with olive oil and squeeze lemon over everything generously.'],
    tip:'The PREDIMED trial (7,500 participants, 5 years) found 30% fewer cardiovascular events on the Mediterranean diet vs low-fat. The key variable was olive oil — not calorie restriction.'},
 
-  {id:'heart-fasolakia',cats:['batch','budget','organcare'],creator:'MealDesk Health',ccolor:'#dc2626',
+  {id:'solakia',cats:['batch','budget','organcare'],creator:'MealDesk Health',ccolor:'#dc2626',
    name:'Fasolakia — Green Bean Stew in Olive Oil',time:'55 min',serves:4,diff:'Easy',cal:280,p:7,c:32,f:14,
    health:['organ_heart','organ_liver','cholesterol','inflammation'],
    desc:'Traditional Greek dish — anti-inflammatory, high fiber, cooked entirely in extra virgin olive oil.',
    ing:['600g green beans trimmed','1 large onion diced','3 garlic cloves minced','1 can crushed tomatoes (14oz)','½ cup water','4 tbsp extra virgin olive oil','Fresh dill or parsley','Salt, pepper, pinch of sugar'],
    steps:['Heat olive oil in a wide heavy pan over medium. Add onion and cook 8 min until golden.','Add garlic and cook 1 min.','Add green beans, crushed tomatoes, water, salt, pepper, and pinch of sugar.','Stir well, bring to a simmer, cover and cook on low 40-45 min until beans are very tender.','Stir in fresh dill. Serve warm or room temperature with whole grain bread.'],
-   tip:'In Greek villages, this dish is eaten 2-3 times per week. The olive oil is not a condiment — it is an ingredient. Use the full 4 tablespoons. This is exactly what the Mediterranean diet research is based on.'}
+   tip:'In Greek villages, this dish is eaten 2-3 times per week. The olive oil is not a condiment — it is an ingredient. Use the full 4 tablespoons. This is exactly what the Mediterranean diet research is based on.'},
+
+  // ── INSULIN-SAFE / HIDDEN SUGAR RECIPES ───────────────────────────────────
+  {id:'insulin-chia-pudding',cats:['quick','organcare'],creator:'MealDesk Health',ccolor:'#dc2626',
+   name:'Insulin-Safe Chia Pudding — No Added Sugar',time:'5 min + overnight',serves:2,diff:'Easy',cal:280,p:12,c:24,f:16,
+   health:['hidden_sugar','insulin','menopause','post_menopause','weight_loss'],
+   desc:'Zero sugar spike. Chia seeds have 10g fiber per serving which completely blunts glucose absorption.',
+   ing:['4 tbsp chia seeds','2 cups unsweetened almond milk','1 tsp Ceylon cinnamon','1 tbsp almond butter','½ cup blueberries (fresh or frozen)','Optional: stevia or monk fruit to taste'],
+   steps:['Combine chia seeds, almond milk, and cinnamon in a jar or bowl.','Stir well — make sure no dry seeds clump at bottom.','Refrigerate overnight or minimum 4 hours until thick and pudding-like.','Top with almond butter and blueberries in the morning.','The chia fiber creates a gel that physically slows glucose — no spike.'],
+   tip:'Ceylon cinnamon (not cassia) mimics insulin at the receptor level. Combined with chia fiber and almond butter fat — this breakfast has virtually zero glucose impact. Add protein powder to boost protein to 28g.'},
+
+  {id:'insulin-cauliflower-mash',cats:['quick','organcare'],creator:'MealDesk Health',ccolor:'#dc2626',
+   name:'Cauliflower Mash — Potato Swap (GI 15 vs 78)',time:'15 min',serves:4,diff:'Easy',cal:120,p:4,c:10,f:8,
+   health:['hidden_sugar','insulin','weight_loss','post_menopause','organ_liver'],
+   desc:'Cauliflower has a glycemic index of 15. Potato is 78. Same comfort food experience, no insulin spike.',
+   ing:['1 large head cauliflower cut into florets','3 garlic cloves','2 tbsp extra virgin olive oil','2 tbsp plain Greek yogurt (optional — adds creaminess + protein)','Salt, white pepper, chives to garnish'],
+   steps:['Boil cauliflower florets and garlic in salted water 12-15 min until very soft.','Drain thoroughly — press out as much water as possible with a clean cloth.','Blend or process with olive oil, Greek yogurt, salt, and white pepper.','Blend 60 seconds until completely smooth and fluffy.','Taste and adjust. Garnish with chives and drizzle of olive oil.'],
+   tip:'The secret is draining extremely well — water makes it thin and watery. Press with a cloth before blending. The Greek yogurt adds protein and creaminess without any glucose impact.'},
+
+  {id:'insulin-zucchini-pasta',cats:['quick','organcare'],creator:'MealDesk Health',ccolor:'#dc2626',
+   name:'Zucchini Noodles + Protein Sauce (GI Near Zero)',time:'20 min',serves:2,diff:'Easy',cal:340,p:36,c:12,f:16,
+   health:['hidden_sugar','insulin','weight_loss','female_weight','post_menopause'],
+   desc:'Pasta swap that eliminates the insulin spike entirely. Zucchini noodles carry any sauce beautifully.',
+   ing:['4 medium zucchini spiralized or peeled into ribbons','300g ground turkey or beef (lean)','1 can crushed tomatoes (no added sugar — check label)','3 garlic cloves minced','1 tbsp olive oil','Fresh basil','Salt, pepper, red pepper flakes'],
+   steps:['Check tomato can label — must say zero added sugar. Many brands add sugar.','Brown ground turkey in olive oil with garlic and red pepper flakes 7-8 min.','Add crushed tomatoes, simmer 10 min. Season generously.','Spiralize or peel zucchini into noodles with a peeler.','Saute zucchini 2-3 min in a dry pan over high heat — do not overcook or it gets watery.','Plate zucchini, top with meat sauce and fresh basil.'],
+   tip:'The most common mistake is overcooking the zucchini. 2-3 minutes maximum over high heat — it should still have a slight bite. Overcooked zucchini releases water and makes the dish soggy.'},
+
+  // ── POST-MENOPAUSE RECIPES ────────────────────────────────────────────────
+  {id:'meno-flax-yogurt-bowl',cats:['quick','organcare'],creator:'MealDesk Health',ccolor:'#c026a0',
+   name:'Post-Menopause Power Bowl — Flax + Protein + Berries',time:'5 min',serves:1,diff:'Easy',cal:320,p:24,c:32,f:10,
+   health:['post_menopause','menopause','hidden_sugar','insulin','weight_loss'],
+   desc:'Ground flaxseed provides lignans that partially compensate for lost estrogen. Greek yogurt delivers casein protein for muscle preservation overnight.',
+   ing:['¾ cup plain Greek yogurt (full-fat or 2%)','2 tbsp ground flaxseed (must be ground — whole seeds pass through unabsorbed)','½ cup blueberries or mixed berries','1 tbsp pumpkin seeds (zinc + magnesium)','1 tsp Ceylon cinnamon','Optional: 1 tsp raw honey'],
+   steps:['Spoon Greek yogurt into a bowl.','Stir in ground flaxseed and cinnamon thoroughly.','Top with berries and pumpkin seeds.','Optional: drizzle of raw honey (1 tsp only).','Eat immediately or refrigerate up to 24 hours.'],
+   tip:'Ground flaxseed must be fresh-ground or refrigerated. Grind a week\'s supply in a coffee grinder on Sunday and store in an airtight jar in the fridge. Whole flaxseeds pass through undigested — the lignans are inside the seed.'},
+
+  {id:'meno-sardine-kale-salad',cats:['quick','organcare','salads'],creator:'MealDesk Health',ccolor:'#c026a0',
+   name:'Bone-Building Sardine + Kale Salad',time:'10 min',serves:1,diff:'Easy',cal:420,p:34,c:14,f:26,
+   health:['post_menopause','organ_heart','cholesterol','organ_liver','insulin'],
+   desc:'One can of sardines with bones provides 350mg calcium + Vitamin D + omega-3. Kale adds 90mg more calcium. This single meal delivers over 40% of daily calcium needs.',
+   ing:['1 can sardines with bones in olive oil','3 cups kale torn into pieces','1 tbsp tahini','Juice of 1 lemon','1 garlic clove minced','1 tbsp sesame seeds','Salt, pepper, red pepper flakes'],
+   steps:['Massage kale with a pinch of salt for 2 min until softened and wilted — this breaks down the tough texture.','Make dressing: whisk tahini + lemon juice + garlic + 2 tbsp water until smooth.','Drain sardines (save the oil for the dressing if desired).','Toss kale with tahini dressing.','Top with sardines and sprinkle sesame seeds.','Season and serve immediately.'],
+   tip:'Massaging kale removes the bitterness and makes it digestible. Skip this step and kale is tough and bitter. 2 minutes of massage transforms it completely. Tahini adds additional calcium (280mg per 2 tbsp) to an already bone-dense meal.'},
+
+  {id:'meno-protein-stir-fry',cats:['quick','organcare'],creator:'MealDesk Health',ccolor:'#c026a0',
+   name:'Post-Menopause Protein Stir-Fry — 40g Protein',time:'20 min',serves:2,diff:'Easy',cal:460,p:40,c:24,f:22,
+   health:['post_menopause','menopause','female_weight','insulin','hidden_sugar'],
+   desc:'Post-menopause requires 90-100g protein daily to preserve muscle mass. This single meal delivers 40g — nearly half the daily target.',
+   ing:['300g chicken breast or shrimp (or both)','3 cups broccoli florets','1 cup snap peas','2 garlic cloves minced','1 inch fresh ginger grated','2 tbsp low-sodium tamari or soy sauce (check label — no added sugar)','1 tbsp sesame oil','1 tbsp olive oil','1 tbsp sesame seeds','Optional: small portion brown rice (½ cup)'],
+   steps:['Cut protein into even pieces. Season lightly.','Heat olive oil in wok or large pan over HIGH heat — high heat is essential for stir-fry.','Cook protein 5-6 min until golden. Remove and set aside.','Add broccoli and snap peas. Stir-fry 3-4 min until bright green and slightly charred.','Add garlic and ginger. Stir 30 seconds.','Return protein to pan. Add tamari and sesame oil. Toss everything together 1 min.','Plate and garnish with sesame seeds.'],
+   tip:'High heat is what makes a stir-fry — not medium, not low. The vegetables should sizzle aggressively when they hit the pan. High heat seals in moisture and creates caramelization. Low heat steams the vegetables and makes them soggy.'},
+
+  {id:'meno-miso-edamame-bowl',cats:['quick','organcare'],creator:'MealDesk Health',ccolor:'#c026a0',
+   name:'Miso + Edamame + Tofu Bowl — Phytoestrogen Powerhouse',time:'15 min',serves:2,diff:'Easy',cal:380,p:26,c:32,f:16,
+   health:['post_menopause','menopause','hidden_sugar','insulin','inflammation'],
+   desc:'Miso + edamame + tofu delivers 50-70mg isoflavones — the phytoestrogen dose shown to reduce hot flash frequency 21% in meta-analysis of 36 RCTs.',
+   ing:['1 cup edamame (shelled, cooked)','1 block firm tofu (300g) cubed','2 tbsp white miso paste','4 cups vegetable broth','1 cup spinach','2 green onions sliced','1 tsp sesame oil','Optional: wakame seaweed (soaked)','Optional: soft-boiled egg for more protein'],
+   steps:['Bring broth to a gentle simmer — do NOT boil miso (destroys probiotics).','Cube tofu and add to simmering broth with edamame.','Dissolve miso paste in a small bowl with some warm broth before adding to pot.','Add spinach and stir until wilted, 1 min.','Remove from heat. Add miso mixture and stir gently.','Serve topped with green onions and drizzle of sesame oil.','Add optional wakame seaweed (pre-soaked) for additional minerals.'],
+   tip:'Never boil miso — add it off the heat or in simmering water below 160°F. Boiling destroys the beneficial bacteria and most of the flavor. Miso is a fermented food — its probiotic benefit is only active when not overheated.'}
 
 ];
 
@@ -5788,6 +5997,15 @@ function renderRT_ForYou(){
           :'')
           +(g==='eye_health'?
             (REMEDIES_DATA.eye_care_screen?remCard('eye_care_screen',REMEDIES_DATA.eye_care_screen,false):'')
+          :'')
+          +(g==='hidden_sugar'||g==='insulin'?
+            (REMEDIES_DATA.hidden_sugar_protocol?remCard('hidden_sugar_protocol',REMEDIES_DATA.hidden_sugar_protocol,false):'')
+          :'')
+          +(g==='post_menopause'||g==='menopause'?
+            (REMEDIES_DATA.post_menopause_protocol?remCard('post_menopause_protocol',REMEDIES_DATA.post_menopause_protocol,false):'')
+          :'')
+          +(g==='menopause'||g==='hormonal_women'?
+            (REMEDIES_DATA.female_weight_protocol?remCard('female_weight_protocol',REMEDIES_DATA.female_weight_protocol,false):'')
           :'')
           +(g==='weight_loss'?
             (REMEDIES_DATA.weight_loss_protocol?remCard('weight_loss_protocol',REMEDIES_DATA.weight_loss_protocol,false):'')+
@@ -7155,5 +7373,196 @@ if(P){
   buildProfileEditors();
 }
 </script>
+
+<!-- FLOATING QUICK DASHBOARD -->
+<button class="qd-btn" onclick="toggleQD()" id="qd-btn" title="Quick Dashboard">📋</button>
+
+<div class="qd-panel" id="qd-panel">
+  <div class="qd-header">
+    <div class="qd-title">📋 Quick Dashboard</div>
+    <button class="qd-close" onclick="toggleQD()">×</button>
+  </div>
+  <div class="qd-tabs">
+    <div class="qd-tab on" onclick="swQD('nav',this)">Navigate</div>
+    <div class="qd-tab" onclick="swQD('foods',this)">Foods</div>
+    <div class="qd-tab" onclick="swQD('exercise',this)">Exercise</div>
+    <div class="qd-tab" onclick="swQD('swaps',this)">Swaps</div>
+  </div>
+  <div class="qd-body">
+
+    <!-- NAVIGATE -->
+    <div id="qdp-nav">
+      <div class="qd-divider">App sections</div>
+      <button class="qd-nav-btn" onclick="sw('t');toggleQD()"><span class="qd-nav-icon">🏠</span>Today — meals & macros</button>
+      <button class="qd-nav-btn" onclick="sw('k');toggleQD()"><span class="qd-nav-icon">🥘</span>Kitchen — pantry & scan</button>
+      <button class="qd-nav-btn" onclick="sw('rcp');toggleQD()"><span class="qd-nav-icon">📖</span>Recipes — For You filter</button>
+      <button class="qd-nav-btn" onclick="sw('r');swRT('y');toggleQD()"><span class="qd-nav-icon">🌿</span>Remedies — For You</button>
+      <button class="qd-nav-btn" onclick="sw('ex');toggleQD()"><span class="qd-nav-icon">🏋️</span>Exercise — routines</button>
+      <button class="qd-nav-btn" onclick="sw('w');toggleQD()"><span class="qd-nav-icon">📊</span>Progress — weight & sleep</button>
+      <button class="qd-nav-btn" onclick="sw('p');toggleQD()"><span class="qd-nav-icon">👤</span>Profile — goals & diet</button>
+      <div class="qd-divider">Today at a glance</div>
+      <div id="qd-today-summary" style="font-size:11px;color:var(--sub);line-height:1.7"></div>
+    </div>
+
+    <!-- FOODS -->
+    <div id="qdp-foods" style="display:none">
+      <div class="qd-divider">Your active goals</div>
+      <div id="qd-goals" style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:8px"></div>
+      <div class="qd-divider">Excluded foods <span style="font-weight:400;font-size:9px">(tap to add/remove)</span></div>
+      <div id="qd-excluded"></div>
+      <div style="display:flex;gap:6px;margin:8px 0">
+        <input type="text" id="qd-food-input" placeholder="Add food to exclude..." style="flex:1;padding:6px 9px;border:1px solid var(--brd);border-radius:7px;background:var(--card);color:var(--txt);font-size:11px;outline:none" onkeydown="if(event.key==='Enter')qdAddFood()">
+        <button onclick="qdAddFood()" style="padding:6px 10px;background:var(--a);border:none;border-radius:7px;color:#fff;font-size:11px;cursor:pointer">+</button>
+      </div>
+      <div class="qd-divider">Common exclusions</div>
+      <div id="qd-common-foods"></div>
+    </div>
+
+    <!-- EXERCISE -->
+    <div id="qdp-exercise" style="display:none">
+      <div class="qd-divider">Exercise type</div>
+      <div id="qd-ex-types"></div>
+      <div class="qd-divider" style="margin-top:6px">Equipment</div>
+      <div id="qd-ex-equip"></div>
+      <div class="qd-divider" style="margin-top:6px">Injuries / avoid</div>
+      <div id="qd-ex-injury"></div>
+      <div class="qd-divider" style="margin-top:6px">Sessions per week</div>
+      <div style="display:flex;align-items:center;gap:8px">
+        <input type="range" min="1" max="7" value="3" id="qd-sessions" style="flex:1;accent-color:var(--a)" oninput="document.getElementById('qd-sessions-val').textContent=this.value">
+        <span id="qd-sessions-val" style="font-size:13px;font-weight:700;color:var(--a);width:16px">3</span>
+      </div>
+      <button onclick="qdSaveEx()" style="width:100%;margin-top:10px;padding:8px;background:var(--a);border:none;border-radius:8px;color:#fff;font-size:12px;font-weight:700;cursor:pointer">Save exercise preferences</button>
+    </div>
+
+    <!-- SWAPS -->
+    <div id="qdp-swaps" style="display:none">
+      <div class="qd-divider">Insulin-safe food swaps</div>
+      <div class="qd-swap-row"><div class="qd-swap-from">White rice</div><div class="qd-swap-arr">→</div><div class="qd-swap-to">Cauliflower rice</div><div class="qd-swap-lbl">GI 15 vs 73</div></div>
+      <div class="qd-swap-row"><div class="qd-swap-from">Pasta</div><div class="qd-swap-arr">→</div><div class="qd-swap-to">Zucchini noodles</div><div class="qd-swap-lbl">Zero carbs</div></div>
+      <div class="qd-swap-row"><div class="qd-swap-from">White potato</div><div class="qd-swap-arr">→</div><div class="qd-swap-to">Sweet potato + fat</div><div class="qd-swap-lbl">Lower GI</div></div>
+      <div class="qd-swap-row"><div class="qd-swap-from">Fruit juice</div><div class="qd-swap-arr">→</div><div class="qd-swap-to">Whole fruit + water</div><div class="qd-swap-lbl">No spike</div></div>
+      <div class="qd-swap-row"><div class="qd-swap-from">Flavored yogurt</div><div class="qd-swap-arr">→</div><div class="qd-swap-to">Plain Greek + berries</div><div class="qd-swap-lbl">Save 20g sugar</div></div>
+      <div class="qd-swap-row"><div class="qd-swap-from">Granola</div><div class="qd-swap-arr">→</div><div class="qd-swap-to">Steel-cut oats + nuts</div><div class="qd-swap-lbl">GI 55 vs 83</div></div>
+      <div class="qd-swap-row"><div class="qd-swap-from">White bread</div><div class="qd-swap-arr">→</div><div class="qd-swap-to">Lettuce wrap</div><div class="qd-swap-lbl">Zero spike</div></div>
+      <div class="qd-swap-row"><div class="qd-swap-from">Seed oils</div><div class="qd-swap-arr">→</div><div class="qd-swap-to">Extra virgin olive oil</div><div class="qd-swap-lbl">Anti-inflammatory</div></div>
+      <div class="qd-swap-row"><div class="qd-swap-from">Bottled dressing</div><div class="qd-swap-arr">→</div><div class="qd-swap-to">Olive oil + ACV + lemon</div><div class="qd-swap-lbl">No hidden sugar</div></div>
+      <div class="qd-swap-row"><div class="qd-swap-from">Soda / juice</div><div class="qd-swap-arr">→</div><div class="qd-swap-to">Sparkling water + ACV</div><div class="qd-swap-lbl">Zero sugar</div></div>
+      <div class="qd-divider" style="margin-top:8px">Menopause-specific swaps</div>
+      <div class="qd-swap-row"><div class="qd-swap-from">Calcium pill alone</div><div class="qd-swap-arr">→</div><div class="qd-swap-to">Sardines with bones</div><div class="qd-swap-lbl">D3 included</div></div>
+      <div class="qd-swap-row"><div class="qd-swap-from">Cardio only</div><div class="qd-swap-arr">→</div><div class="qd-swap-to">Strength 2× + walk</div><div class="qd-swap-lbl">Rebuild metabolism</div></div>
+      <div class="qd-swap-row"><div class="qd-swap-from">1200 cal diet</div><div class="qd-swap-arr">→</div><div class="qd-swap-to">1500 cal high protein</div><div class="qd-swap-lbl">Preserve muscle</div></div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+// ── QUICK DASHBOARD ──────────────────────────────────────────────────────────
+const QD_COMMON=['Raw eggs','Liver/organ meat','Sardines','Oysters','Cottage cheese','Greek yogurt','Broccoli','Cauliflower','Spinach','Kale','Sweet potato','Lentils','Chickpeas','Quinoa','Brown rice','Oatmeal','Protein powder','Salmon','Tuna','Avocado','Walnuts','Flaxseed','Chia seeds','Mushrooms','Eggs'];
+const QD_EX_TYPES=['Walking / hiking','Strength training','HIIT intervals','Pilates / yoga','Swimming','Cycling','No structured exercise'];
+const QD_EQUIP=['No equipment needed','Dumbbells','Resistance bands','Gym access','Treadmill or bike'];
+const QD_INJURIES=['None','Bad knees','Bad back','Shoulder issue','Hip or ankle issue'];
+
+let qdExTypes=new Set(['Walking / hiking']),qdEquip=new Set(['No equipment needed']),qdInjuries=new Set(['None']);
+
+function toggleQD(){
+  const p=document.getElementById('qd-panel');
+  p.classList.toggle('open');
+  if(p.classList.contains('open')){
+    swQD('nav',document.querySelector('.qd-tab'));
+    qdRefreshToday();
+  }
+}
+
+function swQD(tab,el){
+  document.querySelectorAll('.qd-tab').forEach(t=>t.classList.remove('on'));
+  ['nav','foods','exercise','swaps'].forEach(id=>document.getElementById('qdp-'+id).style.display='none');
+  if(el)el.classList.add('on');
+  document.getElementById('qdp-'+tab).style.display='block';
+  if(tab==='foods')qdRenderFoods();
+  if(tab==='exercise')qdRenderEx();
+}
+
+function qdRefreshToday(){
+  const el=document.getElementById('qd-today-summary');
+  if(!el)return;
+  const P_=typeof P!=='undefined'?P:{};
+  const goals=(P_.goals||[]).map(g=>{const c=COND[g];return c?c.em+' '+c.lb:g}).join(', ');
+  const diet=(P_.diets||[P_.diet||'']).join(' + ');
+  el.innerHTML=`<div>👤 <strong>${P_.name||'Family member'}</strong></div><div>🥗 ${diet||'No diet selected'}</div><div>🎯 ${goals||'No goals selected'}</div>`;
+}
+
+function qdRenderFoods(){
+  const P_=typeof P!=='undefined'?P:{};
+  const goals=P_.goals||[];
+  const excluded=new Set(P_.avoided||[]);
+
+  // Goals pills
+  document.getElementById('qd-goals').innerHTML=goals.map(g=>{
+    const c=COND?.[g];
+    return c?`<span style="font-size:10px;padding:3px 8px;border-radius:12px;background:${c.bg};color:${c.c};border:1px solid ${c.c}44;font-weight:600">${c.em} ${c.lb}</span>`:'';
+  }).join('');
+
+  // Excluded chips
+  document.getElementById('qd-excluded').innerHTML=[...excluded].map(f=>
+    `<span class="qd-food-chip bad" onclick="qdToggleFood('${f}')">${f} ×</span>`
+  ).join('')||'<span style="font-size:11px;color:var(--sub)">None excluded</span>';
+
+  // Common foods
+  document.getElementById('qd-common-foods').innerHTML=QD_COMMON.map(f=>
+    `<span class="qd-food-chip${excluded.has(f)?' bad':''}" onclick="qdToggleFood('${f}')">${f}</span>`
+  ).join('');
+}
+
+function qdToggleFood(food){
+  if(typeof P==='undefined')return;
+  if(!P.avoided)P.avoided=[];
+  const idx=P.avoided.indexOf(food);
+  if(idx>=0)P.avoided.splice(idx,1);else P.avoided.push(food);
+  sP();
+  qdRenderFoods();
+  if(typeof renderToday==='function')renderToday();
+}
+
+function qdAddFood(){
+  const el=document.getElementById('qd-food-input');
+  const v=el.value.trim();if(!v)return;
+  if(typeof P!=='undefined'){if(!P.avoided)P.avoided=[];P.avoided.push(v);sP();}
+  el.value='';qdRenderFoods();
+}
+
+function qdRenderEx(){
+  document.getElementById('qd-ex-types').innerHTML=QD_EX_TYPES.map(t=>
+    `<button class="qd-ex-btn${qdExTypes.has(t)?' on':''}" onclick="qdToggleEx(qdExTypes,'${t}',this)">${t}</button>`
+  ).join('');
+  document.getElementById('qd-ex-equip').innerHTML=QD_EQUIP.map(t=>
+    `<button class="qd-ex-btn${qdEquip.has(t)?' on':''}" onclick="qdToggleEx(qdEquip,'${t}',this)">${t}</button>`
+  ).join('');
+  document.getElementById('qd-ex-injury').innerHTML=QD_INJURIES.map(t=>
+    `<button class="qd-ex-btn${qdInjuries.has(t)?' on':''}" onclick="qdToggleEx(qdInjuries,'${t}',this)">${t}</button>`
+  ).join('');
+}
+
+function qdToggleEx(set,val,el){
+  if(set.has(val)){if(set.size>1){set.delete(val);el.classList.remove('on');}}
+  else{set.add(val);el.classList.add('on');}
+}
+
+function qdSaveEx(){
+  const btn=event.target;
+  btn.textContent='✓ Saved';btn.style.background='#4a7c59';
+  setTimeout(()=>{btn.textContent='Save exercise preferences';btn.style.background='';},2000);
+}
+
+// Close panel when clicking outside
+document.addEventListener('click',function(e){
+  const p=document.getElementById('qd-panel');
+  const b=document.getElementById('qd-btn');
+  if(p&&p.classList.contains('open')&&!p.contains(e.target)&&!b.contains(e.target)){
+    p.classList.remove('open');
+  }
+});
+</script>
+
 </body>
 </html>
