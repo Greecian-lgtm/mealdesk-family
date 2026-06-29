@@ -27,8 +27,7 @@ input:focus,select:focus,textarea:focus{border-color:#4a7c59}
 .hint code{background:#1a2e22;color:#c9963a;padding:1px 5px;border-radius:3px}
 
 /* SHELL */
-#dash{display:none;display:flex;min-height:100vh;flex-direction:column}
-#dash{display:none}
+#dash{display:none;min-height:100vh;flex-direction:column}
 .topbar{background:#1a2e22;border-bottom:1px solid #2a4035;padding:10px 16px;display:flex;align-items:center;gap:10px;position:sticky;top:0;z-index:20;flex-shrink:0}
 .tlogo{font-size:14px;font-weight:800;color:#c9963a}
 .badge{display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:20px;font-size:10px;font-weight:700;background:#0d2a1a;border:1px solid #2a5a35;color:#4a7c59;margin-left:4px}
@@ -132,7 +131,7 @@ input[type=range]{width:100%;accent-color:#4a7c59;margin:0}
     <input type="password" id="pw" placeholder="Admin password" onkeydown="if(event.key==='Enter')login()">
     <button class="btn btn-g" onclick="login()">Sign in</button>
     <div class="err" id="err">Incorrect password.</div>
-    <div class="hint">Default: <code>stavros2026</code> · Set <code>ADMIN_PASS</code> in Vercel to change.</div>
+
   </div>
 </div>
 
@@ -435,7 +434,19 @@ function logout(){
   document.getElementById('pw').value='';
 }
 
-(function(){if(sessionStorage.getItem(SK)){authed=true;showDash();}})();
+(function(){
+  if(sessionStorage.getItem(SK)){
+    authed=true;
+    document.getElementById('login').style.display='none';
+    const dashEl=document.getElementById('dash');
+    dashEl.style.display='flex';
+    dashEl.style.flexDirection='column';
+    dashEl.style.minHeight='100vh';
+    render(DEMO);
+    loadLive();
+    timer=setInterval(loadLive,30000);
+  }
+})();
 
 // ── NAVIGATION ──────────────────────────────────────────────────────────────
 function sw(id,el){
@@ -452,8 +463,10 @@ function sw(id,el){
 // ── DASHBOARD ───────────────────────────────────────────────────────────────
 function showDash(){
   document.getElementById('login').style.display='none';
-  document.getElementById('dash').style.display='flex';
-  document.getElementById('dash').style.flexDirection='column';
+  const dashEl = document.getElementById('dash');
+  dashEl.style.display='flex';
+  dashEl.style.flexDirection='column';
+  dashEl.style.minHeight='100vh';
   render(DEMO);
   loadLive();
   clearInterval(timer);
