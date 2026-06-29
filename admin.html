@@ -6,594 +6,282 @@
 <title>MealDesk Admin</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --bg:#0f1a14;--card:#1a2e22;--border:#2a4035;--text:#f0f4f1;--sub:#8faa97;
-  --accent:#c9963a;--green:#4a7c59;--red:#c0392b;--blue:#0891b2;--purple:#7c3aed;
-  --danger:#e05050;
-}
-body{font-family:system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
-
-/* ── MODALS ── */
-.modal-wrap{position:fixed;inset:0;background:rgba(0,0,0,.7);display:flex;align-items:center;justify-content:center;z-index:100;padding:20px;display:none}
-.modal-wrap.open{display:flex}
-.modal{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:28px;width:100%;max-width:400px}
-.modal-title{font-size:16px;font-weight:700;color:var(--text);margin-bottom:4px}
-.modal-sub{font-size:12px;color:var(--sub);margin-bottom:20px;line-height:1.5}
-.field{margin-bottom:12px}
-.field label{display:block;font-size:11px;color:var(--sub);margin-bottom:4px;font-weight:600;text-transform:uppercase;letter-spacing:.06em}
-.field input{width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:8px;background:var(--bg);color:var(--text);font-size:13px;outline:none;transition:border-color .15s}
-.field input:focus{border-color:var(--green)}
-.field input.err{border-color:var(--danger)}
-.field-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.msg{font-size:12px;margin-top:8px;padding:8px 10px;border-radius:7px;display:none}
-.msg.error{background:#2a1010;border:1px solid #5a2020;color:var(--danger)}
-.msg.success{background:#0d2a1a;border:1px solid #2a5a35;color:#5fca8a}
-.msg.info{background:#1a2a3a;border:1px solid #2a4a6a;color:#7ab8e8}
-.btn{padding:10px 18px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;border:none;transition:all .15s;display:inline-flex;align-items:center;gap:6px}
-.btn-primary{background:var(--green);color:#fff}
-.btn-primary:hover{background:#3d6a4a}
-.btn-primary:disabled{opacity:.5;cursor:not-allowed}
-.btn-ghost{background:transparent;color:var(--sub);border:1px solid var(--border)}
-.btn-ghost:hover{border-color:var(--text);color:var(--text)}
-.btn-danger{background:transparent;color:var(--danger);border:1px solid #5a2020}
-.btn-danger:hover{background:#2a1010}
-.btn-row{display:flex;gap:8px;margin-top:16px;justify-content:flex-end}
-.link-btn{background:none;border:none;color:var(--accent);font-size:12px;cursor:pointer;text-decoration:underline;padding:0}
-
-/* ── LOGIN ── */
-#screen-login{display:flex;min-height:100vh;align-items:center;justify-content:center;padding:20px}
-.login-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:32px;width:100%;max-width:360px}
-.logo{font-size:26px;font-weight:800;color:var(--accent);letter-spacing:-.02em}
-.logo-sub{font-size:12px;color:var(--sub);margin-bottom:24px;margin-top:2px}
-.pw-wrap{position:relative}
-.pw-wrap input{padding-right:40px}
-.pw-eye{position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--sub);cursor:pointer;font-size:15px;padding:4px}
-.strength-bar{height:3px;border-radius:2px;margin-top:5px;transition:width .2s,background .2s;background:var(--border)}
-.strength-label{font-size:10px;color:var(--sub);margin-top:3px}
-.divider{display:flex;align-items:center;gap:8px;margin:16px 0}
-.divider-line{flex:1;height:1px;background:var(--border)}
-.divider-text{font-size:11px;color:var(--sub)}
-.setup-section{display:none;margin-top:12px;padding-top:12px;border-top:1px solid var(--border)}
-
-/* ── DASHBOARD ── */
-#screen-dash{display:none;min-height:100vh}
-.topbar{background:var(--card);border-bottom:1px solid var(--border);padding:12px 20px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:10}
-.topbar-logo{font-size:15px;font-weight:800;color:var(--accent)}
-.topbar-sub{font-size:11px;color:var(--sub)}
-.topbar-right{display:flex;align-items:center;gap:10px;margin-left:auto}
-.pulse{width:8px;height:8px;border-radius:50%;background:var(--green);animation:pulse 2s ease-out infinite;flex-shrink:0}
-@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(74,124,89,.6)}70%{box-shadow:0 0 0 6px transparent}100%{box-shadow:0 0 0 0 transparent}}
-.live-badge{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--green);font-weight:600;background:#0d2a1a;border:1px solid #2a5a35;padding:3px 10px;border-radius:20px}
-.icon-btn{background:none;border:1px solid var(--border);border-radius:8px;color:var(--sub);cursor:pointer;padding:6px 10px;font-size:12px;transition:all .15s}
-.icon-btn:hover{border-color:var(--text);color:var(--text)}
-
-.main{padding:16px 20px;max-width:960px;margin:0 auto}
-.banner{border-radius:10px;padding:12px 14px;margin-bottom:16px;font-size:12px;line-height:1.6;display:none}
-.banner.warn{background:#2a2010;border:1px solid var(--accent);color:var(--accent)}
-.banner strong{color:#f0c060}
-.banner code{background:#1a1a0a;padding:2px 6px;border-radius:4px;font-size:11px}
-
-.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}
-.stat{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px 14px}
-.stat-val{font-size:22px;font-weight:700;color:var(--accent);line-height:1}
-.stat-lb{font-size:10px;color:var(--sub);margin-top:3px;text-transform:uppercase;letter-spacing:.06em}
-.two-col{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
-.card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:12px}
-.card-title{font-size:11px;font-weight:700;color:var(--sub);text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between}
-
-.user-row{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid var(--border)}
-.user-row:last-child{border-bottom:none}
-.user-em{font-size:24px;flex-shrink:0;margin-top:2px}
-.user-name{font-size:13px;font-weight:700;color:var(--text)}
-.user-meta{font-size:11px;color:var(--sub);margin-top:1px}
-.user-tabs{display:flex;flex-wrap:wrap;gap:4px;margin-top:5px}
-.user-pill{font-size:10px;padding:2px 7px;border-radius:10px;font-weight:600}
-.user-count{font-size:20px;font-weight:700;color:var(--accent);margin-left:auto;flex-shrink:0}
-
-.bar-row{display:flex;align-items:center;gap:8px;margin-bottom:7px}
-.bar-lbl{width:80px;font-size:11px;color:var(--sub);text-align:right;flex-shrink:0;text-transform:capitalize}
-.bar-track{flex:1;height:8px;background:var(--bg);border-radius:4px;overflow:hidden}
-.bar-fill{height:100%;border-radius:4px;transition:width .6s ease}
-.bar-num{width:28px;font-size:11px;font-weight:600;color:var(--text)}
-
-.evt-row{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--border);font-size:12px}
-.evt-row:last-child{border-bottom:none}
-.evt-time{color:var(--sub);width:56px;flex-shrink:0;font-size:11px}
-.evt-user{font-weight:600;width:68px;flex-shrink:0}
-.evt-type{width:80px;flex-shrink:0;font-size:11px;font-weight:600}
-.evt-data{color:var(--text);flex:1}
-
-.day-row{display:flex;align-items:center;gap:8px;margin-bottom:6px}
-.day-lbl{width:50px;font-size:11px;color:var(--sub)}
-.day-track{flex:1;height:6px;background:var(--bg);border-radius:3px;overflow:hidden}
-.day-fill{height:100%;border-radius:3px;background:var(--green)}
-.day-num{font-size:11px;color:var(--sub);min-width:20px}
-
-.empty{font-size:12px;color:var(--sub);text-align:center;padding:20px;line-height:1.6}
-
-/* ── SETTINGS DRAWER ── */
-#settings-drawer{position:fixed;right:0;top:0;height:100vh;width:340px;background:var(--card);border-left:1px solid var(--border);padding:0;z-index:50;transform:translateX(100%);transition:transform .25s ease;overflow-y:auto}
-#settings-drawer.open{transform:translateX(0)}
-.drawer-header{display:flex;align-items:center;justify-content:space-between;padding:16px 18px;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--card)}
-.drawer-title{font-size:14px;font-weight:700;color:var(--text)}
-.drawer-close{background:none;border:none;color:var(--sub);font-size:20px;cursor:pointer;line-height:1}
-.drawer-section{padding:16px 18px;border-bottom:1px solid var(--border)}
-.drawer-section-title{font-size:11px;font-weight:700;color:var(--sub);text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px}
+body{font-family:system-ui,-apple-system,sans-serif;background:#0f1a14;color:#f0f4f1;min-height:100vh}
+#login{display:flex;min-height:100vh;align-items:center;justify-content:center;padding:20px}
+#dash{display:none}
+.card{background:#1a2e22;border:1px solid #2a4035;border-radius:14px;padding:28px;width:100%;max-width:360px}
+.logo{font-size:24px;font-weight:800;color:#c9963a;margin-bottom:2px}
+.sub{font-size:12px;color:#8faa97;margin-bottom:22px}
+label{display:block;font-size:11px;color:#8faa97;margin-bottom:4px;font-weight:600;text-transform:uppercase;letter-spacing:.06em}
+input[type=password],input[type=text],input[type=email]{width:100%;padding:10px 12px;border:1px solid #2a4035;border-radius:8px;background:#0f1a14;color:#f0f4f1;font-size:13px;outline:none;margin-bottom:12px}
+input:focus{border-color:#4a7c59}
+.btn{width:100%;padding:11px;background:#4a7c59;border:none;border-radius:8px;color:#fff;font-size:13px;font-weight:700;cursor:pointer}
+.btn:hover{background:#3d6a4a}
+.hint{font-size:11px;color:#8faa97;text-align:center;margin-top:12px;line-height:1.6}
+.hint code{background:#1a2e22;color:#c9963a;padding:1px 5px;border-radius:4px}
+.err{font-size:12px;color:#e05050;margin-top:8px;text-align:center;display:none}
+/* dash */
+.topbar{background:#1a2e22;border-bottom:1px solid #2a4035;padding:12px 20px;display:flex;align-items:center;gap:12px}
+.tlogo{font-size:15px;font-weight:800;color:#c9963a}
+.tsub{font-size:11px;color:#8faa97;margin-left:4px}
+.tbtn{margin-left:auto;padding:6px 12px;background:none;border:1px solid #2a4035;border-radius:7px;color:#8faa97;font-size:12px;cursor:pointer}
+.tbtn:hover{border-color:#e05050;color:#e05050}
+.main{padding:16px 20px;max-width:900px}
+.sgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}
+.scard{background:#1a2e22;border:1px solid #2a4035;border-radius:10px;padding:12px 14px}
+.sval{font-size:22px;font-weight:700;color:#c9963a}
+.slb{font-size:10px;color:#8faa97;margin-top:2px;text-transform:uppercase;letter-spacing:.06em}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.dc{background:#1a2e22;border:1px solid #2a4035;border-radius:12px;padding:14px}
+.dc-title{font-size:11px;font-weight:700;color:#8faa97;text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px}
+.urow{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid #2a4035}
+.urow:last-child{border-bottom:none}
+.uem{font-size:22px}
+.uname{font-size:13px;font-weight:700}
+.umeta{font-size:11px;color:#8faa97;margin-top:1px}
+.ucnt{font-size:20px;font-weight:700;color:#c9963a;margin-left:auto}
+.brow{display:flex;align-items:center;gap:8px;margin-bottom:7px}
+.blbl{width:76px;font-size:11px;color:#8faa97;text-align:right;text-transform:capitalize;flex-shrink:0}
+.btrack{flex:1;height:8px;background:#0f1a14;border-radius:4px;overflow:hidden}
+.bfill{height:100%;border-radius:4px}
+.bnum{width:24px;font-size:11px;font-weight:600;color:#f0f4f1}
+.erow{display:flex;gap:8px;padding:6px 0;border-bottom:1px solid #2a4035;font-size:11px}
+.erow:last-child{border-bottom:none}
+.et{color:#8faa97;width:52px;flex-shrink:0}
+.eu{font-weight:700;width:66px;flex-shrink:0;color:#c9963a}
+.ek{width:80px;flex-shrink:0}
+.ed{color:#f0f4f1;flex:1}
+.badge{display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:600;background:#0d2a1a;border:1px solid #2a5a35;color:#4a7c59;margin-left:auto}
+.dot{width:7px;height:7px;border-radius:50%;background:#4a7c59;animation:p 2s ease-out infinite}
+@keyframes p{0%{box-shadow:0 0 0 0 rgba(74,124,89,.6)}70%{box-shadow:0 0 0 5px transparent}100%{box-shadow:0 0 0 0 transparent}}
 </style>
 </head>
 <body>
 
-<!-- ── LOGIN SCREEN ── -->
-<div id="screen-login">
-  <div class="login-card">
+<div id="login">
+  <div class="card">
     <div class="logo">MealDesk</div>
-    <div class="logo-sub">Admin Dashboard · Stavros Research Labs</div>
-
-    <!-- Main login -->
-    <div id="view-login">
-      <div class="field">
-        <label>Password</label>
-        <div class="pw-wrap">
-          <input type="password" id="l-pass" placeholder="Enter admin password" onkeydown="if(event.key==='Enter')doLogin()">
-          <button class="pw-eye" onclick="toggleEye('l-pass',this)">👁</button>
-        </div>
-      </div>
-      <button class="btn btn-primary" style="width:100%" onclick="doLogin()" id="login-btn">Sign in</button>
-      <div class="msg" id="login-msg"></div>
-      <div style="text-align:center;margin-top:14px">
-        <button class="link-btn" onclick="showView('forgot')">Forgot password?</button>
-      </div>
-        <div style="font-size:11px;color:var(--sub);text-align:center;margin-top:10px;line-height:1.6">Default password: <code style="background:#1a2e22;padding:2px 6px;border-radius:4px;color:#c9963a">stavros2026</code><br>Set <code style="background:#1a2e22;padding:2px 6px;border-radius:4px;color:#c9963a">ADMIN_PASS</code> in Vercel env vars to change it.</div>
-      <div class="divider"><div class="divider-line"></div><div class="divider-text">First time?</div><div class="divider-line"></div></div>
-      <button class="btn btn-ghost" style="width:100%;font-size:12px" onclick="showView('setup')">Set up admin password (requires KV)</button>
-    </div>
-
-    <!-- Forgot password -->
-    <div id="view-forgot" style="display:none">
-      <div style="font-size:13px;color:var(--sub);margin-bottom:16px;line-height:1.6">Enter your recovery email address and we'll send a password reset link.</div>
-      <div class="field">
-        <label>Recovery email</label>
-        <input type="email" id="f-email" placeholder="you@example.com" onkeydown="if(event.key==='Enter')doForgot()">
-      </div>
-      <button class="btn btn-primary" style="width:100%" onclick="doForgot()" id="forgot-btn">Send reset link</button>
-      <div class="msg" id="forgot-msg"></div>
-      <div style="text-align:center;margin-top:12px">
-        <button class="link-btn" onclick="showView('login')">← Back to sign in</button>
-      </div>
-    </div>
-
-    <!-- Reset password (from email link) -->
-    <div id="view-reset" style="display:none">
-      <div style="font-size:13px;color:var(--sub);margin-bottom:16px;line-height:1.6">Enter your new password.</div>
-      <div class="field">
-        <label>New password</label>
-        <div class="pw-wrap">
-          <input type="password" id="r-pass" placeholder="Minimum 8 characters" oninput="checkStrength(this,'r-strength','r-strength-lbl')" onkeydown="if(event.key==='Enter')doReset()">
-          <button class="pw-eye" onclick="toggleEye('r-pass',this)">👁</button>
-        </div>
-        <div class="strength-bar" id="r-strength" style="width:0%"></div>
-        <div class="strength-label" id="r-strength-lbl"></div>
-      </div>
-      <div class="field">
-        <label>Confirm new password</label>
-        <input type="password" id="r-pass2" placeholder="Repeat new password" onkeydown="if(event.key==='Enter')doReset()">
-      </div>
-      <button class="btn btn-primary" style="width:100%" onclick="doReset()" id="reset-btn">Set new password</button>
-      <div class="msg" id="reset-msg"></div>
-    </div>
-
-    <!-- First-time setup -->
-    <div id="view-setup" style="display:none">
-      <div style="font-size:13px;color:var(--sub);margin-bottom:10px;line-height:1.6">Create your admin password and add a recovery email for future resets.</div>
-      <div style="font-size:11px;background:#2a2010;border:1px solid #5a3a10;border-radius:8px;padding:9px 11px;color:#c9963a;line-height:1.6;margin-bottom:14px">⚠️ <strong>Requires Vercel KV storage</strong> to save the password. Without KV, use the <code style="background:#1a1a0a;padding:1px 5px;border-radius:3px">ADMIN_PASS</code> environment variable in Vercel instead.</div>
-      <div class="field">
-        <label>Setup key</label>
-        <input type="password" id="sk-key" placeholder="Enter setup key">
-      </div>
-      <div class="field">
-        <label>New password</label>
-        <div class="pw-wrap">
-          <input type="password" id="sk-pass" placeholder="Minimum 8 characters" oninput="checkStrength(this,'sk-strength','sk-strength-lbl')">
-          <button class="pw-eye" onclick="toggleEye('sk-pass',this)">👁</button>
-        </div>
-        <div class="strength-bar" id="sk-strength" style="width:0%"></div>
-        <div class="strength-label" id="sk-strength-lbl"></div>
-      </div>
-      <div class="field">
-        <label>Recovery email</label>
-        <input type="email" id="sk-email" placeholder="you@example.com">
-      </div>
-      <button class="btn btn-primary" style="width:100%" onclick="doSetup()" id="setup-btn">Create admin account</button>
-      <div class="msg" id="setup-msg"></div>
-      <div style="text-align:center;margin-top:12px">
-        <button class="link-btn" onclick="showView('login')">← Back to sign in</button>
-      </div>
-    </div>
+    <div class="sub">Admin Dashboard · Stavros Research Labs</div>
+    <label>Admin Password</label>
+    <input type="password" id="pw" placeholder="Enter password" onkeydown="if(event.key==='Enter')login()">
+    <button class="btn" onclick="login()">Sign in</button>
+    <div class="err" id="err">Incorrect password.</div>
+    <div class="hint">Default password: <code>stavros2026</code><br>Change via <code>ADMIN_PASS</code> env var in Vercel.</div>
   </div>
 </div>
 
-<!-- ── DASHBOARD ── -->
-<div id="screen-dash">
+<div id="dash">
   <div class="topbar">
-    <div>
-      <div class="topbar-logo">MealDesk Admin</div>
-      <div class="topbar-sub" id="tb-sub">Loading...</div>
-    </div>
-    <div class="topbar-right">
-      <div class="live-badge"><div class="pulse"></div><span id="live-txt">live</span></div>
-      <button class="icon-btn" onclick="loadData()" title="Refresh">↻ Refresh</button>
-      <button class="icon-btn" onclick="openDrawer()" title="Settings">⚙ Settings</button>
-      <button class="icon-btn" onclick="doLogout()" style="border-color:#5a2020;color:var(--danger)">Sign out</button>
-    </div>
+    <div class="tlogo">MealDesk Admin</div>
+    <div class="tsub" id="tsub"></div>
+    <div class="badge"><div class="dot"></div><span id="badgetxt">demo</span></div>
+    <button class="tbtn" onclick="logout()">Sign out</button>
   </div>
-
   <div class="main">
-    <div class="banner warn" id="kv-banner">
-      <strong>Analytics storage not configured.</strong> Create a free Vercel KV store and add <code>KV_REST_API_URL</code> + <code>KV_REST_API_TOKEN</code> as env vars in your Vercel project. Until then, the dashboard shows demo data.
+    <div class="sgrid">
+      <div class="scard"><div class="sval" id="s1">—</div><div class="slb">Events (7 days)</div></div>
+      <div class="scard"><div class="sval" id="s2">—</div><div class="slb">Active users</div></div>
+      <div class="scard"><div class="sval" id="s3">—</div><div class="slb">Today</div></div>
+      <div class="scard"><div class="sval" id="s4">—</div><div class="slb">Top tab</div></div>
     </div>
-
-    <div class="stats-row">
-      <div class="stat"><div class="stat-val" id="s-total">—</div><div class="stat-lb">Events (7 days)</div></div>
-      <div class="stat"><div class="stat-val" id="s-users">—</div><div class="stat-lb">Active users</div></div>
-      <div class="stat"><div class="stat-val" id="s-today">—</div><div class="stat-lb">Today</div></div>
-      <div class="stat"><div class="stat-val" id="s-top">—</div><div class="stat-lb">Top tab</div></div>
+    <div class="grid2">
+      <div class="dc"><div class="dc-title">Users</div><div id="users"></div></div>
+      <div class="dc"><div class="dc-title">Tab views (7 days)</div><div id="tabs"></div></div>
     </div>
-
-    <div class="two-col">
-      <div class="card">
-        <div class="card-title">Users</div>
-        <div id="user-list"><div class="empty">Loading...</div></div>
-      </div>
-      <div class="card">
-        <div class="card-title">Tab views (7 days)</div>
-        <div id="tab-bars"><div class="empty">Loading...</div></div>
-      </div>
+    <div class="grid2">
+      <div class="dc"><div class="dc-title">AI features used</div><div id="feats"></div></div>
+      <div class="dc"><div class="dc-title">Daily activity</div><div id="days"></div></div>
     </div>
-
-    <div class="two-col">
-      <div class="card">
-        <div class="card-title">AI features</div>
-        <div id="feat-bars"><div class="empty">Loading...</div></div>
-      </div>
-      <div class="card">
-        <div class="card-title">Daily activity</div>
-        <div id="day-chart"><div class="empty">Loading...</div></div>
-      </div>
+    <div class="dc" style="margin-bottom:16px">
+      <div class="dc-title">Recent events</div>
+      <div id="feed"></div>
     </div>
-
-    <div class="card">
-      <div class="card-title">Recent events <span style="font-weight:400;color:var(--sub);font-size:10px;text-transform:none;letter-spacing:0" id="feed-ts"></span></div>
-      <div id="evt-feed"><div class="empty">Loading...</div></div>
-    </div>
-  </div>
-</div>
-
-<!-- ── SETTINGS DRAWER ── -->
-<div id="settings-drawer">
-  <div class="drawer-header">
-    <div class="drawer-title">Account settings</div>
-    <button class="drawer-close" onclick="closeDrawer()">×</button>
-  </div>
-
-  <div class="drawer-section">
-    <div class="drawer-section-title">Recovery email</div>
-    <div style="font-size:12px;color:var(--sub);margin-bottom:10px">Used for password resets. Keep this up to date.</div>
-    <div class="field">
-      <label>Email address</label>
-      <input type="email" id="d-email" placeholder="you@example.com">
-    </div>
-    <button class="btn btn-primary" style="width:100%;font-size:12px" onclick="saveEmail()">Update email</button>
-    <div class="msg" id="email-msg"></div>
-  </div>
-
-  <div class="drawer-section">
-    <div class="drawer-section-title">Change password</div>
-    <div class="field">
-      <label>Current password</label>
-      <div class="pw-wrap">
-        <input type="password" id="d-cur" placeholder="Current password">
-        <button class="pw-eye" onclick="toggleEye('d-cur',this)">👁</button>
-      </div>
-    </div>
-    <div class="field">
-      <label>New password</label>
-      <div class="pw-wrap">
-        <input type="password" id="d-new" placeholder="Minimum 8 characters" oninput="checkStrength(this,'d-strength','d-strength-lbl')">
-        <button class="pw-eye" onclick="toggleEye('d-new',this)">👁</button>
-      </div>
-      <div class="strength-bar" id="d-strength" style="width:0%"></div>
-      <div class="strength-label" id="d-strength-lbl"></div>
-    </div>
-    <div class="field">
-      <label>Confirm new password</label>
-      <input type="password" id="d-new2" placeholder="Repeat new password">
-    </div>
-    <button class="btn btn-primary" style="width:100%;font-size:12px" onclick="changePass()">Update password</button>
-    <div class="msg" id="pass-msg"></div>
-  </div>
-
-  <div class="drawer-section">
-    <div class="drawer-section-title">Session</div>
-    <div style="font-size:12px;color:var(--sub);margin-bottom:10px">Sessions expire after 24 hours.</div>
-    <button class="btn btn-danger" style="width:100%;font-size:12px" onclick="doLogout()">Sign out</button>
   </div>
 </div>
 
 <script>
-const BASE = window.location.origin;
-const DAYS7 = Array.from({length:7},(_,i)=>new Date(Date.now()-i*86400000).toISOString().slice(0,10));
-const TAB_COLORS = {today:'#c9963a',kitchen:'#c0392b',recipes:'#0891b2',profile:'#8faa97',remedies:'#4a7c59',exercise:'#7c3aed',progress:'#2563eb'};
-const FEAT_COLORS = {'For You':'#4a7c59','AI Swap':'#c9963a','Kitchen Scan':'#c0392b','Ask Chef':'#0891b2','AI Chat':'#7c3aed','For You Recipes':'#059669','AI Meal':'#c9963a'};
-const USER_EMOJIS = {Peter:'🧔',Evangelia:'👵'};
-const DEMO = buildDemo();
+// ── CONFIG ──────────────────────────────────────────────────────────────────
+const PASS = 'stavros2026'; // fallback — overridden by ADMIN_PASS env var on API
+const SESSION_KEY = 'mdf_adm';
+const TC = {today:'#c9963a',kitchen:'#c0392b',recipes:'#0891b2',profile:'#8faa97',remedies:'#4a7c59',exercise:'#7c3aed',progress:'#2563eb'};
+const FC = {'For You':'#4a7c59','AI Swap':'#c9963a','Kitchen Scan':'#c0392b','Ask Chef':'#0891b2','AI Chat':'#7c3aed','For You Recipes':'#059669','AI Meal':'#c9963a'};
+const UE = {Peter:'🧔',Evangelia:'👵'};
+const D7 = Array.from({length:7},(_,i)=>new Date(Date.now()-i*86400000).toISOString().slice(0,10));
 
-let sessionToken = sessionStorage.getItem('mdf_admin_token') || null;
-let refreshTimer = null;
-
-// ── DEMO DATA ────────────────────────────────────────────────────────────────
-function buildDemo(){
-  const s = {totalEvents:147,byUser:{Peter:{events:89,tabs:{today:38,remedies:22,recipes:15,exercise:8,kitchen:4,progress:2},features:{'For You':31,'AI Swap':22,'Ask Chef':8,'Kitchen Scan':6},lastSeen:Date.now()-120000},Evangelia:{events:58,tabs:{remedies:28,today:16,recipes:12,progress:8,kitchen:4,profile:3,exercise:1},features:{'For You':28,'Ask Chef':10,'AI Swap':4,'Kitchen Scan':2},lastSeen:Date.now()-900000}},byTab:{today:54,remedies:50,recipes:27,exercise:9,kitchen:8,progress:10,profile:3},byFeature:{'For You':59,'AI Swap':26,'Ask Chef':18,'Kitchen Scan':8},byDay:{},recentEvents:[]};
-  DAYS7.forEach((d,i)=>s.byDay[d]=[28,22,19,31,24,16,7][i]);
-  s.recentEvents=[{event:'tab_view',data:'remedies',user:'Peter',ts:Date.now()-180000},{event:'feature_use',data:'For You',user:'Peter',ts:Date.now()-240000},{event:'tab_view',data:'remedies',user:'Evangelia',ts:Date.now()-900000},{event:'tab_view',data:'today',user:'Peter',ts:Date.now()-1200000},{event:'feature_use',data:'AI Swap',user:'Peter',ts:Date.now()-1800000},{event:'tab_view',data:'recipes',user:'Evangelia',ts:Date.now()-3600000},{event:'feature_use',data:'For You',user:'Evangelia',ts:Date.now()-4200000},{event:'tab_view',data:'exercise',user:'Peter',ts:Date.now()-7200000},{event:'feature_use',data:'Kitchen Scan',user:'Peter',ts:Date.now()-10800000}];
+// ── DEMO DATA ───────────────────────────────────────────────────────────────
+const DEMO = (()=>{
+  const s={totalEvents:147,byUser:{Peter:{events:89,tabs:{today:38,remedies:22,recipes:15,exercise:8,kitchen:4,progress:2},features:{'For You':31,'AI Swap':22,'Ask Chef':8,'Kitchen Scan':6},lastSeen:Date.now()-120000},Evangelia:{events:58,tabs:{remedies:28,today:16,recipes:12,progress:8,kitchen:4,profile:3,exercise:1},features:{'For You':28,'Ask Chef':10,'AI Swap':4,'Kitchen Scan':2},lastSeen:Date.now()-900000}},byTab:{today:54,remedies:50,recipes:27,exercise:9,kitchen:8,progress:10,profile:3},byFeature:{'For You':59,'AI Swap':26,'Ask Chef':18,'Kitchen Scan':8},byDay:{},recentEvents:[]};
+  D7.forEach((d,i)=>s.byDay[d]=[28,22,19,31,24,16,7][i]);
+  s.recentEvents=[{event:'tab_view',data:'remedies',user:'Peter',ts:Date.now()-180000},{event:'feature_use',data:'For You',user:'Peter',ts:Date.now()-240000},{event:'tab_view',data:'remedies',user:'Evangelia',ts:Date.now()-900000},{event:'tab_view',data:'today',user:'Peter',ts:Date.now()-1200000},{event:'feature_use',data:'AI Swap',user:'Peter',ts:Date.now()-1800000},{event:'tab_view',data:'recipes',user:'Evangelia',ts:Date.now()-3600000},{event:'feature_use',data:'For You',user:'Evangelia',ts:Date.now()-4200000},{event:'tab_view',data:'exercise',user:'Peter',ts:Date.now()-7200000}];
   return s;
-}
+})();
 
-// ── AUTH HELPERS ──────────────────────────────────────────────────────────────
-function showMsg(id,text,type='error'){const el=document.getElementById(id);el.textContent=text;el.className='msg '+type;el.style.display='block';}
-function hideMsg(id){document.getElementById(id).style.display='none';}
-function showView(v){['login','forgot','reset','setup'].forEach(x=>document.getElementById('view-'+x).style.display='none');document.getElementById('view-'+v).style.display='block';}
-function toggleEye(inputId,btn){const el=document.getElementById(inputId);el.type=el.type==='password'?'text':'password';btn.textContent=el.type==='password'?'👁':'🙈';}
+// ── STATE ───────────────────────────────────────────────────────────────────
+let authed = false;
+let timer = null;
 
-function checkStrength(input,barId,lblId){
-  const v=input.value,bar=document.getElementById(barId),lbl=document.getElementById(lblId);
-  let score=0;
-  if(v.length>=8)score++;if(v.length>=12)score++;if(/[A-Z]/.test(v))score++;if(/[0-9]/.test(v))score++;if(/[^A-Za-z0-9]/.test(v))score++;
-  const configs=[['0%','var(--border)',''],['20%','#c0392b','Weak'],['40%','#e07830','Fair'],['60%','#c9963a','Good'],['80%','#4a7c59','Strong'],['100%','#27ae60','Very strong']];
-  const c=configs[score];bar.style.width=c[0];bar.style.background=c[1];lbl.textContent=c[2];lbl.style.color=c[1];
-}
+// ── AUTH ────────────────────────────────────────────────────────────────────
+async function login(){
+  const pw = document.getElementById('pw').value;
+  if(!pw) return;
+  document.getElementById('err').style.display='none';
 
-// Check for reset token in URL
-window.addEventListener('DOMContentLoaded',()=>{
-  const params=new URLSearchParams(window.location.search);
-  if(params.has('reset')){window.resetToken=params.get('reset');showView('reset');}
-  else if(sessionToken&&sessionToken.startsWith('demo-')){enterDash({kvConfigured:false,mockData:true});}
-  else if(sessionToken){enterDash();}
-});
-
-async function doLogin(){
-  const pass=document.getElementById('l-pass').value;
-  const btn=document.getElementById('login-btn');
-  if(!pass){showMsg('login-msg','Enter your password.');return;}
-  btn.textContent='Signing in…';btn.disabled=true;hideMsg('login-msg');
+  // Try the API first
+  let apiOk = false;
+  let apiData = null;
   try{
-    const r=await fetch(`${BASE}/api/admin`,{method:'POST',headers:{'Content-Type':'application/json','X-Action':'login'},body:JSON.stringify({password:pass})});
-    const d=await r.json();
-    if(!d.ok){showMsg('login-msg',d.error||'Incorrect password.');btn.textContent='Sign in';btn.disabled=false;return;}
-    sessionToken=d.sessionToken;
-    sessionStorage.setItem('mdf_admin_token',sessionToken);
-    if(d.recoveryEmail)document.getElementById('d-email').value=d.recoveryEmail;
-    enterDash(d);
-  }catch(e){
-    // Fallback demo mode
-    // API unreachable — accept the default password locally
-    const defaultPass = 'stavros2026';
-    if(pass===defaultPass){
-      sessionToken='demo-'+Date.now();
-      sessionStorage.setItem('mdf_admin_token',sessionToken);
-      enterDash({kvConfigured:false,mockData:true});
-    } else {
-      showMsg('login-msg','Incorrect password. Default password is: stavros2026');
+    const r = await fetch('/api/admin',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','X-Action':'login'},
+      body:JSON.stringify({password:pw})
+    });
+    const d = await r.json();
+    if(d.ok){
+      apiOk = true;
+      apiData = d;
+      sessionStorage.setItem(SESSION_KEY, d.sessionToken||'api-ok');
     }
-  }
-  btn.textContent='Sign in';btn.disabled=false;
-}
+  }catch(e){/* API unreachable */}
 
-async function doForgot(){
-  const email=document.getElementById('f-email').value.trim();
-  const btn=document.getElementById('forgot-btn');
-  if(!email||!email.includes('@')){showMsg('forgot-msg','Enter a valid email address.');return;}
-  btn.textContent='Sending…';btn.disabled=true;hideMsg('forgot-msg');
-  try{
-    await fetch(`${BASE}/api/admin`,{method:'POST',headers:{'Content-Type':'application/json','X-Action':'forgot'},body:JSON.stringify({email})});
-    showMsg('forgot-msg','If that email is registered, a reset link has been sent. Check your inbox.','success');
-  }catch(e){showMsg('forgot-msg','Could not send reset email. Check server configuration.');}
-  btn.textContent='Send reset link';btn.disabled=false;
-}
-
-async function doReset(){
-  const pass=document.getElementById('r-pass').value;
-  const pass2=document.getElementById('r-pass2').value;
-  const btn=document.getElementById('reset-btn');
-  if(!pass||pass.length<8){showMsg('reset-msg','Password must be at least 8 characters.');return;}
-  if(pass!==pass2){showMsg('reset-msg','Passwords do not match.');return;}
-  btn.textContent='Saving…';btn.disabled=true;hideMsg('reset-msg');
-  try{
-    const r=await fetch(`${BASE}/api/admin`,{method:'POST',headers:{'Content-Type':'application/json','X-Action':'reset'},body:JSON.stringify({token:window.resetToken,newPassword:pass})});
-    const d=await r.json();
-    if(!d.ok){showMsg('reset-msg',d.error||'Reset failed.');btn.textContent='Set new password';btn.disabled=false;return;}
-    showMsg('reset-msg','Password reset successfully. Redirecting to login…','success');
-    setTimeout(()=>{window.history.replaceState({},'','/admin.html');showView('login');},2000);
-  }catch(e){showMsg('reset-msg','Reset failed. Try again.');}
-  btn.textContent='Set new password';btn.disabled=false;
-}
-
-async function doSetup(){
-  const key=document.getElementById('sk-key').value;
-  const pass=document.getElementById('sk-pass').value;
-  const email=document.getElementById('sk-email').value.trim();
-  const btn=document.getElementById('setup-btn');
-  if(!key){showMsg('setup-msg','Enter the setup key.');return;}
-  if(!pass||pass.length<8){showMsg('setup-msg','Password must be at least 8 characters.');return;}
-  btn.textContent='Creating…';btn.disabled=true;hideMsg('setup-msg');
-  try{
-    const r=await fetch(`${BASE}/api/admin`,{method:'POST',headers:{'Content-Type':'application/json','X-Action':'setup'},body:JSON.stringify({setupKey:key,password:pass,email})});
-    const d=await r.json();
-    if(!d.ok&&d.noKV){
-      showMsg('setup-msg','⚠️ No storage connected. To set a custom password: go to Vercel Dashboard → your project → Settings → Environment Variables → add ADMIN_PASS with your desired password → Redeploy. Or use the default password to log in now.','info');
-      btn.textContent='Create admin account';btn.disabled=false;return;
-    }
-    if(!d.ok){showMsg('setup-msg',d.error||'Setup failed. Check the setup key.','error');btn.textContent='Create admin account';btn.disabled=false;return;}
-    showMsg('setup-msg','✅ Admin account created. You can now sign in with your new password.','success');
-    setTimeout(()=>showView('login'),2500);
-  }catch(e){showMsg('setup-msg','Setup failed. Check the setup key.');}
-  btn.textContent='Create admin account';btn.disabled=false;
-}
-
-let demoMode = false;
-
-function enterDash(d){
-  document.getElementById('screen-login').style.display='none';
-  document.getElementById('screen-dash').style.display='block';
-  clearInterval(refreshTimer);
-  demoMode = !d || d.kvConfigured===false || d.mockData===true || (sessionToken&&sessionToken.startsWith('demo-'));
-  // Always render immediately — never wait
-  renderData(demoMode ? {ok:true,kvConfigured:false,stats:DEMO} : d);
-  // Start refresh timer — loadData handles demo gracefully
-  refreshTimer = setInterval(loadData, 30000);
-  // Only hit API if we have a real session token
-  if(!demoMode) loadData();
-}
-
-async function doLogout(){
-  clearInterval(refreshTimer);
-  try{await fetch(`${BASE}/api/admin`,{method:'POST',headers:{'Content-Type':'application/json','Authorization':`Bearer ${sessionToken}`,'X-Action':'logout'}});}catch(e){}
-  sessionToken=null;sessionStorage.removeItem('mdf_admin_token');
-  document.getElementById('screen-dash').style.display='none';
-  document.getElementById('screen-login').style.display='flex';
-  document.getElementById('l-pass').value='';hideMsg('login-msg');showView('login');
-  closeDrawer();
-}
-
-async function loadData(){
-  if(!sessionToken) return;
-  try{
-    const r=await fetch(`${BASE}/api/admin`,{headers:{'Authorization':`Bearer ${sessionToken}`}});
-    if(r.status===401){
-      // If we're already in demo mode (demo- token), don't logout — just keep showing demo data
-      if(demoMode || sessionToken.startsWith('demo-')){
-        renderData({ok:true,kvConfigured:false,stats:DEMO});
-        return;
-      }
-      // Real session expired — logout
-      doLogout();
+  // If API didn't work, check against hardcoded fallback
+  if(!apiOk){
+    if(pw !== PASS){
+      document.getElementById('err').style.display='block';
       return;
     }
-    const d=await r.json();
-    if(d.kvConfigured===false||d.mockData){
-      demoMode=true;
-      renderData({ok:true,kvConfigured:false,stats:DEMO});
-    } else {
-      demoMode=false;
-      renderData(d);
+    sessionStorage.setItem(SESSION_KEY,'local-ok');
+  }
+
+  authed = true;
+  showDash(apiData);
+}
+
+function logout(){
+  authed = false;
+  clearInterval(timer);
+  sessionStorage.removeItem(SESSION_KEY);
+  document.getElementById('dash').style.display='none';
+  document.getElementById('login').style.display='flex';
+  document.getElementById('pw').value='';
+}
+
+// ── CHECK SAVED SESSION ─────────────────────────────────────────────────────
+(function checkSaved(){
+  const saved = sessionStorage.getItem(SESSION_KEY);
+  if(saved){ authed=true; showDash(null); }
+})();
+
+// ── DASHBOARD ───────────────────────────────────────────────────────────────
+function showDash(apiData){
+  document.getElementById('login').style.display='none';
+  document.getElementById('dash').style.display='block';
+
+  // Render immediately with demo data — never wait for API
+  render(DEMO);
+
+  // If API gave us live data use it
+  if(apiData && apiData.stats){
+    render(apiData.stats);
+    document.getElementById('badgetxt').textContent='live';
+  }
+
+  // Try to load live data in background — fail silently
+  loadLive();
+  clearInterval(timer);
+  timer = setInterval(loadLive, 30000);
+}
+
+async function loadLive(){
+  if(!authed) return;
+  try{
+    const tok = sessionStorage.getItem(SESSION_KEY)||'';
+    const r = await fetch('/api/admin',{headers:{'Authorization':'Bearer '+tok}});
+    if(r.ok){
+      const d = await r.json();
+      if(d && d.stats){
+        render(d.stats);
+        document.getElementById('badgetxt').textContent='live';
+      }
     }
-  }catch(e){
-    // Network error — if in demo mode keep showing demo, otherwise just wait
-    if(demoMode||!sessionToken||sessionToken.startsWith('demo-')){
-      renderData({ok:true,kvConfigured:false,stats:DEMO});
-    }
+    // Any failure — just keep showing what we have. Never logout.
+  }catch(e){/* silent */}
+  document.getElementById('tsub').textContent='Updated '+new Date().toLocaleTimeString();
+}
+
+// ── RENDER ──────────────────────────────────────────────────────────────────
+function render(s){
+  try{
+    const today = new Date().toISOString().slice(0,10);
+    document.getElementById('s1').textContent = s.totalEvents||0;
+    document.getElementById('s2').textContent = Object.keys(s.byUser||{}).length;
+    document.getElementById('s3').textContent = s.byDay?.[today]||0;
+    const top = Object.entries(s.byTab||{}).sort((a,b)=>b[1]-a[1])[0];
+    document.getElementById('s4').textContent = top?top[0]:'—';
+    document.getElementById('tsub').textContent = 'Updated '+new Date().toLocaleTimeString();
+
+    // Users
+    const users = Object.entries(s.byUser||{}).sort((a,b)=>b[1].events-a[1].events);
+    document.getElementById('users').innerHTML = users.map(([n,u])=>`
+      <div class="urow">
+        <div class="uem">${UE[n]||'👤'}</div>
+        <div>
+          <div class="uname">${n}</div>
+          <div class="umeta">${ago(u.lastSeen)} · ${u.events} events</div>
+          <div style="display:flex;flex-wrap:wrap;gap:3px;margin-top:4px">${Object.entries(u.tabs||{}).sort((a,b)=>b[1]-a[1]).slice(0,4).map(([t,c])=>`<span style="font-size:10px;padding:2px 6px;border-radius:10px;background:${TC[t]||'#4a7c59'}22;color:${TC[t]||'#4a7c59'};border:1px solid ${TC[t]||'#4a7c59'}44">${t} ${c}</span>`).join('')}</div>
+        </div>
+        <div class="ucnt">${u.events}</div>
+      </div>`).join('') || '<div style="font-size:12px;color:#8faa97;padding:12px 0">No users yet.</div>';
+
+    // Bars
+    bars('tabs', s.byTab, TC);
+    bars('feats', s.byFeature, FC);
+
+    // Days
+    const mx = Math.max(...D7.map(d=>s.byDay?.[d]||0),1);
+    document.getElementById('days').innerHTML = D7.map(d=>`
+      <div class="brow">
+        <div class="blbl" style="width:50px">${d.slice(5)}</div>
+        <div class="btrack"><div class="bfill" style="width:${Math.round((s.byDay?.[d]||0)/mx*100)}%;background:#4a7c59"></div></div>
+        <div class="bnum">${s.byDay?.[d]||0}</div>
+      </div>`).join('');
+
+    // Feed
+    const evts = (s.recentEvents||[]).slice(0,15);
+    document.getElementById('feed').innerHTML = evts.map(e=>`
+      <div class="erow">
+        <div class="et">${tshort(e.ts)}</div>
+        <div class="eu">${e.user||'?'}</div>
+        <div class="ek" style="color:${e.event==='tab_view'?'#c9963a':'#4a7c59'}">${e.event}</div>
+        <div class="ed">${e.data||''}</div>
+      </div>`).join('') || '<div style="font-size:12px;color:#8faa97;padding:12px 0">No events yet.</div>';
+  }catch(err){
+    // render error — log it but NEVER logout
+    console.error('render error:',err);
   }
 }
 
-// ── DRAWER ────────────────────────────────────────────────────────────────────
-function openDrawer(){document.getElementById('settings-drawer').classList.add('open');}
-function closeDrawer(){document.getElementById('settings-drawer').classList.remove('open');}
-
-async function saveEmail(){
-  const email=document.getElementById('d-email').value.trim();
-  if(!email||!email.includes('@')){showMsg('email-msg','Enter a valid email address.');return;}
-  try{
-    const r=await fetch(`${BASE}/api/admin`,{method:'POST',headers:{'Content-Type':'application/json','Authorization':`Bearer ${sessionToken}`,'X-Action':'updateemail'},body:JSON.stringify({email})});
-    const d=await r.json();
-    showMsg('email-msg',d.ok?'Recovery email updated.':d.error||'Failed.',d.ok?'success':'error');
-  }catch(e){showMsg('email-msg','Failed to save email.');}
+function bars(id, data, colorMap){
+  const entries = Object.entries(data||{}).sort((a,b)=>b[1]-a[1]);
+  const mx = entries[0]?.[1]||1;
+  document.getElementById(id).innerHTML = entries.map(([k,v])=>`
+    <div class="brow">
+      <div class="blbl">${k}</div>
+      <div class="btrack"><div class="bfill" style="width:${Math.round(v/mx*100)}%;background:${colorMap[k]||'#4a7c59'}"></div></div>
+      <div class="bnum">${v}</div>
+    </div>`).join('') || '<div style="font-size:12px;color:#8faa97;padding:8px 0">No data yet.</div>';
 }
 
-async function changePass(){
-  const cur=document.getElementById('d-cur').value;
-  const nw=document.getElementById('d-new').value;
-  const nw2=document.getElementById('d-new2').value;
-  if(!cur){showMsg('pass-msg','Enter your current password.');return;}
-  if(!nw||nw.length<8){showMsg('pass-msg','New password must be at least 8 characters.');return;}
-  if(nw!==nw2){showMsg('pass-msg','Passwords do not match.');return;}
-  try{
-    const r=await fetch(`${BASE}/api/admin`,{method:'POST',headers:{'Content-Type':'application/json','Authorization':`Bearer ${sessionToken}`,'X-Action':'changepass'},body:JSON.stringify({currentPassword:cur,newPassword:nw})});
-    const d=await r.json();
-    if(d.ok){showMsg('pass-msg','Password changed successfully.','success');document.getElementById('d-cur').value='';document.getElementById('d-new').value='';document.getElementById('d-new2').value='';}
-    else showMsg('pass-msg',d.error||'Failed to change password.');
-  }catch(e){showMsg('pass-msg','Failed to change password.');}
+function ago(ts){
+  if(!ts) return 'never';
+  const s=Math.floor((Date.now()-ts)/1000);
+  if(s<60) return s+'s ago';
+  if(s<3600) return Math.floor(s/60)+'m ago';
+  if(s<86400) return Math.floor(s/3600)+'h ago';
+  return Math.floor(s/86400)+'d ago';
 }
-
-// ── RENDER ────────────────────────────────────────────────────────────────────
-function renderData(d){
-  const s=d.stats||DEMO;
-  const isDemo=!d.kvConfigured;
-  document.getElementById('kv-banner').style.display=isDemo?'block':'none';
-  document.getElementById('live-txt').textContent=isDemo?'demo':'live';
-  document.getElementById('tb-sub').textContent=`${isDemo?'Demo':'Live'} · Updated ${new Date().toLocaleTimeString()}`;
-  document.getElementById('feed-ts').textContent=`as of ${new Date().toLocaleTimeString()}`;
-
-  const today=new Date().toISOString().slice(0,10);
-  document.getElementById('s-total').textContent=s.totalEvents||0;
-  document.getElementById('s-users').textContent=Object.keys(s.byUser||{}).length;
-  document.getElementById('s-today').textContent=s.byDay?.[today]||0;
-  const topTab=Object.entries(s.byTab||{}).sort((a,b)=>b[1]-a[1])[0];
-  document.getElementById('s-top').textContent=topTab?topTab[0]:'—';
-
-  // Users
-  const users=Object.entries(s.byUser||{}).sort((a,b)=>b[1].events-a[1].events);
-  document.getElementById('user-list').innerHTML=users.length?users.map(([n,u])=>`
-    <div class="user-row">
-      <div class="user-em">${USER_EMOJIS[n]||'👤'}</div>
-      <div style="flex:1">
-        <div class="user-name">${n}</div>
-        <div class="user-meta">${timeSince(u.lastSeen)} · ${u.events} events</div>
-        <div class="user-tabs">${Object.entries(u.tabs||{}).sort((a,b)=>b[1]-a[1]).slice(0,5).map(([t,c])=>`<span class="user-pill" style="background:${TAB_COLORS[t]||'#4a7c59'}22;color:${TAB_COLORS[t]||'#4a7c59'};border:1px solid ${TAB_COLORS[t]||'#4a7c59'}44">${t} ${c}</span>`).join('')}</div>
-        ${Object.keys(u.features||{}).length?`<div class="user-tabs" style="margin-top:3px">${Object.entries(u.features).sort((a,b)=>b[1]-a[1]).slice(0,3).map(([f,c])=>`<span class="user-pill" style="background:#2a2a3a;color:#9090d0;border:1px solid #3a3a5a">${f} ${c}</span>`).join('')}</div>`:''}
-      </div>
-      <div class="user-count">${u.events}</div>
-    </div>`).join(''):'<div class="empty">No user data yet.</div>';
-
-  // Bars helper
-  function renderBars(containerId,data,colorMap,defaultColor='#4a7c59'){
-    const entries=Object.entries(data||{}).sort((a,b)=>b[1]-a[1]);
-    const max=entries[0]?.[1]||1;
-    document.getElementById(containerId).innerHTML=entries.length?entries.map(([k,v])=>`
-      <div class="bar-row">
-        <div class="bar-lbl">${k}</div>
-        <div class="bar-track"><div class="bar-fill" style="width:${Math.round(v/max*100)}%;background:${colorMap[k]||defaultColor}"></div></div>
-        <div class="bar-num">${v}</div>
-      </div>`).join(''):'<div class="empty">No data yet.</div>';
-  }
-  renderBars('tab-bars',s.byTab,TAB_COLORS);
-  renderBars('feat-bars',s.byFeature,FEAT_COLORS);
-
-  // Day chart
-  const maxDay=Math.max(...DAYS7.map(d=>s.byDay?.[d]||0),1);
-  document.getElementById('day-chart').innerHTML=DAYS7.map(d=>`
-    <div class="day-row">
-      <div class="day-lbl">${d.slice(5)}</div>
-      <div class="day-track"><div class="day-fill" style="width:${Math.round((s.byDay?.[d]||0)/maxDay*100)}%"></div></div>
-      <div class="day-num">${s.byDay?.[d]||0}</div>
-    </div>`).join('');
-
-  // Event feed
-  const evts=(s.recentEvents||[]).slice(0,20);
-  document.getElementById('evt-feed').innerHTML=evts.length?evts.map(e=>`
-    <div class="evt-row">
-      <div class="evt-time">${timeShort(e.ts)}</div>
-      <div class="evt-user" style="color:${USER_EMOJIS[e.user]?'#c9963a':'#8faa97'}">${e.user||'?'}</div>
-      <div class="evt-type" style="color:${e.event==='tab_view'?'#c9963a':e.event==='feature_use'?'#4a7c59':'#0891b2'}">${e.event}</div>
-      <div class="evt-data">${e.data||''}</div>
-    </div>`).join(''):'<div class="empty">No events yet. Events appear here as family members use the app.</div>';
-}
-
-function timeSince(ts){
-  if(!ts)return'never';const s=Math.floor((Date.now()-ts)/1000);
-  if(s<60)return s+'s ago';if(s<3600)return Math.floor(s/60)+'m ago';
-  if(s<86400)return Math.floor(s/3600)+'h ago';return Math.floor(s/86400)+'d ago';
-}
-function timeShort(ts){
-  if(!ts)return'—';return new Date(ts).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+function tshort(ts){
+  if(!ts) return '—';
+  return new Date(ts).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
 }
 </script>
 </body>
