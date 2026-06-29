@@ -50,8 +50,15 @@ export default async function handler(req) {
     if (kvUrl && kvToken) {
       await kvFetch(kvUrl, kvToken, `/set/mdf:admin:passhash`, 'POST', [hash]);
       await kvFetch(kvUrl, kvToken, `/set/mdf:admin:email`, 'POST', [email || '']);
+      return json({ ok: true, message: 'Password set successfully. You can now sign in with your new password.' });
+    } else {
+      // No KV — can't persist the password. Tell the user.
+      return json({
+        ok: false,
+        error: 'Storage (Vercel KV) is not configured. Password cannot be saved without KV. To use a custom password without KV, set ADMIN_PASS in your Vercel environment variables and redeploy.',
+        noKV: true
+      });
     }
-    return json({ ok: true, message: 'Password set successfully' });
   }
 
   // ── ACTION: FORGOT PASSWORD (send reset email) ────────────────────────────
@@ -169,22 +176,29 @@ export default async function handler(req) {
     const { password } = await req.json();
     if (!password) return json({ error: 'Password required' }, 400);
 
-    const hash = await sha256(password + (process.env.SALT || 'mdf-salt-2026'));
+    const salt = process.env.SALT || 'mdf-salt-2026';
+    const hash = await sha256(password + salt);
     let authorized = false;
 
     if (kvUrl && kvToken) {
+      // KV configured — check stored hash first
       const stored = (await kvFetch(kvUrl, kvToken, `/get/mdf:admin:passhash`)).result;
       if (stored) {
+        // Hash exists — this is the authoritative check
         authorized = (hash === stored);
       } else {
-        // No password set yet — check env var fallback
-        const fallbackHash = await sha256((process.env.ADMIN_PASS || 'stavros2026') + (process.env.SALT || 'mdf-salt-2026'));
-        authorized = (hash === fallbackHash);
+        // No hash stored in KV yet (setup not done) — fall back to env var
+        const envPass = process.env.ADMIN_PASS || 'stavros2026';
+        // Try both hashed and plain comparison for flexibility
+        const envHash = await sha256(envPass + salt);
+        authorized = (hash === envHash) || (password === envPass);
       }
     } else {
-      // No KV — use env var
-      const fallbackHash = await sha256((process.env.ADMIN_PASS || 'stavros2026') + (process.env.SALT || 'mdf-salt-2026'));
-      authorized = (hash === fallbackHash);
+      // No KV at all — use ADMIN_PASS env var
+      // Support both plain comparison and hashed comparison
+      const envPass = process.env.ADMIN_PASS || 'stavros2026';
+      const envHash = await sha256(envPass + salt);
+      authorized = (hash === envHash) || (password === envPass);
     }
 
     if (!authorized) return json({ error: 'Incorrect password' }, 401);
