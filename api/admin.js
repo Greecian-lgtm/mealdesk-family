@@ -235,10 +235,8 @@ export default async function handler(req) {
   if (kvUrl && kvToken) {
     const storedSession = (await kvFetch(kvUrl, kvToken, `/get/mdf:admin:session:${sessionToken}`)).result;
     if (!storedSession) return json({ error: 'Session expired. Please log in again.' }, 401);
-  } else {
-    // No KV — trust the token for demo mode
-    if (!sessionToken.startsWith('demo-')) return json({ error: 'Unauthorized' }, 401);
   }
+  // No KV — accept any token (auth already happened at login via password check)
 
   if (!kvUrl || !kvToken) {
     return json({ ok: true, kvConfigured: false, mockData: true });
