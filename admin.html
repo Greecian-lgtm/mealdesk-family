@@ -143,8 +143,9 @@ body{font-family:system-ui,-apple-system,sans-serif;background:var(--bg);color:v
       <div style="text-align:center;margin-top:14px">
         <button class="link-btn" onclick="showView('forgot')">Forgot password?</button>
       </div>
+        <div style="font-size:11px;color:var(--sub);text-align:center;margin-top:10px;line-height:1.6">Default password: <code style="background:#1a2e22;padding:2px 6px;border-radius:4px;color:#c9963a">stavros2026</code><br>Set <code style="background:#1a2e22;padding:2px 6px;border-radius:4px;color:#c9963a">ADMIN_PASS</code> in Vercel env vars to change it.</div>
       <div class="divider"><div class="divider-line"></div><div class="divider-text">First time?</div><div class="divider-line"></div></div>
-      <button class="btn btn-ghost" style="width:100%;font-size:12px" onclick="showView('setup')">Set up admin password</button>
+      <button class="btn btn-ghost" style="width:100%;font-size:12px" onclick="showView('setup')">Set up admin password (requires KV)</button>
     </div>
 
     <!-- Forgot password -->
@@ -183,7 +184,8 @@ body{font-family:system-ui,-apple-system,sans-serif;background:var(--bg);color:v
 
     <!-- First-time setup -->
     <div id="view-setup" style="display:none">
-      <div style="font-size:13px;color:var(--sub);margin-bottom:16px;line-height:1.6">Create your admin password and add a recovery email for future resets.</div>
+      <div style="font-size:13px;color:var(--sub);margin-bottom:10px;line-height:1.6">Create your admin password and add a recovery email for future resets.</div>
+      <div style="font-size:11px;background:#2a2010;border:1px solid #5a3a10;border-radius:8px;padding:9px 11px;color:#c9963a;line-height:1.6;margin-bottom:14px">⚠️ <strong>Requires Vercel KV storage</strong> to save the password. Without KV, use the <code style="background:#1a1a0a;padding:1px 5px;border-radius:3px">ADMIN_PASS</code> environment variable in Vercel instead.</div>
       <div class="field">
         <label>Setup key</label>
         <input type="password" id="sk-key" placeholder="Enter setup key">
@@ -418,9 +420,13 @@ async function doSetup(){
   try{
     const r=await fetch(`${BASE}/api/admin`,{method:'POST',headers:{'Content-Type':'application/json','X-Action':'setup'},body:JSON.stringify({setupKey:key,password:pass,email})});
     const d=await r.json();
-    if(!d.ok){showMsg('setup-msg',d.error||'Setup failed.');btn.textContent='Create admin account';btn.disabled=false;return;}
-    showMsg('setup-msg','Admin account created. You can now sign in.','success');
-    setTimeout(()=>showView('login'),2000);
+    if(!d.ok&&d.noKV){
+      showMsg('setup-msg','⚠️ No storage connected. To set a custom password: go to Vercel Dashboard → your project → Settings → Environment Variables → add ADMIN_PASS with your desired password → Redeploy. Or use the default password to log in now.','info');
+      btn.textContent='Create admin account';btn.disabled=false;return;
+    }
+    if(!d.ok){showMsg('setup-msg',d.error||'Setup failed. Check the setup key.','error');btn.textContent='Create admin account';btn.disabled=false;return;}
+    showMsg('setup-msg','✅ Admin account created. You can now sign in with your new password.','success');
+    setTimeout(()=>showView('login'),2500);
   }catch(e){showMsg('setup-msg','Setup failed. Check the setup key.');}
   btn.textContent='Create admin account';btn.disabled=false;
 }
