@@ -4566,7 +4566,19 @@ function applyTheme(){
 }
 
 // ── TAB SWITCH ────────────────────────────────────────────────────────────────
+function track(event,data){
+  try{
+    const nm=(typeof P!=='undefined'&&P&&P.name)?P.name:'unknown';
+    fetch('/api/track',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','X-App-Token':'mdf-2026'},
+      body:JSON.stringify({event,data,user:nm,ts:Date.now()})
+    }).catch(()=>{});
+  }catch(e){}
+}
+
 function sw(t){
+  track('tab_view',t);
   document.querySelectorAll('.panel').forEach(p=>p.classList.remove('on'));
   document.querySelectorAll('.nb').forEach(b=>b.classList.remove('on'));
   document.getElementById('p'+t).classList.add('on');
@@ -5106,7 +5118,7 @@ function renderRcpCats(){
     btn.className='ptab'+(c.k===rcpFilter?' on':'');
     btn.style.cssText='font-size:12px;white-space:nowrap;flex-shrink:0;padding:7px 12px';
     btn.textContent=c.lb;
-    btn.onclick=()=>{rcpFilter=c.k;renderRcpCats();renderRcpList();};
+    btn.onclick=()=>{rcpFilter=c.k;if(c.k==='foryou')track('feature_use','For You Recipes');renderRcpCats();renderRcpList();};
     el.appendChild(btn);
   });
 }
@@ -5706,6 +5718,7 @@ function toggleRC(key){
 }
 
 function renderRT_ForYou(){
+  track('feature_use','For You');
   const el=document.getElementById('rt-y');if(!el)return;
   const goals=P.goals||[];
   if(!goals.length){
@@ -6078,6 +6091,7 @@ function toggleHGuide(g){
 function tog(k){CK[k]=!CK[k];sC();renderToday()}
 
 function swapMeal(slot){
+  track('feature_use','AI Swap');
   // Build a pool of all meals across all diets for this slot
   // Each entry: {dietKey, dayIdx, meal}
   const pool=[];
@@ -6185,6 +6199,7 @@ function toggleTip(slot){
 }
 
 async function aiSwap(slot,mealName){
+  track('feature_use','AI Swap');
   const el=document.getElementById('tip_'+slot);
   if(!el)return;
   if(!canAPI())return;
@@ -6295,6 +6310,7 @@ function toggleAIM(slot){
 }
 
 async function askAIMeal(slot){
+  track('feature_use','AI Meal');
   const el=document.getElementById('aim_'+slot);if(!el)return;
   const inner=document.getElementById('aim-inner_'+slot);if(!inner)return;
   const slotLabel=SLOTS.find(s=>s.k===slot)?.lb||slot;
@@ -6444,6 +6460,7 @@ function toggleRecipe(id,btn){
 }
 
 async function doScan(){
+  track('feature_use','Kitchen Scan');
   const raw=san(document.getElementById('kinput').value,400);
   if(!raw.trim())return;
   if(!canAPI()){const r=document.getElementById('krm');r.style.display='block';setTimeout(()=>r.style.display='none',3500);return}
@@ -6492,6 +6509,7 @@ async function doScan(){
 
 // AI CHAT
 async function doChat(){
+  track('feature_use','AI Chat');
   const raw=san(document.getElementById('chatinput').value,300);
   if(!raw.trim())return;
   if(!canAPI()){const r=document.getElementById('crm');r.style.display='block';setTimeout(()=>r.style.display='none',3500);return}
