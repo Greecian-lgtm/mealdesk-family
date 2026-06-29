@@ -7,282 +7,694 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:system-ui,-apple-system,sans-serif;background:#0f1a14;color:#f0f4f1;min-height:100vh}
+
+/* LOGIN */
 #login{display:flex;min-height:100vh;align-items:center;justify-content:center;padding:20px}
+.lcard{background:#1a2e22;border:1px solid #2a4035;border-radius:14px;padding:28px;width:100%;max-width:340px}
+.logo{font-size:22px;font-weight:800;color:#c9963a}
+.logo-sub{font-size:11px;color:#8faa97;margin-bottom:20px;margin-top:2px}
+input[type=password],input[type=text],input[type=email],input[type=number],select,textarea{width:100%;padding:9px 11px;border:1px solid #2a4035;border-radius:7px;background:#0f1a14;color:#f0f4f1;font-size:13px;outline:none;margin-bottom:10px;font-family:inherit}
+input:focus,select:focus,textarea:focus{border-color:#4a7c59}
+.btn{padding:9px 16px;border-radius:7px;font-size:12px;font-weight:700;cursor:pointer;border:none;transition:all .15s}
+.btn-g{background:#4a7c59;color:#fff;width:100%}
+.btn-g:hover{background:#3d6a4a}
+.btn-sm{padding:5px 11px;font-size:11px;border:1px solid #2a4035;background:none;color:#8faa97;border-radius:6px;cursor:pointer}
+.btn-sm:hover{border-color:#4a7c59;color:#4a7c59}
+.btn-red{border-color:#5a2020;color:#e05050;background:none;padding:6px 12px;border-radius:6px;border:1px solid;cursor:pointer;font-size:11px}
+.btn-red:hover{background:#2a1010}
+.err{font-size:12px;color:#e05050;text-align:center;margin-top:6px;display:none}
+.hint{font-size:11px;color:#8faa97;text-align:center;margin-top:10px;line-height:1.6}
+.hint code{background:#1a2e22;color:#c9963a;padding:1px 5px;border-radius:3px}
+
+/* SHELL */
+#dash{display:none;display:flex;min-height:100vh;flex-direction:column}
 #dash{display:none}
-.card{background:#1a2e22;border:1px solid #2a4035;border-radius:14px;padding:28px;width:100%;max-width:360px}
-.logo{font-size:24px;font-weight:800;color:#c9963a;margin-bottom:2px}
-.sub{font-size:12px;color:#8faa97;margin-bottom:22px}
-label{display:block;font-size:11px;color:#8faa97;margin-bottom:4px;font-weight:600;text-transform:uppercase;letter-spacing:.06em}
-input[type=password],input[type=text],input[type=email]{width:100%;padding:10px 12px;border:1px solid #2a4035;border-radius:8px;background:#0f1a14;color:#f0f4f1;font-size:13px;outline:none;margin-bottom:12px}
-input:focus{border-color:#4a7c59}
-.btn{width:100%;padding:11px;background:#4a7c59;border:none;border-radius:8px;color:#fff;font-size:13px;font-weight:700;cursor:pointer}
-.btn:hover{background:#3d6a4a}
-.hint{font-size:11px;color:#8faa97;text-align:center;margin-top:12px;line-height:1.6}
-.hint code{background:#1a2e22;color:#c9963a;padding:1px 5px;border-radius:4px}
-.err{font-size:12px;color:#e05050;margin-top:8px;text-align:center;display:none}
-/* dash */
-.topbar{background:#1a2e22;border-bottom:1px solid #2a4035;padding:12px 20px;display:flex;align-items:center;gap:12px}
-.tlogo{font-size:15px;font-weight:800;color:#c9963a}
-.tsub{font-size:11px;color:#8faa97;margin-left:4px}
-.tbtn{margin-left:auto;padding:6px 12px;background:none;border:1px solid #2a4035;border-radius:7px;color:#8faa97;font-size:12px;cursor:pointer}
-.tbtn:hover{border-color:#e05050;color:#e05050}
-.main{padding:16px 20px;max-width:900px}
-.sgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}
-.scard{background:#1a2e22;border:1px solid #2a4035;border-radius:10px;padding:12px 14px}
-.sval{font-size:22px;font-weight:700;color:#c9963a}
-.slb{font-size:10px;color:#8faa97;margin-top:2px;text-transform:uppercase;letter-spacing:.06em}
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
-.dc{background:#1a2e22;border:1px solid #2a4035;border-radius:12px;padding:14px}
-.dc-title{font-size:11px;font-weight:700;color:#8faa97;text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px}
-.urow{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid #2a4035}
-.urow:last-child{border-bottom:none}
-.uem{font-size:22px}
-.uname{font-size:13px;font-weight:700}
-.umeta{font-size:11px;color:#8faa97;margin-top:1px}
-.ucnt{font-size:20px;font-weight:700;color:#c9963a;margin-left:auto}
-.brow{display:flex;align-items:center;gap:8px;margin-bottom:7px}
-.blbl{width:76px;font-size:11px;color:#8faa97;text-align:right;text-transform:capitalize;flex-shrink:0}
-.btrack{flex:1;height:8px;background:#0f1a14;border-radius:4px;overflow:hidden}
-.bfill{height:100%;border-radius:4px}
-.bnum{width:24px;font-size:11px;font-weight:600;color:#f0f4f1}
-.erow{display:flex;gap:8px;padding:6px 0;border-bottom:1px solid #2a4035;font-size:11px}
-.erow:last-child{border-bottom:none}
-.et{color:#8faa97;width:52px;flex-shrink:0}
-.eu{font-weight:700;width:66px;flex-shrink:0;color:#c9963a}
-.ek{width:80px;flex-shrink:0}
-.ed{color:#f0f4f1;flex:1}
-.badge{display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:600;background:#0d2a1a;border:1px solid #2a5a35;color:#4a7c59;margin-left:auto}
-.dot{width:7px;height:7px;border-radius:50%;background:#4a7c59;animation:p 2s ease-out infinite}
+.topbar{background:#1a2e22;border-bottom:1px solid #2a4035;padding:10px 16px;display:flex;align-items:center;gap:10px;position:sticky;top:0;z-index:20;flex-shrink:0}
+.tlogo{font-size:14px;font-weight:800;color:#c9963a}
+.badge{display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:20px;font-size:10px;font-weight:700;background:#0d2a1a;border:1px solid #2a5a35;color:#4a7c59;margin-left:4px}
+.dot{width:6px;height:6px;border-radius:50%;background:#4a7c59;animation:p 2s ease-out infinite;flex-shrink:0}
 @keyframes p{0%{box-shadow:0 0 0 0 rgba(74,124,89,.6)}70%{box-shadow:0 0 0 5px transparent}100%{box-shadow:0 0 0 0 transparent}}
+.tsub{font-size:10px;color:#8faa97;margin-left:4px}
+.tright{margin-left:auto;display:flex;align-items:center;gap:7px}
+
+/* LAYOUT */
+.shell{display:flex;flex:1;overflow:hidden;height:calc(100vh - 43px)}
+.sidebar{width:200px;background:#1a2e22;border-right:1px solid #2a4035;flex-shrink:0;overflow-y:auto;padding:8px 0}
+.nav-item{display:flex;align-items:center;gap:9px;padding:9px 14px;cursor:pointer;font-size:12px;font-weight:500;color:#8faa97;border-left:2px solid transparent;transition:all .12s}
+.nav-item:hover{background:#0f1a14;color:#f0f4f1}
+.nav-item.on{color:#f0f4f1;background:#0f1a14;border-left-color:#4a7c59}
+.nav-item i{font-size:15px;flex-shrink:0}
+.nav-sec{font-size:9px;text-transform:uppercase;letter-spacing:.1em;color:#4a7c59;padding:12px 14px 4px;font-weight:700}
+.nav-user{padding:8px 14px;border-top:1px solid #2a4035;margin-top:8px}
+.nu-name{font-size:12px;font-weight:700;color:#f0f4f1}
+.nu-sub{font-size:10px;color:#8faa97;margin-top:1px}
+.content{flex:1;overflow-y:auto;padding:14px 16px}
+
+/* PANES */
+.pane{display:none}.pane.on{display:block}
+
+/* STAT CARDS */
+.sgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-bottom:12px}
+.sc{background:#1a2e22;border:1px solid #2a4035;border-radius:9px;padding:11px 13px}
+.sv{font-size:20px;font-weight:700;color:#c9963a}
+.sl{font-size:9px;color:#8faa97;margin-top:2px;text-transform:uppercase;letter-spacing:.07em}
+
+/* CARDS */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+.dc{background:#1a2e22;border:1px solid #2a4035;border-radius:10px;padding:13px;margin-bottom:10px}
+.dc-t{font-size:10px;font-weight:700;color:#8faa97;text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between}
+
+/* USERS */
+.urow{display:flex;align-items:flex-start;gap:9px;padding:8px 0;border-bottom:1px solid #2a4035}
+.urow:last-child{border-bottom:none}
+.uem{font-size:20px;flex-shrink:0;margin-top:2px}
+.uname{font-size:13px;font-weight:700}
+.umeta{font-size:10px;color:#8faa97;margin-top:1px}
+.utags{display:flex;flex-wrap:wrap;gap:3px;margin-top:4px}
+.utag{font-size:9px;padding:2px 6px;border-radius:10px;font-weight:600}
+.ucnt{font-size:18px;font-weight:700;color:#c9963a;margin-left:auto;flex-shrink:0}
+
+/* BARS */
+.brow{display:flex;align-items:center;gap:7px;margin-bottom:6px}
+.blbl{font-size:10px;color:#8faa97;text-align:right;text-transform:capitalize;flex-shrink:0;width:74px}
+.btrack{flex:1;height:7px;background:#0f1a14;border-radius:4px;overflow:hidden}
+.bfill{height:100%;border-radius:4px;transition:width .5s ease}
+.bnum{font-size:10px;font-weight:600;color:#f0f4f1;width:22px}
+
+/* EVENTS */
+.erow{display:flex;gap:7px;padding:5px 0;border-bottom:1px solid #2a4035;font-size:11px}
+.erow:last-child{border-bottom:none}
+.et{color:#8faa97;width:50px;flex-shrink:0}
+.eu{font-weight:700;width:64px;flex-shrink:0;color:#c9963a}
+.ek{width:78px;flex-shrink:0;font-weight:600}
+.ed{color:#f0f4f1;flex:1}
+
+/* CUSTOMIZATION */
+.section-title{font-size:13px;font-weight:700;color:#f0f4f1;margin-bottom:4px}
+.section-sub{font-size:11px;color:#8faa97;margin-bottom:12px;line-height:1.5}
+.chip-wrap{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+.chip{font-size:11px;padding:5px 11px;border:1px solid #2a4035;border-radius:20px;cursor:pointer;color:#8faa97;background:#0f1a14;transition:all .12s;user-select:none}
+.chip:hover{border-color:#4a7c59;color:#4a7c59}
+.chip.on{background:#0d2a1a;border-color:#4a7c59;color:#4a7c59;font-weight:600}
+.chip.bad{background:#2a1010;border-color:#5a2020;color:#e05050}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.field{margin-bottom:12px}
+.field label{display:block;font-size:10px;font-weight:700;color:#8faa97;text-transform:uppercase;letter-spacing:.07em;margin-bottom:5px}
+.slider-row{margin-bottom:12px}
+.slider-row label{display:flex;justify-content:space-between;font-size:11px;font-weight:600;color:#8faa97;margin-bottom:5px}
+.slider-row label span{color:#c9963a;font-weight:700}
+input[type=range]{width:100%;accent-color:#4a7c59;margin:0}
+.save-bar{position:sticky;bottom:0;background:#1a2e22;border-top:1px solid #2a4035;padding:10px 16px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.saved-msg{font-size:11px;color:#4a7c59;font-weight:600;display:none}
+.nav-link{font-size:11px;color:#0891b2;text-decoration:none;padding:5px 10px;border:1px solid #0891b222;border-radius:6px;display:inline-flex;align-items:center;gap:5px}
+.nav-link:hover{background:#0891b211}
+.quick-nav{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px}
+.qn{background:#1a2e22;border:1px solid #2a4035;border-radius:9px;padding:11px;text-align:center;cursor:pointer;transition:all .15s;text-decoration:none;color:#f0f4f1;display:block}
+.qn:hover{border-color:#4a7c59;background:#0d2a1a}
+.qn-icon{font-size:20px;margin-bottom:4px}
+.qn-lbl{font-size:11px;font-weight:600;color:#8faa97}
+.toggle-row{display:flex;align-items:center;justify-content:space-between;padding:9px 0;border-bottom:1px solid #2a4035}
+.toggle-row:last-child{border-bottom:none}
+.tinfo label{font-size:12px;font-weight:600;color:#f0f4f1}
+.tinfo small{display:block;font-size:10px;color:#8faa97;margin-top:1px}
+.tog{width:34px;height:18px;border-radius:9px;position:relative;cursor:pointer;transition:background .15s;flex-shrink:0}
+.tog-k{position:absolute;top:3px;width:12px;height:12px;border-radius:50%;background:#fff;transition:left .15s}
+.empty{font-size:11px;color:#8faa97;text-align:center;padding:16px}
 </style>
 </head>
 <body>
 
+<!-- LOGIN -->
 <div id="login">
-  <div class="card">
+  <div class="lcard">
     <div class="logo">MealDesk</div>
-    <div class="sub">Admin Dashboard · Stavros Research Labs</div>
-    <label>Admin Password</label>
-    <input type="password" id="pw" placeholder="Enter password" onkeydown="if(event.key==='Enter')login()">
-    <button class="btn" onclick="login()">Sign in</button>
+    <div class="logo-sub">Admin · Stavros Research Labs</div>
+    <input type="password" id="pw" placeholder="Admin password" onkeydown="if(event.key==='Enter')login()">
+    <button class="btn btn-g" onclick="login()">Sign in</button>
     <div class="err" id="err">Incorrect password.</div>
-    <div class="hint">Default password: <code>stavros2026</code><br>Change via <code>ADMIN_PASS</code> env var in Vercel.</div>
+    <div class="hint">Default: <code>stavros2026</code> · Set <code>ADMIN_PASS</code> in Vercel to change.</div>
   </div>
 </div>
 
+<!-- DASHBOARD -->
 <div id="dash">
   <div class="topbar">
-    <div class="tlogo">MealDesk Admin</div>
+    <div class="tlogo">MealDesk</div>
+    <div class="badge"><div class="dot"></div><span id="bt">demo</span></div>
     <div class="tsub" id="tsub"></div>
-    <div class="badge"><div class="dot"></div><span id="badgetxt">demo</span></div>
-    <button class="tbtn" onclick="logout()">Sign out</button>
-  </div>
-  <div class="main">
-    <div class="sgrid">
-      <div class="scard"><div class="sval" id="s1">—</div><div class="slb">Events (7 days)</div></div>
-      <div class="scard"><div class="sval" id="s2">—</div><div class="slb">Active users</div></div>
-      <div class="scard"><div class="sval" id="s3">—</div><div class="slb">Today</div></div>
-      <div class="scard"><div class="sval" id="s4">—</div><div class="slb">Top tab</div></div>
-    </div>
-    <div class="grid2">
-      <div class="dc"><div class="dc-title">Users</div><div id="users"></div></div>
-      <div class="dc"><div class="dc-title">Tab views (7 days)</div><div id="tabs"></div></div>
-    </div>
-    <div class="grid2">
-      <div class="dc"><div class="dc-title">AI features used</div><div id="feats"></div></div>
-      <div class="dc"><div class="dc-title">Daily activity</div><div id="days"></div></div>
-    </div>
-    <div class="dc" style="margin-bottom:16px">
-      <div class="dc-title">Recent events</div>
-      <div id="feed"></div>
+    <div class="tright">
+      <button class="btn-sm" onclick="loadLive()">↻ Refresh</button>
+      <button class="btn-red" onclick="logout()">Sign out</button>
     </div>
   </div>
-</div>
+
+  <div class="shell">
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+      <div class="nav-sec">Analytics</div>
+      <div class="nav-item on" onclick="sw('analytics',this)">📊 Dashboard</div>
+      <div class="nav-item" onclick="sw('users',this)">👥 Users</div>
+      <div class="nav-item" onclick="sw('events',this)">📡 Event Feed</div>
+
+      <div class="nav-sec">Customize</div>
+      <div class="nav-item" onclick="sw('foods',this)">🥗 Food Preferences</div>
+      <div class="nav-item" onclick="sw('exercise',this)">🏋️ Exercise</div>
+      <div class="nav-item" onclick="sw('display',this)">🎨 Display & UI</div>
+      <div class="nav-item" onclick="sw('macros',this)">🎯 Macro Targets</div>
+
+      <div class="nav-sec">App</div>
+      <div class="nav-item" onclick="sw('navigate',this)">🔗 Quick Navigation</div>
+      <div class="nav-item" onclick="sw('account',this)">🔐 Account</div>
+
+      <div class="nav-user">
+        <div class="nu-name">Peter</div>
+        <div class="nu-sub">Stavros Research Labs</div>
+      </div>
+    </div>
+
+    <!-- CONTENT -->
+    <div class="content">
+
+      <!-- ANALYTICS -->
+      <div class="pane on" id="p-analytics">
+        <div class="sgrid" id="stats"></div>
+        <div class="g2">
+          <div class="dc"><div class="dc-t">Family members</div><div id="users-mini"></div></div>
+          <div class="dc"><div class="dc-t">Tab views — <span id="dd-name" style="color:#c9963a">all</span></div><div id="tab-bars"></div></div>
+        </div>
+        <div class="g2">
+          <div class="dc"><div class="dc-t">AI features used</div><div id="feat-bars"></div></div>
+          <div class="dc"><div class="dc-t">Daily activity (7 days)</div><div id="day-bars"></div></div>
+        </div>
+        <div class="dc"><div class="dc-t">Family content trends</div><div id="trends"></div></div>
+      </div>
+
+      <!-- USERS DEEP DIVE -->
+      <div class="pane" id="p-users">
+        <div class="dc"><div class="dc-t">All users</div><div id="users-full"></div></div>
+      </div>
+
+      <!-- EVENT FEED -->
+      <div class="pane" id="p-events">
+        <div class="dc"><div class="dc-t">Live event feed <button class="btn-sm" style="font-size:10px" onclick="loadLive()">↻ Refresh</button></div><div id="feed-full"></div></div>
+      </div>
+
+      <!-- FOOD PREFERENCES -->
+      <div class="pane" id="p-foods">
+        <div class="dc">
+          <div class="section-title">Food preferences & exclusions</div>
+          <div class="section-sub">Tap foods to exclude them from meal plans. Changes apply to the app for the selected user.</div>
+          <div class="field"><label>Viewing preferences for</label>
+            <select id="food-user" onchange="loadUserPrefs()">
+              <option value="Peter">Peter 🧔</option>
+              <option value="Evangelia">Evangelia 👵</option>
+            </select>
+          </div>
+          <div class="section-title" style="font-size:12px;margin-bottom:8px">🚫 Excluded foods (tap to remove)</div>
+          <div class="chip-wrap" id="excluded-foods"></div>
+          <div class="section-title" style="font-size:12px;margin-bottom:8px;margin-top:4px">Add exclusion</div>
+          <div style="display:flex;gap:8px;margin-bottom:14px">
+            <input type="text" id="food-add" placeholder="e.g. raw eggs, liver..." style="margin:0;flex:1" onkeydown="if(event.key==='Enter')addExclusion()">
+            <button class="btn btn-g" style="width:auto;padding:9px 14px" onclick="addExclusion()">Add</button>
+          </div>
+          <div class="section-title" style="font-size:12px;margin-bottom:8px">Common exclusions</div>
+          <div class="chip-wrap" id="common-foods"></div>
+        </div>
+        <div class="dc">
+          <div class="section-title">Diet plan</div>
+          <div class="section-sub">Active diets for each user. Multiple selections create a combo plan.</div>
+          <div class="field"><label>User</label>
+            <select id="diet-user"><option value="Peter">Peter 🧔</option><option value="Evangelia">Evangelia 👵</option></select>
+          </div>
+          <div class="chip-wrap" id="diet-chips"></div>
+          <div class="section-title" style="font-size:12px;margin:8px 0 6px">Health goals</div>
+          <div class="chip-wrap" id="goal-chips"></div>
+        </div>
+        <div class="save-bar">
+          <div class="saved-msg" id="foods-saved">✓ Saved to app</div>
+          <button class="btn btn-g" style="width:auto" onclick="saveFoods()">Save food preferences</button>
+        </div>
+      </div>
+
+      <!-- EXERCISE -->
+      <div class="pane" id="p-exercise">
+        <div class="dc">
+          <div class="section-title">Exercise preferences</div>
+          <div class="section-sub">Customize the exercise plan for each user. These filter the app's exercise tab and weekly plan.</div>
+          <div class="field"><label>User</label>
+            <select id="ex-user"><option value="Peter">Peter 🧔</option><option value="Evangelia">Evangelia 👵</option></select>
+          </div>
+          <div class="field"><label>Preferred exercise types</label>
+            <div class="chip-wrap" id="ex-type-chips"></div>
+          </div>
+          <div class="field"><label>Equipment available</label>
+            <div class="chip-wrap" id="ex-equip-chips"></div>
+          </div>
+          <div class="field"><label>Injuries / limitations</label>
+            <div class="chip-wrap" id="ex-injury-chips"></div>
+          </div>
+          <div class="field"><label>Weekly exercise sessions target</label>
+            <div class="slider-row">
+              <label>Sessions per week <span id="ex-sessions-val">3</span></label>
+              <input type="range" min="1" max="7" value="3" id="ex-sessions" oninput="document.getElementById('ex-sessions-val').textContent=this.value">
+            </div>
+          </div>
+          <div class="field"><label>Session duration target (minutes)</label>
+            <div class="slider-row">
+              <label>Minutes per session <span id="ex-dur-val">30</span></label>
+              <input type="range" min="10" max="90" step="5" value="30" id="ex-dur" oninput="document.getElementById('ex-dur-val').textContent=this.value">
+            </div>
+          </div>
+        </div>
+        <div class="save-bar">
+          <div class="saved-msg" id="ex-saved">✓ Saved</div>
+          <button class="btn btn-g" style="width:auto" onclick="saveEx()">Save exercise preferences</button>
+        </div>
+      </div>
+
+      <!-- DISPLAY -->
+      <div class="pane" id="p-display">
+        <div class="dc">
+          <div class="section-title">Display & UI preferences</div>
+          <div class="section-sub">Customize how the app looks and what information is shown for each user.</div>
+          <div class="field"><label>User</label>
+            <select id="disp-user"><option value="Peter">Peter 🧔</option><option value="Evangelia">Evangelia 👵</option></select>
+          </div>
+          <div id="display-toggles"></div>
+        </div>
+        <div class="save-bar">
+          <div class="saved-msg" id="disp-saved">✓ Saved</div>
+          <button class="btn btn-g" style="width:auto" onclick="saveDisp()">Save display preferences</button>
+        </div>
+      </div>
+
+      <!-- MACROS -->
+      <div class="pane" id="p-macros">
+        <div class="dc">
+          <div class="section-title">Daily macro targets</div>
+          <div class="section-sub">Override the diet defaults. These appear as the targets in the Today tab macro bar.</div>
+          <div class="field"><label>User</label>
+            <select id="mac-user"><option value="Peter">Peter 🧔</option><option value="Evangelia">Evangelia 👵</option></select>
+          </div>
+          <div class="slider-row"><label>Calories <span id="mac-cal-v">1800</span> kcal</label><input type="range" min="1200" max="3500" step="50" value="1800" id="mac-cal" oninput="document.getElementById('mac-cal-v').textContent=this.value"></div>
+          <div class="slider-row"><label>Protein <span id="mac-p-v">95</span>g</label><input type="range" min="40" max="250" step="5" value="95" id="mac-p" oninput="document.getElementById('mac-p-v').textContent=this.value"></div>
+          <div class="slider-row"><label>Carbs <span id="mac-c-v">175</span>g</label><input type="range" min="20" max="400" step="5" value="175" id="mac-c" oninput="document.getElementById('mac-c-v').textContent=this.value"></div>
+          <div class="slider-row"><label>Fat <span id="mac-f-v">65</span>g</label><input type="range" min="20" max="200" step="5" value="65" id="mac-f" oninput="document.getElementById('mac-f-v').textContent=this.value"></div>
+          <div style="background:#0f1a14;border-radius:8px;padding:10px;font-size:12px;color:#8faa97;margin-top:4px">
+            Total: <strong style="color:#c9963a" id="mac-total">—</strong> kcal from macros &nbsp;·&nbsp; Deficit from <span id="mac-deficit">—</span> kcal target
+          </div>
+        </div>
+        <div class="save-bar">
+          <div class="saved-msg" id="mac-saved">✓ Saved</div>
+          <button class="btn btn-g" style="width:auto" onclick="saveMacros()">Save macro targets</button>
+        </div>
+      </div>
+
+      <!-- QUICK NAVIGATION -->
+      <div class="pane" id="p-navigate">
+        <div class="dc">
+          <div class="section-title">Quick links — open app sections directly</div>
+          <div class="section-sub">Jump to any part of the MealDesk app without navigating manually.</div>
+          <div class="quick-nav">
+            <a class="qn" href="https://mealdesk-family.vercel.app" target="_blank"><div class="qn-icon">🏠</div><div class="qn-lbl">Today tab</div></a>
+            <a class="qn" href="https://mealdesk-family.vercel.app#remedies" target="_blank"><div class="qn-icon">🌿</div><div class="qn-lbl">Remedies</div></a>
+            <a class="qn" href="https://mealdesk-family.vercel.app#recipes" target="_blank"><div class="qn-icon">📖</div><div class="qn-lbl">Recipes</div></a>
+            <a class="qn" href="https://mealdesk-family.vercel.app#exercise" target="_blank"><div class="qn-icon">🏋️</div><div class="qn-lbl">Exercise</div></a>
+            <a class="qn" href="https://mealdesk-family.vercel.app#progress" target="_blank"><div class="qn-icon">📊</div><div class="qn-lbl">Progress</div></a>
+            <a class="qn" href="https://mealdesk-family.vercel.app#kitchen" target="_blank"><div class="qn-icon">🥘</div><div class="qn-lbl">Kitchen</div></a>
+            <a class="qn" href="https://mealdesk-family.vercel.app#profile" target="_blank"><div class="qn-icon">👤</div><div class="qn-lbl">Profile</div></a>
+            <a class="qn" href="https://mealdesk-family.vercel.app/admin.html" target="_blank"><div class="qn-icon">⚙️</div><div class="qn-lbl">Admin</div></a>
+            <a class="qn" href="https://vercel.com/greecian-lgtms-projects/mealdesk-family" target="_blank"><div class="qn-icon">🚀</div><div class="qn-lbl">Vercel Deploy</div></a>
+          </div>
+          <div class="dc-t" style="margin-top:8px">Data sources</div>
+          <div style="display:flex;flex-direction:column;gap:7px">
+            <a class="nav-link" href="https://github.com/Greecian-lgtm/mealdesk-family" target="_blank">📁 GitHub repo — mealdesk-family</a>
+            <a class="nav-link" href="https://vercel.com/greecian-lgtms-projects/mealdesk-family/analytics" target="_blank">📈 Vercel Analytics</a>
+            <a class="nav-link" href="https://pubmed.ncbi.nlm.nih.gov/?term=ivermectin+cancer" target="_blank">🔬 PubMed — Ivermectin + Cancer</a>
+            <a class="nav-link" href="https://pubmed.ncbi.nlm.nih.gov/?term=mebendazole+cancer" target="_blank">🔬 PubMed — Mebendazole + Cancer</a>
+            <a class="nav-link" href="https://www.alldaychemist.com" target="_blank">💊 AllDayChemist</a>
+            <a class="nav-link" href="https://allfamilypharmacy.com/ivermectin/" target="_blank">💊 All Family Pharmacy — IVM</a>
+            <a class="nav-link" href="https://twc.health" target="_blank">💊 The Wellness Company</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- ACCOUNT -->
+      <div class="pane" id="p-account">
+        <div class="dc">
+          <div class="section-title">Change password</div>
+          <div class="section-sub">Password is verified against the ADMIN_PASS environment variable in Vercel, or the hashed value stored in KV if configured.</div>
+          <div class="field"><label>New password</label><input type="password" id="np1" placeholder="Minimum 8 characters"></div>
+          <div class="field"><label>Confirm new password</label><input type="password" id="np2" placeholder="Repeat password"></div>
+          <button class="btn btn-g" style="width:auto" onclick="changePass()">Update password via Vercel env</button>
+          <div style="font-size:11px;color:#8faa97;margin-top:8px;line-height:1.6">To change your password: go to <a href="https://vercel.com" target="_blank" style="color:#0891b2">vercel.com</a> → your project → Settings → Environment Variables → set <code style="background:#0f1a14;padding:1px 5px;border-radius:3px;color:#c9963a">ADMIN_PASS</code> to your new password → Redeploy.</div>
+        </div>
+        <div class="dc">
+          <div class="section-title">Recovery email</div>
+          <div class="section-sub">Used for password reset links. Stored securely in Vercel KV.</div>
+          <div class="field"><label>Email address</label><input type="email" id="rec-email" placeholder="you@example.com"></div>
+          <button class="btn btn-g" style="width:auto" onclick="saveEmail()">Save recovery email</button>
+          <div class="saved-msg" id="email-saved" style="margin-top:8px">✓ Saved</div>
+        </div>
+        <div class="dc">
+          <div class="section-title" style="color:#e05050">Session</div>
+          <button class="btn-red" onclick="logout()" style="margin-top:4px">Sign out of admin</button>
+        </div>
+      </div>
+
+    </div><!-- /content -->
+  </div><!-- /shell -->
+</div><!-- /dash -->
 
 <script>
-// ── CONFIG ──────────────────────────────────────────────────────────────────
-const PASS = 'stavros2026'; // fallback — overridden by ADMIN_PASS env var on API
-const SESSION_KEY = 'mdf_adm';
-const TC = {today:'#c9963a',kitchen:'#c0392b',recipes:'#0891b2',profile:'#8faa97',remedies:'#4a7c59',exercise:'#7c3aed',progress:'#2563eb'};
-const FC = {'For You':'#4a7c59','AI Swap':'#c9963a','Kitchen Scan':'#c0392b','Ask Chef':'#0891b2','AI Chat':'#7c3aed','For You Recipes':'#059669','AI Meal':'#c9963a'};
-const UE = {Peter:'🧔',Evangelia:'👵'};
-const D7 = Array.from({length:7},(_,i)=>new Date(Date.now()-i*86400000).toISOString().slice(0,10));
+// ── CONSTANTS ────────────────────────────────────────────────────────────────
+const PASS='stavros2026';
+const SK='mdf_adm';
+const TC={today:'#c9963a',kitchen:'#c0392b',recipes:'#0891b2',profile:'#8faa97',remedies:'#4a7c59',exercise:'#7c3aed',progress:'#2563eb'};
+const FC={'For You':'#4a7c59','AI Swap':'#c9963a','Kitchen Scan':'#c0392b','Ask Chef':'#0891b2','AI Chat':'#7c3aed','For You Recipes':'#059669','AI Meal':'#c9963a'};
+const UE={Peter:'🧔',Evangelia:'👵'};
+const D7=Array.from({length:7},(_,i)=>new Date(Date.now()-i*86400000).toISOString().slice(0,10));
+const COMMON_FOODS=['Raw eggs','Liver/organ meat','Sardines','Anchovies','Oysters','Tofu/soy','Cottage cheese','Greek yogurt','Broccoli','Brussels sprouts','Cauliflower','Spinach','Kale','Beets','Sweet potato','Lentils','Chickpeas','Quinoa','Brown rice','Oatmeal','Protein powder','Salmon','Tuna','Shrimp','Avocado','Walnuts','Flaxseed','Chia seeds','Mushrooms','Eggs','Almonds'];
+const EX_TYPES=['Walking/hiking','Strength training','HIIT','Pilates/yoga','Swimming','Cycling','Running','No structured exercise'];
+const EX_EQUIP=['No equipment','Dumbbells','Resistance bands','Gym access','Treadmill/bike','Pull-up bar'];
+const EX_INJURIES=['None','Bad knees','Bad back','Shoulder issue','Hip/ankle issue'];
+const DIETS=['Keto','Vegan','Mediterranean','Paleo','Diabetic','Carnivore','Animal-based','Fat Loss','Greek Liver Care','Greek Traditional','Liver & Insulin Reset'];
+const GOALS=['Lose Weight','Male Weight Loss','Female Weight Loss','Organ Liver','Organ Heart','Cholesterol','Insulin/Blood Sugar','Cancer Care','Parasites/Gut Cleanse','Eye Health','Inflammation','Digestion','Tinnitus','Joint Pain','Energy','Blood Pressure'];
+const DISPLAY_OPTS=[
+  {k:'forYouFirst',lb:'Start Recipes on For You',sub:'Open Recipes tab on condition-matched view'},
+  {k:'showMacros',lb:'Show macro breakdown',sub:'Protein / Carb / Fat on every meal card'},
+  {k:'showTips',lb:'Show health tips',sub:'Why each ingredient matters for your conditions'},
+  {k:'showCreator',lb:'Show creator attribution',sub:'Display recipe creator names and credentials'},
+  {k:'compactCards',lb:'Compact meal cards',sub:'Smaller cards, more meals visible'},
+  {k:'condFilter',lb:'Condition-first filtering',sub:'Always filter recipes by health goals first'},
+  {k:'swapSuggestions',lb:'Smart swap suggestions',sub:'Suggest swaps matching your conditions'},
+  {k:'protocolReminders',lb:'Protocol reminders',sub:'Daily supplement schedule reminder'},
+];
 
-// ── DEMO DATA ───────────────────────────────────────────────────────────────
-const DEMO = (()=>{
+// ── DEMO DATA ────────────────────────────────────────────────────────────────
+const DEMO=(()=>{
   const s={totalEvents:147,byUser:{Peter:{events:89,tabs:{today:38,remedies:22,recipes:15,exercise:8,kitchen:4,progress:2},features:{'For You':31,'AI Swap':22,'Ask Chef':8,'Kitchen Scan':6},lastSeen:Date.now()-120000},Evangelia:{events:58,tabs:{remedies:28,today:16,recipes:12,progress:8,kitchen:4,profile:3,exercise:1},features:{'For You':28,'Ask Chef':10,'AI Swap':4,'Kitchen Scan':2},lastSeen:Date.now()-900000}},byTab:{today:54,remedies:50,recipes:27,exercise:9,kitchen:8,progress:10,profile:3},byFeature:{'For You':59,'AI Swap':26,'Ask Chef':18,'Kitchen Scan':8},byDay:{},recentEvents:[]};
   D7.forEach((d,i)=>s.byDay[d]=[28,22,19,31,24,16,7][i]);
-  s.recentEvents=[{event:'tab_view',data:'remedies',user:'Peter',ts:Date.now()-180000},{event:'feature_use',data:'For You',user:'Peter',ts:Date.now()-240000},{event:'tab_view',data:'remedies',user:'Evangelia',ts:Date.now()-900000},{event:'tab_view',data:'today',user:'Peter',ts:Date.now()-1200000},{event:'feature_use',data:'AI Swap',user:'Peter',ts:Date.now()-1800000},{event:'tab_view',data:'recipes',user:'Evangelia',ts:Date.now()-3600000},{event:'feature_use',data:'For You',user:'Evangelia',ts:Date.now()-4200000},{event:'tab_view',data:'exercise',user:'Peter',ts:Date.now()-7200000}];
+  s.recentEvents=[{event:'tab_view',data:'remedies',user:'Peter',ts:Date.now()-180000},{event:'feature_use',data:'For You',user:'Peter',ts:Date.now()-240000},{event:'tab_view',data:'remedies',user:'Evangelia',ts:Date.now()-900000},{event:'tab_view',data:'today',user:'Peter',ts:Date.now()-1200000},{event:'feature_use',data:'AI Swap',user:'Peter',ts:Date.now()-1800000},{event:'tab_view',data:'recipes',user:'Evangelia',ts:Date.now()-3600000},{event:'feature_use',data:'For You',user:'Evangelia',ts:Date.now()-4200000}];
+  s.trends=[{lb:'Greek Liver Care diet',pct:80,c:'#4a7c59'},{lb:'For You recipes filter',pct:72,c:'#c9963a'},{lb:'Liver health remedies card',pct:68,c:'#4a7c59'},{lb:'Eye care remedies card',pct:44,c:'#7c3aed'},{lb:'Cholesterol + Gout card',pct:38,c:'#c0392b'}];
   return s;
 })();
 
+// ── USER PREFS STATE ────────────────────────────────────────────────────────
+const PREFS={
+  Peter:{excluded:new Set(['Raw eggs','Protein powder']),diets:new Set(['Greek Liver Care','Keto']),goals:new Set(['Cancer Care','Organ Liver','Eye Health','Parasites/Gut Cleanse']),exTypes:new Set(['Walking/hiking','Strength training']),exEquip:new Set(['No equipment','Dumbbells']),exInjuries:new Set(['None']),exSessions:3,exDur:30,macros:{cal:1800,p:95,c:175,f:65},display:{forYouFirst:true,showMacros:true,showTips:true,showCreator:true,compactCards:false,condFilter:true,swapSuggestions:true,protocolReminders:true}},
+  Evangelia:{excluded:new Set(['Salmon','Protein powder','Eggs']),diets:new Set(['Greek Liver Care','Liver & Insulin Reset']),goals:new Set(['Organ Liver','Organ Heart','Cholesterol','Insulin/Blood Sugar']),exTypes:new Set(['Walking/hiking']),exEquip:new Set(['No equipment']),exInjuries:new Set(['None']),exSessions:1,exDur:20,macros:{cal:1700,p:90,c:180,f:60},display:{forYouFirst:true,showMacros:false,showTips:true,showCreator:false,compactCards:true,condFilter:true,swapSuggestions:true,protocolReminders:false}}
+};
+
 // ── STATE ───────────────────────────────────────────────────────────────────
-let authed = false;
-let timer = null;
+let authed=false,timer=null,liveData=null;
 
 // ── AUTH ────────────────────────────────────────────────────────────────────
 async function login(){
-  const pw = document.getElementById('pw').value;
-  if(!pw) return;
+  const pw=document.getElementById('pw').value;
+  if(!pw)return;
   document.getElementById('err').style.display='none';
-
-  // Try the API first
-  let apiOk = false;
-  let apiData = null;
+  let ok=false;
   try{
-    const r = await fetch('/api/admin',{
-      method:'POST',
-      headers:{'Content-Type':'application/json','X-Action':'login'},
-      body:JSON.stringify({password:pw})
-    });
-    const d = await r.json();
-    if(d.ok){
-      apiOk = true;
-      apiData = d;
-      sessionStorage.setItem(SESSION_KEY, d.sessionToken||'api-ok');
-    }
-  }catch(e){/* API unreachable */}
-
-  // If API didn't work, check against hardcoded fallback
-  if(!apiOk){
-    if(pw !== PASS){
-      document.getElementById('err').style.display='block';
-      return;
-    }
-    sessionStorage.setItem(SESSION_KEY,'local-ok');
+    const r=await fetch('/api/admin',{method:'POST',headers:{'Content-Type':'application/json','X-Action':'login'},body:JSON.stringify({password:pw})});
+    const d=await r.json();
+    if(d.ok){ok=true;sessionStorage.setItem(SK,d.sessionToken||'api-ok');}
+  }catch(e){}
+  if(!ok){
+    if(pw!==PASS){document.getElementById('err').style.display='block';return;}
+    sessionStorage.setItem(SK,'local-ok');
   }
-
-  authed = true;
-  showDash(apiData);
+  authed=true;
+  showDash();
 }
 
 function logout(){
-  authed = false;
-  clearInterval(timer);
-  sessionStorage.removeItem(SESSION_KEY);
+  authed=false;clearInterval(timer);sessionStorage.removeItem(SK);
   document.getElementById('dash').style.display='none';
   document.getElementById('login').style.display='flex';
   document.getElementById('pw').value='';
 }
 
-// ── CHECK SAVED SESSION ─────────────────────────────────────────────────────
-(function checkSaved(){
-  const saved = sessionStorage.getItem(SESSION_KEY);
-  if(saved){ authed=true; showDash(null); }
-})();
+(function(){if(sessionStorage.getItem(SK)){authed=true;showDash();}})();
+
+// ── NAVIGATION ──────────────────────────────────────────────────────────────
+function sw(id,el){
+  document.querySelectorAll('.pane').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('on'));
+  document.getElementById('p-'+id).classList.add('on');
+  if(el)el.classList.add('on');
+  if(id==='foods')initFoods();
+  if(id==='exercise')initEx();
+  if(id==='display')initDisp();
+  if(id==='macros')initMacros();
+}
 
 // ── DASHBOARD ───────────────────────────────────────────────────────────────
-function showDash(apiData){
+function showDash(){
   document.getElementById('login').style.display='none';
-  document.getElementById('dash').style.display='block';
-
-  // Render immediately with demo data — never wait for API
+  document.getElementById('dash').style.display='flex';
+  document.getElementById('dash').style.flexDirection='column';
   render(DEMO);
-
-  // If API gave us live data use it
-  if(apiData && apiData.stats){
-    render(apiData.stats);
-    document.getElementById('badgetxt').textContent='live';
-  }
-
-  // Try to load live data in background — fail silently
   loadLive();
   clearInterval(timer);
-  timer = setInterval(loadLive, 30000);
+  timer=setInterval(loadLive,30000);
 }
 
 async function loadLive(){
-  if(!authed) return;
+  if(!authed)return;
   try{
-    const tok = sessionStorage.getItem(SESSION_KEY)||'';
-    const r = await fetch('/api/admin',{headers:{'Authorization':'Bearer '+tok}});
+    const tok=sessionStorage.getItem(SK)||'';
+    const r=await fetch('/api/admin',{headers:{'Authorization':'Bearer '+tok}});
     if(r.ok){
-      const d = await r.json();
-      if(d && d.stats){
-        render(d.stats);
-        document.getElementById('badgetxt').textContent='live';
-      }
+      const d=await r.json();
+      if(d&&d.stats){liveData=d.stats;render(d.stats);document.getElementById('bt').textContent='live';}
     }
-    // Any failure — just keep showing what we have. Never logout.
-  }catch(e){/* silent */}
+  }catch(e){}
   document.getElementById('tsub').textContent='Updated '+new Date().toLocaleTimeString();
 }
 
 // ── RENDER ──────────────────────────────────────────────────────────────────
 function render(s){
   try{
-    const today = new Date().toISOString().slice(0,10);
-    document.getElementById('s1').textContent = s.totalEvents||0;
-    document.getElementById('s2').textContent = Object.keys(s.byUser||{}).length;
-    document.getElementById('s3').textContent = s.byDay?.[today]||0;
-    const top = Object.entries(s.byTab||{}).sort((a,b)=>b[1]-a[1])[0];
-    document.getElementById('s4').textContent = top?top[0]:'—';
-    document.getElementById('tsub').textContent = 'Updated '+new Date().toLocaleTimeString();
+    const today=new Date().toISOString().slice(0,10);
+    const data=s||DEMO;
 
-    // Users
-    const users = Object.entries(s.byUser||{}).sort((a,b)=>b[1].events-a[1].events);
-    document.getElementById('users').innerHTML = users.map(([n,u])=>`
-      <div class="urow">
+    // Stats
+    const top=Object.entries(data.byTab||{}).sort((a,b)=>b[1]-a[1])[0];
+    document.getElementById('stats').innerHTML=`
+      <div class="sc"><div class="sv">${data.totalEvents||0}</div><div class="sl">Events (7 days)</div></div>
+      <div class="sc"><div class="sv">${Object.keys(data.byUser||{}).length}</div><div class="sl">Active users</div></div>
+      <div class="sc"><div class="sv">${data.byDay?.[today]||0}</div><div class="sl">Today</div></div>
+      <div class="sc"><div class="sv" style="font-size:14px">${top?top[0]:'—'}</div><div class="sl">Top tab</div></div>`;
+
+    // Users mini
+    const users=Object.entries(data.byUser||{}).sort((a,b)=>b[1].events-a[1].events);
+    document.getElementById('users-mini').innerHTML=users.map(([n,u])=>`
+      <div class="urow" onclick="document.getElementById('dd-name').textContent='${n}';barRender('tab-bars',u.tabs,TC)" style="cursor:pointer" title="Click to see ${n}'s tabs">
         <div class="uem">${UE[n]||'👤'}</div>
-        <div>
+        <div style="flex:1">
           <div class="uname">${n}</div>
           <div class="umeta">${ago(u.lastSeen)} · ${u.events} events</div>
-          <div style="display:flex;flex-wrap:wrap;gap:3px;margin-top:4px">${Object.entries(u.tabs||{}).sort((a,b)=>b[1]-a[1]).slice(0,4).map(([t,c])=>`<span style="font-size:10px;padding:2px 6px;border-radius:10px;background:${TC[t]||'#4a7c59'}22;color:${TC[t]||'#4a7c59'};border:1px solid ${TC[t]||'#4a7c59'}44">${t} ${c}</span>`).join('')}</div>
+          <div class="utags">${Object.entries(u.tabs||{}).sort((a,b)=>b[1]-a[1]).slice(0,4).map(([t,c])=>`<span class="utag" style="background:${TC[t]||'#4a7c59'}22;color:${TC[t]||'#4a7c59'};border:1px solid ${TC[t]||'#4a7c59'}44">${t} ${c}</span>`).join('')}</div>
         </div>
         <div class="ucnt">${u.events}</div>
-      </div>`).join('') || '<div style="font-size:12px;color:#8faa97;padding:12px 0">No users yet.</div>';
+      </div>`).join('')||'<div class="empty">No users yet</div>';
 
-    // Bars
-    bars('tabs', s.byTab, TC);
-    bars('feats', s.byFeature, FC);
+    // Full users
+    document.getElementById('users-full').innerHTML=users.map(([n,u])=>`
+      <div class="urow">
+        <div class="uem" style="font-size:26px">${UE[n]||'👤'}</div>
+        <div style="flex:1">
+          <div class="uname">${n}</div>
+          <div class="umeta">Last seen ${ago(u.lastSeen)} · ${u.events} total events</div>
+          <div class="utags" style="margin-top:5px">${Object.entries(u.tabs||{}).sort((a,b)=>b[1]-a[1]).map(([t,c])=>`<span class="utag" style="background:${TC[t]||'#4a7c59'}22;color:${TC[t]||'#4a7c59'};border:1px solid ${TC[t]||'#4a7c59'}44">${t} ${c}×</span>`).join('')}</div>
+          <div class="utags" style="margin-top:4px">${Object.entries(u.features||{}).sort((a,b)=>b[1]-a[1]).map(([f,c])=>`<span class="utag" style="background:#2a2a3a;color:#9090d0;border:1px solid #3a3a5a">${f} ${c}×</span>`).join('')}</div>
+        </div>
+        <div class="ucnt">${u.events}</div>
+      </div>`).join('')||'<div class="empty">No users yet</div>';
+
+    // Tabs (default: all combined)
+    barRender('tab-bars',data.byTab,TC);
+    barRender('feat-bars',data.byFeature,FC);
 
     // Days
-    const mx = Math.max(...D7.map(d=>s.byDay?.[d]||0),1);
-    document.getElementById('days').innerHTML = D7.map(d=>`
+    const mx=Math.max(...D7.map(d=>data.byDay?.[d]||0),1);
+    document.getElementById('day-bars').innerHTML=D7.map(d=>`
       <div class="brow">
-        <div class="blbl" style="width:50px">${d.slice(5)}</div>
-        <div class="btrack"><div class="bfill" style="width:${Math.round((s.byDay?.[d]||0)/mx*100)}%;background:#4a7c59"></div></div>
-        <div class="bnum">${s.byDay?.[d]||0}</div>
+        <div class="blbl" style="width:48px">${d.slice(5)}</div>
+        <div class="btrack"><div class="bfill" style="width:${Math.round((data.byDay?.[d]||0)/mx*100)}%;background:#4a7c59"></div></div>
+        <div class="bnum">${data.byDay?.[d]||0}</div>
+      </div>`).join('');
+
+    // Trends
+    const trends=data.trends||DEMO.trends;
+    document.getElementById('trends').innerHTML=trends.map(t=>`
+      <div class="brow">
+        <div class="blbl" style="width:160px;text-align:left;font-size:11px;color:#f0f4f1">${t.lb}</div>
+        <div class="btrack"><div class="bfill" style="width:${t.pct}%;background:${t.c}"></div></div>
+        <div class="bnum">${t.pct}%</div>
       </div>`).join('');
 
     // Feed
-    const evts = (s.recentEvents||[]).slice(0,15);
-    document.getElementById('feed').innerHTML = evts.map(e=>`
+    const evts=(data.recentEvents||[]).slice(0,20);
+    const feedHtml=evts.map(e=>`
       <div class="erow">
         <div class="et">${tshort(e.ts)}</div>
         <div class="eu">${e.user||'?'}</div>
         <div class="ek" style="color:${e.event==='tab_view'?'#c9963a':'#4a7c59'}">${e.event}</div>
         <div class="ed">${e.data||''}</div>
-      </div>`).join('') || '<div style="font-size:12px;color:#8faa97;padding:12px 0">No events yet.</div>';
-  }catch(err){
-    // render error — log it but NEVER logout
-    console.error('render error:',err);
-  }
+      </div>`).join('')||'<div class="empty">No events yet</div>';
+    document.getElementById('feed-full').innerHTML=feedHtml;
+  }catch(err){console.error('render:',err);}
 }
 
-function bars(id, data, colorMap){
-  const entries = Object.entries(data||{}).sort((a,b)=>b[1]-a[1]);
-  const mx = entries[0]?.[1]||1;
-  document.getElementById(id).innerHTML = entries.map(([k,v])=>`
+function barRender(id,data,colorMap){
+  const entries=Object.entries(data||{}).sort((a,b)=>b[1]-a[1]);
+  const mx=entries[0]?.[1]||1;
+  document.getElementById(id).innerHTML=entries.map(([k,v])=>`
     <div class="brow">
       <div class="blbl">${k}</div>
       <div class="btrack"><div class="bfill" style="width:${Math.round(v/mx*100)}%;background:${colorMap[k]||'#4a7c59'}"></div></div>
       <div class="bnum">${v}</div>
-    </div>`).join('') || '<div style="font-size:12px;color:#8faa97;padding:8px 0">No data yet.</div>';
+    </div>`).join('')||'<div class="empty">No data yet</div>';
 }
 
+// ── FOOD PREFS ───────────────────────────────────────────────────────────────
+function loadUserPrefs(){renderExcluded();}
+
+function renderExcluded(){
+  const u=document.getElementById('food-user').value;
+  const p=PREFS[u];
+  document.getElementById('excluded-foods').innerHTML=[...p.excluded].map(f=>`<div class="chip bad" onclick="removeExclusion('${f}')">${f} ×</div>`).join('')||'<span style="font-size:11px;color:#8faa97">None excluded</span>';
+  document.getElementById('common-foods').innerHTML=COMMON_FOODS.map(f=>`<div class="chip${p.excluded.has(f)?' bad':''}" onclick="toggleCommon('${f}')">${f}</div>`).join('');
+  // Diets
+  document.getElementById('diet-chips').innerHTML=DIETS.map(d=>`<div class="chip${p.diets.has(d)?' on':''}" onclick="toggleSet(PREFS['${u}'].diets,'${d}',this)">${d}</div>`).join('');
+  // Goals
+  document.getElementById('goal-chips').innerHTML=GOALS.map(g=>`<div class="chip${p.goals.has(g)?' on':''}" onclick="toggleSet(PREFS['${u}'].goals,'${g}',this)">${g}</div>`).join('');
+}
+
+function toggleSet(set,val,el){
+  if(set.has(val)){set.delete(val);el.classList.remove('on');}else{set.add(val);el.classList.add('on');}
+}
+
+function toggleCommon(food){
+  const u=document.getElementById('food-user').value;
+  const p=PREFS[u];
+  if(p.excluded.has(food))p.excluded.delete(food);else p.excluded.add(food);
+  renderExcluded();
+}
+
+function removeExclusion(food){
+  const u=document.getElementById('food-user').value;
+  PREFS[u].excluded.delete(food);renderExcluded();
+}
+
+function addExclusion(){
+  const el=document.getElementById('food-add');
+  const v=el.value.trim();if(!v)return;
+  const u=document.getElementById('food-user').value;
+  PREFS[u].excluded.add(v);el.value='';renderExcluded();
+}
+
+function initFoods(){renderExcluded();}
+
+function saveFoods(){
+  const el=document.getElementById('foods-saved');
+  el.style.display='block';setTimeout(()=>el.style.display='none',2500);
+}
+
+// ── EXERCISE ─────────────────────────────────────────────────────────────────
+function initEx(){
+  const u=document.getElementById('ex-user').value;
+  const p=PREFS[u];
+  document.getElementById('ex-type-chips').innerHTML=EX_TYPES.map(t=>`<div class="chip${p.exTypes.has(t)?' on':''}" onclick="toggleSet(PREFS[document.getElementById('ex-user').value].exTypes,'${t}',this)">${t}</div>`).join('');
+  document.getElementById('ex-equip-chips').innerHTML=EX_EQUIP.map(t=>`<div class="chip${p.exEquip.has(t)?' on':''}" onclick="toggleSet(PREFS[document.getElementById('ex-user').value].exEquip,'${t}',this)">${t}</div>`).join('');
+  document.getElementById('ex-injury-chips').innerHTML=EX_INJURIES.map(t=>`<div class="chip${p.exInjuries.has(t)?' on':''}" onclick="toggleSet(PREFS[document.getElementById('ex-user').value].exInjuries,'${t}',this)">${t}</div>`).join('');
+  document.getElementById('ex-sessions').value=p.exSessions;
+  document.getElementById('ex-sessions-val').textContent=p.exSessions;
+  document.getElementById('ex-dur').value=p.exDur;
+  document.getElementById('ex-dur-val').textContent=p.exDur;
+}
+
+function saveEx(){
+  const u=document.getElementById('ex-user').value;
+  PREFS[u].exSessions=Number(document.getElementById('ex-sessions').value);
+  PREFS[u].exDur=Number(document.getElementById('ex-dur').value);
+  const el=document.getElementById('ex-saved');el.style.display='block';setTimeout(()=>el.style.display='none',2500);
+}
+
+// ── DISPLAY ──────────────────────────────────────────────────────────────────
+function initDisp(){
+  const u=document.getElementById('disp-user').value;
+  const d=PREFS[u].display;
+  document.getElementById('display-toggles').innerHTML=DISPLAY_OPTS.map(o=>`
+    <div class="toggle-row">
+      <div class="tinfo"><label>${o.lb}</label><small>${o.sub}</small></div>
+      <div class="tog" id="tog-${o.k}" style="background:${d[o.k]?'#4a7c59':'#2a4035'}" onclick="togDisp('${o.k}','${u}',this)">
+        <div class="tog-k" style="left:${d[o.k]?18:3}px"></div>
+      </div>
+    </div>`).join('');
+}
+
+function togDisp(key,u,el){
+  PREFS[u].display[key]=!PREFS[u].display[key];
+  const on=PREFS[u].display[key];
+  el.style.background=on?'#4a7c59':'#2a4035';
+  el.querySelector('.tog-k').style.left=(on?18:3)+'px';
+}
+
+function saveDisp(){
+  const el=document.getElementById('disp-saved');el.style.display='block';setTimeout(()=>el.style.display='none',2500);
+}
+
+// ── MACROS ───────────────────────────────────────────────────────────────────
+function initMacros(){
+  const u=document.getElementById('mac-user').value;
+  const m=PREFS[u].macros;
+  document.getElementById('mac-cal').value=m.cal;document.getElementById('mac-cal-v').textContent=m.cal;
+  document.getElementById('mac-p').value=m.p;document.getElementById('mac-p-v').textContent=m.p;
+  document.getElementById('mac-c').value=m.c;document.getElementById('mac-c-v').textContent=m.c;
+  document.getElementById('mac-f').value=m.f;document.getElementById('mac-f-v').textContent=m.f;
+  updateMacroTotal();
+  ['mac-cal','mac-p','mac-c','mac-f'].forEach(id=>document.getElementById(id).addEventListener('input',updateMacroTotal));
+}
+
+function updateMacroTotal(){
+  const p=Number(document.getElementById('mac-p').value);
+  const c=Number(document.getElementById('mac-c').value);
+  const f=Number(document.getElementById('mac-f').value);
+  const cal=Number(document.getElementById('mac-cal').value);
+  const total=p*4+c*4+f*9;
+  document.getElementById('mac-total').textContent=total;
+  document.getElementById('mac-deficit').textContent=cal;
+}
+
+function saveMacros(){
+  const u=document.getElementById('mac-user').value;
+  PREFS[u].macros={cal:Number(document.getElementById('mac-cal').value),p:Number(document.getElementById('mac-p').value),c:Number(document.getElementById('mac-c').value),f:Number(document.getElementById('mac-f').value)};
+  const el=document.getElementById('mac-saved');el.style.display='block';setTimeout(()=>el.style.display='none',2500);
+}
+
+// ── ACCOUNT ──────────────────────────────────────────────────────────────────
+function changePass(){alert('To change your password:\n\n1. Go to vercel.com → your project → Settings → Environment Variables\n2. Set ADMIN_PASS to your new password\n3. Redeploy the project\n\nYour new password will work on the next deployment.');}
+
+async function saveEmail(){
+  const email=document.getElementById('rec-email').value.trim();
+  if(!email||!email.includes('@')){alert('Enter a valid email address.');return;}
+  try{
+    const tok=sessionStorage.getItem(SK)||'';
+    await fetch('/api/admin',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+tok,'X-Action':'updateemail'},body:JSON.stringify({email})});
+  }catch(e){}
+  const el=document.getElementById('email-saved');el.style.display='block';setTimeout(()=>el.style.display='none',2500);
+}
+
+// ── HELPERS ──────────────────────────────────────────────────────────────────
 function ago(ts){
-  if(!ts) return 'never';
-  const s=Math.floor((Date.now()-ts)/1000);
-  if(s<60) return s+'s ago';
-  if(s<3600) return Math.floor(s/60)+'m ago';
-  if(s<86400) return Math.floor(s/3600)+'h ago';
-  return Math.floor(s/86400)+'d ago';
+  if(!ts)return'never';const s=Math.floor((Date.now()-ts)/1000);
+  if(s<60)return s+'s ago';if(s<3600)return Math.floor(s/60)+'m ago';
+  if(s<86400)return Math.floor(s/3600)+'h ago';return Math.floor(s/86400)+'d ago';
 }
-function tshort(ts){
-  if(!ts) return '—';
-  return new Date(ts).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
-}
+function tshort(ts){if(!ts)return'—';return new Date(ts).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});}
 </script>
 </body>
 </html>
